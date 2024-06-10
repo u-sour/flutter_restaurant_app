@@ -1,0 +1,132 @@
+{
+  "screens": {
+    "splash": {
+      "title": "SPLASH"
+    },
+    "onBoarding": {
+      "title": "WELCOME"
+    },
+    "login": {
+      "title": "LOG IN",
+      "children": {
+        "formTitle": "Hello, Welcome Back!",
+        "form": {
+          "username": "Username",
+          "email": "Email",
+          "password": "Password",
+          "rememberMe": "Remember me",
+          "forgotPassword": "Forgot Password?",
+          "submit": "LOG IN",
+          "submitting": "LOGGING IN ...",
+          "noAccount": "Don't have an account?",
+          "createAccount": "Create an account",
+          "alert": {
+            "success": {
+              "title": "Success",
+              "message": "Hey, welcome back! let's start today."
+            },
+            "failure": {
+              "title": "Failure",
+              "message": "Failed to login"
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "title": "DASHBOARD"
+    },
+    "formBuilder": {
+      "title": "FORM BUILDER",
+      "children": {
+        "default": { "title": "Default" },
+        "extra": { "title": "Extra" },
+        "validation": {
+          "title": "Validation",
+          "form": {
+            "name": "Name",
+            "phoneNumber": "Phone Number",
+            "email": "Email",
+            "password": "Password",
+            "confirmPassword": "Confirm Password",
+            "submit": "Submit",
+            "reset": "Reset"
+          }
+        }
+      }
+    },
+    "profile": {
+      "title": "PROFILE",
+      "children": {
+        "myProfile": {
+          "title": "My Profile",
+          "formTitle": "Information",
+          "form": {
+            "fullName": "Full Name",
+            "gender": "Gender",
+            "phoneNumber": "Phone Number",
+            "email": "Email",
+            "roles": "Roles",
+            "submit": "Submit",
+            "cancel": "Cancel"
+          }
+        },
+        "security": {
+          "title": "Security",
+          "form": {}
+        }
+      }
+    },
+    "settings": {
+      "title": "SETTINGS",
+      "form": {
+        "ipAddress": {
+          "title": "IP Address",
+          "info": "Note: App will be restart after setup.",
+          "setup": "SET UP"
+        }
+      },
+      "children": {
+        "language": {
+          "title": "Language",
+          "options": {
+            "en": "English",
+            "km": "Khmer"
+          }
+        },
+        "theme": {
+          "title": "Theme",
+          "options": {
+            "auto": "Auto",
+            "light": "Light",
+            "dark": "Dark"
+          }
+        }
+      }
+    },
+    "error": {
+      "title": "ERROR"
+    },
+    "logout": {
+      "title": "LOG OUT"
+    }
+  },
+  "alert": {
+    "success": {
+      "title": "Success",
+      "message": "success"
+    },
+    "failure": {
+      "title": "Failure",
+      "message": "failure"
+    },
+    "warning": {
+      "title": "Warning",
+      "message": "warning"
+    },
+    "info": {
+      "title": "Infomation",
+      "message": "infomation"
+    }
+  }
+}

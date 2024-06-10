@@ -1,0 +1,128 @@
+{
+  "screens": {
+    "splash": {
+      "title": "SPLASH"
+    },
+    "onBoarding": {
+      "title": "សូមស្វាគមន៍"
+    },
+    "login": {
+      "title": "ចូល",
+      "children": {
+        "formTitle": "សួស្តី​ សូមស្វាគមន៍ការត្រលប់មកវិញ!",
+        "form": {
+          "username": "ឈ្មោះ",
+          "email": "អុីម៉ែល",
+          "password": "ពាក្យសម្ងាត់",
+          "rememberMe": "ចងចាំខ្ញុំ",
+          "forgotPassword": "ភ្លេច​ពាក្យ​សម្ងាត់?",
+          "submit": "ចូល",
+          "submitting": "កំពុងចូល ...",
+          "noAccount": "មិនមានគណនីមែនទេ?",
+          "createAccount": "បង្កើត​គណនី",
+          "alert": {
+            "success": {
+              "title": "ជោគជ័យ",
+              "message": "ហេ, ស្វាគមន៍ការត្រឡប់មកវិញ! តោះចាប់ផ្តើមថ្ងៃនេះ។"
+            },
+            "failure": {
+              "title": "បរាជ័យ",
+              "message": "បរាជ័យក្នុងការចូល"
+            }
+          }
+        }
+      }
+    },
+    "dashboard": {
+      "title": "ផ្ទាំងគ្រប់គ្រង"
+    },
+    "formBuilder": {
+      "title": "បង្កើតទម្រង់បែបបទ",
+      "children": {
+        "default": { "title": "លំនាំដើម" },
+        "extra": { "title": "បន្ថែម" },
+        "validation": {
+          "title": "ការបញ្ជាក់ថាពិតឬត្រឹមត្រូវ",
+          "form": {
+            "name": "ឈ្មោះ",
+            "phoneNumber": "លេខទូរសព្ទ",
+            "email": "អុីម៉ែល",
+            "password": "ពាក្យសម្ងាត់",
+            "confirmPassword": "បញ្ជាក់ពាក្យសម្ងាត់",
+            "submit": "ដាក់ស្នើ",
+            "reset": "កំណត់​ឡើង​វិញ"
+          }
+        }
+      }
+    },
+    "profile": {
+      "title": "ប្រូហ្វាល",
+      "children": {
+        "myProfile": {
+          "title": "ប្រូហ្វាលរបស់ខ្ញុំ",
+          "formTitle": "ពត៌មាន",
+          "form": {
+            "fullName": "ឈ្មោះពេញ",
+            "gender": "ភេទ",
+            "phoneNumber": "លេខទូរសព្ទ",
+            "email": "អុីម៉ែល",
+            "roles": "តួនាទី",
+            "submit": "ដាក់ស្នើ",
+            "cancel": "បោះបង់"
+          }
+        }
+      }
+    },
+    "settings": {
+      "title": "ការកំណត់ផ្សេងៗ",
+      "form": {
+        "ipAddress": {
+          "title": "អាសយដ្ឋាន អាយភី",
+          "info": "ចំណាំ៖ កម្មវិធីនឹងចាប់ផ្តើមឡើងវិញបន្ទាប់ពីការដំឡើង។",
+          "setup": "ដំឡើង"
+        }
+      },
+      "children": {
+        "language": {
+          "title": "ភាសា",
+          "options": {
+            "en": "អង់គ្លេស",
+            "km": "ខ្មែរ"
+          }
+        },
+        "theme": {
+          "title": "ផ្ទៃ",
+          "options": {
+            "auto": "ស្វ័យប្រវត្តិ",
+            "light": "ពន្លឺ",
+            "dark": "ងងឹត"
+          }
+        }
+      }
+    },
+    "404": {
+      "title": "៤០៤ មិនបានរកឃើញ"
+    },
+    "logout": {
+      "title": "ចាកចេញ"
+    }
+  },
+  "alert": {
+    "success": {
+      "title": "ជោគជ័យ",
+      "message": "success"
+    },
+    "failure": {
+      "title": "បរាជ័យ",
+      "message": "error"
+    },
+    "warning": {
+      "title": "ព្រមាន",
+      "message": "warning"
+    },
+    "info": {
+      "title": "ពត៌មាន",
+      "message": "infomation"
+    }
+  }
+}
