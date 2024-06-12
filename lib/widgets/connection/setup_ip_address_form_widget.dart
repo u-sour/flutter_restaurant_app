@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_barcode_scanner/flutter_barcode_scanner.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:flutter_template/router/route_utils.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -35,6 +36,7 @@ class _SetupIpAddressFormWidgetState extends State<SetupIpAddressFormWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return AlertDialog(
       title: Text(
         context.tr(SCREENS.settings.toTitle),
@@ -60,21 +62,21 @@ class _SetupIpAddressFormWidgetState extends State<SetupIpAddressFormWidget> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Expanded(
+                      flex: 4,
                       child: FormBuilderTextField(
                         name: "ipAddress",
                         decoration: InputDecoration(
                           labelText: '$prefixSettingForm.ipAddress.title'.tr(),
                           suffixIcon: IconButton(
                             onPressed: () async {
-                              // Navigator.pop(context);
-                              // FlutterBarcodeScanner.scanBarcode(
-                              //         "#000000", "Cancel", true, ScanMode.DEFAULT)
-                              //     .then((result) async {
-                              //   if (result != '-1') {
-                              //     connectionStorage.setIpAddress(ip: result);
-                              //     // Phoenix.rebirth(context);
-                              //   }
-                              // });
+                              FlutterBarcodeScanner.scanBarcode("#000000",
+                                      "Cancel", true, ScanMode.DEFAULT)
+                                  .then((result) async {
+                                if (result != '-1') {
+                                  connectionStorage.setIpAddress(ip: result);
+                                  Restart.restartApp();
+                                }
+                              });
                             },
                             icon: const Icon(AppDefaultIcons.qrCodeScanner),
                           ),
@@ -106,6 +108,24 @@ class _SetupIpAddressFormWidgetState extends State<SetupIpAddressFormWidget> {
                         ]),
                       ),
                     ),
+                    const SizedBox(width: AppStyleDefaultProperties.w),
+                    Expanded(
+                      child: FilledButton(
+                        onPressed: () {
+                          if (_fbKey.currentState!.saveAndValidate()) {
+                            String ip =
+                                '${_fbKey.currentState!.fields['ipAddress']!.value}';
+                            connectionStorage.setIpAddress(ip: ip);
+                            Restart.restartApp();
+                          }
+                        },
+                        style: theme.filledButtonTheme.style!.copyWith(
+                          padding: WidgetStateProperty.all(
+                              const EdgeInsets.symmetric(vertical: 16.0)),
+                        ),
+                        child: const Icon(AppDefaultIcons.submit),
+                      ),
+                    )
                   ],
                 ),
               );
@@ -121,27 +141,27 @@ class _SetupIpAddressFormWidgetState extends State<SetupIpAddressFormWidget> {
           )
         ],
       ),
-      actions: <Widget>[
-        Row(
-          children: [
-            Expanded(
-              child: FilledButton(
-                onPressed: () async {
-                  if (_fbKey.currentState!.saveAndValidate()) {
-                    String ip =
-                        '${_fbKey.currentState!.fields['ipAddress']!.value}';
-                    connectionStorage.setIpAddress(ip: ip);
-                    Restart.restartApp();
-                  }
-                },
-                child: Text(
-                  '$prefixSettingForm.ipAddress.setup'.tr(),
-                ),
-              ),
-            ),
-          ],
-        )
-      ],
+      // actions: <Widget>[
+      //   Row(
+      //     children: [
+      //       Expanded(
+      //         child: FilledButton(
+      //           onPressed: () async {
+      //             if (_fbKey.currentState!.saveAndValidate()) {
+      //               String ip =
+      //                   '${_fbKey.currentState!.fields['ipAddress']!.value}';
+      //               connectionStorage.setIpAddress(ip: ip);
+      //               Restart.restartApp();
+      //             }
+      //           },
+      //           child: Text(
+      //             '$prefixSettingForm.ipAddress.setup'.tr(),
+      //           ),
+      //         ),
+      //       ),
+      //     ],
+      //   )
+      // ],
     );
   }
 }

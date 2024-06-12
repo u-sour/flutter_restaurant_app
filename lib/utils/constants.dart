@@ -93,19 +93,14 @@ class AppStyleDefaultProperties {
 
 class AppDefaultIcons {
   AppDefaultIcons._();
-  // Connection
-  static const IconData noConnection = Icons.dns;
-  static const IconData noInternet = Icons.language;
-  static const IconData ipAddress = Icons.settings_ethernet;
-  static const IconData qrCodeScanner = Icons.qr_code_scanner;
-  static const IconData info = Icons.info;
+
   // Login
   static const IconData login = Icons.login;
   static const IconData username = Icons.face;
   static const IconData password = Icons.password;
   static const IconData showPassword = Icons.visibility;
   static const IconData hidePassword = Icons.visibility_off;
-  // Navigations
+  // Navigation
   static const IconData splashScreen = Icons.scale_sharp;
   static const IconData onBoarding = Icons.web;
   static const IconData dashboard = Icons.dashboard;
@@ -121,12 +116,23 @@ class AppDefaultIcons {
   // Widgets
   static const IconData theme = Icons.palette;
   static const IconData language = Icons.translate;
+  // Connection
+  static const IconData noConnection = Icons.dns;
+  static const IconData noInternet = Icons.language;
+  static const IconData ipAddress = Icons.settings_ethernet;
+  static const IconData qrCodeScanner = Icons.qr_code_scanner;
+  static const IconData info = Icons.info;
+  // Printer
+  static const IconData printer = Icons.print;
+  static const IconData printerPaperSize = Icons.description;
+  static const IconData printerFontSize = Icons.format_size;
   // Themes
   static const IconData autoTheme = Icons.brightness_auto;
   static const IconData lightTheme = Icons.light_mode;
   static const IconData darkTheme = Icons.dark_mode;
   // Actions
   static const IconData edit = Icons.edit;
+  static const IconData submit = Icons.done;
 }
 
 class AppThemes {
@@ -174,4 +180,16 @@ class AppThemeFonts {
   static const List<String> fonts = ['Poppins', 'Kantumruy Pro'];
   static String get en => fonts.first;
   static String get km => fonts.last;
+}
+
+class AppBTPrinterPaperSize {
+  AppBTPrinterPaperSize._();
+  static const List<SelectOptionModel> printerSizes = [
+    SelectOptionModel(
+        label: "screens.settings.form.printer.printerPaperSize.options.58",
+        value: "58mm"),
+    SelectOptionModel(
+        label: 'screens.settings.form.printer.printerPaperSize.options.80',
+        value: "80mm")
+  ];
 }
