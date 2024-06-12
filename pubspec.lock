@@ -278,6 +278,38 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_barcode_scanner:
+    dependency: "direct main"
+    description:
+      name: flutter_barcode_scanner
+      sha256: a4ba37daf9933f451a5e812c753ddd045d6354e4a3280342d895b07fecaab3fa
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.0"
+  flutter_bluetooth_printer:
+    dependency: "direct main"
+    description:
+      name: flutter_bluetooth_printer
+      sha256: "556680ebfefd8d924310818aab33125fb5cd2ec3583241da77fdd424c0ec76eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.16.10"
+  flutter_bluetooth_printer_macos:
+    dependency: transitive
+    description:
+      name: flutter_bluetooth_printer_macos
+      sha256: "795769a4c6ba8307dcbc4e3d4abed83d544f676330fbea26d53d3bb2d4fc9927"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.3.0"
+  flutter_bluetooth_printer_platform_interface:
+    dependency: transitive
+    description:
+      name: flutter_bluetooth_printer_platform_interface
+      sha256: cd7e13841edd55ce5fe89358baf66f7f7ef0748e9a878d1110c47861e2ebdc85
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.7"
   flutter_colorpicker:
     dependency: transitive
     description:
@@ -355,6 +387,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: c6b0b4c05c458e1c01ad9bcc14041dd7b1f6783d487be4386f793f47a8a4d03e
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.20"
   flutter_rating_bar:
     dependency: transitive
     description:

@@ -30,7 +30,8 @@
               "message": "Failed to login"
             }
           }
-        }
+        },
+        "copyRight": "\u00a9 All Rights Reserved by Rabbit Technology {year}"
       }
     },
     "dashboard": {
@@ -84,6 +85,17 @@
           "title": "IP Address",
           "info": "Note: App will be restart after setup.",
           "setup": "SET UP"
+        },
+        "printer": {
+          "btPrinter": { "title": "Bluetooth Printer" },
+          "printerPaperSize": {
+            "title": "Paper Size",
+            "options": {
+              "58": "58 mm",
+              "80": "80 mm"
+            }
+          },
+          "printerFontSize": { "title": "Font Size" }
         }
       },
       "children": {

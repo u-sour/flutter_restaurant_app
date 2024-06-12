@@ -8,6 +8,8 @@ class LoginBrandWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+        width: double.infinity,
+        height: double.infinity,
         padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
         decoration: const BoxDecoration(
           image: DecorationImage(

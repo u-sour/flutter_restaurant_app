@@ -14,12 +14,15 @@ import '../../utils/alert/awesome_snack_bar_utils.dart';
 class LoginFormWidget extends StatelessWidget {
   final double? formWidth;
   const LoginFormWidget({super.key, this.formWidth});
+  static final GlobalKey<FormBuilderState> formKey =
+      GlobalKey<FormBuilderState>();
   final String _fromTitle = 'screens.login.children.formTitle';
   final String _prefixFromLabel = 'screens.login.children.form';
+  static final int _year = DateTime.now().year;
+  final String _copyRight = 'screens.login.children.copyRight';
 
   @override
   Widget build(BuildContext context) {
-    final GlobalKey<FormBuilderState> formKey = GlobalKey<FormBuilderState>();
     final theme = Theme.of(context);
     final Orientation orientation = MediaQuery.of(context).orientation;
     return SafeArea(
@@ -256,7 +259,10 @@ class LoginFormWidget extends StatelessWidget {
                   )
                 ],
               ),
-              // const SizedBox(height: AppStyleDefaultProperties.h),
+              const SizedBox(height: AppStyleDefaultProperties.h),
+              Text(
+                context.tr(_copyRight, namedArgs: {'year': '$_year'}),
+              ),
               // RichText(
               //   text: TextSpan(
               //     text: context.tr('$_prefixFromLabel.noAccount'),

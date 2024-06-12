@@ -50,6 +50,8 @@ dependencies:
   restart_app: ^1.2.1
   loading_animation_widget: ^1.2.1
   json_annotation: ^4.9.0
+  flutter_bluetooth_printer: ^2.16.10
+  flutter_barcode_scanner: ^2.0.0
 dev_dependencies:
   flutter_test:
     sdk: flutter

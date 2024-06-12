@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/services/connection_service.dart';
+import 'package:flutter_template/services/settings_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../models/select-option/select_option_model.dart';
@@ -78,7 +79,36 @@ class _SettingsScreenState extends State<SettingsScreen> {
         icon: AppDefaultIcons.ipAddress,
         title: '$prefixSettingForm.ipAddress.title'.tr(),
         onTap: () => ConnectionService.showSetupIpAddressDialog(context),
-      )
+      ),
+      ScreenListTileWidgetModel(
+        index: 'btPrinter',
+        icon: AppDefaultIcons.printer,
+        title: '$prefixSettingForm.printer.btPrinter.title'.tr(),
+        onTap: () {},
+      ),
+      ScreenListTileWidgetModel(
+        index: 'printerPaperSize',
+        icon: AppDefaultIcons.printerPaperSize,
+        title: '$prefixSettingForm.printer.printerPaperSize.title'.tr(),
+        onTap: () async {
+          const printerPaperSizes = AppBTPrinterPaperSize.printerSizes;
+          _showSettingsModalBottomSheet(
+              context: context,
+              currentValue: _readProvider.settingDoc.printerPaperSize,
+              items: printerPaperSizes,
+              onChanged: (value) {
+                final String paperSize = value;
+                _readProvider.setPrinterPaperSize(paperSize: paperSize);
+                context.pop();
+              });
+        },
+      ),
+      ScreenListTileWidgetModel(
+        index: 'printerFontSize',
+        icon: AppDefaultIcons.printerFontSize,
+        title: '$prefixSettingForm.printer.printerFontSize.title'.tr(),
+        onTap: () => SettingsService.showChangePrinterFontSizeDialog(context),
+      ),
     ];
     return Listener(
       behavior: HitTestBehavior.opaque,
