@@ -87,7 +87,13 @@
           "setup": "SET UP"
         },
         "printer": {
-          "btPrinter": { "title": "Bluetooth Printer" },
+          "btPrinter": {
+            "title": "Bluetooth Printer",
+            "options": {
+              "print": "Print Test",
+              "disconnect": "Disconnect"
+            }
+          },
           "printerPaperSize": {
             "title": "Paper Size",
             "options": {
@@ -116,6 +122,25 @@
         }
       }
     },
+    "printer": {
+      "title": "Print Preview",
+      "dialog": {
+        "title": "Printing",
+        "Processing": "Processing: {progress}%"
+      },
+      "btn": "PRINT",
+      "alert": {
+        "success": {
+          "message": "Printing is completed."
+        },
+        "notFound": {
+          "message": "Printer not found."
+        },
+        "off": {
+          "message": "Printer doesn't turn on or something wrong with your printer."
+        }
+      }
+    },
     "error": {
       "title": "ERROR"
     },
@@ -123,6 +148,7 @@
       "title": "LOG OUT"
     }
   },
+
   "alert": {
     "success": {
       "title": "Success",
@@ -137,8 +163,8 @@
       "message": "warning"
     },
     "info": {
-      "title": "Infomation",
-      "message": "infomation"
+      "title": "Information",
+      "message": "information"
     }
   }
 }

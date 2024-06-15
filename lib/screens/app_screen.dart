@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../providers/printer_provider.dart';
 import '../providers/setting_provider.dart';
 import '../router/app_router.dart';
 import '../providers/app_provider.dart';
@@ -39,6 +40,7 @@ class _AppScreenState extends State<AppScreen> {
   late MyProfileProvider myProfileProvider;
   late LoginFormProvider loginFormProvider;
   late SettingProvider settingProvider;
+  late PrinterProvider printerProvider;
 
   @override
   void initState() {
@@ -50,6 +52,7 @@ class _AppScreenState extends State<AppScreen> {
     myProfileProvider = MyProfileProvider();
     loginFormProvider = LoginFormProvider(widget.sharedPreferences);
     settingProvider = SettingProvider();
+    printerProvider = PrinterProvider();
     super.initState();
   }
 
@@ -85,7 +88,8 @@ class _AppScreenState extends State<AppScreen> {
             create: (_) => myProfileProvider),
         ChangeNotifierProvider<LoginFormProvider>(
             create: (_) => loginFormProvider),
-        ChangeNotifierProvider<SettingProvider>(create: (_) => settingProvider)
+        ChangeNotifierProvider<SettingProvider>(create: (_) => settingProvider),
+        ChangeNotifierProvider<PrinterProvider>(create: (_) => printerProvider)
       ],
       child: Builder(
         builder: (context) {

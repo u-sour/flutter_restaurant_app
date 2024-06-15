@@ -83,7 +83,13 @@
           "setup": "ដំឡើង"
         },
         "printer": {
-          "btPrinter": { "title": "ម៉ាស៊ីនព្រីនប៊្លូធូស" },
+          "btPrinter": {
+            "title": "ម៉ាស៊ីនព្រីនប៊្លូធូស",
+            "options": {
+              "print": "សាកល្បងព្រីន",
+              "disconnect": "ផ្តាច់"
+            }
+          },
           "printerPaperSize": {
             "title": "ទំហំក្រដាស",
             "options": {
@@ -112,6 +118,25 @@
         }
       }
     },
+    "printer": {
+      "title": "ការមើលជាមុនព្រីន",
+      "dialog": {
+        "title": "កំពុងព្រីន",
+        "Processing": "ដំណើរការ៖ {progress}%"
+      },
+      "btn": "ព្រីន",
+      "alert": {
+        "success": {
+          "message": "ការព្រីនត្រូវបានបញ្ចប់។"
+        },
+        "notFound": {
+          "message": "រកមិនឃើញម៉ាស៊ីនព្រីនទេ។"
+        },
+        "off": {
+          "message": "ម៉ាស៊ីនព្រីនមិនបានបើក ឬមានបញ្ហាអ្វីជាមួយម៉ាស៊ីនព្រីនរបស់អ្នក។"
+        }
+      }
+    },
     "404": {
       "title": "៤០៤ មិនបានរកឃើញ"
     },
@@ -134,7 +159,7 @@
     },
     "info": {
       "title": "ពត៌មាន",
-      "message": "infomation"
+      "message": "information"
     }
   }
 }

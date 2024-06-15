@@ -1,17 +1,14 @@
-import 'package:json_annotation/json_annotation.dart';
-part 'response_model.g.dart';
+import '../../utils/alert/awesome_snack_bar_utils.dart';
 
-@JsonSerializable(explicitToJson: true)
 class ResponseModel {
   final int status;
+  final String? title;
   final String message;
+  final AWESOMESNACKBARTYPE type;
 
-  const ResponseModel({
-    required this.status,
-    required this.message,
-  });
-
-  factory ResponseModel.fromJson(Map<String, dynamic> json) =>
-      _$ResponseModelFromJson(json);
-  Map<String, dynamic> toJson() => _$ResponseModelToJson(this);
+  const ResponseModel(
+      {required this.status,
+      this.title,
+      required this.message,
+      required this.type});
 }

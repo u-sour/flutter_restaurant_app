@@ -82,16 +82,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
       ),
       ScreenListTileWidgetModel(
         index: 'btPrinter',
-        icon: AppDefaultIcons.printer,
+        icon: AppDefaultIcons.btPrinter,
         title: '$prefixSettingForm.printer.btPrinter.title'.tr(),
-        onTap: () {},
+        onTap: () {
+          if (_readProvider.settingDoc.btPrinterAddress!.isEmpty) {
+            _readProvider.searchAndSelectBluetoothDevice(context);
+          } else {
+            const List<SelectOptionModel> printerOptions =
+                AppBTPrinter.printerOptions;
+            _showPrinterOptionsModalBottomSheet(
+                context: context,
+                items: printerOptions,
+                onTap: (value) {
+                  if (value == "printTest") {
+                    context.pushNamed(SCREENS.printer.toName);
+                  } else {
+                    _readProvider.disconnectSelectedBluetoothDevice();
+                  }
+                  context.pop();
+                });
+          }
+        },
       ),
       ScreenListTileWidgetModel(
         index: 'printerPaperSize',
         icon: AppDefaultIcons.printerPaperSize,
         title: '$prefixSettingForm.printer.printerPaperSize.title'.tr(),
         onTap: () async {
-          const printerPaperSizes = AppBTPrinterPaperSize.printerSizes;
+          const printerPaperSizes = AppBTPrinter.printerSizes;
           _showSettingsModalBottomSheet(
               context: context,
               currentValue: _readProvider.settingDoc.printerPaperSize,
@@ -134,6 +152,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
             ),
           ),
         ]),
+      ),
+    );
+  }
+
+  Future<dynamic> _showPrinterOptionsModalBottomSheet(
+      {required BuildContext context,
+      required List<SelectOptionModel> items,
+      required void Function(String) onTap}) {
+    return showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return ListView.builder(
+          shrinkWrap: true,
+          itemCount: items.length,
+          itemBuilder: (context, index) {
+            final item = items[index];
+            return ListTile(
+              leading: Icon(item.icon),
+              title: Text(item.label.tr()),
+              onTap: () => onTap(item.value),
+            );
+          },
+        );
+      },
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(
+          top: Radius.circular(AppStyleDefaultProperties.r),
+        ),
       ),
     );
   }
