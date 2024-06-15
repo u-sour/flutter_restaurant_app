@@ -38,8 +38,7 @@ class _LogInScreenState extends State<LogInScreen> {
       child: LoginBrandWidget(
         child: SlideInLeft(
           duration: animateDuration,
-          child: const Center(
-              child: SingleChildScrollView(child: LoginFormWidget())),
+          child: const Center(child: LoginFormWidget()),
         ),
       ),
     ));

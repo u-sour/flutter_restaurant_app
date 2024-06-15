@@ -38,6 +38,9 @@ class ScreenListTileWidget extends StatelessWidget {
                         .tr()),
                   if (model.index == "ipAddress")
                     Text(state.settingDoc.ipAddress),
+                  if (model.index == "btPrinter" &&
+                      state.settingDoc.btPrinterName != null)
+                    Text(state.settingDoc.btPrinterName!),
                   if (model.index == "printerPaperSize")
                     Text(state.settingDoc.printerPaperSize),
                   if (model.index == "printerFontSize")

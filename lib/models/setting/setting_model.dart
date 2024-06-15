@@ -1,11 +1,12 @@
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'setting_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class SettingModel {
   final String ipAddress;
-  final String? btPrinterName;
-  final String? btPrinterAddress;
+  String? btPrinterName;
+  String? btPrinterAddress;
   String printerPaperSize;
   double printerFontSize;
 
@@ -20,6 +21,11 @@ class SettingModel {
   factory SettingModel.fromJson(Map<String, dynamic> json) =>
       _$SettingModelFromJson(json);
   Map<String, dynamic> toJson() => _$SettingModelToJson(this);
+
+  set setBTPrinter(BluetoothDevice btPrinter) {
+    btPrinterName = btPrinter.name;
+    btPrinterAddress = btPrinter.address;
+  }
 
   set setPrinterPaperSize(String paperSize) {
     printerPaperSize = paperSize;

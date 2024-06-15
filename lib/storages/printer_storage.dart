@@ -7,11 +7,11 @@ class PrinterStorage {
       SharedPreferences.getInstance();
 
   // Bluetooth Printer
-  void setBTPrinter({required BluetoothDevice btDevice}) async {
+  void setBTPrinter({required BluetoothDevice btPrinter}) async {
     SharedPreferences printerPrefs = await _printerPrefs;
-    if (btDevice.name != null && btDevice.address.isNotEmpty) {
-      printerPrefs.setString('btPrinterName', btDevice.name!);
-      printerPrefs.setString('btPrinterAddress', btDevice.address);
+    if (btPrinter.name != null && btPrinter.address.isNotEmpty) {
+      printerPrefs.setString('btPrinterName', btPrinter.name!);
+      printerPrefs.setString('btPrinterAddress', btPrinter.address);
     }
   }
 
@@ -19,7 +19,7 @@ class PrinterStorage {
     SharedPreferences printerPrefs = await _printerPrefs;
     return BluetoothDevice(
         name: printerPrefs.getString('btPrinterName'),
-        address: printerPrefs.getString('btPrinterAddress')!);
+        address: printerPrefs.getString('btPrinterAddress') ?? "");
   }
 
   void clearBTPrinter() async {

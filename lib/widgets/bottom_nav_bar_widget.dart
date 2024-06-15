@@ -33,6 +33,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
             screen.toPath != "form-builder-validation" &&
             screen.toPath != "/login" &&
             screen.toPath != "/logout" &&
+            screen.toPath != "/printer" &&
             screen.toPath != "/error")
         .toList();
     // Tabs

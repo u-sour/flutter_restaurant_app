@@ -123,7 +123,9 @@ class AppDefaultIcons {
   static const IconData qrCodeScanner = Icons.qr_code_scanner;
   static const IconData info = Icons.info;
   // Printer
-  static const IconData printer = Icons.print;
+  static const IconData btPrinter = Icons.bluetooth;
+  static const IconData print = Icons.print;
+  static const IconData disconnect = Icons.print_disabled;
   static const IconData printerPaperSize = Icons.description;
   static const IconData printerFontSize = Icons.format_size;
   // Themes
@@ -182,8 +184,18 @@ class AppThemeFonts {
   static String get km => fonts.last;
 }
 
-class AppBTPrinterPaperSize {
-  AppBTPrinterPaperSize._();
+class AppBTPrinter {
+  AppBTPrinter._();
+  static const List<SelectOptionModel> printerOptions = [
+    SelectOptionModel(
+        icon: AppDefaultIcons.print,
+        label: "screens.settings.form.printer.btPrinter.options.print",
+        value: "printTest"),
+    SelectOptionModel(
+        icon: AppDefaultIcons.disconnect,
+        label: 'screens.settings.form.printer.btPrinter.options.disconnect',
+        value: "disconnect")
+  ];
   static const List<SelectOptionModel> printerSizes = [
     SelectOptionModel(
         label: "screens.settings.form.printer.printerPaperSize.options.58",

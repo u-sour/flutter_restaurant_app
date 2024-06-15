@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/screens/connection_screen.dart';
-import 'package:flutter_template/storages/connection_storage.dart';
+import 'package:flutter_template/widgets/printer/invoice.dart';
 import 'package:go_router/go_router.dart';
+import '../screens/connection_screen.dart';
+import '../screens/printer/printer_screen.dart';
+import '../storages/connection_storage.dart';
 import 'route_utils.dart';
 import '../providers/app_provider.dart';
 import '../screens/error_screen.dart';
@@ -119,6 +121,13 @@ class AppRouter {
         path: SCREENS.connection.toPath,
         name: SCREENS.connection.toName,
         builder: (context, state) => const ConnectionScreen(),
+      ),
+      GoRoute(
+        path: SCREENS.printer.toPath,
+        name: SCREENS.printer.toName,
+        builder: (context, state) => const PrinterScreen(
+          child: Invoice(),
+        ),
       ),
       GoRoute(
         path: SCREENS.error.toPath,

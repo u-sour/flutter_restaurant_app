@@ -23,6 +23,7 @@ class DrawerWidget extends StatelessWidget {
             screen.toPath != "form-builder-validation" &&
             screen.toPath != "/login" &&
             screen.toPath != "/logout" &&
+            screen.toPath != "/printer" &&
             screen.toPath != "/error")
         .toList();
     final SCREENS loginScreen =
