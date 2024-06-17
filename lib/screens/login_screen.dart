@@ -1,11 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/services/connection_service.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../providers/login_form_provider.dart';
+import '../services/connection_service.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
+import '../widgets/language/toggle_language_widget.dart';
 import '../widgets/login/login_brand_widget.dart';
 import '../widgets/login/login_form_widget.dart';
 import '../widgets/no_internet_connection_widget.dart';
@@ -31,7 +32,7 @@ class _LogInScreenState extends State<LogInScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
     final Scaffold mobileAndTabletScaffold = Scaffold(
         body: FadeIn(
       duration: animateDuration,
@@ -75,11 +76,15 @@ class _LogInScreenState extends State<LogInScreen> {
             padding: const EdgeInsets.all(8.0),
             child: const ToggleSwitchThemeWidget(),
           ),
+          const SizedBox(width: 48.0, child: ToggleLanguageWidget()),
           IconButton.filled(
             onPressed: () =>
                 ConnectionService.showSetupIpAddressDialog(context),
-            icon: const Icon(AppDefaultIcons.ipAddress),
-          )
+            icon: Icon(
+              AppDefaultIcons.ipAddress,
+              color: theme.scaffoldBackgroundColor,
+            ),
+          ),
         ],
       ),
       body: ResponsiveLayout(

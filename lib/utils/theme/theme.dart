@@ -7,8 +7,10 @@ import 'widgets/filled_button_theme_widget.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-    brightness: Brightness.light,
-    colorSchemeSeed: AppThemeColors.primary,
+    colorScheme: ColorScheme.light(
+        primary: AppThemeColors.primary,
+        secondary: AppThemeColors.primary.shade500,
+        onSecondary: Colors.white),
     fontFamily: AppThemeFonts.en,
     fontFamilyFallback: AppThemeFonts.fonts,
     appBarTheme: AppBarThemeWidget.light,
@@ -17,18 +19,22 @@ class AppTheme {
     filledButtonTheme: FilledThemeWidget.light,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.light,
     listTileTheme:
-        const ListTileThemeData(selectedTileColor: AppThemeColors.primary),
+        ListTileThemeData(selectedTileColor: AppThemeColors.primary.shade100),
     inputDecorationTheme: const InputDecorationTheme(
       border: OutlineInputBorder(),
     ),
   );
 
   static ThemeData darkTheme = ThemeData(
-    brightness: Brightness.dark,
-    colorSchemeSeed: AppThemeColors.primary,
+    colorScheme: ColorScheme.dark(
+        primary: Colors.white,
+        secondary: AppThemeColors.primary.shade500,
+        onSecondary: Colors.white),
     fontFamily: AppThemeFonts.en,
     fontFamilyFallback: AppThemeFonts.fonts,
     appBarTheme: AppBarThemeWidget.dark,
+    textTheme:
+        const TextTheme(labelLarge: TextStyle(color: AppThemeColors.primary)),
     elevatedButtonTheme: ElevatedThemeWidget.dark,
     filledButtonTheme: FilledThemeWidget.dark,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.dark,
