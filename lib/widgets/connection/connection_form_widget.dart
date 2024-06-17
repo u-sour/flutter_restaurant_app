@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/services/connection_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
@@ -8,7 +9,7 @@ import 'setup_ip_address_form_widget.dart';
 
 class ConnectionFormWidget extends StatelessWidget {
   const ConnectionFormWidget({super.key});
-
+  final String prefix = "screens.connection";
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
@@ -25,48 +26,45 @@ class ConnectionFormWidget extends StatelessWidget {
                 // splashColor: CommonColors.secondary.withOpacity(0.1),
                 onPressed: () =>
                     ConnectionService.showSetupIpAddressDialog(context),
-                iconSize: 60.0,
+                iconSize: 72.0,
                 // color: CommonColors.secondary,
               ),
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
+            const SizedBox(height: AppStyleDefaultProperties.h),
             LoadingAnimationWidget.staggeredDotsWave(
               color: theme.iconTheme.color!,
               size: 48.0,
             ),
-            const SizedBox(
-              height: 10.0,
-            ),
+            const SizedBox(height: AppStyleDefaultProperties.h),
             Text(
-              'Oops, Can\'t Connect To Server',
+              '$prefix.title'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.titleLarge!
                   .copyWith(fontWeight: FontWeight.bold),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: AppStyleDefaultProperties.h),
             Text(
-              'Please, config your IP Address to server',
+              '$prefix.subTitle'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium!
                   .copyWith(fontWeight: FontWeight.normal),
             ),
-            const SizedBox(height: 10.0),
+            const SizedBox(height: AppStyleDefaultProperties.h),
             Text(
-              'Note: Check your Internet Connection and IP Address is correct',
+              '$prefix.note'.tr(),
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium,
             ),
-            const SizedBox(height: 60.0),
+            const SizedBox(height: AppStyleDefaultProperties.h * 3),
             SizedBox(
-              width: 100.0,
-              child: ElevatedButton(
+              child: FilledButton(
                 onPressed: () {
                   meteor.reconnect();
                 },
-                child: const Text(
-                  'Retry',
+                child: Text(
+                  '$prefix.btn'.tr(),
+                  style: theme.textTheme.labelLarge!
+                      .copyWith(fontWeight: FontWeight.bold),
                 ),
               ),
             ),

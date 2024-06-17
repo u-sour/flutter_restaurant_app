@@ -1,5 +1,11 @@
 {
   "screens": {
+    "connection": {
+      "title": "Sorry, the application couldn't connect to the server.",
+      "subTitle": "Please, set the IP address of your server.",
+      "note": "Note: Make sure you have an internet connection and server IP address is correct.",
+      "btn": "Retry"
+    },
     "splash": {
       "title": "SPLASH"
     },

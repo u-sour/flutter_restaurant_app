@@ -52,6 +52,8 @@ dependencies:
   json_annotation: ^4.9.0
   flutter_bluetooth_printer: ^2.16.10
   flutter_barcode_scanner: ^2.0.0
+  cached_network_image: ^3.3.1
+  flutter_svg: ^2.0.10+1
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -77,6 +79,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/translations/
+    - assets/images/languages/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
