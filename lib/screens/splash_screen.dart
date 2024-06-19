@@ -17,12 +17,12 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     _appProvider = Provider.of<AppProvider>(context, listen: false);
-    onStartUp();
+    onInit();
     super.initState();
   }
 
-  void onStartUp() async {
-    await _appProvider.onAppStart();
+  void onInit() async {
+    await _appProvider.onAppInit();
   }
 
   @override
@@ -30,7 +30,13 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       appBar: AppBarWidget(title: SCREENS.splash.toTitle),
       body: const Center(
-        child: CircularProgressIndicator(),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            CircularProgressIndicator(),
+            Text("Splash Screen"),
+          ],
+        ),
       ),
     );
   }

@@ -60,6 +60,10 @@ class _AppScreenState extends State<AppScreen> {
     appProvider.loginState = login;
   }
 
+  void onStartUp() async {
+    await appProvider.onAppStart();
+  }
+
   @override
   void didChangeDependencies() async {
     super.didChangeDependencies();
@@ -67,6 +71,7 @@ class _AppScreenState extends State<AppScreen> {
     if (ipAddress != null) {
       meteor = MeteorClient.connect(url: 'http://$ipAddress');
     }
+    onStartUp();
   }
 
   @override
