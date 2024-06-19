@@ -14,7 +14,7 @@ This is a pre-designed and pre-built set of components, styles, and structures f
 
 ## Demo
 
-https://github.com/u-sour/flutter_template/assets/145416126/a5fbb0cf-03d2-4b2d-b7a5-073cf950c770
+https://github.com/u-sour/flutter_meteor_template/assets/145416126/4af95f6f-8e79-456c-8c94-6bec0efb97b6
 
 ## Changelog
 
