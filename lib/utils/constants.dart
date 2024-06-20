@@ -3,18 +3,30 @@ import '../models/select-option/select_option_model.dart';
 
 class AppThemeColors {
   AppThemeColors._();
+  static const MaterialColor primary = MaterialColor(0xFF14a76c, {
+    50: Color.fromRGBO(20, 167, 108, .1),
+    100: Color.fromRGBO(20, 167, 108, .2),
+    200: Color.fromRGBO(20, 167, 108, .3),
+    300: Color.fromRGBO(20, 167, 108, .4),
+    400: Color.fromRGBO(20, 167, 108, .5),
+    500: Color.fromRGBO(20, 167, 108, .6),
+    600: Color.fromRGBO(20, 167, 108, .7),
+    700: Color.fromRGBO(20, 167, 108, .8),
+    800: Color.fromRGBO(20, 167, 108, .9),
+    900: Color.fromRGBO(20, 167, 108, 1)
+  });
 
-  static const MaterialColor primary = MaterialColor(0xFF212529, {
-    50: Color.fromRGBO(33, 37, 41, .1),
-    100: Color.fromRGBO(33, 37, 41, .2),
-    200: Color.fromRGBO(33, 37, 41, .3),
-    300: Color.fromRGBO(33, 37, 41, .4),
-    400: Color.fromRGBO(33, 37, 41, .5),
-    500: Color.fromRGBO(33, 37, 41, .6),
-    600: Color.fromRGBO(33, 37, 41, .7),
-    700: Color.fromRGBO(33, 37, 41, .8),
-    800: Color.fromRGBO(33, 37, 41, .9),
-    900: Color.fromRGBO(33, 37, 41, 1)
+  static const MaterialColor secondary = MaterialColor(0xFF303952, {
+    50: Color.fromRGBO(48, 57, 82, .1),
+    100: Color.fromRGBO(48, 57, 82, .2),
+    200: Color.fromRGBO(48, 57, 82, .3),
+    300: Color.fromRGBO(48, 57, 82, .4),
+    400: Color.fromRGBO(48, 57, 82, .5),
+    500: Color.fromRGBO(48, 57, 82, .6),
+    600: Color.fromRGBO(48, 57, 82, .7),
+    700: Color.fromRGBO(48, 57, 82, .8),
+    800: Color.fromRGBO(48, 57, 82, .9),
+    900: Color.fromRGBO(48, 57, 82, 1)
   });
 
   static const MaterialColor success = MaterialColor(0xFF2a9d8f, {

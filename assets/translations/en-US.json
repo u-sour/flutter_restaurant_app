@@ -41,7 +41,14 @@
       }
     },
     "dashboard": {
-      "title": "DASHBOARD"
+      "title": "DASHBOARD",
+      "features": {
+        "newSale": "New Sale",
+        "fastSale": "Fast Sale"
+      }
+    },
+    "saleTable": {
+      "title": "RESTAURANT MANAGEMENT SYSTEM"
     },
     "formBuilder": {
       "title": "FORM BUILDER",

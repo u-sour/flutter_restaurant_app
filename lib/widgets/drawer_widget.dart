@@ -24,6 +24,8 @@ class DrawerWidget extends StatelessWidget {
             screen.toPath != "/login" &&
             screen.toPath != "/logout" &&
             screen.toPath != "/printer" &&
+            screen.toPath != "/sale-table" &&
+            screen.toPath != "/sale" &&
             screen.toPath != "/error")
         .toList();
     final SCREENS loginScreen =

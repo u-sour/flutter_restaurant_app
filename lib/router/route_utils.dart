@@ -7,6 +7,8 @@ enum SCREENS {
   onBoarding,
   login,
   dashboard,
+  saleTable,
+  sale,
   formBuilder,
   formBuilderDefault,
   formBuilderValidation,
@@ -23,6 +25,10 @@ extension AppScreenExtension on SCREENS {
     switch (this) {
       case SCREENS.dashboard:
         return "/";
+      case SCREENS.saleTable:
+        return "/sale-table";
+      case SCREENS.sale:
+        return "/sale";
       case SCREENS.formBuilder:
         return "/form-builder";
       case SCREENS.formBuilderDefault:
@@ -58,6 +64,10 @@ extension AppScreenExtension on SCREENS {
     switch (this) {
       case SCREENS.dashboard:
         return "dashboard";
+      case SCREENS.saleTable:
+        return "saleTable";
+      case SCREENS.sale:
+        return "sale";
       case SCREENS.formBuilder:
         return "formBuilder";
       case SCREENS.formBuilderDefault:
@@ -91,6 +101,8 @@ extension AppScreenExtension on SCREENS {
     switch (this) {
       case SCREENS.dashboard:
         return "screens.dashboard.title";
+      case SCREENS.saleTable:
+        return "screens.saleTable.title";
       case SCREENS.formBuilder:
         return "screens.formBuilder.title";
       case SCREENS.formBuilderDefault:
