@@ -30,12 +30,17 @@ https://github.com/u-sour/flutter_meteor_template/assets/145416126/4af95f6f-8e79
 
 - none
 
+## Requirement
+
+- [Flutter](https://docs.flutter.dev/get-started/install) 3.22.x
+- [FVM](https://fvm.app/documentation/getting-started/installation) (Flutter Version Management)
+
 ## Usage
 
 ```bash
 # Install dependencies
-flutter pub get
+fvm flutter pub get
 
 # Build, watch for changes and debug the application
-flutter run
+fvm flutter run
 ```
