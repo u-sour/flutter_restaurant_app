@@ -7,9 +7,9 @@ import 'widgets/filled_button_theme_widget.dart';
 
 class AppTheme {
   static ThemeData lightTheme = ThemeData(
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
         primary: AppThemeColors.primary,
-        secondary: AppThemeColors.primary.shade500,
+        secondary: AppThemeColors.secondary,
         onSecondary: Colors.white),
     fontFamily: AppThemeFonts.en,
     fontFamilyFallback: AppThemeFonts.fonts,
@@ -26,9 +26,9 @@ class AppTheme {
   );
 
   static ThemeData darkTheme = ThemeData(
-    colorScheme: ColorScheme.dark(
+    colorScheme: const ColorScheme.dark(
         primary: Colors.white,
-        secondary: AppThemeColors.primary.shade500,
+        secondary: AppThemeColors.primary,
         onSecondary: Colors.white),
     fontFamily: AppThemeFonts.en,
     fontFamilyFallback: AppThemeFonts.fonts,

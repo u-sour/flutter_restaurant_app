@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/widgets/printer/invoice.dart';
 import 'package:go_router/go_router.dart';
-import '../screens/connection_screen.dart';
-import '../screens/printer/printer_screen.dart';
-import '../storages/connection_storage.dart';
 import 'route_utils.dart';
+import '../restaurant/screens/sale_table_screen.dart';
+import '../screens/connection_screen.dart';
+import '../storages/connection_storage.dart';
 import '../providers/app_provider.dart';
 import '../screens/error_screen.dart';
 import '../screens/main_wrapper_screen.dart';
 import '../screens/dashboard_screen.dart';
+import '../restaurant/screens/sale_screen.dart';
 import '../screens/form-builder/form_builder_screen.dart';
 import '../screens/form-builder/children/form_builder_default_screen.dart';
 import '../screens/form-builder/children/form_builder_validation_screen.dart';
 import '../screens/profile/profile_screen.dart';
 import '../screens/profile/children/my_profile_screen.dart';
 import '../screens/settings_screen.dart';
+import '../screens/printer/printer_screen.dart';
+import '../widgets/printer/invoice.dart';
 import '../screens/login_screen.dart';
 import '../screens/onboarding_screen.dart';
 import '../screens/splash_screen.dart';
@@ -38,7 +40,7 @@ class AppRouter {
 
   late final GoRouter _goRouter = GoRouter(
     refreshListenable: appProvider,
-    // initialLocation: SCREENS.dashboard.toPath,
+    initialLocation: SCREENS.dashboard.toPath,
     navigatorKey: _rootNavigatorKey,
     routes: <RouteBase>[
       // Main Wrapper Route
@@ -128,6 +130,16 @@ class AppRouter {
         builder: (context, state) => const PrinterScreen(
           child: Invoice(),
         ),
+      ),
+      GoRoute(
+        path: SCREENS.saleTable.toPath,
+        name: SCREENS.saleTable.toName,
+        builder: (context, state) => const SaleTableScreen(),
+      ),
+      GoRoute(
+        path: SCREENS.sale.toPath,
+        name: SCREENS.sale.toName,
+        builder: (context, state) => const SaleScreen(),
       ),
       GoRoute(
         path: SCREENS.error.toPath,
