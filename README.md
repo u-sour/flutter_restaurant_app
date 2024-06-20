@@ -18,7 +18,7 @@ https://github.com/u-sour/flutter_meteor_template/assets/145416126/4af95f6f-8e79
 
 ## Changelog
 
-###### v.1.0.0
+###### v.2.0.0
 
 - init
 
