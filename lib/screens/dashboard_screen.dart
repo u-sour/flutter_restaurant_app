@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/restaurant/widgets/dashboard/feature_widget.dart';
 import 'package:flutter_template/utils/constants.dart';
@@ -16,9 +15,9 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBarWidget(title: SCREENS.dashboard.toTitle),
       drawer:
           !ResponsiveLayout.isDesktop(context) ? const DrawerWidget() : null,
-      body: Center(
+      body: const Center(
         child: Padding(
-          padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
+          padding: EdgeInsets.all(AppStyleDefaultProperties.p),
           child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [FeatureWidget()]),

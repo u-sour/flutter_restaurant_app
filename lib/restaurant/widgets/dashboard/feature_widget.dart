@@ -1,9 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/router/route_utils.dart';
-import 'package:flutter_template/utils/constants.dart';
 import 'package:go_router/go_router.dart';
 import '../../../models/select-option/select_option_model.dart';
+import '../../../utils/constants.dart';
 import '../../utils/constants.dart';
 
 class FeatureWidget extends StatelessWidget {
@@ -29,7 +28,7 @@ class FeatureWidget extends StatelessWidget {
           itemCount: features.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisSpacing: AppStyleDefaultProperties.h,
-              crossAxisSpacing: AppStyleDefaultProperties.h,
+              crossAxisSpacing: AppStyleDefaultProperties.w,
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4),
           itemBuilder: (context, index) {
             final SelectOptionModel feature = features[index];
