@@ -6,9 +6,9 @@ class SaleScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return const Scaffold(
       appBar: AppBarWidget(title: ""),
-      body: const Column(
+      body: Column(
         children: [Text('Sale')],
       ),
     );

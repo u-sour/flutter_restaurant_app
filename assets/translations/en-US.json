@@ -48,7 +48,11 @@
       }
     },
     "saleTable": {
-      "title": "RESTAURANT MANAGEMENT SYSTEM"
+      "title": "RESTAURANT MANAGEMENT SYSTEM",
+      "tableStatus": {
+        "free": "FREE",
+        "busy": "BUSY"
+      }
     },
     "formBuilder": {
       "title": "FORM BUILDER",
