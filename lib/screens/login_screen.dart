@@ -3,9 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../providers/login_form_provider.dart';
-import '../services/connection_service.dart';
+import '../services/global_service.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
+import '../widgets/connection/setup_ip_address_form_widget.dart';
 import '../widgets/language/toggle_language_widget.dart';
 import '../widgets/login/login_brand_widget.dart';
 import '../widgets/login/login_form_widget.dart';
@@ -78,8 +79,9 @@ class _LogInScreenState extends State<LogInScreen> {
           ),
           const SizedBox(width: 48.0, child: ToggleLanguageWidget()),
           IconButton.filled(
-            onPressed: () =>
-                ConnectionService.showSetupIpAddressDialog(context),
+            onPressed: () => GlobalService.openDialog(
+                contentWidget: const SetupIpAddressFormWidget(),
+                context: context),
             icon: Icon(
               AppDefaultIcons.ipAddress,
               color: theme.scaffoldBackgroundColor,

@@ -1,7 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/services/connection_service.dart';
-import 'package:flutter_template/services/settings_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../models/select-option/select_option_model.dart';
@@ -9,11 +7,14 @@ import '../models/widgets/screen_list_tile_widget_model.dart';
 import '../providers/setting_provider.dart';
 import '../router/route_utils.dart';
 import '../providers/theme_provider.dart';
+import '../services/global_service.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
 import '../widgets/app_bar_widget.dart';
+import '../widgets/connection/setup_ip_address_form_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/screen_list_tile_widget.dart';
+import '../widgets/settings/change_printer_font_size_form_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -78,7 +79,10 @@ class _SettingsScreenState extends State<SettingsScreen> {
         index: 'ipAddress',
         icon: AppDefaultIcons.ipAddress,
         title: '$prefixSettingForm.ipAddress.title'.tr(),
-        onTap: () => ConnectionService.showSetupIpAddressDialog(context),
+        onTap: () => GlobalService.openDialog(
+          contentWidget: const SetupIpAddressFormWidget(),
+          context: context,
+        ),
       ),
       ScreenListTileWidgetModel(
         index: 'btPrinter',
@@ -125,7 +129,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
         index: 'printerFontSize',
         icon: AppDefaultIcons.printerFontSize,
         title: '$prefixSettingForm.printer.printerFontSize.title'.tr(),
-        onTap: () => SettingsService.showChangePrinterFontSizeDialog(context),
+        onTap: () => GlobalService.openDialog(
+            contentWidget: const ChangePrinterFontSizeFormWidget(),
+            context: context),
       ),
     ];
     return Listener(

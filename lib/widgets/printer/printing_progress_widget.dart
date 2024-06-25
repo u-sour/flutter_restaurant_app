@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/providers/printer_provider.dart';
 import 'package:provider/provider.dart';
+import '../../providers/printer_provider.dart';
 import '../../utils/alert/alert.dart';
 
 class PrintingProgressWidget extends StatefulWidget {
@@ -49,16 +49,6 @@ class _PrintingProgressWidgetState extends State<PrintingProgressWidget> {
                 const SizedBox(height: 4),
                 Text('$dialogPrinterPrefix.Processing').tr(
                     namedArgs: {"progress": '${((progress) * 100).round()}'}),
-                // if (((progress ?? 0) * 100).round() == 100) ...[
-                //   const SizedBox(height: 16),
-                //   ElevatedButton(
-                //     onPressed: () async {
-                //       await FlutterBluetoothPrinter.disconnect(widget.device);
-                //       Navigator.pop(context);
-                //     },
-                //     child: const Text('Disconnect'),
-                //   )
-                // ]
               ],
             );
           }),

@@ -133,6 +133,8 @@ class AppDefaultIcons {
   // Actions
   static const IconData edit = Icons.edit;
   static const IconData submit = Icons.done;
+  // Dialog
+  static const IconData close = Icons.close;
 }
 
 class AppThemes {
