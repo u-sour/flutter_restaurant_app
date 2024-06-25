@@ -1,10 +1,9 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/services/connection_service.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../screens/app_screen.dart';
+import '../../services/global_service.dart';
 import '../../utils/constants.dart';
-import '../../utils/responsive/responsive_layout.dart';
 import 'setup_ip_address_form_widget.dart';
 
 class ConnectionFormWidget extends StatelessWidget {
@@ -24,8 +23,9 @@ class ConnectionFormWidget extends StatelessWidget {
                 splashRadius: 35.0,
                 icon: const Icon(AppDefaultIcons.noConnection),
                 // splashColor: CommonColors.secondary.withOpacity(0.1),
-                onPressed: () =>
-                    ConnectionService.showSetupIpAddressDialog(context),
+                onPressed: () => GlobalService.openDialog(
+                    contentWidget: const SetupIpAddressFormWidget(),
+                    context: context),
                 iconSize: 72.0,
                 // color: CommonColors.secondary,
               ),
@@ -74,96 +74,3 @@ class ConnectionFormWidget extends StatelessWidget {
     );
   }
 }
-
-void openDialog(BuildContext context) {
-  showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return const ResponsiveLayout(
-            mobileScaffold: SetupIpAddressFormWidget(),
-            tabletScaffold: Row(
-              children: [
-                Spacer(),
-                Expanded(
-                  flex: 4,
-                  child: SetupIpAddressFormWidget(),
-                ),
-                Spacer(),
-              ],
-            ),
-            desktopScaffold: Row(
-              children: [
-                Spacer(),
-                Expanded(
-                  child: SetupIpAddressFormWidget(),
-                ),
-                Spacer()
-              ],
-            ));
-      });
-}
-
-// void openModalBottomSheet(
-//   BuildContext context,
-// ) {
-//   final ConnectionStorage connectionStorage = ConnectionStorage();
-//   showModalBottomSheet(
-//       context: context,
-//       builder: (BuildContext bc) {
-//         return Wrap(
-//           children: <Widget>[
-//             ListTile(
-//               leading: const Icon(AppDefaultIcons.ipAddress),
-//               title: const Text(
-//                 'IP Address',
-//               ),
-//               onTap: () async {
-//                 Navigator.pop(context);
-//                 showDialog(
-//                     context: context,
-//                     builder: (_) {
-//                       return const ResponsiveLayout(
-//                           mobileScaffold: SetupIpAddressFormWidget(),
-//                           tabletScaffold: Row(
-//                             children: [
-//                               Spacer(),
-//                               Expanded(
-//                                 flex: 4,
-//                                 child: SetupIpAddressFormWidget(),
-//                               ),
-//                               Spacer(),
-//                             ],
-//                           ),
-//                           desktopScaffold: Row(
-//                             children: [
-//                               Spacer(),
-//                               Expanded(
-//                                 child: SetupIpAddressFormWidget(),
-//                               ),
-//                               Spacer()
-//                             ],
-//                           ));
-//                     });
-//               },
-//             ),
-//             ListTile(
-//               leading: const Icon(AppDefaultIcons.qrCodeScanner),
-//               title: const Text(
-//                 'QR Code',
-//               ),
-//               onTap: () async {
-//                 Navigator.pop(context);
-//                 // FlutterBarcodeScanner.scanBarcode(
-//                 //         "#000000", "Cancel", true, ScanMode.DEFAULT)
-//                 //     .then((result) async {
-//                 //   if (result != '-1') {
-//                 //     connectionStorage.setIpAddress(ip: result);
-//                 //     // Phoenix.rebirth(context);
-//                 //   }
-//                 // });
-//               },
-//             ),
-//           ],
-//         );
-//       });
-// }
