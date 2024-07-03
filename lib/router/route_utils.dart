@@ -26,9 +26,9 @@ extension AppScreenExtension on SCREENS {
       case SCREENS.dashboard:
         return "/";
       case SCREENS.saleTable:
-        return "/sale-table";
+        return "/restaurant/sale-table";
       case SCREENS.sale:
-        return "/sale";
+        return "/restaurant/sale";
       case SCREENS.formBuilder:
         return "/form-builder";
       case SCREENS.formBuilderDefault:

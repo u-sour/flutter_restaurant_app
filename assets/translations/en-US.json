@@ -54,6 +54,57 @@
         "busy": "BUSY"
       }
     },
+    "sale": {
+      "navigation": {
+        "dashboard": "Dashboard",
+        "saleTable": "Choose Table"
+      },
+      "search": "Search ...",
+      "category": {
+        "extraFoods": "Extra Foods"
+      },
+      "detail": {
+        "dataTable": {
+          "header": {
+            "item": "ITEM ({totalItem})",
+            "qty": "QTY",
+            "returnQty": "RE-QTY",
+            "total": "TOTAL"
+          },
+          "content": {
+            "price": "PRICE",
+            "discountRate": "Dis",
+            "discountRateLabel": "DISCOUNT (%)",
+            "note": "Note",
+            "qty": "QTY",
+            "returnQty": "RETURN QTY"
+          },
+          "footer": {
+            "subTotal": "Sub Total : ",
+            "disPercent": "Dis | % : {percent}",
+            "disAmount": "Dis | {baseCurrency} : {amount}",
+            "total": "Total : "
+          }
+        },
+        "footerActions": {
+          "changeTable": "Table",
+          "cancelCopy": "Cancel & Copy",
+          "operations": {
+            "title": "Operations",
+            "children": {
+              "merge": "Merge",
+              "transfer": "Transfer",
+              "split": "Split",
+              "cancel": "Cancel"
+            }
+          },
+          "chef": "Chef",
+          "print": "Print",
+          "preview": "Preview",
+          "payment": "Payment"
+        }
+      }
+    },
     "formBuilder": {
       "title": "FORM BUILDER",
       "children": {
@@ -165,7 +216,8 @@
       "title": "LOG OUT"
     }
   },
-
+  "noImage": "No Image Available",
+  "emptyDataTable": { "description": "No Data" },
   "alert": {
     "success": {
       "title": "Success",

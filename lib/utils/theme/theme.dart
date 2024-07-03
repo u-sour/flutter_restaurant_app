@@ -15,6 +15,15 @@ class AppTheme {
     fontFamilyFallback: AppThemeFonts.fonts,
     appBarTheme: AppBarThemeWidget.light,
     textTheme: const TextTheme(labelLarge: TextStyle(color: Colors.white)),
+    dividerTheme: DividerThemeData(color: Colors.grey.shade300),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppThemeColors.primary;
+        }
+        return null;
+      }),
+    ),
     elevatedButtonTheme: ElevatedThemeWidget.light,
     filledButtonTheme: FilledThemeWidget.light,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.light,
@@ -35,6 +44,14 @@ class AppTheme {
     appBarTheme: AppBarThemeWidget.dark,
     textTheme:
         const TextTheme(labelLarge: TextStyle(color: AppThemeColors.primary)),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: WidgetStateProperty.resolveWith((states) {
+        if (states.contains(WidgetState.selected)) {
+          return AppThemeColors.primary;
+        }
+        return null;
+      }),
+    ),
     elevatedButtonTheme: ElevatedThemeWidget.dark,
     filledButtonTheme: FilledThemeWidget.dark,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.dark,
