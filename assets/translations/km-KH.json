@@ -54,6 +54,57 @@
         "busy": "រវល់"
       }
     },
+    "sale": {
+      "navigation": {
+        "dashboard": "ផ្ទាំងគ្រប់គ្រង",
+        "saleTable": "ជ្រើសរើសតុ"
+      },
+      "search": "ស្វែងរក ...",
+      "category": {
+        "extraFoods": "គ្រឿងថែម"
+      },
+      "detail": {
+        "dataTable": {
+          "header": {
+            "item": "ទំនិញ ({totalItem})",
+            "qty": "ចំនួន",
+            "returnQty": "ចំនួនត្រលប់",
+            "total": "សរុប"
+          },
+          "content": {
+            "price": "តមៃ្ល",
+            "discountRate": "បញ្ចុះ (%)",
+            "discountRateLabel": "បញ្ចុះ (%)",
+            "note": "សម្គាល់",
+            "qty": "ចំនួន",
+            "returnQty": "ចំនួនត្រលប់"
+          },
+          "footer": {
+            "subTotal": "សរុបរង : ",
+            "disPercent": "បញ្ចុះ | % : {percent}",
+            "disAmount": "បញ្ចុះ | {baseCurrency} : {amount}",
+            "total": "សរុប : "
+          }
+        },
+        "footerActions": {
+          "changeTable": "ប្តូរតុ",
+          "cancelCopy": "បោះបង់ & ចំលង",
+          "operations": {
+            "title": "ប្រតិបត្តិការ",
+            "children": {
+              "merge": "បញ្ចូលគ្នា",
+              "transfer": "ផ្ទេរ",
+              "split": "បំបែក",
+              "cancel": "បោះបង់"
+            }
+          },
+          "chef": "ចុងភៅ",
+          "print": "ព្រីន",
+          "preview": "មើលជាមុន",
+          "payment": "បង់ប្រាក់"
+        }
+      }
+    },
     "formBuilder": {
       "title": "បង្កើតទម្រង់បែបបទ",
       "children": {
@@ -161,6 +212,8 @@
       "title": "ចាកចេញ"
     }
   },
+  "noImage": "មិនមានរូបភាពទេ",
+  "emptyDataTable": { "description": "គ្មាន​ទិន្នន័យ" },
   "alert": {
     "success": {
       "title": "ជោគជ័យ",

@@ -1,0 +1,3 @@
+class SaleService {
+  SaleService._();
+}

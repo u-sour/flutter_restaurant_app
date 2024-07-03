@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/widgets/dashboard/feature_widget.dart';
-import 'package:flutter_template/utils/constants.dart';
+import '../restaurant/widgets/dashboard/feature_widget.dart';
+import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
 import '../widgets/app_bar_widget.dart';
 import '../router/route_utils.dart';
@@ -18,9 +18,9 @@ class DashboardScreen extends StatelessWidget {
       body: const Center(
         child: Padding(
           padding: EdgeInsets.all(AppStyleDefaultProperties.p),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [FeatureWidget()]),
+          child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            FeatureWidget(),
+          ]),
         ),
       ),
     );

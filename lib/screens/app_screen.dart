@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/printer_provider.dart';
 import '../providers/setting_provider.dart';
+import '../restaurant/providers/sale/sale_provider.dart';
 import '../router/app_router.dart';
 import '../providers/app_provider.dart';
 import '../providers/auth_provider.dart';
@@ -41,6 +42,7 @@ class _AppScreenState extends State<AppScreen> {
   late LoginFormProvider loginFormProvider;
   late SettingProvider settingProvider;
   late PrinterProvider printerProvider;
+  late SaleProvider saleProvider;
 
   @override
   void initState() {
@@ -53,6 +55,7 @@ class _AppScreenState extends State<AppScreen> {
     loginFormProvider = LoginFormProvider(widget.sharedPreferences);
     settingProvider = SettingProvider();
     printerProvider = PrinterProvider();
+    saleProvider = SaleProvider();
     super.initState();
   }
 
@@ -94,7 +97,8 @@ class _AppScreenState extends State<AppScreen> {
         ChangeNotifierProvider<LoginFormProvider>(
             create: (_) => loginFormProvider),
         ChangeNotifierProvider<SettingProvider>(create: (_) => settingProvider),
-        ChangeNotifierProvider<PrinterProvider>(create: (_) => printerProvider)
+        ChangeNotifierProvider<PrinterProvider>(create: (_) => printerProvider),
+        ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider)
       ],
       child: Builder(
         builder: (context) {

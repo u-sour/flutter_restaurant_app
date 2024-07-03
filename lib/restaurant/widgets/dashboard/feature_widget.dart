@@ -1,9 +1,9 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../utils/constants.dart';
 import '../../utils/constants.dart';
+import 'feature_item_widget.dart';
 
 class FeatureWidget extends StatelessWidget {
   const FeatureWidget({super.key});
@@ -21,8 +21,7 @@ class FeatureWidget extends StatelessWidget {
   ];
   @override
   Widget build(BuildContext context) {
-    // final ThemeData theme = Theme.of(context);
-    final Orientation orientation = MediaQuery.of(context).orientation;
+    final Orientation orientation = MediaQuery.orientationOf(context);
     return Expanded(
       child: GridView.builder(
           itemCount: features.length,
@@ -32,22 +31,13 @@ class FeatureWidget extends StatelessWidget {
               crossAxisCount: orientation == Orientation.portrait ? 2 : 4),
           itemBuilder: (context, index) {
             final SelectOptionModel feature = features[index];
-            return FilledButton(
-                onPressed: () {
-                  context.pushNamed(feature.value);
-                },
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      feature.label,
-                      style: const TextStyle(
-                          fontWeight: FontWeight.bold, fontSize: 22.0),
-                    ).tr(),
-                    const SizedBox(height: AppStyleDefaultProperties.h),
-                    Icon(feature.icon, size: 32.0),
-                  ],
-                ));
+            return FeatureItemWidget(
+              label: feature.label,
+              icon: feature.icon!,
+              onPressed: () {
+                context.pushNamed(feature.value);
+              },
+            );
           }),
     );
   }

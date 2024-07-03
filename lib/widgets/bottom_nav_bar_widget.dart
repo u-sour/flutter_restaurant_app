@@ -34,8 +34,8 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
             screen.toPath != "/login" &&
             screen.toPath != "/logout" &&
             screen.toPath != "/printer" &&
-            screen.toPath != "/sale-table" &&
-            screen.toPath != "/sale" &&
+            screen.toPath != "/restaurant/sale-table" &&
+            screen.toPath != "/restaurant/sale" &&
             screen.toPath != "/error")
         .toList();
     // Tabs

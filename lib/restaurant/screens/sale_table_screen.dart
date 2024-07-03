@@ -52,9 +52,7 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
                   dynamicTabs: tabs,
                   isScrollable: isScrollable,
                   onTabControllerUpdated: (controller) {},
-                  onTabChanged: (index) {
-                    print(index);
-                  },
+                  onTabChanged: (index) {},
                   showBackIcon: showBackIcon,
                   showNextIcon: showNextIcon,
                 ),

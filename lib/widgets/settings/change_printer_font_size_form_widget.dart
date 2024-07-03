@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_template/providers/setting_provider.dart';
-import 'package:flutter_template/router/route_utils.dart';
-import 'package:flutter_template/storages/printer_storage.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../providers/setting_provider.dart';
+import '../../router/route_utils.dart';
+import '../../storages/printer_storage.dart';
 import '../../utils/constants.dart';
 
 class ChangePrinterFontSizeFormWidget extends StatefulWidget {
