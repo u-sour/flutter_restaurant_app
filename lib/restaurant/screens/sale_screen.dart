@@ -1,21 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/providers/sale/sale_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import '../../utils/constants.dart';
 import '../../utils/responsive/responsive_layout.dart';
+import '../providers/sale/sale_provider.dart';
 import '../widgets/sale/app-bar/sale_app_bar_widget.dart';
 import '../widgets/sale/category/sale_category_widget.dart';
 import '../widgets/sale/detail/sale_detail_widget.dart';
 import '../widgets/sale/product/sale_product_widget.dart';
 
-class CreateSaleScreen extends StatefulWidget {
-  const CreateSaleScreen({super.key});
+class SaleScreen extends StatefulWidget {
+  const SaleScreen({super.key});
 
   @override
-  State<CreateSaleScreen> createState() => _CreateSaleScreenState();
+  State<SaleScreen> createState() => _SaleScreenState();
 }
 
-class _CreateSaleScreenState extends State<CreateSaleScreen> {
+class _SaleScreenState extends State<SaleScreen> {
   final PanelController _salePC = PanelController();
   late SaleProvider readProvider =
       Provider.of<SaleProvider>(context, listen: false);
@@ -29,6 +30,11 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     Orientation orientation = MediaQuery.orientationOf(context);
+    double minHeight = 65.0;
+    double maxHeight = MediaQuery.sizeOf(context).height * 0.8;
+    if (ResponsiveLayout.isMobile(context)) {
+      maxHeight = MediaQuery.sizeOf(context).height * 0.7;
+    }
     Scaffold mobileAndTabletScaffold = Scaffold(
       appBar: const SaleAppBarWidget(title: ""),
       drawer: const Drawer(
@@ -38,8 +44,8 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
           ? SlidingUpPanel(
               color: theme.scaffoldBackgroundColor,
               controller: _salePC,
-              minHeight: 65.0,
-              maxHeight: ResponsiveLayout.isMobile(context) ? 750.0 : 850.0,
+              minHeight: minHeight,
+              maxHeight: maxHeight,
               backdropEnabled: true,
               panel: SaleDetailWidget(
                 enableSaleAppBarActionWidget: true,
@@ -47,7 +53,10 @@ class _CreateSaleScreenState extends State<CreateSaleScreen> {
                   _salePC.isPanelOpen ? _salePC.close() : _salePC.open();
                 },
               ),
-              body: const SaleProductWidget(),
+              body: SaleProductWidget(
+                  slidingUpPanelMinHeight: minHeight +
+                      AppBar().preferredSize.height +
+                      AppStyleDefaultProperties.p / 2),
             )
           : const Row(
               children: [

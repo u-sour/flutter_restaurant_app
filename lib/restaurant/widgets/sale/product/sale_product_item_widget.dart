@@ -84,11 +84,14 @@ class SaleProductItemWidget extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(height: AppStyleDefaultProperties.h),
-        Text(
-          name,
-          style:
-              theme.textTheme.bodyMedium!.copyWith(fontWeight: FontWeight.bold),
+        Padding(
+          padding:
+              const EdgeInsets.symmetric(vertical: AppStyleDefaultProperties.h),
+          child: Text(
+            name,
+            style: theme.textTheme.bodyMedium!
+                .copyWith(fontWeight: FontWeight.bold),
+          ),
         ),
       ],
     );
