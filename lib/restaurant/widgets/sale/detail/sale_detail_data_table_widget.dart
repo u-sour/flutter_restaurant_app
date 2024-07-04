@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
-import '../../../../models/select-option/select_option_model.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/constants.dart';
+import '../../../models/data-table/data_table_column_model.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
@@ -24,16 +24,21 @@ class SaleDetailDataTableWidget extends StatelessWidget {
     final theme = Theme.of(context);
     const prefixDataTableHeader = "screens.sale.detail.dataTable.header";
     const prefixDataTableContent = "screens.sale.detail.dataTable.content";
-    List<SelectOptionModel> columns = const [
-      SelectOptionModel(
-          label: "$prefixDataTableHeader.item", value: "item", extra: 170.0),
-      SelectOptionModel(
-          label: "$prefixDataTableHeader.qty", value: "qty", extra: 45.0),
-      SelectOptionModel(
+    List<DataTableColumnModel> columns = const [
+      DataTableColumnModel(
+          label: "$prefixDataTableHeader.item",
+          value: "item",
+          alignment: Alignment.centerLeft),
+      DataTableColumnModel(
+          label: "$prefixDataTableHeader.qty", value: "qty", width: 45.0),
+      DataTableColumnModel(
           label: "$prefixDataTableHeader.returnQty",
           value: "returnQty",
-          extra: 70.0),
-      SelectOptionModel(label: "$prefixDataTableHeader.total", value: "total"),
+          width: 70.0),
+      DataTableColumnModel(
+          label: "$prefixDataTableHeader.total",
+          value: "total",
+          alignment: Alignment.centerRight),
     ];
     double rowHeight = 100.0;
     double actionsWidth = 35.0;
@@ -52,13 +57,16 @@ class SaleDetailDataTableWidget extends StatelessWidget {
         headingCheckboxTheme: theme.checkboxTheme,
         datarowCheckboxTheme: theme.checkboxTheme,
         columns: [
-          for (SelectOptionModel column in columns)
+          for (DataTableColumnModel column in columns)
             DataColumn2(
-              fixedWidth: column.extra,
-              label: Text(
-                column.label,
-                overflow: TextOverflow.ellipsis,
-              ).tr(namedArgs: {"totalItem": "20"}),
+              fixedWidth: column.width,
+              label: Align(
+                alignment: column.alignment,
+                child: Text(
+                  column.label,
+                  overflow: TextOverflow.ellipsis,
+                ).tr(namedArgs: {"totalItem": "20"}),
+              ),
             ),
           DataColumn2(
               fixedWidth: actionsWidth,
@@ -184,10 +192,13 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                   ),
                 ),
               )),
-              DataCell(Text('${row.total} \$',
-                  style: theme.textTheme.bodyMedium?.copyWith(
-                      color: AppThemeColors.primary,
-                      fontWeight: FontWeight.bold))),
+              DataCell(Align(
+                alignment: Alignment.centerRight,
+                child: Text('${row.total} \$',
+                    style: theme.textTheme.bodyMedium?.copyWith(
+                        color: AppThemeColors.primary,
+                        fontWeight: FontWeight.bold)),
+              )),
               DataCell(Center(
                 child: IconButton(
                     onPressed: () {},

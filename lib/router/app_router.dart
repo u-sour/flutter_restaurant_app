@@ -8,7 +8,7 @@ import '../providers/app_provider.dart';
 import '../screens/error_screen.dart';
 import '../screens/main_wrapper_screen.dart';
 import '../screens/dashboard_screen.dart';
-import '../restaurant/screens/create_sale_screen.dart';
+import '../restaurant/screens/sale_screen.dart';
 import '../screens/form-builder/form_builder_screen.dart';
 import '../screens/form-builder/children/form_builder_default_screen.dart';
 import '../screens/form-builder/children/form_builder_validation_screen.dart';
@@ -139,7 +139,7 @@ class AppRouter {
       GoRoute(
         path: SCREENS.sale.toPath,
         name: SCREENS.sale.toName,
-        builder: (context, state) => const CreateSaleScreen(),
+        builder: (context, state) => const SaleScreen(),
       ),
       GoRoute(
         path: SCREENS.error.toPath,

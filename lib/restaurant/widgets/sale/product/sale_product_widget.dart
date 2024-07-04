@@ -1,11 +1,12 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/responsive/responsive_layout.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/responsive/responsive_layout.dart';
 import 'sale_product_item_widget.dart';
 
 class SaleProductWidget extends StatelessWidget {
-  const SaleProductWidget({super.key});
+  final double? slidingUpPanelMinHeight;
+  const SaleProductWidget({super.key, this.slidingUpPanelMinHeight});
 
   @override
   Widget build(BuildContext context) {
@@ -33,20 +34,27 @@ class SaleProductWidget extends StatelessWidget {
 
     return Padding(
       padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-      child: DynamicHeightGridView(
-          itemCount: 50,
-          crossAxisCount: crossAxisCount,
-          crossAxisSpacing: AppStyleDefaultProperties.w,
-          mainAxisSpacing: AppStyleDefaultProperties.h,
-          builder: (context, index) {
-            return SaleProductItemWidget(
-              name: "Product $index",
-              imgHeight: imageHeight,
-              baseCurrency: "USD",
-              onTap: () {},
-              decimalNumber: 2,
-            );
-          }),
+      child: Column(
+        children: [
+          Expanded(
+            child: DynamicHeightGridView(
+                itemCount: 50,
+                crossAxisCount: crossAxisCount,
+                crossAxisSpacing: AppStyleDefaultProperties.w,
+                mainAxisSpacing: 0.0,
+                builder: (context, index) {
+                  return SaleProductItemWidget(
+                    name: "Product $index",
+                    imgHeight: imageHeight,
+                    baseCurrency: "USD",
+                    onTap: () {},
+                    decimalNumber: 2,
+                  );
+                }),
+          ),
+          SizedBox(height: slidingUpPanelMinHeight)
+        ],
+      ),
     );
   }
 }
