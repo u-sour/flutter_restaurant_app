@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/constants.dart';
+import '../../../../utils/constants.dart';
 import '../../../models/sale/category/sale_category_model.dart';
 
 class SaleCategoryItemWidget extends StatelessWidget {
@@ -15,13 +15,15 @@ class SaleCategoryItemWidget extends StatelessWidget {
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
             side: const BorderSide(color: AppThemeColors.primary),
-            shape:
-                const RoundedRectangleBorder(borderRadius: BorderRadius.zero)),
+            shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.all(
+                    Radius.circular(AppStyleDefaultProperties.r)))),
         label: Row(
           children: [
             Text(
               category.parent.label,
-              style: TextStyle(color: theme.textTheme.bodySmall?.color),
+              style: theme.textTheme.bodyLarge,
+              overflow: TextOverflow.ellipsis,
             )
           ],
         ));

@@ -38,7 +38,10 @@ class _SaleScreenState extends State<SaleScreen> {
     Scaffold mobileAndTabletScaffold = Scaffold(
       appBar: const SaleAppBarWidget(title: ""),
       drawer: const Drawer(
-        child: SaleCategoryWidget(),
+        child: Padding(
+          padding: EdgeInsets.all(AppStyleDefaultProperties.p),
+          child: SaleCategoryWidget(),
+        ),
       ),
       body: orientation == Orientation.portrait
           ? SlidingUpPanel(
@@ -56,7 +59,7 @@ class _SaleScreenState extends State<SaleScreen> {
               body: SaleProductWidget(
                   slidingUpPanelMinHeight: minHeight +
                       AppBar().preferredSize.height +
-                      AppStyleDefaultProperties.p / 2),
+                      AppStyleDefaultProperties.p / 1.5),
             )
           : const Row(
               children: [
@@ -69,9 +72,16 @@ class _SaleScreenState extends State<SaleScreen> {
     const Scaffold desktopScaffold = Scaffold(
       appBar: SaleAppBarWidget(title: ""),
       body: Row(children: [
-        Expanded(child: SaleCategoryWidget()),
-        Expanded(flex: 2, child: SaleProductWidget()),
-        Expanded(flex: 2, child: SaleDetailWidget()),
+        SizedBox(
+            width: 200.0,
+            child: Padding(
+              padding: EdgeInsets.only(
+                  top: AppStyleDefaultProperties.p,
+                  left: AppStyleDefaultProperties.p),
+              child: SaleCategoryWidget(),
+            )),
+        Expanded(flex: 3, child: SaleProductWidget()),
+        Expanded(flex: 3, child: SaleDetailWidget()),
       ]),
       resizeToAvoidBottomInset: false,
     );

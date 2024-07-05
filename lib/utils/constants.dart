@@ -89,16 +89,16 @@ class AppStyleDefaultProperties {
   static const double r = 10.0;
 
   /// p stand for padding
-  static const double p = 16.0;
+  static const double p = 12.0;
 
   /// bp stand for bottom padding
-  static const double bp = 28.0;
+  static const double bp = 24.0;
 
   /// h stand for height
-  static const double h = 16.0;
+  static const double h = 12.0;
 
   /// w stand for width
-  static const double w = 16.0;
+  static const double w = 12.0;
 }
 
 class AppDefaultIcons {

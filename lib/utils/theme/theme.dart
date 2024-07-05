@@ -44,6 +44,7 @@ class AppTheme {
     appBarTheme: AppBarThemeWidget.dark,
     textTheme:
         const TextTheme(labelLarge: TextStyle(color: AppThemeColors.primary)),
+    dividerTheme: DividerThemeData(color: Colors.grey.shade300),
     checkboxTheme: CheckboxThemeData(
       fillColor: WidgetStateProperty.resolveWith((states) {
         if (states.contains(WidgetState.selected)) {

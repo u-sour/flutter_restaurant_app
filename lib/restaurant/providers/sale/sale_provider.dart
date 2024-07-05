@@ -12,7 +12,7 @@ class SaleProvider extends ChangeNotifier {
         20,
         (int index) => SaleDetailModel(
             itemName: "Item $index",
-            price: 20,
+            price: 200000,
             discountRate: 10,
             qty: 1000,
             returnQty: 1000,

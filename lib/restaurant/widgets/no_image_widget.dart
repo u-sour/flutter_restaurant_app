@@ -28,13 +28,14 @@ class NoImageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            const SizedBox(height: AppStyleDefaultProperties.h),
             Icon(icon,
                 color: iconColor ?? theme.iconTheme.color, size: iconSize),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 8.0),
               child: Text(
                 description.tr(),
-                style: descriptionTextStyle ?? theme.textTheme.titleLarge,
+                style: descriptionTextStyle ?? theme.textTheme.titleMedium,
                 textAlign: TextAlign.center,
               ),
             )
