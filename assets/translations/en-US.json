@@ -57,7 +57,8 @@
     "sale": {
       "navigation": {
         "dashboard": "Dashboard",
-        "saleTable": "Choose Table"
+        "saleTable": "Choose Table",
+        "categories": "Categories"
       },
       "search": "Search ...",
       "category": {

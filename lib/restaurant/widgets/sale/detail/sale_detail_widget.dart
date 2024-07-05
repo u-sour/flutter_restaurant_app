@@ -15,6 +15,7 @@ class SaleDetailWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Column(
       children: [
         // Header
@@ -25,7 +26,7 @@ class SaleDetailWidget extends StatelessWidget {
               child: const SaleAppBarActionWidget(),
             ),
           ),
-        const Divider(height: 0.0),
+        Divider(height: 0.0, color: theme.focusColor),
         // Data Table
         const Expanded(child: SaleDetailDataTableWidget()),
         // Footer

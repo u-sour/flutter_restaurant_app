@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import 'sale_app_bar_action_widget.dart';
 import 'sale_app_bar_navigation_widget.dart';
@@ -35,24 +36,27 @@ class SaleAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     const Row desktop = Row(
       children: [
         // Navigation
-        Expanded(child: SaleAppBarNavigationWidget()),
+        SaleAppBarNavigationWidget(),
         // Search
-        Expanded(flex: 2, child: SaleAppBarSearchWidget()),
+        Expanded(flex: 3, child: SaleAppBarSearchWidget()),
         // Actions
-        Expanded(flex: 2, child: SaleAppBarActionWidget())
+        Expanded(flex: 3, child: SaleAppBarActionWidget())
       ],
     );
     return AppBar(
-      titleSpacing: 0.0,
-      title: ResponsiveLayout(
+        titleSpacing: 0.0,
+        leading: Row(
+          children: [
+            BackButton(
+              onPressed: () => context.pop(),
+            ),
+          ],
+        ),
+        title: ResponsiveLayout(
           mobileScaffold: mobile,
           tabletScaffold: tablet,
-          desktopScaffold: desktop),
-      automaticallyImplyLeading: ResponsiveLayout.isMobile(context) ||
-              ResponsiveLayout.isTablet(context)
-          ? true
-          : false,
-    );
+          desktopScaffold: desktop,
+        ));
   }
 
   @override

@@ -22,8 +22,11 @@ class SaleTableWidget extends StatelessWidget {
         const TableStatusInfo(),
         Expanded(
           child: GridView.builder(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: AppStyleDefaultProperties.p),
+              padding: const EdgeInsets.only(
+                left: AppStyleDefaultProperties.p,
+                right: AppStyleDefaultProperties.p,
+                bottom: AppStyleDefaultProperties.p,
+              ),
               itemCount: 100,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: AppStyleDefaultProperties.h,

@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../models/select-option/select_option_model.dart';
 import '../../../../router/route_utils.dart';
-import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../utils/constants.dart';
 import '../../icon_with_text_widget.dart';
@@ -16,16 +15,19 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
     Orientation orientation = MediaQuery.orientationOf(context);
     final List<SelectOptionModel> navigation = [
       const SelectOptionModel(
-        icon: AppDefaultIcons.dashboard,
-        label: "screens.sale.navigation.dashboard",
-        value: "dashboard",
-      ),
-      const SelectOptionModel(
         icon: RestaurantDefaultIcons.table,
         label: "screens.sale.navigation.saleTable",
         value: "table",
-      )
+      ),
+      const SelectOptionModel(
+        icon: RestaurantDefaultIcons.categories,
+        label: "screens.sale.navigation.categories",
+        value: "categories",
+      ),
     ];
+    // remove categories on desktop mode
+    if (ResponsiveLayout.isDesktop(context)) navigation.removeLast();
+
     return ResponsiveLayout.isMobile(context) ||
             ResponsiveLayout.isTablet(context) &&
                 orientation == Orientation.landscape
@@ -48,8 +50,8 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
                 .map((n) => MenuItemButton(
                       leadingIcon: Icon(n.icon),
                       onPressed: () => {
-                        if (n.value == 'dashboard')
-                          {context.pop()}
+                        if (n.value == 'categories')
+                          {Scaffold.of(context).openDrawer()}
                         else
                           {context.goNamed(SCREENS.saleTable.toName)}
                       },
@@ -62,13 +64,13 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
               for (int i = 0; i < navigation.length; i++)
                 IconButton(
                   onPressed: () {
-                    if (navigation[i].value == 'dashboard') {
-                      context.pop();
+                    if (navigation[i].value == 'categories') {
+                      Scaffold.of(context).openDrawer();
                     } else {
                       context.goNamed(SCREENS.saleTable.toName);
                     }
                   },
-                  icon: navigation[i].value == "dashboard"
+                  icon: navigation[i].value == "categories"
                       ? Icon(navigation[i].icon)
                       : Column(
                           children: [

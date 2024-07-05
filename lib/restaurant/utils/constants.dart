@@ -10,7 +10,7 @@ class RestaurantDefaultIcons {
   static const IconData chair = Icons.chair_alt;
   static const IconData customer = Icons.groups;
   // sale
-  static const IconData back = Icons.chevron_left;
+  static const IconData back = Icons.arrow_back_ios_new;
   static const IconData next = Icons.chevron_right;
   static const IconData search = Icons.search;
   static const IconData notification = Icons.notifications;
@@ -18,6 +18,7 @@ class RestaurantDefaultIcons {
   static const IconData addInvoice = Icons.add;
   static const IconData noImage = Icons.photo;
   // sale - category
+  static const IconData categories = Icons.menu_book;
   static const IconData extraFoods = Icons.soup_kitchen;
   // sale - detail data table actions
   static const IconData actions = Icons.more_horiz;

@@ -57,7 +57,8 @@
     "sale": {
       "navigation": {
         "dashboard": "ផ្ទាំងគ្រប់គ្រង",
-        "saleTable": "ជ្រើសរើសតុ"
+        "saleTable": "ជ្រើសរើសតុ",
+        "categories": "ផ្នែក"
       },
       "search": "ស្វែងរក ...",
       "category": {

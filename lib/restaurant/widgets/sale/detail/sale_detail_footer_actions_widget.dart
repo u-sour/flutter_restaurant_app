@@ -14,6 +14,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
     const prefixDataTableFooter = "screens.sale.detail.dataTable.footer";
     final btnStyleNormalShape =
         TextButton.styleFrom(shape: const LinearBorder());
+    final Color dividerColor = theme.focusColor;
     const double smallHeight = AppStyleDefaultProperties.h / 6;
     final List<SelectOptionModel> operations = [
       const SelectOptionModel(
@@ -38,9 +39,10 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
       )
     ];
     return Material(
-      color: theme.hoverColor,
+      color: Colors.transparent,
       child: Column(
         children: [
+          Divider(height: 0.0, color: dividerColor),
           ButtonBar(
             alignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -87,7 +89,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
               ),
             ],
           ),
-          Divider(height: 0.0, color: theme.scaffoldBackgroundColor),
+          Divider(height: 0.0, color: dividerColor),
           Expanded(
             child: Row(
               children: [
@@ -104,8 +106,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(
-                    width: 0.0, color: theme.scaffoldBackgroundColor),
+                VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
                   child: TextButton(
                     onPressed: () {},
@@ -119,8 +120,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(
-                    width: 0.0, color: theme.scaffoldBackgroundColor),
+                VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
                   child: TextButton(
                     onPressed: () {},
@@ -137,8 +137,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(
-                    width: 0.0, color: theme.scaffoldBackgroundColor),
+                VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
                   child: TextButton(
                     onPressed: () {},
@@ -155,8 +154,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     ),
                   ),
                 ),
-                VerticalDivider(
-                    width: 0.0, color: theme.scaffoldBackgroundColor),
+                VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
                     flex: 2,
                     child: Padding(
@@ -169,14 +167,15 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                           RichText(
                             text: TextSpan(
                               text: '$prefixDataTableFooter.subTotal'.tr(),
-                              style: TextStyle(
-                                  color: theme.textTheme.bodySmall?.color,
-                                  fontWeight: FontWeight.bold),
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               children: const [
                                 TextSpan(
-                                    text: '0 \$',
-                                    style: TextStyle(
-                                        color: AppThemeColors.primary)),
+                                  text: '0 \$',
+                                  style: TextStyle(
+                                      color: AppThemeColors.primary,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
                               ],
                             ),
                           ),
@@ -186,6 +185,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                               child: Text(
                                 '$prefixDataTableFooter.disPercent'
                                     .tr(namedArgs: {"percent": "0"}),
+                                style: theme.textTheme.bodyMedium
+                                    ?.copyWith(overflow: TextOverflow.ellipsis),
                               )),
                           const SizedBox(height: smallHeight),
                           InkWell(
@@ -196,19 +197,22 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                       "amount": "0",
                                       "baseCurrency": "\$"
                                     }),
+                                style: theme.textTheme.bodyMedium
+                                    ?.copyWith(overflow: TextOverflow.ellipsis),
                               )),
                           const SizedBox(height: smallHeight),
                           RichText(
                             text: TextSpan(
                               text: '$prefixDataTableFooter.total'.tr(),
-                              style: TextStyle(
-                                  color: theme.textTheme.bodySmall?.color,
-                                  fontWeight: FontWeight.bold),
+                              style: theme.textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                               children: const [
                                 TextSpan(
-                                    text: '0 \$',
-                                    style: TextStyle(
-                                        color: AppThemeColors.primary)),
+                                  text: '0 \$',
+                                  style: TextStyle(
+                                      color: AppThemeColors.primary,
+                                      overflow: TextOverflow.ellipsis),
+                                ),
                               ],
                             ),
                           )

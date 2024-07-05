@@ -16,11 +16,11 @@ class SaleCategoryWidget extends StatefulWidget {
 class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
   final List<SaleCategoryModel> categories = const [
     SaleCategoryModel(
-        parent: SelectOptionModel(label: "Vegetable", value: 'vegetable'),
+        parent: SelectOptionModel(label: "គ្រឿងក្លែម", value: 'vegetable'),
         children: [
           SaleCategoryModel(
               parent: SelectOptionModel(
-                  label: "Salad", value: "salad", extra: "vegetable"),
+                  label: "គ្រឿងសមុទ្រ", value: "salad", extra: "vegetable"),
               children: [
                 SaleCategoryModel(
                     parent: SelectOptionModel(
@@ -53,6 +53,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return SafeArea(
       child: Column(
         children: [
@@ -95,24 +96,25 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
           if (selectedCategory.length == 1)
             Column(
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: FilledButton.icon(
-                          onPressed: () {},
-                          icon: const Icon(RestaurantDefaultIcons.extraFoods),
-                          label: const Text('screens.sale.category.extraFoods')
-                              .tr(),
-                          style: FilledButton.styleFrom(
-                              padding: const EdgeInsets.all(8.0)),
-                        ),
+                Row(
+                  children: [
+                    Expanded(
+                      child: FilledButton.icon(
+                        onPressed: () {},
+                        icon: const Icon(RestaurantDefaultIcons.extraFoods),
+                        label: Text(
+                          'screens.sale.category.extraFoods',
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                              color: theme.canvasColor,
+                              fontWeight: FontWeight.bold),
+                        ).tr(),
+                        style: FilledButton.styleFrom(
+                            padding: const EdgeInsets.all(8.0)),
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-                const Divider(height: 0.0),
+                const Divider(),
               ],
             ),
           Expanded(
@@ -122,7 +124,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                       .children
                       .length
                   : categories.length,
-              padding: const EdgeInsets.all(8.0),
+              // padding: const EdgeInsets.all(8.0),
               itemBuilder: (context, index) {
                 final SaleCategoryModel category = selectedCategory.length > 1
                     ? selectedCategory[selectedCategory.length - 1]

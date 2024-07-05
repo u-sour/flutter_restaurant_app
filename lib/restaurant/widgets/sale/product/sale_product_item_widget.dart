@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
 import '../../../utils/format_currency.dart';
 import '../../no_image_widget.dart';
@@ -30,57 +31,72 @@ class SaleProductItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final Map<String, double> pricePosition = {"top": 8.0, "left": 8.0};
     // double lastSelectedItemOpacity = 1;
     // double normalSelectedItemOpacity = 0.45;
-
     return Column(
       children: [
         Container(
           width: double.infinity,
           height: imgHeight,
+          foregroundDecoration: RotatedCornerDecoration.withColor(
+            textSpan: TextSpan(
+                text: '0%',
+                style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            badgeCornerRadius:
+                const Radius.circular(AppStyleDefaultProperties.r),
+            color: AppThemeColors.primary,
+            badgeSize: const Size(64, 64),
+            badgePosition: BadgePosition.bottomStart,
+            textDirection: TextDirection.rtl,
+          ),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
             color: theme.highlightColor,
             // image: DecorationImage(fit: BoxFit.cover, image: imageProvider),
           ),
-          child: Material(
-            color: Colors.transparent,
+          child: InkWell(
             borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
-            child: InkWell(
-              borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
-              onTap: onTap,
-              child: Stack(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(10.0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                            padding: const EdgeInsets.all(4.0),
-                            decoration: BoxDecoration(
-                              color: AppThemeColors.primary,
-                              borderRadius: BorderRadius.circular(
-                                  AppStyleDefaultProperties.r),
-                            ),
-                            child: Text(
-                                '${FormatCurrency().format(value: 5, baseCurrency: baseCurrency, decimalNumber: decimalNumber)} ${FormatCurrency().getBaseCurrencySymbol(baseCurrency: baseCurrency)}',
-                                style: theme.textTheme.bodyMedium!
-                                    .copyWith(color: Colors.white))),
-                        // if (selected)
-                        //   Icon(
-                        //     CommonPosIcons.checked,
-                        //     color: theme.iconTheme.color!.withOpacity(
-                        //         lastSelectedItem
-                        //             ? lastSelectedItemOpacity
-                        //             : normalSelectedItemOpacity),
-                        //   ),
-                      ],
-                    ),
+            onTap: onTap,
+            child: Stack(
+              children: [
+                // Price
+                Positioned(
+                  top: pricePosition['top'],
+                  left: pricePosition['left'],
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(2.5),
+                        decoration: BoxDecoration(
+                          color: AppThemeColors.primary,
+                          borderRadius: BorderRadius.circular(
+                              AppStyleDefaultProperties.r),
+                        ),
+                        child: Text(
+                          '${FormatCurrency().format(value: 5000000, baseCurrency: baseCurrency, decimalNumber: decimalNumber)} ${FormatCurrency().getBaseCurrencySymbol(baseCurrency: baseCurrency)}',
+                          style: theme.textTheme.bodyLarge!.copyWith(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                      // if (selected)
+                      //   Icon(
+                      //     CommonPosIcons.checked,
+                      //     color: theme.iconTheme.color!.withOpacity(
+                      //         lastSelectedItem
+                      //             ? lastSelectedItemOpacity
+                      //             : normalSelectedItemOpacity),
+                      //   ),
+                    ],
                   ),
-                  const NoImageWidget()
-                ],
-              ),
+                ),
+                const NoImageWidget()
+              ],
             ),
           ),
         ),

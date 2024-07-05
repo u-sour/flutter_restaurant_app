@@ -8,6 +8,7 @@ class SaleAppBarActionWidget extends StatelessWidget {
   const SaleAppBarActionWidget({super.key});
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Row(
@@ -26,16 +27,17 @@ class SaleAppBarActionWidget extends StatelessWidget {
               ),
             ),
           ),
-          const Expanded(
+          Expanded(
               child: Column(
             children: [
               Text(
                 'Floor( Table ) : Invoice ID',
-                style: TextStyle(fontSize: 16.0),
+                style: theme.textTheme.bodyMedium
+                    ?.copyWith(fontWeight: FontWeight.bold),
               ),
               Text(
                 'Date Time',
-                style: TextStyle(fontSize: 12.0),
+                style: theme.textTheme.bodySmall,
               ),
             ],
           )),
