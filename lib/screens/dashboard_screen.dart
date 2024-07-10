@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../restaurant/widgets/dashboard/feature_widget.dart';
+import '../restaurant/widgets/department_widget.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
 import '../widgets/app_bar_widget.dart';
@@ -19,6 +20,11 @@ class DashboardScreen extends StatelessWidget {
         child: Padding(
           padding: EdgeInsets.all(AppStyleDefaultProperties.p),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [DepartmentWidget()],
+            ),
+            SizedBox(height: AppStyleDefaultProperties.h),
             FeatureWidget(),
           ]),
         ),

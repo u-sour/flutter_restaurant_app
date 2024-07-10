@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_template/models/auth/login_model.dart';
-import 'package:flutter_template/models/servers/response_model.dart';
-import 'package:flutter_template/screens/app_screen.dart';
-import 'package:flutter_template/storages/auth_storage.dart';
-import 'package:flutter_template/utils/alert/awesome_snack_bar_utils.dart';
+import '../models/auth/login_model.dart';
+import '../models/servers/response_model.dart';
+import '../screens/app_screen.dart';
+import '../storages/auth_storage.dart';
+import '../utils/alert/awesome_snack_bar_utils.dart';
 
 class AuthProvider extends ChangeNotifier {
   final String _successMsg =

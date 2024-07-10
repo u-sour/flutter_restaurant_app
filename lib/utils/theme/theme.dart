@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/utils/theme/widgets/outlined_button_theme_widget.dart';
 import '../constants.dart';
 import 'widgets/app_bar_theme_widget.dart';
 import 'widgets/bottom_nav_bar_theme_widget.dart';
@@ -26,6 +27,7 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedThemeWidget.light,
     filledButtonTheme: FilledThemeWidget.light,
+    outlinedButtonTheme: OutlinedThemeWidget.light,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.light,
     listTileTheme:
         ListTileThemeData(selectedTileColor: AppThemeColors.primary.shade100),
@@ -55,6 +57,7 @@ class AppTheme {
     ),
     elevatedButtonTheme: ElevatedThemeWidget.dark,
     filledButtonTheme: FilledThemeWidget.dark,
+    outlinedButtonTheme: OutlinedThemeWidget.dark,
     bottomNavigationBarTheme: BottomNavBarThemeWidget.dark,
     listTileTheme: const ListTileThemeData(selectedTileColor: Colors.white10),
     inputDecorationTheme: const InputDecorationTheme(

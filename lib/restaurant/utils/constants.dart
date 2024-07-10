@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 
 class RestaurantDefaultIcons {
+  // branch
+  static const IconData branch = Icons.domain;
+  // department
+  static const IconData department = Icons.store;
   // dashboard
   static const IconData newSale = Icons.deck;
   static const IconData fastSale = Icons.takeout_dining;
