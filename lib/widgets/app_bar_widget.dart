@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/restaurant/widgets/branch_widget.dart';
 import 'toggle_switch_theme_widget.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -15,7 +16,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           width: 120.0,
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: const ToggleSwitchThemeWidget(),
-        )
+        ),
+        BranchWidget()
       ],
     );
   }
