@@ -66,7 +66,7 @@ class AvatarWidget extends StatelessWidget {
                 (m) => MenuItemButton(
                   leadingIcon: Icon(m.icon),
                   onPressed: m.onTap,
-                  child: Text(m.title).tr(),
+                  child: Text(m.title),
                 ),
               )
               .toList()
