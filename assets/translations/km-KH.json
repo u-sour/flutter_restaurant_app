@@ -133,6 +133,7 @@
           "formTitle": "ពត៌មាន",
           "form": {
             "fullName": "ឈ្មោះពេញ",
+            "username": "ឈ្មោះអ្នកប្រើប្រាស់",
             "gender": "ភេទ",
             "phoneNumber": "លេខទូរសព្ទ",
             "email": "អុីម៉ែល",

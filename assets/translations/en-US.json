@@ -133,6 +133,7 @@
           "formTitle": "Information",
           "form": {
             "fullName": "Full Name",
+            "username": "Username",
             "gender": "Gender",
             "phoneNumber": "Phone Number",
             "email": "Email",

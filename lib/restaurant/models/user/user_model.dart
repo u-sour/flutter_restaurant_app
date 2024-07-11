@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../utils/model_converter/date_model_converter.dart';
 import 'user_email_model.dart';
 import 'user_profile_model.dart';
 part 'user_model.g.dart';

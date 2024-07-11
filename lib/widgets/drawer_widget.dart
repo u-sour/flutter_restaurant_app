@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../providers/app_provider.dart';
+import '../restaurant/models/company/company_model.dart';
 import '../router/route_utils.dart';
 import '../providers/auth_provider.dart';
 import '../providers/route_provider.dart';
@@ -36,7 +38,13 @@ class DrawerWidget extends StatelessWidget {
         Expanded(
           child: Column(
             children: [
-              const DrawerHeaderWidget(),
+              Selector<AppProvider, CompanyModel>(
+                  selector: (context, state) => state.company.first,
+                  builder: (context, company, child) => DrawerHeaderWidget(
+                        company: company.general.name,
+                        address: company.general.address,
+                        telephone: company.general.telephone,
+                      )),
               Expanded(
                 child: ListView.builder(
                     itemCount: screens.length,

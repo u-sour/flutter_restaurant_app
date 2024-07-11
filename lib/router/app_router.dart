@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
+import '../restaurant/models/user/user_model.dart';
 import 'route_utils.dart';
 import '../restaurant/screens/sale_table_screen.dart';
 import '../screens/connection_screen.dart';
@@ -91,7 +93,15 @@ class AppRouter {
                       path: SCREENS.myProfile.toPath,
                       name: SCREENS.myProfile.toName,
                       builder: (context, state) =>
-                          MyProfileScreen(key: state.pageKey),
+                          Selector<AppProvider, UserModel?>(
+                              selector: (context, state) => state.currentUser,
+                              builder: (context, currentUser, child) =>
+                                  MyProfileScreen(
+                                    key: state.pageKey,
+                                    fullName: currentUser?.profile.fullName,
+                                    username: currentUser?.username,
+                                    email: currentUser?.emails.first.address,
+                                  )),
                     ),
                   ]),
             ]),

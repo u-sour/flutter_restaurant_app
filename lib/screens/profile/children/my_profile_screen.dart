@@ -1,6 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_template/models/widgets/avatar_initial_widget_model.dart';
+import 'package:flutter_template/widgets/avatar_widget.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/my_profile_provider.dart';
@@ -11,7 +13,14 @@ import '../../../widgets/drawer_widget.dart';
 import '../../../widgets/toggle_switch_theme_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
-  MyProfileScreen({super.key});
+  final String? fullName;
+  final String? username;
+  final String? email;
+  MyProfileScreen(
+      {super.key,
+      this.fullName = 'Unknown',
+      this.username = 'Unknown',
+      this.email = 'unknown@gmail.com'});
   final GlobalKey<FormBuilderState> _formKey = GlobalKey<FormBuilderState>();
   final String _fromTitle = 'screens.profile.children.myProfile.formTitle';
   final String _prefixFromLabel = 'screens.profile.children.myProfile.form';
@@ -44,22 +53,12 @@ class MyProfileScreen extends StatelessWidget {
               background: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  ClipRRect(
-                    borderRadius:
-                        BorderRadius.circular(AppStyleDefaultProperties.r),
-                    child: SizedBox(
-                      width: 100,
-                      height: 100,
-                      child: Image.network(
-                        'https://images.unsplash.com/photo-1699990250573-98cd46c2c864?q=80&w=200&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D',
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
+                  AvatarWidget(
+                      radius: 48.0,
+                      initial: AvatarInitialWidgetModel(label: fullName)),
                   const SizedBox(height: AppStyleDefaultProperties.h),
-                  Text('Sour.Dev', style: theme.textTheme.titleLarge!),
-                  Text('yousour.dev@gmail.com',
-                      style: theme.textTheme.titleLarge!)
+                  Text(fullName!, style: theme.textTheme.titleLarge!),
+                  Text(email!, style: theme.textTheme.titleLarge!)
                 ],
               ),
             ),
@@ -69,6 +68,11 @@ class MyProfileScreen extends StatelessWidget {
               builder: (context, state, child) => FormBuilder(
                 key: _formKey,
                 enabled: state.isFromEnabled,
+                initialValue: {
+                  'fullName': fullName,
+                  'username': username,
+                  'email': email
+                },
                 child: SingleChildScrollView(
                   padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
                   child: Column(
@@ -80,12 +84,12 @@ class MyProfileScreen extends StatelessWidget {
                           Text(context.tr(_fromTitle),
                               style: theme.textTheme.titleMedium!
                                   .copyWith(fontWeight: FontWeight.bold)),
-                          IconButton(
-                              onPressed: () => {
-                                    state
-                                        .changeFormEnabled(!state.isFromEnabled)
-                                  },
-                              icon: const Icon(AppDefaultIcons.edit))
+                          // IconButton(
+                          //     onPressed: () => {
+                          //           state
+                          //               .changeFormEnabled(!state.isFromEnabled)
+                          //         },
+                          //     icon: const Icon(AppDefaultIcons.edit))
                         ],
                       ),
                       const SizedBox(height: AppStyleDefaultProperties.h),
@@ -101,18 +105,9 @@ class MyProfileScreen extends StatelessWidget {
                       ),
                       const SizedBox(height: AppStyleDefaultProperties.h),
                       FormBuilderTextField(
-                        name: 'gender',
+                        name: 'username',
                         decoration: InputDecoration(
-                          labelText: context.tr('$_prefixFromLabel.gender'),
-                        ),
-                        validator: FormBuilderValidators.required(),
-                      ),
-                      const SizedBox(height: AppStyleDefaultProperties.h),
-                      FormBuilderTextField(
-                        name: 'phoneNumber',
-                        decoration: InputDecoration(
-                          labelText:
-                              context.tr('$_prefixFromLabel.phoneNumber'),
+                          labelText: context.tr('$_prefixFromLabel.username'),
                         ),
                         validator: FormBuilderValidators.required(),
                       ),
@@ -125,12 +120,6 @@ class MyProfileScreen extends StatelessWidget {
                           FormBuilderValidators.email(),
                           FormBuilderValidators.required(),
                         ]),
-                      ),
-                      const SizedBox(height: AppStyleDefaultProperties.h),
-                      FormBuilderTextField(
-                        name: 'roles',
-                        decoration: InputDecoration(
-                            labelText: context.tr('$_prefixFromLabel.roles')),
                       ),
                     ],
                   ),
