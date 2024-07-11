@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter_template/restaurant/models/sale/setting/sale_setting_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../restaurant/models/branch/branch_model.dart';
 import '../restaurant/models/company/company_model.dart';
@@ -23,6 +24,12 @@ class AppProvider extends ChangeNotifier {
   SubscriptionHandler get subCompanyHandler => _subCompanyHandler;
   late List<CompanyModel> _company;
   List<CompanyModel> get company => _company;
+
+  // Sale Settings Subscription
+  late SubscriptionHandler _subSaleSettingsHandler;
+  SubscriptionHandler get subSaleSettingsHandler => _subSaleSettingsHandler;
+  late SaleSettingModel _saleSetting;
+  SaleSettingModel get saleSetting => _saleSetting;
 
   // Branch Subscription
   late SubscriptionHandler? _subBranchHandler;
@@ -135,6 +142,20 @@ class AppProvider extends ChangeNotifier {
     });
   }
 
+  void startSubscribeSaleSettings(String branchId) {
+    // Keep listening to sale setting collection from server
+    Map<String, dynamic> saleSettingsSelector = {"branchId": branchId};
+    _subSaleSettingsHandler = meteor
+        .subscribe('saleSetting', args: [saleSettingsSelector], onReady: () {
+      meteor.collection('rest_saleSettings').listen((result) {
+        SaleSettingModel toListModel =
+            SaleSettingModel.fromJson(result.values.firstOrNull);
+        _saleSetting = toListModel;
+        notifyListeners();
+      });
+    });
+  }
+
   void startSubscribeBranch(UserModel currentUserDoc) {
     // Keep listening to branch collection from server
     Map<String, dynamic> branchSelector = {"status": "Active"};
@@ -157,6 +178,7 @@ class AppProvider extends ChangeNotifier {
         if (_branches.isNotEmpty) {
           // set selected branches
           _selectedBranch = branches.first;
+          startSubscribeSaleSettings(_branches.first.id);
           startSubscribeDepartment(
               currentUserDoc: currentUserDoc, branchId: _branches.first.id);
         }
@@ -167,6 +189,7 @@ class AppProvider extends ChangeNotifier {
 
   void setBranch({required BranchModel branch}) {
     _selectedBranch = branch;
+    startSubscribeSaleSettings(branch.id);
     notifyListeners();
   }
 
@@ -188,6 +211,7 @@ class AppProvider extends ChangeNotifier {
     _subDepartmentHandler =
         meteor.subscribe('rest.department', args: [selector], onReady: () {
       meteor.collection('rest_departments').listen((result) {
+        print(result);
         List<DepartmentModel> toListModel = result.values
             .toList()
             .map((e) => DepartmentModel.fromJson(e))

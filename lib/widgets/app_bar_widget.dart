@@ -43,8 +43,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                   AvatarMenuWidgetModel(
                       icon: AppDefaultIcons.language,
                       title: languageCode == 'en'
-                          ? '$prefixLanguageOptions.en'
-                          : '$prefixLanguageOptions.km',
+                          ? '$prefixLanguageOptions.en'.tr()
+                          : '$prefixLanguageOptions.km'.tr(),
                       onTap: () async {
                         await context.setLocale(languageCode == "en"
                             ? AppSupportedLocales.km
@@ -52,7 +52,7 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
                       }),
                   AvatarMenuWidgetModel(
                     icon: AppDefaultIcons.logout,
-                    title: SCREENS.logout.toTitle,
+                    title: SCREENS.logout.toTitle.tr(),
                     onTap: () => context.read<AuthProvider>().logOut(),
                   )
                 ],
