@@ -1,6 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/widgets/branch_widget.dart';
+import 'package:provider/provider.dart';
+import '../models/widgets/avatar_initial_widget_model.dart';
+import '../models/widgets/avatar_menu_widget_model.dart';
+import '../providers/app_provider.dart';
+import '../providers/auth_provider.dart';
+import '../restaurant/models/user/user_model.dart';
+import '../restaurant/widgets/branch_widget.dart';
+import '../router/route_utils.dart';
+import '../utils/constants.dart';
+import 'avatar_widget.dart';
 import 'toggle_switch_theme_widget.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
@@ -17,7 +26,39 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
           padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
           child: const ToggleSwitchThemeWidget(),
         ),
-        BranchWidget()
+        const BranchWidget(),
+        Selector<AppProvider, UserModel?>(
+            selector: (context, state) => state.currentUser,
+            builder: (context, currentUser, child) {
+              String prefixLanguageOptions =
+                  'screens.settings.children.language.options';
+              String languageCode = context.locale.languageCode;
+              return AvatarWidget(
+                initial: AvatarInitialWidgetModel(label: currentUser?.username),
+                menu: [
+                  AvatarMenuWidgetModel(
+                    icon: AppDefaultIcons.profile,
+                    title: currentUser?.username ?? '',
+                  ),
+                  AvatarMenuWidgetModel(
+                      icon: AppDefaultIcons.language,
+                      title: languageCode == 'en'
+                          ? '$prefixLanguageOptions.en'
+                          : '$prefixLanguageOptions.km',
+                      onTap: () async {
+                        await context.setLocale(languageCode == "en"
+                            ? AppSupportedLocales.km
+                            : AppSupportedLocales.en);
+                      }),
+                  AvatarMenuWidgetModel(
+                    icon: AppDefaultIcons.logout,
+                    title: SCREENS.logout.toTitle,
+                    onTap: () => context.read<AuthProvider>().logOut(),
+                  )
+                ],
+              );
+            }),
+        const SizedBox(width: AppStyleDefaultProperties.w)
       ],
     );
   }

@@ -191,7 +191,7 @@ class AppSupportedLanguages {
 
 class AppThemeFonts {
   AppThemeFonts._();
-  static const List<String> fonts = ['Poppins', 'Kantumruy Pro'];
+  static const List<String> fonts = ['MiSans Latin VF', 'MiSans Khmer VF'];
   static String get en => fonts.first;
   static String get km => fonts.last;
 }

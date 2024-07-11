@@ -185,6 +185,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.3"
+  circular_profile_avatar:
+    dependency: "direct main"
+    description:
+      name: circular_profile_avatar
+      sha256: "2ba47732e1d54b557e3ff033ab8ae58946b17d4bc268f6e3e6e3f58a90ac93c7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.5"
   clock:
     dependency: transitive
     description:
@@ -257,14 +265,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.5.15"
-  dice_bear:
-    dependency: "direct main"
-    description:
-      name: dice_bear
-      sha256: "4dde957ee3838f1de82aeff43c68f8e976f102ed9b5cb3be2ba1abe243a109af"
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.1.7"
   dropdown_search:
     dependency: transitive
     description:
