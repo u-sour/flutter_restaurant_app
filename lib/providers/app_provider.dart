@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_template/restaurant/models/sale/setting/sale_setting_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../restaurant/models/branch/branch_model.dart';
 import '../restaurant/models/company/company_model.dart';
 import '../restaurant/models/department/department_model.dart';
+import '../restaurant/models/sale/setting/sale_setting_model.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/services/user_service.dart';
 import '../screens/app_screen.dart';
@@ -26,8 +26,8 @@ class AppProvider extends ChangeNotifier {
   List<CompanyModel> get company => _company;
 
   // Sale Settings Subscription
-  late SubscriptionHandler _subSaleSettingsHandler;
-  SubscriptionHandler get subSaleSettingsHandler => _subSaleSettingsHandler;
+  SubscriptionHandler? _subSaleSettingsHandler;
+  SubscriptionHandler? get subSaleSettingsHandler => _subSaleSettingsHandler;
   late SaleSettingModel _saleSetting;
   SaleSettingModel get saleSetting => _saleSetting;
 
@@ -148,9 +148,11 @@ class AppProvider extends ChangeNotifier {
     _subSaleSettingsHandler = meteor
         .subscribe('saleSetting', args: [saleSettingsSelector], onReady: () {
       meteor.collection('rest_saleSettings').listen((result) {
-        SaleSettingModel toListModel =
-            SaleSettingModel.fromJson(result.values.firstOrNull);
-        _saleSetting = toListModel;
+        if (result.values.toList().isNotEmpty) {
+          SaleSettingModel toListModel =
+              SaleSettingModel.fromJson(result.values.first);
+          _saleSetting = toListModel;
+        }
         notifyListeners();
       });
     });
@@ -211,7 +213,6 @@ class AppProvider extends ChangeNotifier {
     _subDepartmentHandler =
         meteor.subscribe('rest.department', args: [selector], onReady: () {
       meteor.collection('rest_departments').listen((result) {
-        print(result);
         List<DepartmentModel> toListModel = result.values
             .toList()
             .map((e) => DepartmentModel.fromJson(e))
