@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../restaurant/widgets/dashboard/feature_widget.dart';
+import '../restaurant/widgets/dashboard/sale_invoice_widget.dart';
 import '../restaurant/widgets/department_widget.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
@@ -16,15 +17,17 @@ class DashboardScreen extends StatelessWidget {
       appBar: AppBarWidget(title: SCREENS.dashboard.toTitle),
       drawer:
           !ResponsiveLayout.isDesktop(context) ? const DrawerWidget() : null,
-      body: const Center(
+      body: Center(
         child: Padding(
-          padding: EdgeInsets.all(AppStyleDefaultProperties.p),
+          padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            Row(
+            const Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [DepartmentWidget()],
             ),
-            SizedBox(height: AppStyleDefaultProperties.h),
+            const SizedBox(height: AppStyleDefaultProperties.h),
+            const Expanded(flex: 3, child: SaleInvoiceWidget()),
+            const SizedBox(height: AppStyleDefaultProperties.h),
             FeatureWidget(),
           ]),
         ),

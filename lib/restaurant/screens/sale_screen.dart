@@ -85,20 +85,10 @@ class _SaleScreenState extends State<SaleScreen> {
       ]),
       resizeToAvoidBottomInset: false,
     );
-    return Listener(
-      behavior: HitTestBehavior.opaque,
-      onPointerDown: (_) {
-        //clear all field focus
-        final FocusScopeNode currentScope = FocusScope.of(context);
-        if (!currentScope.hasPrimaryFocus && currentScope.hasFocus) {
-          FocusManager.instance.primaryFocus!.unfocus();
-        }
-      },
-      child: ResponsiveLayout(
-        mobileScaffold: mobileAndTabletScaffold,
-        tabletScaffold: mobileAndTabletScaffold,
-        desktopScaffold: desktopScaffold,
-      ),
+    return ResponsiveLayout(
+      mobileScaffold: mobileAndTabletScaffold,
+      tabletScaffold: mobileAndTabletScaffold,
+      desktopScaffold: desktopScaffold,
     );
   }
 }

@@ -6,29 +6,31 @@ import '../../utils/constants.dart';
 import 'feature_item_widget.dart';
 
 class FeatureWidget extends StatelessWidget {
-  const FeatureWidget({super.key});
-  final List<SelectOptionModel> features = const [
-    SelectOptionModel(
-      icon: RestaurantDefaultIcons.newSale,
-      label: "screens.dashboard.features.newSale",
-      value: "saleTable",
-    ),
-    SelectOptionModel(
-      icon: RestaurantDefaultIcons.fastSale,
-      label: "screens.dashboard.features.fastSale",
-      value: "sale",
-    )
+  FeatureWidget({super.key});
+  final List<SelectOptionModel> features = [
+    const SelectOptionModel(
+        icon: RestaurantDefaultIcons.newSale,
+        label: "screens.dashboard.features.newSale",
+        value: "saleTable",
+        extra: AppThemeColors.primary),
+    const SelectOptionModel(
+        icon: RestaurantDefaultIcons.fastSale,
+        label: "screens.dashboard.features.fastSale",
+        value: "sale",
+        extra: AppThemeColors.failure)
   ];
+  final double height = 125.0;
   @override
   Widget build(BuildContext context) {
-    final Orientation orientation = MediaQuery.orientationOf(context);
-    return Expanded(
+    return SizedBox(
+      height: height,
       child: GridView.builder(
           itemCount: features.length,
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               mainAxisSpacing: AppStyleDefaultProperties.h,
               crossAxisSpacing: AppStyleDefaultProperties.w,
-              crossAxisCount: orientation == Orientation.portrait ? 2 : 4),
+              mainAxisExtent: height,
+              crossAxisCount: 2),
           itemBuilder: (context, index) {
             final SelectOptionModel feature = features[index];
             return FeatureItemWidget(
@@ -37,6 +39,7 @@ class FeatureWidget extends StatelessWidget {
               onPressed: () {
                 context.pushNamed(feature.value);
               },
+              bgColor: feature.extra,
             );
           }),
     );

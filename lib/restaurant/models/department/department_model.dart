@@ -8,13 +8,11 @@ class DepartmentModel {
   final String id;
   final String branchId;
   final String name;
-  @JsonKey(disallowNullValue: true)
   final bool? isolateInvoice;
   @JsonKey(disallowNullValue: true)
   final List<String>? printerForBill;
   @JsonKey(disallowNullValue: true)
   final List<String>? printerForPayment;
-  @JsonKey(disallowNullValue: true)
   final String? telephone;
   @JsonKey(
       fromJson: DateModelConverter.convertDateTimeForModel,

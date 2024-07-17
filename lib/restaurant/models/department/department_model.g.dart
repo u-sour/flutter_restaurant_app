@@ -11,10 +11,8 @@ DepartmentModel _$DepartmentModelFromJson(Map<String, dynamic> json) {
     json,
     disallowNullValues: const [
       '_id',
-      'isolateInvoice',
       'printerForBill',
       'printerForPayment',
-      'telephone',
       'updatedAt',
       'updatedBy'
     ],
@@ -44,6 +42,7 @@ Map<String, dynamic> _$DepartmentModelToJson(DepartmentModel instance) {
     '_id': instance.id,
     'branchId': instance.branchId,
     'name': instance.name,
+    'isolateInvoice': instance.isolateInvoice,
   };
 
   void writeNotNull(String key, dynamic value) {
@@ -52,10 +51,9 @@ Map<String, dynamic> _$DepartmentModelToJson(DepartmentModel instance) {
     }
   }
 
-  writeNotNull('isolateInvoice', instance.isolateInvoice);
   writeNotNull('printerForBill', instance.printerForBill);
   writeNotNull('printerForPayment', instance.printerForPayment);
-  writeNotNull('telephone', instance.telephone);
+  val['telephone'] = instance.telephone;
   val['createdAt'] =
       DateModelConverter.convertDateTimeForModel(instance.createdAt);
   writeNotNull('updatedAt',

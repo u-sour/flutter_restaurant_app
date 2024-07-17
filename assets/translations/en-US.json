@@ -42,6 +42,30 @@
     },
     "dashboard": {
       "title": "DASHBOARD",
+      "saleInvoiceTabs": {
+        "printed": "Printed",
+        "open": "Open",
+        "partial": "Partial",
+        "closed": "Closed",
+        "canceled": "Canceled"
+      },
+      "saleInvoiceContent": {
+        "card": {
+          "table": "Table: {tableName}",
+          "invoice": "Invoice: {refNo}",
+          "date": "Date: {date}"
+        },
+        "dataTable": {
+          "invoice": "Invoice",
+          "date": "Date",
+          "table": "Table",
+          "status": "Status",
+          "customer": "Customer",
+          "total": "Total",
+          "received": "Received",
+          "actions": "Actions"
+        }
+      },
       "features": {
         "newSale": "New Sale",
         "fastSale": "Fast Sale"

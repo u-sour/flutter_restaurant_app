@@ -42,6 +42,30 @@
     },
     "dashboard": {
       "title": "ផ្ទាំងគ្រប់គ្រង",
+      "saleInvoiceTabs": {
+        "printed": "ព្រីនរួច",
+        "open": "កំពុងលក់",
+        "partial": "ជំពាក់",
+        "closed": "បង់ប្រាក់រួច",
+        "canceled": "បោះបង់"
+      },
+      "saleInvoiceContent": {
+        "card": {
+          "table": "តុ: {tableName}",
+          "invoice": "វិក្កយបត្រ: {refNo}",
+          "date": "កាលបរិច្ឆេទ: {date}"
+        },
+        "dataTable": {
+          "invoice": "វិក្កយបត្រ",
+          "date": "កាលបរិច្ឆេទ",
+          "table": "តុ",
+          "status": "ស្ថានភាព",
+          "customer": "អតិថិជន",
+          "total": "សរុប",
+          "received": "ប្រាក់បានទទួល",
+          "actions": "សកម្មភាព"
+        }
+      },
       "features": {
         "newSale": "លក់ថ្មី",
         "fastSale": "លក់លឿន"

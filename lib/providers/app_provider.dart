@@ -3,6 +3,7 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../restaurant/models/branch/branch_model.dart';
+import '../restaurant/models/company/company_accounting_model.dart';
 import '../restaurant/models/company/company_model.dart';
 import '../restaurant/models/department/department_model.dart';
 import '../restaurant/models/sale/setting/sale_setting_model.dart';
@@ -24,6 +25,8 @@ class AppProvider extends ChangeNotifier {
   SubscriptionHandler get subCompanyHandler => _subCompanyHandler;
   late List<CompanyModel> _company;
   List<CompanyModel> get company => _company;
+  late CompanyAccountingModel _companyAccounting;
+  CompanyAccountingModel get companyAccounting => _companyAccounting;
 
   // Sale Settings Subscription
   SubscriptionHandler? _subSaleSettingsHandler;
@@ -42,6 +45,9 @@ class AppProvider extends ChangeNotifier {
   // Department Subscription
   late SubscriptionHandler? _subDepartmentHandler;
   SubscriptionHandler? get subDepartmentHandler => _subDepartmentHandler;
+  late StreamSubscription<Map<String, dynamic>> _departmentListener;
+  StreamSubscription<Map<String, dynamic>> get departmentListener =>
+      _departmentListener;
   List<DepartmentModel> _departments = [];
   List<DepartmentModel> get departments => _departments;
   DepartmentModel? _selectedDepartment;
@@ -101,9 +107,11 @@ class AppProvider extends ChangeNotifier {
           if (currentUserDoc != null) {
             // convert from map to user model
             _currentUser = UserModel.fromJson(currentUserDoc);
-            startSubscribeBranch(_currentUser!);
+            startSubscribeBranch(currentUser!);
+            startSubscribeSaleSettings();
+            startSubscribeDepartment();
+            notifyListeners();
           }
-          notifyListeners();
         });
       }
       notifyListeners();
@@ -130,42 +138,51 @@ class AppProvider extends ChangeNotifier {
     }
 
     // Keep listening to company collection from server
-    _subCompanyHandler = meteor.subscribe('app.company', args: [], onReady: () {
+    _subCompanyHandler = meteor.subscribe('app.company', onReady: () {
       meteor.collection('company').listen((result) {
-        List<CompanyModel> toListModel = result.values
-            .toList()
-            .map((e) => CompanyModel.fromJson(e))
-            .toList();
-        _company = toListModel;
-        notifyListeners();
-      });
-    });
-  }
-
-  void startSubscribeSaleSettings(String branchId) {
-    // Keep listening to sale setting collection from server
-    Map<String, dynamic> saleSettingsSelector = {"branchId": branchId};
-    _subSaleSettingsHandler = meteor
-        .subscribe('saleSetting', args: [saleSettingsSelector], onReady: () {
-      meteor.collection('rest_saleSettings').listen((result) {
-        if (result.values.toList().isNotEmpty) {
-          SaleSettingModel toListModel =
-              SaleSettingModel.fromJson(result.values.first);
-          _saleSetting = toListModel;
+        if (result.isNotEmpty) {
+          List<CompanyModel> toListModel = result.values
+              .toList()
+              .map((e) => CompanyModel.fromJson(e))
+              .toList();
+          _company = toListModel;
+          _companyAccounting = toListModel.first.accounting;
         }
         notifyListeners();
       });
     });
   }
 
-  void startSubscribeBranch(UserModel currentUserDoc) {
+  void startSubscribeSaleSettings() {
+    // Keep listening to sale setting collection from server
+    _subSaleSettingsHandler = meteor.subscribe('saleSetting', onReady: () {
+      meteor.collection('rest_saleSettings').listen((result) {
+        if (result.isNotEmpty && _selectedBranch != null) {
+          getSaleSetting(branchId: _selectedBranch!.id);
+        }
+      });
+    });
+  }
+
+  void getSaleSetting({required String branchId}) async {
+    Map<String, dynamic> selector = {"branchId": branchId};
+    Map<String, dynamic> result =
+        await meteor.call('rest.findSaleSetting', args: [
+      {'selector': selector}
+    ]);
+    SaleSettingModel toListModel = SaleSettingModel.fromJson(result);
+    // set sale setting state
+    _saleSetting = toListModel;
+    notifyListeners();
+  }
+
+  void startSubscribeBranch(UserModel currentUser) {
     // Keep listening to branch collection from server
     Map<String, dynamic> branchSelector = {"status": "Active"};
 
     // check current user isn't role 'super'
     if (!UserService.userInRole(roles: 'super', overpower: false)) {
-      List<dynamic> branchPermissions =
-          currentUserDoc.profile.branchPermissions;
+      List<dynamic> branchPermissions = currentUser.profile.branchPermissions;
       branchSelector['_id'] = {'\$in': branchPermissions};
     }
 
@@ -180,9 +197,6 @@ class AppProvider extends ChangeNotifier {
         if (_branches.isNotEmpty) {
           // set selected branches
           _selectedBranch = branches.first;
-          startSubscribeSaleSettings(_branches.first.id);
-          startSubscribeDepartment(
-              currentUserDoc: currentUserDoc, branchId: _branches.first.id);
         }
         notifyListeners();
       });
@@ -191,41 +205,51 @@ class AppProvider extends ChangeNotifier {
 
   void setBranch({required BranchModel branch}) {
     _selectedBranch = branch;
-    startSubscribeSaleSettings(branch.id);
+    getSaleSetting(branchId: branch.id);
+    if (_currentUser != null) {
+      getDepartment(currentUser: _currentUser!, branchId: branch.id);
+    }
     notifyListeners();
   }
 
-  void startSubscribeDepartment(
-      {required UserModel currentUserDoc, required String branchId}) {
+  void startSubscribeDepartment() {
     // Keep listening to branch collection from server
-    Map<String, dynamic> selector = {};
+    // subscribe department
+    _subDepartmentHandler = meteor.subscribe('rest.department', onReady: () {
+      meteor.collection('rest_departments').listen((result) {
+        if (result.isNotEmpty &&
+            _currentUser != null &&
+            _selectedBranch != null) {
+          getDepartment(
+              currentUser: _currentUser!, branchId: _selectedBranch!.id);
+        }
+      });
+    });
+  }
 
+  void getDepartment(
+      {required UserModel currentUser, required String branchId}) async {
+    Map<String, dynamic> selector = {};
     // check current user is role 'super'
     if (UserService.userInRole(roles: 'super', overpower: false)) {
       selector['branchId'] = branchId;
     } else {
-      List<dynamic> depIds = currentUserDoc.profile.depIds;
+      List<dynamic> depIds = currentUser.profile.depIds;
       selector['branchId'] = branchId;
       selector['_id'] = {'\$in': depIds};
     }
-
-    // subscribe department
-    _subDepartmentHandler =
-        meteor.subscribe('rest.department', args: [selector], onReady: () {
-      meteor.collection('rest_departments').listen((result) {
-        List<DepartmentModel> toListModel = result.values
-            .toList()
-            .map((e) => DepartmentModel.fromJson(e))
-            .toList();
-        //set departments state
-        _departments = toListModel;
-        if (_departments.isNotEmpty) {
-          // set selected department
-          _selectedDepartment = _departments.first;
-        }
-        notifyListeners();
-      });
-    });
+    List<dynamic> result = await meteor.call('rest.findDepartments', args: [
+      {'selector': selector}
+    ]);
+    List<DepartmentModel> toListModel =
+        result.map((d) => DepartmentModel.fromJson(d)).toList();
+    // set departments state
+    _departments = toListModel;
+    if (_departments.isNotEmpty) {
+      // set selected department
+      _selectedDepartment = _departments.first;
+    }
+    notifyListeners();
   }
 
   void setDepartment({required DepartmentModel department}) {

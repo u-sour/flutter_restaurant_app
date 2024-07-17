@@ -1,5 +1,4 @@
 import 'package:circular_profile_avatar/circular_profile_avatar.dart';
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../models/widgets/avatar_initial_widget_model.dart';
 import '../models/widgets/avatar_menu_widget_model.dart';
