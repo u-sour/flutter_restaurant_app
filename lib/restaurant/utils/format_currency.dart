@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class FormatCurrency {
-  String format(
+  static String format(
       {required dynamic value,
       required String baseCurrency,
       required int decimalNumber}) {
@@ -14,7 +14,7 @@ class FormatCurrency {
     return numberFormat.format(value);
   }
 
-  String getBaseCurrencySymbol({required String baseCurrency}) {
+  static String getBaseCurrencySymbol({required String baseCurrency}) {
     String symbol = "";
     switch (baseCurrency) {
       case "USD":
@@ -32,7 +32,7 @@ class FormatCurrency {
     return symbol;
   }
 
-  String getLocaleByBaseCurrency({required String baseCurrency}) {
+  static String getLocaleByBaseCurrency({required String baseCurrency}) {
     String locale = "";
     switch (baseCurrency) {
       case "USD":

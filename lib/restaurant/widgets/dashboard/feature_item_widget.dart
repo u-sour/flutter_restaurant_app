@@ -6,13 +6,22 @@ class FeatureItemWidget extends StatelessWidget {
   final String label;
   final IconData icon;
   final void Function()? onPressed;
-  const FeatureItemWidget(
-      {super.key, required this.label, required this.icon, this.onPressed});
+  final Color bgColor;
+  const FeatureItemWidget({
+    super.key,
+    required this.label,
+    required this.icon,
+    this.onPressed,
+    required this.bgColor,
+  });
 
   @override
   Widget build(BuildContext context) {
+    final ThemeData theme = Theme.of(context);
     return FilledButton(
       onPressed: onPressed,
+      style: theme.filledButtonTheme.style
+          ?.copyWith(backgroundColor: WidgetStateProperty.all(bgColor)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [

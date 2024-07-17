@@ -76,7 +76,7 @@ class SaleProductItemWidget extends StatelessWidget {
                               AppStyleDefaultProperties.r),
                         ),
                         child: Text(
-                          '${FormatCurrency().format(value: 5000000, baseCurrency: baseCurrency, decimalNumber: decimalNumber)} ${FormatCurrency().getBaseCurrencySymbol(baseCurrency: baseCurrency)}',
+                          '${FormatCurrency.format(value: 5000000, baseCurrency: baseCurrency, decimalNumber: decimalNumber)} ${FormatCurrency.getBaseCurrencySymbol(baseCurrency: baseCurrency)}',
                           style: theme.textTheme.bodyLarge!.copyWith(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,

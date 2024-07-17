@@ -1,12 +1,12 @@
 import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/services/global_service.dart';
-import 'package:flutter_template/widgets/connection/setup_ip_address_form_widget.dart';
 import 'package:provider/provider.dart';
 import '../providers/app_provider.dart';
 import '../providers/login_form_provider.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
+import '../widgets/connection/setup_ip_address_form_widget.dart';
 import '../widgets/language/toggle_language_widget.dart';
 import '../widgets/login/login_brand_widget.dart';
 import '../widgets/login/login_form_widget.dart';
@@ -77,7 +77,7 @@ class _LogInScreenState extends State<LogInScreen> {
             padding: const EdgeInsets.all(8.0),
             child: const ToggleSwitchThemeWidget(),
           ),
-          const SizedBox(width: 48.0, child: ToggleLanguageWidget()),
+          const SizedBox(width: 58.0, child: ToggleLanguageWidget()),
           IconButton.filled(
             onPressed: () => GlobalService.openDialog(
                 contentWidget: const SetupIpAddressFormWidget(),
