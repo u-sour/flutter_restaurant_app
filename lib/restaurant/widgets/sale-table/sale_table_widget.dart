@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
+import '../../models/sale-table/table_model.dart';
 import 'table_status_info.dart';
 import 'table_widget.dart';
 
 class SaleTableWidget extends StatelessWidget {
-  const SaleTableWidget({super.key});
+  final List<TableModel> tables;
+  const SaleTableWidget({super.key, required this.tables});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +17,7 @@ class SaleTableWidget extends StatelessWidget {
     } else if (ResponsiveLayout.isTablet(context)) {
       crossAxisCount = 4;
     } else {
-      crossAxisCount = 8;
+      crossAxisCount = 6;
     }
     return Column(
       children: [
@@ -27,18 +29,20 @@ class SaleTableWidget extends StatelessWidget {
                 right: AppStyleDefaultProperties.p,
                 bottom: AppStyleDefaultProperties.p,
               ),
-              itemCount: 100,
+              itemCount: tables.length,
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                   mainAxisSpacing: AppStyleDefaultProperties.h,
                   crossAxisSpacing: AppStyleDefaultProperties.w,
                   mainAxisExtent: 120.0,
                   crossAxisCount: crossAxisCount),
               itemBuilder: (context, index) {
+                final table = tables[index];
                 return TableWidget(
                   key: UniqueKey(),
-                  countCustomer: 0,
-                  maxChair: 5,
-                  name: 'Table - $index',
+                  currentGuestCountFromSale: table.currentGuestCount ?? 0,
+                  maxChair: table.numOfGuest,
+                  name: table.label,
+                  status: table.status ?? '',
                   onTap: () {},
                 );
               }),

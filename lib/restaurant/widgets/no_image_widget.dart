@@ -28,7 +28,6 @@ class NoImageWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(height: AppStyleDefaultProperties.h),
             Icon(icon,
                 color: iconColor ?? theme.iconTheme.color, size: iconSize),
             Padding(

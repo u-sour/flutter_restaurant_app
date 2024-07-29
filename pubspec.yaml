@@ -42,7 +42,7 @@ dependencies:
   easy_localization: ^3.0.7
   flutter_form_builder: ^9.3.0
   form_builder_extra_fields: ^10.2.0
-  form_builder_validators: ^10.0.1
+  form_builder_validators: ^11.0.0
   animated_toggle_switch: ^0.8.2
   google_nav_bar: ^5.0.6
   animate_do: ^3.3.4

@@ -1,27 +1,38 @@
 import 'package:flutter/material.dart';
-import '../../../utils/constants.dart';
 import '../../utils/constants.dart';
 import '../Icon_with_text_widget.dart';
 
 class TableWidget extends StatelessWidget {
-  final int countCustomer;
+  final int currentGuestCountFromSale;
   final int maxChair;
   final String name;
+  final String status;
   final Function()? onTap;
   const TableWidget(
       {super.key,
-      required this.countCustomer,
+      required this.currentGuestCountFromSale,
       required this.maxChair,
       required this.name,
+      required this.status,
       this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    late Color tableColorByStatus;
+    if (status == 'closed') {
+      tableColorByStatus = RestaurantTableStatusColors.closed;
+    } else if (status == 'isPrintBill') {
+      tableColorByStatus = RestaurantTableStatusColors.isPrintBill;
+    } else if (status == 'busy') {
+      tableColorByStatus = RestaurantTableStatusColors.busy;
+    } else {
+      tableColorByStatus = RestaurantTableStatusColors.open;
+    }
     return InkWell(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-            border: Border.all(color: AppThemeColors.primary),
+            border: Border.all(color: tableColorByStatus),
             borderRadius: BorderRadius.circular(8.0)),
         child: Column(
           children: [
@@ -35,13 +46,13 @@ class TableWidget extends StatelessWidget {
                         topRight: Radius.circular(4.0)),
                     child: Container(
                         padding: const EdgeInsets.all(8.0),
-                        color: AppThemeColors.primary,
+                        color: tableColorByStatus,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconWithTextWidget(
                                 icon: RestaurantDefaultIcons.customer,
-                                data: '$countCustomer'),
+                                data: '$currentGuestCountFromSale'),
                             IconWithTextWidget(
                                 icon: RestaurantDefaultIcons.chair,
                                 data: '$maxChair'),

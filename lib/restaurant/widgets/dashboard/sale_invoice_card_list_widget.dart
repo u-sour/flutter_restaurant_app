@@ -6,7 +6,7 @@ import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../models/company/company_accounting_model.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
-import '../../utils/format_currency.dart';
+import '../price_widget.dart';
 
 class SaleInvoiceCardListWidget extends StatelessWidget {
   final SaleInvoiceDataModel data;
@@ -69,19 +69,20 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
                     ?.copyWith(overflow: TextOverflow.ellipsis)),
             const SizedBox(height: AppStyleDefaultProperties.h),
             FilledButton(
-                onPressed: () {},
-                style: theme.filledButtonTheme.style?.copyWith(
-                    backgroundColor: WidgetStateProperty.all(cardColor),
-                    padding: WidgetStateProperty.all(const EdgeInsets.all(
-                        AppStyleDefaultProperties.bp / 2))),
-                child: Selector<AppProvider, CompanyAccountingModel>(
-                  selector: (context, state) => state.companyAccounting,
-                  builder: (context, companyAccounting, child) => Text(
-                    '${FormatCurrency.format(value: data.total, baseCurrency: companyAccounting.baseCurrency, decimalNumber: companyAccounting.decimalNumber)} ${FormatCurrency.getBaseCurrencySymbol(baseCurrency: companyAccounting.baseCurrency)}',
-                    style: theme.textTheme.titleLarge?.copyWith(
-                        color: theme.canvasColor, fontWeight: FontWeight.bold),
-                  ),
-                ))
+              onPressed: () {},
+              style: theme.filledButtonTheme.style?.copyWith(
+                  backgroundColor: WidgetStateProperty.all(cardColor),
+                  padding: WidgetStateProperty.all(
+                      const EdgeInsets.all(AppStyleDefaultProperties.bp / 3))),
+              child: Selector<AppProvider, CompanyAccountingModel>(
+                selector: (context, state) => state.companyAccounting,
+                builder: (context, companyAccounting, child) => PriceWidget(
+                  price: data.total,
+                  priceFontSize: 20.0,
+                  baseCurrencyFontSize: 24.0,
+                ),
+              ),
+            )
           ],
         ),
       ),

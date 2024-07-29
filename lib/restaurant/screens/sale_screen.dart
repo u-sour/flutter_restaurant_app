@@ -3,6 +3,8 @@ import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../utils/constants.dart';
 import '../../utils/responsive/responsive_layout.dart';
+import '../providers/sale/categories/sale_categories_provider.dart';
+import '../providers/sale/products/sale_products_provider.dart';
 import '../providers/sale/sale_provider.dart';
 import '../widgets/sale/app-bar/sale_app_bar_widget.dart';
 import '../widgets/sale/category/sale_category_widget.dart';
@@ -18,12 +20,30 @@ class SaleScreen extends StatefulWidget {
 
 class _SaleScreenState extends State<SaleScreen> {
   final PanelController _salePC = PanelController();
-  late SaleProvider readProvider =
-      Provider.of<SaleProvider>(context, listen: false);
+  late SaleProvider _readSaleProvider;
+  late SaleCategoriesProvider _readSaleCategoriesProvider;
+  late SaleProductsProvider _readSaleProductsProvider;
   @override
   void initState() {
     super.initState();
-    readProvider.initData();
+    _readSaleProvider = context.read<SaleProvider>();
+    _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
+    _readSaleProductsProvider = context.read<SaleProductsProvider>();
+    _readSaleProvider.initData();
+    // init categories
+    _readSaleCategoriesProvider.initData(context: context);
+    // init products
+    int skip = _readSaleProductsProvider.skip;
+    int limit = _readSaleProductsProvider.limit;
+    _readSaleProductsProvider.initData(
+        context: context, skip: skip, limit: limit);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _readSaleCategoriesProvider.clearState();
+    _readSaleProductsProvider.clearState();
   }
 
   @override
@@ -76,7 +96,7 @@ class _SaleScreenState extends State<SaleScreen> {
             width: 200.0,
             child: Padding(
               padding: EdgeInsets.only(
-                  top: AppStyleDefaultProperties.p,
+                  top: AppStyleDefaultProperties.p / 1.5,
                   left: AppStyleDefaultProperties.p),
               child: SaleCategoryWidget(),
             )),

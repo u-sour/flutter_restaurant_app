@@ -15,13 +15,26 @@ class TableStatusInfo extends StatelessWidget {
         children: [
           IconWithTextWidget(
               icon: RestaurantDefaultIcons.tableStatus,
-              iconColor: AppThemeColors.primary,
-              data: '$prefixTableStatus.free'.tr()),
-          const SizedBox(width: 8.0),
+              iconColor: RestaurantTableStatusColors.open,
+              data: context.tr('$prefixTableStatus.free')),
+          const SizedBox(width: AppStyleDefaultProperties.w),
           IconWithTextWidget(
-              icon: RestaurantDefaultIcons.tableStatus,
-              iconColor: AppThemeColors.warning,
-              data: '$prefixTableStatus.busy'.tr())
+            icon: RestaurantDefaultIcons.tableStatus,
+            iconColor: RestaurantTableStatusColors.busy,
+            data: context.tr('$prefixTableStatus.busy'),
+          ),
+          const SizedBox(width: AppStyleDefaultProperties.w),
+          IconWithTextWidget(
+            icon: RestaurantDefaultIcons.tableStatus,
+            iconColor: RestaurantTableStatusColors.isPrintBill,
+            data: context.tr('$prefixTableStatus.isPrintBill'),
+          ),
+          const SizedBox(width: AppStyleDefaultProperties.w),
+          IconWithTextWidget(
+            icon: RestaurantDefaultIcons.tableStatus,
+            iconColor: RestaurantTableStatusColors.closed,
+            data: context.tr('$prefixTableStatus.closed'),
+          )
         ],
       ),
     );

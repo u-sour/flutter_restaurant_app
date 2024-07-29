@@ -73,9 +73,12 @@
     },
     "saleTable": {
       "title": "RESTAURANT MANAGEMENT SYSTEM",
+      "tab": { "all": "All" },
       "tableStatus": {
         "free": "FREE",
-        "busy": "BUSY"
+        "busy": "BUSY",
+        "isPrintBill": "PRINTED BILL",
+        "closed": "REQUEST PAYMENT"
       }
     },
     "sale": {
@@ -243,7 +246,11 @@
     }
   },
   "noImage": "No Image Available",
-  "emptyDataTable": { "description": "No Data" },
+  "emptyData": { "description": "No Data" },
+  "loading": {
+    "title": "Wait a minute!",
+    "description": "Application is processing."
+  },
   "alert": {
     "success": {
       "title": "Success",

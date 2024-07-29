@@ -9,6 +9,7 @@ import '../restaurant/models/department/department_model.dart';
 import '../restaurant/models/sale/setting/sale_setting_model.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/services/user_service.dart';
+import '../restaurant/utils/debounce.dart';
 import '../screens/app_screen.dart';
 import '../storages/auth_storage.dart';
 
@@ -155,10 +156,14 @@ class AppProvider extends ChangeNotifier {
 
   void startSubscribeSaleSettings() {
     // Keep listening to sale setting collection from server
+    final debounce = Debounce(delay: const Duration(milliseconds: 800));
     _subSaleSettingsHandler = meteor.subscribe('saleSetting', onReady: () {
       meteor.collection('rest_saleSettings').listen((result) {
         if (result.isNotEmpty && _selectedBranch != null) {
-          getSaleSetting(branchId: _selectedBranch!.id);
+          //  call method only 1 time when sale settings data updated
+          debounce.run(() {
+            getSaleSetting(branchId: _selectedBranch!.id);
+          });
         }
       });
     });
@@ -214,14 +219,18 @@ class AppProvider extends ChangeNotifier {
 
   void startSubscribeDepartment() {
     // Keep listening to branch collection from server
+    final debounce = Debounce(delay: const Duration(milliseconds: 800));
     // subscribe department
     _subDepartmentHandler = meteor.subscribe('rest.department', onReady: () {
       meteor.collection('rest_departments').listen((result) {
         if (result.isNotEmpty &&
             _currentUser != null &&
             _selectedBranch != null) {
-          getDepartment(
-              currentUser: _currentUser!, branchId: _selectedBranch!.id);
+          //  call method only 1 time when department data updated
+          debounce.run(() {
+            getDepartment(
+                currentUser: _currentUser!, branchId: _selectedBranch!.id);
+          });
         }
       });
     });
