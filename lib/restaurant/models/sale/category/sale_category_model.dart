@@ -1,10 +1,23 @@
-import 'package:flutter_template/models/select-option/select_option_model.dart';
+import 'package:json_annotation/json_annotation.dart';
+part 'sale_category_model.g.dart';
 
+@JsonSerializable(explicitToJson: true)
 class SaleCategoryModel {
-  final SelectOptionModel parent;
-  final List<SaleCategoryModel> children;
+  @JsonKey(name: '_id', disallowNullValue: true)
+  final String id;
+  final String name;
+  final int level;
+  @JsonKey(disallowNullValue: true)
+  final List<SaleCategoryModel>? children;
+
   const SaleCategoryModel({
-    required this.parent,
-    this.children = const [],
+    required this.id,
+    required this.name,
+    required this.level,
+    this.children,
   });
+
+  factory SaleCategoryModel.fromJson(Map<String, dynamic> json) =>
+      _$SaleCategoryModelFromJson(json);
+  Map<String, dynamic> toJson() => _$SaleCategoryModelToJson(this);
 }

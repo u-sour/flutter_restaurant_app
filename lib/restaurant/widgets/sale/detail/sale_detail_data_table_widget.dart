@@ -10,7 +10,7 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../empty_data_table_widget.dart';
+import '../../empty_data_widget.dart';
 import 'edit_sale_detail_data_table_row_widget.dart';
 
 class SaleDetailDataTableWidget extends StatelessWidget {
@@ -53,7 +53,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
           minWidth: minWidth,
           headingTextStyle:
               theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
-          empty: const EmptyDataTableWidget(),
+          empty: const EmptyDataWidget(),
           onSelectAll: (isSelectAllRows) {
             readProvider.selectAllRows(isSelectAllRows ?? false);
           },

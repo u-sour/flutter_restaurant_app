@@ -1,23 +1,24 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/utils/constants.dart';
-
 import '../../utils/constants.dart';
+import '../utils/constants.dart';
 
-class EmptyDataTableWidget extends StatelessWidget {
+class EmptyDataWidget extends StatelessWidget {
   final IconData icon;
   final double iconSize;
   final String description;
-  const EmptyDataTableWidget(
+  final MainAxisAlignment mainAxisAlignment;
+  const EmptyDataWidget(
       {super.key,
       this.icon = RestaurantDefaultIcons.emptyData,
       this.iconSize = AppStyleDefaultProperties.h * 3,
-      this.description = "emptyDataTable.description"});
+      this.description = "emptyData.description",
+      this.mainAxisAlignment = MainAxisAlignment.center});
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: mainAxisAlignment,
       children: [
         Icon(icon, size: iconSize),
         Text(description).tr(),

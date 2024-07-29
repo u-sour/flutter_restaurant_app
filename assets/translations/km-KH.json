@@ -73,9 +73,12 @@
     },
     "saleTable": {
       "title": "ប្រព័ន្ធគ្រប់គ្រងភោជនីយដ្ឋាន",
+      "tab": { "all": "ទាំងអស់" },
       "tableStatus": {
         "free": "ទំនេរ",
-        "busy": "រវល់"
+        "busy": "រវល់",
+        "isPrintBill": "បានព្រីនវិក្កយបត្រ",
+        "closed": "ស្នើសុំការបង់ប្រាក់"
       }
     },
     "sale": {
@@ -239,7 +242,11 @@
     }
   },
   "noImage": "មិនមានរូបភាពទេ",
-  "emptyDataTable": { "description": "គ្មាន​ទិន្នន័យ" },
+  "emptyData": { "description": "គ្មាន​ទិន្នន័យ" },
+  "loading": {
+    "title": "ចាំ​បន្តិច!",
+    "description": "កម្មវិធីកំពុងដំណើរការ។"
+  },
   "alert": {
     "success": {
       "title": "ជោគជ័យ",

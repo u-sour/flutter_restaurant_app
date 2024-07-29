@@ -2,12 +2,16 @@ import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/printer_provider.dart';
 import '../providers/setting_provider.dart';
 import '../restaurant/providers/dashboard/dashboard_provider.dart';
+import '../restaurant/providers/sale-table/sale_table_provider.dart';
+import '../restaurant/providers/sale/categories/sale_categories_provider.dart';
+import '../restaurant/providers/sale/products/sale_products_provider.dart';
 import '../restaurant/providers/sale/sale_provider.dart';
 import '../router/app_router.dart';
 import '../providers/app_provider.dart';
@@ -44,7 +48,10 @@ class _AppScreenState extends State<AppScreen> {
   late SettingProvider settingProvider;
   late PrinterProvider printerProvider;
   late DashboardProvider dashboardProvider;
+  late SaleCategoriesProvider saleCategoriesProvider;
+  late SaleProductsProvider saleProductsProvider;
   late SaleProvider saleProvider;
+  late SaleTableProvider saleTableProvider;
 
   @override
   void initState() {
@@ -58,7 +65,10 @@ class _AppScreenState extends State<AppScreen> {
     settingProvider = SettingProvider();
     printerProvider = PrinterProvider();
     dashboardProvider = DashboardProvider();
+    saleCategoriesProvider = SaleCategoriesProvider();
+    saleProductsProvider = SaleProductsProvider();
     saleProvider = SaleProvider();
+    saleTableProvider = SaleTableProvider();
     super.initState();
   }
 
@@ -103,7 +113,13 @@ class _AppScreenState extends State<AppScreen> {
         ChangeNotifierProvider<PrinterProvider>(create: (_) => printerProvider),
         ChangeNotifierProvider<DashboardProvider>(
             create: (_) => dashboardProvider),
-        ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider)
+        ChangeNotifierProvider<SaleCategoriesProvider>(
+            create: (_) => saleCategoriesProvider),
+        ChangeNotifierProvider<SaleProductsProvider>(
+            create: (_) => saleProductsProvider),
+        ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider),
+        ChangeNotifierProvider<SaleTableProvider>(
+            create: (_) => saleTableProvider)
       ],
       child: Builder(
         builder: (context) {
@@ -112,7 +128,10 @@ class _AppScreenState extends State<AppScreen> {
             return MaterialApp.router(
               supportedLocales: context.supportedLocales,
               locale: context.locale,
-              localizationsDelegates: context.localizationDelegates,
+              localizationsDelegates: [
+                ...context.localizationDelegates,
+                FormBuilderLocalizations.delegate,
+              ],
               title: "Flutter Template",
               debugShowCheckedModeBanner: false,
               theme: AppTheme.lightTheme,

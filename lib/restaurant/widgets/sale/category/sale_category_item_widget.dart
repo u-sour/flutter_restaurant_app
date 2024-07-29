@@ -21,7 +21,7 @@ class SaleCategoryItemWidget extends StatelessWidget {
         label: Row(
           children: [
             Text(
-              category.parent.label,
+              category.name,
               style: theme.textTheme.bodyLarge,
               overflow: TextOverflow.ellipsis,
             )
