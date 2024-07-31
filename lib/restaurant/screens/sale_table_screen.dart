@@ -5,10 +5,12 @@ import 'package:flutter_template/restaurant/utils/map_index.dart';
 import 'package:provider/provider.dart';
 import '../../providers/app_provider.dart';
 import '../../router/route_utils.dart';
+import '../../utils/constants.dart';
 import '../../widgets/app_bar_widget.dart';
 import '../models/sale-table/floor_model.dart';
 import '../models/sale-table/table_model.dart';
 import '../providers/sale-table/sale_table_provider.dart';
+import '../widgets/department_widget.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/sale-table/sale_table_widget.dart';
 
@@ -52,6 +54,13 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
         body: SafeArea(
           child: Column(
             children: [
+              const Padding(
+                padding: EdgeInsets.all(AppStyleDefaultProperties.p),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [DepartmentWidget()],
+                ),
+              ),
               Expanded(
                 child: Selector<SaleTableProvider,
                     ({List<FloorModel> floors, List<TableModel> tables})>(

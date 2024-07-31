@@ -159,7 +159,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                       index: index,
                                       duration:
                                           const Duration(milliseconds: 500),
-                                      curve: Curves.easeOutCubic);
+                                      curve: Curves.easeIn);
                                 },
                                 style: TextButton.styleFrom(
                                     textStyle: theme.textTheme.bodyMedium!
@@ -211,8 +211,10 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                               selectedCategories.length > 1) {
                             _breadcrumbScrollController.scrollTo(
                                 index: selectedCategories.length,
+                                alignment:
+                                    -selectedCategories.length.toDouble(),
                                 duration: const Duration(milliseconds: 500),
-                                curve: Curves.easeInCubic);
+                                curve: Curves.easeInOut);
                           }
                         },
                       );

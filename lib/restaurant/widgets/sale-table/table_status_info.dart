@@ -1,4 +1,3 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 import '../../utils/constants.dart';
@@ -11,31 +10,34 @@ class TableStatusInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-      child: Row(
-        children: [
-          IconWithTextWidget(
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            IconWithTextWidget(
+                icon: RestaurantDefaultIcons.tableStatus,
+                iconColor: RestaurantTableStatusColors.open,
+                text: '$prefixTableStatus.free'),
+            const SizedBox(width: AppStyleDefaultProperties.w),
+            IconWithTextWidget(
               icon: RestaurantDefaultIcons.tableStatus,
-              iconColor: RestaurantTableStatusColors.open,
-              data: context.tr('$prefixTableStatus.free')),
-          const SizedBox(width: AppStyleDefaultProperties.w),
-          IconWithTextWidget(
-            icon: RestaurantDefaultIcons.tableStatus,
-            iconColor: RestaurantTableStatusColors.busy,
-            data: context.tr('$prefixTableStatus.busy'),
-          ),
-          const SizedBox(width: AppStyleDefaultProperties.w),
-          IconWithTextWidget(
-            icon: RestaurantDefaultIcons.tableStatus,
-            iconColor: RestaurantTableStatusColors.isPrintBill,
-            data: context.tr('$prefixTableStatus.isPrintBill'),
-          ),
-          const SizedBox(width: AppStyleDefaultProperties.w),
-          IconWithTextWidget(
-            icon: RestaurantDefaultIcons.tableStatus,
-            iconColor: RestaurantTableStatusColors.closed,
-            data: context.tr('$prefixTableStatus.closed'),
-          )
-        ],
+              iconColor: RestaurantTableStatusColors.busy,
+              text: '$prefixTableStatus.busy',
+            ),
+            const SizedBox(width: AppStyleDefaultProperties.w),
+            IconWithTextWidget(
+              icon: RestaurantDefaultIcons.tableStatus,
+              iconColor: RestaurantTableStatusColors.isPrintBill,
+              text: '$prefixTableStatus.isPrintBill',
+            ),
+            const SizedBox(width: AppStyleDefaultProperties.w),
+            IconWithTextWidget(
+              icon: RestaurantDefaultIcons.tableStatus,
+              iconColor: RestaurantTableStatusColors.closed,
+              text: '$prefixTableStatus.closed',
+            )
+          ],
+        ),
       ),
     );
   }

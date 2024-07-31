@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/app_provider.dart';
@@ -17,11 +16,8 @@ class SaleProductsProvider extends ChangeNotifier {
   String get ipAddress => _ipAddress;
   List<SaleProductGroupModel> _productGroup = [];
   List<SaleProductGroupModel> get productGroup => _productGroup;
-  Stream<List<SaleProductModel>>? _productsStream;
-  Stream<List<SaleProductModel>>? get productsStream => _productsStream;
   List<SaleProductModel> _products = [];
   List<SaleProductModel> get products => [..._products];
-  late StreamController<List<SaleProductModel>> _productsStreamController;
   late int _productCount;
   String _search = '';
   String _productGroupId = '';
@@ -36,6 +32,9 @@ class SaleProductsProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool _isLoadMore = false;
   bool get isLoadMore => _isLoadMore;
+  // current index of product item when user scrolling
+  int _currentProductIndex = 0;
+  int get currentProductIndex => _currentProductIndex;
 
   Future<void> initData(
       {required BuildContext context,
@@ -46,23 +45,10 @@ class SaleProductsProvider extends ChangeNotifier {
     AppProvider readAppProvider = context.read<AppProvider>();
     _branchId = readAppProvider.selectedBranch!.id;
     _depId = readAppProvider.selectedDepartment!.id;
-
-    _productsStreamController =
-        StreamController<List<SaleProductModel>>.broadcast();
-    _productsStream = _productsStreamController.stream;
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
         branchId: _branchId, depId: _depId, skip: skip, limit: limit);
     _productCount = saleProductsResult.itemCount;
-
-    // check not allow duplicate products when add to _products
-    // for (int i = 0; i < saleProductsResult.items.length; i++) {
-    //   SaleProductModel newProduct = saleProductsResult.items[i];
-    //   if (_products.where((p) => p.id == newProduct.id).isEmpty) {
-    //     _products.add(newProduct);
-    //   }
-    // }
     _products = saleProductsResult.items;
-    _productsStreamController.add(_products);
     _ipAddress = (await ConnectionStorage().getIpAddress())!;
     _isLoading = false;
     notifyListeners();
@@ -189,7 +175,6 @@ class SaleProductsProvider extends ChangeNotifier {
         skip: _skip,
         limit: _limit);
     _products = saleProductsResult.items;
-    _productsStreamController.add(_products);
     notifyListeners();
   }
 
@@ -211,10 +196,14 @@ class SaleProductsProvider extends ChangeNotifier {
           limit: _limit);
       _productCount = saleProductsResult.itemCount;
       _products.addAll(saleProductsResult.items);
-      _productsStreamController.add(_products);
       _isLoadMore = false;
       notifyListeners();
     }
+  }
+
+  void setCurrentProductIndex({required int index}) {
+    _currentProductIndex = index;
+    notifyListeners();
   }
 
   void clearSearchTextFieldAndState() {
@@ -228,12 +217,12 @@ class SaleProductsProvider extends ChangeNotifier {
   void clearState() {
     _productGroup = [];
     _products = [];
-    _productsStreamController.close();
     _searchController.dispose();
     _productGroupId = '';
     _showExtraFood = false;
     _search = '';
     _skip = 0;
     _limit = 25;
+    _currentProductIndex = 0;
   }
 }

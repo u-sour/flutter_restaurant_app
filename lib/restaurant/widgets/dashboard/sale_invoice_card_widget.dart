@@ -12,11 +12,16 @@ class SaleInvoiceCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.orientationOf(context);
     late int crossAxisCount;
     if (ResponsiveLayout.isMobile(context)) {
       crossAxisCount = 2;
-    } else if (ResponsiveLayout.isTablet(context)) {
+    } else if (ResponsiveLayout.isTablet(context) &&
+        orientation == Orientation.portrait) {
       crossAxisCount = 3;
+    } else if (ResponsiveLayout.isTablet(context) &&
+        orientation == Orientation.landscape) {
+      crossAxisCount = 4;
     } else {
       crossAxisCount = 4;
     }

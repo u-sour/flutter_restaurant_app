@@ -19,7 +19,7 @@ class FeatureWidget extends StatelessWidget {
         value: "sale",
         extra: AppThemeColors.failure)
   ];
-  final double height = 125.0;
+  final double height = 100.0;
   @override
   Widget build(BuildContext context) {
     return SizedBox(

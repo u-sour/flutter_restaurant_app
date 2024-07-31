@@ -59,6 +59,7 @@ dependencies:
   dynamic_height_grid_view: ^0.0.4
   data_table_2: ^2.5.15
   scrollable_positioned_list: ^0.3.8
+  visibility_detector: ^0.4.0+2
   sliding_up_panel: ^2.0.0+1
   badges: ^3.1.2
   rotated_corner_decoration: ^2.1.0+1

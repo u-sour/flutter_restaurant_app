@@ -55,14 +55,46 @@ class _SaleScreenState extends State<SaleScreen> {
     if (ResponsiveLayout.isMobile(context)) {
       maxHeight = MediaQuery.sizeOf(context).height * 0.7;
     }
-    Scaffold mobileAndTabletScaffold = Scaffold(
-      appBar: const SaleAppBarWidget(title: ""),
+
+    Scaffold mobileScaffold = Scaffold(
+      appBar: const SaleAppBarWidget(),
       drawer: const Drawer(
         child: Padding(
           padding: EdgeInsets.all(AppStyleDefaultProperties.p),
           child: SaleCategoryWidget(),
         ),
       ),
+      body:
+          // orientation == Orientation.portrait
+          //     ?
+          SlidingUpPanel(
+        color: theme.scaffoldBackgroundColor,
+        controller: _salePC,
+        minHeight: minHeight,
+        maxHeight: maxHeight,
+        backdropEnabled: true,
+        panel: SaleDetailWidget(
+          enableSaleAppBarActionWidget: true,
+          onTap: () {
+            _salePC.isPanelOpen ? _salePC.close() : _salePC.open();
+          },
+        ),
+        body: SaleProductWidget(
+            slidingUpPanelMinHeight: minHeight +
+                AppBar().preferredSize.height +
+                AppStyleDefaultProperties.p / 1.5),
+      ),
+      // : const Row(
+      //     children: [
+      //       Expanded(child: SaleProductWidget()),
+      //       Expanded(child: SaleDetailWidget()),
+      //     ],
+      //   ),
+      resizeToAvoidBottomInset: false,
+    );
+
+    Scaffold tabletScaffold = Scaffold(
+      appBar: const SaleAppBarWidget(),
       body: orientation == Orientation.portrait
           ? SlidingUpPanel(
               color: theme.scaffoldBackgroundColor,
@@ -76,21 +108,42 @@ class _SaleScreenState extends State<SaleScreen> {
                   _salePC.isPanelOpen ? _salePC.close() : _salePC.open();
                 },
               ),
-              body: SaleProductWidget(
-                  slidingUpPanelMinHeight: minHeight +
-                      AppBar().preferredSize.height +
-                      AppStyleDefaultProperties.p / 1.5),
+              body: Row(
+                children: [
+                  const SizedBox(
+                      width: 200.0,
+                      child: Padding(
+                        padding: EdgeInsets.only(
+                            top: AppStyleDefaultProperties.p / 1.5,
+                            left: AppStyleDefaultProperties.p),
+                        child: SaleCategoryWidget(),
+                      )),
+                  Expanded(
+                    child: SaleProductWidget(
+                        slidingUpPanelMinHeight: minHeight +
+                            AppBar().preferredSize.height +
+                            AppStyleDefaultProperties.p / 1.5),
+                  ),
+                ],
+              ),
             )
-          : const Row(
-              children: [
-                Expanded(child: SaleProductWidget()),
-                Expanded(child: SaleDetailWidget()),
-              ],
-            ),
+          : const Row(children: [
+              SizedBox(
+                  width: 200.0,
+                  child: Padding(
+                    padding: EdgeInsets.only(
+                        top: AppStyleDefaultProperties.p / 1.5,
+                        left: AppStyleDefaultProperties.p),
+                    child: SaleCategoryWidget(),
+                  )),
+              Expanded(child: SaleProductWidget()),
+              Expanded(child: SaleDetailWidget()),
+            ]),
       resizeToAvoidBottomInset: false,
     );
+
     const Scaffold desktopScaffold = Scaffold(
-      appBar: SaleAppBarWidget(title: ""),
+      appBar: SaleAppBarWidget(),
       body: Row(children: [
         SizedBox(
             width: 200.0,
@@ -106,8 +159,8 @@ class _SaleScreenState extends State<SaleScreen> {
       resizeToAvoidBottomInset: false,
     );
     return ResponsiveLayout(
-      mobileScaffold: mobileAndTabletScaffold,
-      tabletScaffold: mobileAndTabletScaffold,
+      mobileScaffold: mobileScaffold,
+      tabletScaffold: tabletScaffold,
       desktopScaffold: desktopScaffold,
     );
   }

@@ -5,7 +5,9 @@ import '../models/department/department_model.dart';
 import '../utils/constants.dart';
 
 class DepartmentWidget extends StatelessWidget {
-  const DepartmentWidget({super.key});
+  final bool isPressable;
+  final ButtonStyle? style;
+  const DepartmentWidget({super.key, this.isPressable = true, this.style});
 
   @override
   Widget build(BuildContext context) {
@@ -15,13 +17,16 @@ class DepartmentWidget extends StatelessWidget {
         builder:
             (BuildContext context, MenuController controller, Widget? child) {
           return OutlinedButton.icon(
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
+            onPressed: isPressable
+                ? () {
+                    if (controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                  }
+                : null,
+            style: style,
             icon: const Icon(RestaurantDefaultIcons.department),
             label: Selector<AppProvider, DepartmentModel?>(
                 selector: (context, state) => state.selectedDepartment,
