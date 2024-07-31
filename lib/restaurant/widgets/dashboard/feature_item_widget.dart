@@ -23,14 +23,16 @@ class FeatureItemWidget extends StatelessWidget {
       style: theme.filledButtonTheme.style
           ?.copyWith(backgroundColor: WidgetStateProperty.all(bgColor)),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            context.tr(label),
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22.0),
+          Expanded(
+            child: Text(
+              context.tr(label),
+              style: theme.textTheme.bodyLarge!.copyWith(
+                  color: theme.colorScheme.onPrimary,
+                  fontWeight: FontWeight.bold),
+            ),
           ),
-          const SizedBox(height: AppStyleDefaultProperties.h),
-          Icon(icon, size: 32.0),
+          Expanded(child: Icon(icon)),
         ],
       ),
     );

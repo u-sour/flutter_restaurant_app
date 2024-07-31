@@ -6,8 +6,7 @@ import 'sale_app_bar_navigation_widget.dart';
 import 'sale_app_bar_search_widget.dart';
 
 class SaleAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
-  final String title;
-  const SaleAppBarWidget({super.key, required this.title});
+  const SaleAppBarWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +28,7 @@ class SaleAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         const Expanded(flex: 3, child: SaleAppBarSearchWidget()),
         // Actions
         if (orientation == Orientation.landscape)
-          const Expanded(flex: 4, child: SaleAppBarActionWidget())
+          const Expanded(flex: 3, child: SaleAppBarActionWidget())
       ],
     );
 

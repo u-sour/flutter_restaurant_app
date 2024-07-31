@@ -11,15 +11,21 @@ class SaleTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Orientation orientation = MediaQuery.orientationOf(context);
     late int crossAxisCount;
     if (ResponsiveLayout.isMobile(context)) {
       crossAxisCount = 2;
-    } else if (ResponsiveLayout.isTablet(context)) {
+    } else if (ResponsiveLayout.isTablet(context) &&
+        orientation == Orientation.portrait) {
       crossAxisCount = 4;
+    } else if (ResponsiveLayout.isTablet(context) &&
+        orientation == Orientation.landscape) {
+      crossAxisCount = 5;
     } else {
       crossAxisCount = 6;
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         const TableStatusInfo(),
         Expanded(

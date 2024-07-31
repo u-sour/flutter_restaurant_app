@@ -2,6 +2,8 @@ import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_template/utils/responsive/responsive_layout.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -98,6 +100,13 @@ class _AppScreenState extends State<AppScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // prevent device orientation changes and force portrait on mobile
+    if (ResponsiveLayout.isMobile(context)) {
+      SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+    }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider<AppProvider>(create: (_) => appProvider),

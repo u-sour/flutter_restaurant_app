@@ -13,6 +13,7 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Orientation orientation = MediaQuery.orientationOf(context);
     return Scaffold(
       appBar: AppBarWidget(title: SCREENS.dashboard.toTitle),
       drawer:
@@ -23,10 +24,12 @@ class DashboardScreen extends StatelessWidget {
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
             const Row(
               mainAxisAlignment: MainAxisAlignment.end,
-              children: [DepartmentWidget()],
+              children: [
+                DepartmentWidget(),
+                SizedBox(height: AppStyleDefaultProperties.h),
+              ],
             ),
-            const SizedBox(height: AppStyleDefaultProperties.h),
-            const Expanded(flex: 3, child: SaleInvoiceWidget()),
+            const Expanded(child: SaleInvoiceWidget()),
             const SizedBox(height: AppStyleDefaultProperties.h),
             FeatureWidget(),
           ]),

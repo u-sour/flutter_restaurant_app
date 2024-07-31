@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../utils/constants.dart';
-import '../Icon_with_text_widget.dart';
+import '../icon_with_text_widget.dart';
 
 class TableWidget extends StatelessWidget {
   final int currentGuestCountFromSale;
@@ -52,10 +52,10 @@ class TableWidget extends StatelessWidget {
                           children: [
                             IconWithTextWidget(
                                 icon: RestaurantDefaultIcons.customer,
-                                data: '$currentGuestCountFromSale'),
+                                dynamicText: '$currentGuestCountFromSale'),
                             IconWithTextWidget(
                                 icon: RestaurantDefaultIcons.chair,
-                                data: '$maxChair'),
+                                dynamicText: '$maxChair'),
                           ],
                         )),
                   ),

@@ -1,6 +1,7 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:visibility_detector/visibility_detector.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/sale/product/sale_product_model.dart';
@@ -21,18 +22,20 @@ class SaleProductWidget extends StatefulWidget {
 }
 
 class _SaleProductWidgetState extends State<SaleProductWidget> {
-  final ScrollController _productScrollController = ScrollController();
+  late ScrollController _productScrollController;
   late SaleCategoriesProvider _readSaleCategoriesProvider;
   late SaleProductsProvider _readSaleProductsProvider;
   final Debounce _debounce = Debounce();
   @override
   void initState() {
     super.initState();
+    _productScrollController = ScrollController();
     _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
     _readSaleProductsProvider = context.read<SaleProductsProvider>();
+
     // listen user scrolling to the bottom then load more products
     _productScrollController.addListener(() {
-      if (_productScrollController.position.pixels ==
+      if (_productScrollController.offset ==
           _productScrollController.position.maxScrollExtent) {
         _debounce.run(() async {
           String categoryId =
@@ -57,7 +60,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
     double imageHeight = 150.0;
     // Tablet portrait mode
     if (ResponsiveLayout.isTablet(context)) {
-      crossAxisCount = 4;
+      crossAxisCount = 3;
       imageHeight = 180.0;
     }
     //Tablet landscape mode
@@ -110,12 +113,25 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                     builder: (context, index) {
                                       final SaleProductModel product =
                                           data.products[index];
-                                      return SaleProductItemWidget(
-                                        product: product,
-                                        ipAddress:
-                                            _readSaleProductsProvider.ipAddress,
-                                        imgHeight: imageHeight,
-                                        onTap: () {},
+                                      return VisibilityDetector(
+                                        key: Key(index.toString()),
+                                        onVisibilityChanged: (info) {
+                                          //listen & set current product item index when user scrolling
+                                          if (info.visibleFraction == 1) {
+                                            _debounce.run(() {
+                                              _readSaleProductsProvider
+                                                  .setCurrentProductIndex(
+                                                      index: index);
+                                            });
+                                          }
+                                        },
+                                        child: SaleProductItemWidget(
+                                          product: product,
+                                          ipAddress: _readSaleProductsProvider
+                                              .ipAddress,
+                                          imgHeight: imageHeight,
+                                          onTap: () {},
+                                        ),
                                       );
                                     }),
                               ),
@@ -125,38 +141,6 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                           );
                   }
                 }),
-            // StreamBuilder<List<SaleProductModel>>(
-            //     stream: _readSaleProductsProvider.productsStream,
-            //     builder: (context, snapshot) {
-            //       if (snapshot.hasError) {
-            //         return Text('${snapshot.error}');
-            //       } else {
-            //         if (snapshot.hasData) {
-            //           if (snapshot.connectionState == ConnectionState.waiting) {
-            //             return const LoadingWidget();
-            //           }
-            //           return DynamicHeightGridView(
-            //               key: const PageStorageKey<String>('products'),
-            //               itemCount: snapshot.data!.length,
-            //               crossAxisCount: crossAxisCount,
-            //               crossAxisSpacing: AppStyleDefaultProperties.w,
-            //               mainAxisSpacing: 0.0,
-            //               controller: _productScrollController,
-            //               builder: (context, index) {
-            //                 final SaleProductModel product =
-            //                     snapshot.data![index];
-            //                 return SaleProductItemWidget(
-            //                   product: product,
-            //                   ipAddress: _readSaleProductsProvider.ipAddress,
-            //                   imgHeight: imageHeight,
-            //                   onTap: () {},
-            //                 );
-            //               });
-            //         } else {
-            //           return const Text('no data');
-            //         }
-            //       }
-            //     }),
           ),
           SizedBox(height: widget.slidingUpPanelMinHeight)
         ],

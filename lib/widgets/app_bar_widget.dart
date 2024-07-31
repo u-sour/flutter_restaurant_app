@@ -10,7 +10,7 @@ import '../restaurant/widgets/branch_widget.dart';
 import '../router/route_utils.dart';
 import '../utils/constants.dart';
 import 'avatar_widget.dart';
-import 'toggle_switch_theme_widget.dart';
+// import 'toggle_switch_theme_widget.dart';
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -21,11 +21,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(context.tr(title)),
       actions: [
-        Container(
-          width: 120.0,
-          padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
-          child: const ToggleSwitchThemeWidget(),
-        ),
+        // Container(
+        //   width: 120.0,
+        //   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
+        //   child: const ToggleSwitchThemeWidget(),
+        // ),
         const BranchWidget(),
         Selector<AppProvider, UserModel?>(
             selector: (context, state) => state.currentUser,

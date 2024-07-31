@@ -12,7 +12,6 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Orientation orientation = MediaQuery.orientationOf(context);
     final List<SelectOptionModel> navigation = [
       const SelectOptionModel(
         icon: RestaurantDefaultIcons.table,
@@ -26,11 +25,10 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
       ),
     ];
     // remove categories on desktop mode
-    if (ResponsiveLayout.isDesktop(context)) navigation.removeLast();
+    if (ResponsiveLayout.isDesktop(context) ||
+        ResponsiveLayout.isTablet(context)) navigation.removeLast();
 
-    return ResponsiveLayout.isMobile(context) ||
-            ResponsiveLayout.isTablet(context) &&
-                orientation == Orientation.landscape
+    return ResponsiveLayout.isMobile(context)
         ? MenuAnchor(
             builder: (BuildContext context, MenuController controller,
                 Widget? child) {
@@ -43,7 +41,6 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
                   }
                 },
                 icon: const Icon(Icons.more_horiz),
-                tooltip: 'Back',
               );
             },
             menuChildren: navigation
@@ -55,7 +52,7 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
                         else
                           {context.goNamed(SCREENS.saleTable.toName)}
                       },
-                      child: Text(n.label).tr(),
+                      child: Text(context.tr(n.label)),
                     ))
                 .toList(),
           )
@@ -76,7 +73,7 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
                           children: [
                             IconWithTextWidget(
                               icon: navigation[i].icon!,
-                              data: navigation[i].label.tr(),
+                              text: navigation[i].label,
                             ),
                           ],
                         ),
