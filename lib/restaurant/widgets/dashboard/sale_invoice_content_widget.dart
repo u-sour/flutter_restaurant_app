@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/app_provider.dart';
 import '../../../utils/constants.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../utils/debounce.dart';
@@ -24,12 +23,10 @@ class SaleInvoiceContentWidget extends StatefulWidget {
 
 class _SaleInvoiceContentWidgetState extends State<SaleInvoiceContentWidget> {
   final Debounce debounce = Debounce();
-  late AppProvider _readAppProvider;
   late DashboardProvider _readDashboardProvider;
   @override
   void initState() {
     super.initState();
-    _readAppProvider = context.read<AppProvider>();
     _readDashboardProvider = context.read<DashboardProvider>();
   }
 
@@ -47,16 +44,11 @@ class _SaleInvoiceContentWidgetState extends State<SaleInvoiceContentWidget> {
           onChanged: (String? query) {
             if (query != null) {
               debounce.run(() {
-                final String branchId =
-                    _readAppProvider.selectedBranch?.id ?? '';
-                final String depId =
-                    _readAppProvider.selectedDepartment?.id ?? '';
                 final int selectedTab = _readDashboardProvider.selectedTab;
-                _readDashboardProvider.getSaleForDataTable(
-                    tab: selectedTab,
-                    filter: query,
-                    branchId: branchId,
-                    depId: depId);
+                _readDashboardProvider.filter(
+                  tab: selectedTab,
+                  filter: query,
+                );
               });
             }
           },

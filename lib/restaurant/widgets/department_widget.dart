@@ -11,37 +11,37 @@ class DepartmentWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppProvider readAppProvider = context.read<AppProvider>();
     return Selector<AppProvider, List<DepartmentModel>>(
-      selector: (context, state) => state.departments,
-      builder: (context, departments, child) => MenuAnchor(
-        builder:
-            (BuildContext context, MenuController controller, Widget? child) {
-          return OutlinedButton.icon(
-            onPressed: isPressable
-                ? () {
-                    if (controller.isOpen) {
-                      controller.close();
-                    } else {
-                      controller.open();
-                    }
-                  }
-                : null,
-            style: style,
-            icon: const Icon(RestaurantDefaultIcons.department),
-            label: Selector<AppProvider, DepartmentModel?>(
-                selector: (context, state) => state.selectedDepartment,
-                builder: (context, sd, child) =>
-                    Text(sd != null ? sd.name : '')),
-          );
-        },
-        menuChildren: departments
-            .map((d) => MenuItemButton(
-                  onPressed: () =>
-                      context.read<AppProvider>().setDepartment(department: d),
-                  child: Text(d.name),
-                ))
-            .toList(),
-      ),
-    );
+        selector: (context, state) => state.departments,
+        builder: (context, departments, child) => MenuAnchor(
+              builder: (BuildContext context, MenuController controller,
+                  Widget? child) {
+                return OutlinedButton.icon(
+                  onPressed: isPressable
+                      ? () {
+                          if (controller.isOpen) {
+                            controller.close();
+                          } else {
+                            controller.open();
+                          }
+                        }
+                      : null,
+                  style: style,
+                  icon: const Icon(RestaurantDefaultIcons.department),
+                  label: Selector<AppProvider, DepartmentModel?>(
+                      selector: (context, state) => state.selectedDepartment,
+                      builder: (context, sd, child) =>
+                          Text(sd != null ? sd.name : '')),
+                );
+              },
+              menuChildren: departments
+                  .map((d) => MenuItemButton(
+                        onPressed: () =>
+                            readAppProvider.setDepartment(department: d),
+                        child: Text(d.name),
+                      ))
+                  .toList(),
+            ));
   }
 }

@@ -13,7 +13,6 @@ class DashboardScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Orientation orientation = MediaQuery.orientationOf(context);
     return Scaffold(
       appBar: AppBarWidget(title: SCREENS.dashboard.toTitle),
       drawer:

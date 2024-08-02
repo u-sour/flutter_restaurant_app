@@ -1,88 +1,77 @@
 import 'package:dynamic_tabbar/dynamic_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/models/select-option/select_option_model.dart';
+import 'package:flutter_template/restaurant/utils/map_index.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
+import '../loading_widget.dart';
 import 'sale_invoice_content_widget.dart';
 
 class SaleInvoiceWidget extends StatelessWidget {
   const SaleInvoiceWidget({super.key});
   @override
   Widget build(BuildContext context) {
-    AppProvider readAppProvider = context.read<AppProvider>();
+    final theme = Theme.of(context);
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     String branchId = context
         .select<AppProvider, String>((ap) => ap.selectedBranch?.id ?? '');
     String depId = context
         .select<AppProvider, String>((ap) => ap.selectedDepartment?.id ?? '');
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      readDashboardProvider.getSaleForDataTable(
-          tab: readDashboardProvider.selectedTab,
-          branchId: branchId,
-          depId: depId);
+      readDashboardProvider.initData(branchId: branchId, depId: depId);
     });
-
-    String prefixSaleInvoiceTab = 'screens.dashboard.saleInvoiceTabs';
+    const String prefixSaleInvoiceTab = 'screens.dashboard.saleInvoiceTabs';
     bool isScrollable = true;
     bool showNextIcon = true;
     bool showBackIcon = true;
 
-    List<TabData> tabs = [
-      TabData(
-        index: 0,
-        title: Tab(
-          child: Text(context.tr("$prefixSaleInvoiceTab.printed")),
-        ),
-        content: const SaleInvoiceContentWidget(),
-      ),
-      TabData(
-        index: 1,
-        title: Tab(
-          child: Text(context.tr("$prefixSaleInvoiceTab.open")),
-        ),
-        content: const SaleInvoiceContentWidget(),
-      ),
-      TabData(
-        index: 2,
-        title: Tab(
-          child: Text(context.tr("$prefixSaleInvoiceTab.partial")),
-        ),
-        content: const SaleInvoiceContentWidget(
-            type: SaleInvoiceContentType.dataTable),
-      ),
-      TabData(
-        index: 3,
-        title: Tab(
-          child: Text(context.tr("$prefixSaleInvoiceTab.closed")),
-        ),
-        content: const SaleInvoiceContentWidget(
-            type: SaleInvoiceContentType.dataTable),
-      ),
-      TabData(
-        index: 4,
-        title: Tab(
-          child: Text(context.tr("$prefixSaleInvoiceTab.canceled")),
-        ),
-        content: const SaleInvoiceContentWidget(
-            type: SaleInvoiceContentType.dataTable),
-      ),
-      // Add more tabs as needed
+    const List<SelectOptionModel> tabs = [
+      SelectOptionModel(
+          label: "$prefixSaleInvoiceTab.printed",
+          value: SaleInvoiceContentWidget()),
+      SelectOptionModel(
+          label: "$prefixSaleInvoiceTab.open",
+          value: SaleInvoiceContentWidget()),
+      SelectOptionModel(
+          label: "$prefixSaleInvoiceTab.partial",
+          value:
+              SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable)),
+      SelectOptionModel(
+          label: "$prefixSaleInvoiceTab.closed",
+          value:
+              SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable)),
+      SelectOptionModel(
+          label: "$prefixSaleInvoiceTab.canceled",
+          value:
+              SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable))
     ];
-    return DynamicTabBarWidget(
-      dynamicTabs: tabs,
-      isScrollable: isScrollable,
-      onTabControllerUpdated: (controller) {
-        controller.index = readDashboardProvider.selectedTab;
-      },
-      onTabChanged: (index) {
-        final String branchId = readAppProvider.selectedBranch?.id ?? '';
-        final String depId = readAppProvider.selectedDepartment?.id ?? '';
-        readDashboardProvider.getSaleForDataTable(
-            tab: index!, branchId: branchId, depId: depId);
-      },
-      showBackIcon: showBackIcon,
-      showNextIcon: showNextIcon,
+
+    return Selector<DashboardProvider, bool>(
+      selector: (context, state) => state.isLoading,
+      builder: (context, isLoading, child) => isLoading
+          ? const LoadingWidget()
+          : DynamicTabBarWidget(
+              dynamicTabs: tabs.mapIndexed((tab, index) {
+                return TabData(
+                    index: index,
+                    title: Tab(
+                        child: Text(tab.label, style: theme.textTheme.bodyLarge)
+                            .tr()),
+                    content: tab.value);
+              }).toList(),
+              isScrollable: isScrollable,
+              padding: EdgeInsets.zero,
+              onTabControllerUpdated: (controller) {
+                controller.index = readDashboardProvider.selectedTab;
+              },
+              onTabChanged: (index) {
+                readDashboardProvider.filter(tab: index!);
+              },
+              showBackIcon: showBackIcon,
+              showNextIcon: showNextIcon,
+            ),
     );
   }
 }

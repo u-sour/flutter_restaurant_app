@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
+import '../../../providers/app_provider.dart';
 import '../../../utils/constants.dart';
+import '../../providers/dashboard/dashboard_provider.dart';
 import '../../utils/constants.dart';
 import 'feature_item_widget.dart';
 
@@ -36,8 +39,18 @@ class FeatureWidget extends StatelessWidget {
             return FeatureItemWidget(
               label: feature.label,
               icon: feature.icon!,
-              onPressed: () {
-                context.pushNamed(feature.value);
+              onPressed: () async {
+                final String branchId =
+                    context.read<AppProvider>().selectedBranch!.id;
+                Map<String, dynamic> table = await context
+                    .read<DashboardProvider>()
+                    .fetchOneTable(branchId: branchId);
+                if (table.isNotEmpty && context.mounted) {
+                  context.goNamed(feature.value, queryParameters: {
+                    'table': table['_id'],
+                    'fastSale': 'true'
+                  });
+                }
               },
               bgColor: feature.extra,
             );

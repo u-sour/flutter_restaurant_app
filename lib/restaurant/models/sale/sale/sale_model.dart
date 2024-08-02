@@ -21,10 +21,12 @@ class SaleModel {
   final String tableId;
   final String depId;
   final String employeeId;
+  final String? employeeName;
   final String guestId;
   final int numOfGuest;
   final int billed;
   final String branchId;
+  final String? refId;
   final String refNo;
   final String orderNum;
   @JsonKey(disallowNullValue: true)
@@ -55,10 +57,12 @@ class SaleModel {
     required this.tableId,
     required this.depId,
     required this.employeeId,
+    this.employeeName,
     required this.guestId,
     required this.numOfGuest,
     required this.billed,
     required this.branchId,
+    this.refId,
     required this.refNo,
     required this.orderNum,
     this.requestPayment,
