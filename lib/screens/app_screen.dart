@@ -53,6 +53,7 @@ class _AppScreenState extends State<AppScreen> {
     loginFormProvider = LoginFormProvider(widget.sharedPreferences);
     settingProvider = SettingProvider();
     printerProvider = PrinterProvider();
+    onStartUp();
     super.initState();
   }
 
@@ -61,19 +62,13 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void onStartUp() async {
-    await appProvider.onAppStart();
-  }
-
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
     ipAddress = await ConnectionStorage().getIpAddress();
     if (ipAddress != null) {
       meteor = MeteorClient.connect(url: 'http://$ipAddress');
     }
-    onStartUp();
+    await appProvider.onAppStart();
   }
-
+  
   @override
   void dispose() {
     authSubscription.cancel();
