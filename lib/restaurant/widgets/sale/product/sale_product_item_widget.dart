@@ -37,106 +37,160 @@ class SaleProductItemWidget extends StatelessWidget {
       children: [
         ClipRRect(
           borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
-          child: CachedNetworkImage(
-            imageUrl: "http://$ipAddress${product.photoUrl}",
-            errorWidget: (context, url, error) {
-              return Container(
-                width: double.infinity,
-                height: imgHeight,
-                foregroundDecoration: RotatedCornerDecoration.withColor(
-                  textSpan: TextSpan(
-                      text: '0%',
-                      style: theme.textTheme.bodyMedium?.copyWith(
-                          color: theme.colorScheme.onPrimary,
-                          fontWeight: FontWeight.bold)),
-                  badgeCornerRadius:
-                      const Radius.circular(AppStyleDefaultProperties.r),
-                  color: AppThemeColors.primary
-                      .withOpacity(discountBgColorOpacity),
-                  badgeSize: const Size(64, 64),
-                  badgePosition: BadgePosition.bottomStart,
-                  textDirection: TextDirection.rtl,
-                ),
-                child: Material(
-                  color: theme.highlightColor,
-                  child: InkWell(
-                    onTap: onTap,
-                    child: Column(
-                      children: [
-                        // Price
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: product.photoUrl != null
+              ? CachedNetworkImage(
+                  imageUrl: "http://$ipAddress${product.photoUrl}",
+                  errorWidget: (context, url, error) {
+                    return Container(
+                      width: double.infinity,
+                      height: imgHeight,
+                      foregroundDecoration: RotatedCornerDecoration.withColor(
+                        textSpan: TextSpan(
+                            text: '0%',
+                            style: theme.textTheme.bodyMedium?.copyWith(
+                                color: theme.colorScheme.onPrimary,
+                                fontWeight: FontWeight.bold)),
+                        badgeCornerRadius:
+                            const Radius.circular(AppStyleDefaultProperties.r),
+                        color: AppThemeColors.primary
+                            .withOpacity(discountBgColorOpacity),
+                        badgeSize: const Size(64, 64),
+                        badgePosition: BadgePosition.bottomStart,
+                        textDirection: TextDirection.rtl,
+                      ),
+                      child: Material(
+                        color: theme.highlightColor,
+                        child: InkWell(
+                          onTap: onTap,
+                          child: Column(
                             children: [
-                              Container(
-                                  padding: const EdgeInsets.all(5.0),
-                                  decoration: BoxDecoration(
-                                    color: AppThemeColors.primary
-                                        .withOpacity(priceBgColorOpacity),
-                                    borderRadius: BorderRadius.circular(10.0),
-                                  ),
-                                  child: PriceWidget(price: product.price)),
+                              // Price
+                              Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Container(
+                                        padding: const EdgeInsets.all(5.0),
+                                        decoration: BoxDecoration(
+                                          color: AppThemeColors.primary
+                                              .withOpacity(priceBgColorOpacity),
+                                          borderRadius:
+                                              BorderRadius.circular(10.0),
+                                        ),
+                                        child:
+                                            PriceWidget(price: product.price)),
+                                  ],
+                                ),
+                              ),
+                              // Image
+                              const NoImageWidget()
                             ],
                           ),
                         ),
-                        // Image
-                        const NoImageWidget()
-                      ],
+                      ),
+                    );
+                  },
+                  imageBuilder: (context, imageProvider) => Container(
+                    width: double.infinity,
+                    height: imgHeight,
+                    foregroundDecoration: RotatedCornerDecoration.withColor(
+                      textSpan: TextSpan(
+                          text: '0%',
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                              color: theme.colorScheme.onPrimary,
+                              fontWeight: FontWeight.bold)),
+                      badgeCornerRadius:
+                          const Radius.circular(AppStyleDefaultProperties.r),
+                      color: AppThemeColors.primary
+                          .withOpacity(discountBgColorOpacity),
+                      badgeSize: const Size(64, 64),
+                      badgePosition: BadgePosition.bottomStart,
+                      textDirection: TextDirection.rtl,
                     ),
-                  ),
-                ),
-              );
-            },
-            imageBuilder: (context, imageProvider) => Container(
-              width: double.infinity,
-              height: imgHeight,
-              foregroundDecoration: RotatedCornerDecoration.withColor(
-                textSpan: TextSpan(
-                    text: '0%',
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                        color: theme.colorScheme.onPrimary,
-                        fontWeight: FontWeight.bold)),
-                badgeCornerRadius:
-                    const Radius.circular(AppStyleDefaultProperties.r),
-                color:
-                    AppThemeColors.primary.withOpacity(discountBgColorOpacity),
-                badgeSize: const Size(64, 64),
-                badgePosition: BadgePosition.bottomStart,
-                textDirection: TextDirection.rtl,
-              ),
-              decoration: BoxDecoration(
-                color: theme.primaryColor,
-                image: DecorationImage(fit: BoxFit.cover, image: imageProvider),
-              ),
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onTap,
-                  child: Column(
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    decoration: BoxDecoration(
+                      color: theme.primaryColor,
+                      image: DecorationImage(
+                          fit: BoxFit.cover, image: imageProvider),
+                    ),
+                    child: Material(
+                      color: Colors.transparent,
+                      child: InkWell(
+                        onTap: onTap,
+                        child: Column(
                           children: [
-                            Container(
-                                padding: const EdgeInsets.all(5.0),
-                                decoration: BoxDecoration(
-                                  color: AppThemeColors.primary
-                                      .withOpacity(priceBgColorOpacity),
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                                child: PriceWidget(price: product.price)),
+                            Padding(
+                              padding: const EdgeInsets.all(10.0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      padding: const EdgeInsets.all(5.0),
+                                      decoration: BoxDecoration(
+                                        color: AppThemeColors.primary
+                                            .withOpacity(priceBgColorOpacity),
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
+                                      ),
+                                      child: PriceWidget(price: product.price)),
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
-                    ],
+                    ),
+                  ),
+                )
+              : Container(
+                  width: double.infinity,
+                  height: imgHeight,
+                  foregroundDecoration: RotatedCornerDecoration.withColor(
+                    textSpan: TextSpan(
+                        text: '0%',
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                            color: theme.colorScheme.onPrimary,
+                            fontWeight: FontWeight.bold)),
+                    badgeCornerRadius:
+                        const Radius.circular(AppStyleDefaultProperties.r),
+                    color: AppThemeColors.primary
+                        .withOpacity(discountBgColorOpacity),
+                    badgeSize: const Size(64, 64),
+                    badgePosition: BadgePosition.bottomStart,
+                    textDirection: TextDirection.rtl,
+                  ),
+                  child: Material(
+                    color: theme.highlightColor,
+                    child: InkWell(
+                      onTap: onTap,
+                      child: Column(
+                        children: [
+                          // Price
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Container(
+                                    padding: const EdgeInsets.all(5.0),
+                                    decoration: BoxDecoration(
+                                      color: AppThemeColors.primary
+                                          .withOpacity(priceBgColorOpacity),
+                                      borderRadius: BorderRadius.circular(10.0),
+                                    ),
+                                    child: PriceWidget(price: product.price)),
+                              ],
+                            ),
+                          ),
+                          // Image
+                          const NoImageWidget()
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ),
         ),
         Padding(
           padding:

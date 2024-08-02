@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/router/route_utils.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import 'sale_app_bar_action_widget.dart';
@@ -47,7 +48,7 @@ class SaleAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         leading: Row(
           children: [
             BackButton(
-              onPressed: () => context.pop(),
+              onPressed: () => context.goNamed(SCREENS.dashboard.toName),
             ),
           ],
         ),

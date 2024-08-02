@@ -71,6 +71,7 @@ class _AppScreenState extends State<AppScreen> {
     saleProductsProvider = SaleProductsProvider();
     saleProvider = SaleProvider();
     saleTableProvider = SaleTableProvider();
+    onStartUp();
     super.initState();
   }
 
@@ -79,17 +80,11 @@ class _AppScreenState extends State<AppScreen> {
   }
 
   void onStartUp() async {
-    await appProvider.onAppStart();
-  }
-
-  @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
     ipAddress = await ConnectionStorage().getIpAddress();
     if (ipAddress != null) {
       meteor = MeteorClient.connect(url: 'http://$ipAddress');
     }
-    onStartUp();
+    await appProvider.onAppStart();
   }
 
   @override

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../utils/constants.dart';
@@ -48,6 +49,7 @@ class _SaleScreenState extends State<SaleScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(GoRouterState.of(context).uri.queryParameters);
     final theme = Theme.of(context);
     Orientation orientation = MediaQuery.orientationOf(context);
     double minHeight = 65.0;

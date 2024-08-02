@@ -79,6 +79,9 @@
         "busy": "រវល់",
         "isPrintBill": "បានព្រីនវិក្កយបត្រ",
         "closed": "ស្នើសុំការបង់ប្រាក់"
+      },
+      "emptyData": {
+        "description": { "floor": "រកមិនឃើញជាន់ទេ។", "table": "រកមិនឃើញតុទេ។" }
       }
     },
     "sale": {
@@ -242,7 +245,10 @@
     }
   },
   "noImage": "មិនមានរូបភាពទេ",
-  "emptyData": { "description": "គ្មាន​ទិន្នន័យ" },
+  "emptyData": {
+    "title": "គ្មាន​ទិន្នន័យ",
+    "description": "មិនមានទិន្នន័យទេ។"
+  },
   "loading": {
     "title": "ចាំ​បន្តិច!",
     "description": "កម្មវិធីកំពុងដំណើរការ។"

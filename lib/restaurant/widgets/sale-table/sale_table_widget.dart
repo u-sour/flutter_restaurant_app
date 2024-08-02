@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import '../../../router/route_utils.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/sale-table/table_model.dart';
@@ -49,7 +51,12 @@ class SaleTableWidget extends StatelessWidget {
                   maxChair: table.numOfGuest,
                   name: table.label,
                   status: table.status ?? '',
-                  onTap: () {},
+                  onTap: () {
+                    context.goNamed(SCREENS.sale.name, queryParameters: {
+                      'table': table.id,
+                      'fastSale': 'false'
+                    });
+                  },
                 );
               }),
         ),

@@ -19,28 +19,36 @@ class SaleTableProvider with ChangeNotifier {
   List<FloorModel> get floors => _floors;
   List<TableModel> _tables = [];
   List<TableModel> get tables => _tables;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  bool _isFiltering = false;
+  bool get isFiltering => _isFiltering;
 
   Future<void> setActiveFloor(
       {required String floorId,
       required String branchId,
       required String depId,
       required bool? displayTableAllDepartment}) async {
+    _isFiltering = true;
+    notifyListeners();
     _activeFloor = floorId;
     _tables = await fetchTables(
         floorId: floorId,
         branchId: branchId,
         depId: depId,
         displayTableAllDepartment: displayTableAllDepartment);
+    _isFiltering = false;
     notifyListeners();
   }
 
   void subscribeSales({required BuildContext context}) {
     final debounce = Debounce(delay: const Duration(milliseconds: 800));
-    AppProvider watchAppProvider = context.watch<AppProvider>();
-    String branchId = watchAppProvider.selectedBranch!.id;
-    String depId = watchAppProvider.selectedDepartment!.id;
-    bool? displayTableAllDepartment =
-        watchAppProvider.saleSetting.sale.displayTableAllDepartment;
+    String branchId =
+        context.select<AppProvider, String>((ap) => ap.selectedBranch!.id);
+    String depId =
+        context.select<AppProvider, String>((ap) => ap.selectedDepartment!.id);
+    bool? displayTableAllDepartment = context.select<AppProvider, bool?>(
+        (ap) => ap.saleSetting.sale.displayTableAllDepartment);
     Map<String, dynamic> selector = {'branchId': branchId, 'status': 'Open'};
     if (displayTableAllDepartment != null && !displayTableAllDepartment) {
       selector['depId'] = depId;
@@ -49,6 +57,8 @@ class SaleTableProvider with ChangeNotifier {
       'sales',
       args: [selector],
       onReady: () {
+        _isLoading = true;
+        notifyListeners();
         _saleListener = meteor.collection('rest_sales').listen((event) {
           if (event.isNotEmpty) {
             //  call method only 1 time when sale data updated
@@ -64,10 +74,11 @@ class SaleTableProvider with ChangeNotifier {
     );
   }
 
-  void initData(
+  Future<void> initData(
       {required String branchId,
       required String depId,
       required bool? displayTableAllDepartment}) async {
+    _activeFloor = 'All';
     _floors = await fetchFloors(
         branchId: branchId,
         depId: depId,
@@ -77,6 +88,7 @@ class SaleTableProvider with ChangeNotifier {
         branchId: branchId,
         depId: depId,
         displayTableAllDepartment: displayTableAllDepartment);
+    _isLoading = false;
     notifyListeners();
   }
 
@@ -88,9 +100,8 @@ class SaleTableProvider with ChangeNotifier {
     if (displayTableAllDepartment != null && !displayTableAllDepartment) {
       selector['depId'] = depId;
     }
-    final List<dynamic> result = await meteor.call('rest.findSales', args: [
-      {'selector': selector}
-    ]);
+    final List<dynamic> result =
+        await meteor.call('rest.findSales', args: [selector]);
 
     List<SaleModel> toModelList =
         result.map((json) => SaleModel.fromJson(json)).toList();
@@ -125,7 +136,7 @@ class SaleTableProvider with ChangeNotifier {
           depId: '',
           name: 'screens.saleTable.tab.all',
           status: ''),
-      ...result.map((json) => FloorModel.fromJson(json)).toList()
+      ...result.map((json) => FloorModel.fromJson(json))
     ];
     return toModelList;
   }
@@ -185,5 +196,11 @@ class SaleTableProvider with ChangeNotifier {
       _saleSubscription.stop();
     }
     _saleListener?.cancel();
+  }
+
+  void clearState() {
+    _activeFloor = 'All';
+    _floors = [];
+    _tables = [];
   }
 }

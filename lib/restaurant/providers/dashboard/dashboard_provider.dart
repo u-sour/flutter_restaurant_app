@@ -1,22 +1,47 @@
-import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
 import '../../../screens/app_screen.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 
 class DashboardProvider extends ChangeNotifier {
+  late String _branchId;
+  late String _depId;
   SaleInvoiceModel _saleInvoice =
       const SaleInvoiceModel(data: [], totalRecords: 0);
   SaleInvoiceModel get saleInvoice => _saleInvoice;
   int _selectedTab = 0;
   int get selectedTab => _selectedTab;
+  bool _isLoading = false;
+  bool get isLoading => _isLoading;
+  bool _isFiltering = false;
+  bool get isFiltering => _isFiltering;
 
-  void getSaleForDataTable({
+  void initData({required String branchId, required String depId}) async {
+    _isLoading = true;
+    notifyListeners();
+    _branchId = branchId;
+    _depId = depId;
+    _saleInvoice = await fetchSaleForDataTable(
+        tab: _selectedTab, branchId: _branchId, depId: _depId);
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<void> filter({int tab = 0, String filter = ''}) async {
+    _isFiltering = true;
+    notifyListeners();
+    _selectedTab = tab;
+    _saleInvoice = await fetchSaleForDataTable(
+        tab: _selectedTab, filter: filter, branchId: _branchId, depId: _depId);
+    _isFiltering = false;
+    notifyListeners();
+  }
+
+  Future<SaleInvoiceModel> fetchSaleForDataTable({
     int tab = 0,
     String filter = '',
     required String branchId,
     required String depId,
-  }) {
-    _selectedTab = tab;
+  }) async {
     Map<String, dynamic> params = {
       'filters': {'value': filter}, // search value
       'depId': depId
@@ -50,19 +75,19 @@ class DashboardProvider extends ChangeNotifier {
       };
     }
 
-    meteor.call('rest.findSaleForTableData', args: [
+    Map<String, dynamic> result =
+        await meteor.call('rest.findSaleForTableData', args: [
       {'params': params, 'tableQuery': tableQuery, 'branchId': branchId}
-    ]).then((result) {
-      if (result != null) {
-        _saleInvoice =
-            SaleInvoiceModel.fromJson(result as Map<String, dynamic>);
-        notifyListeners();
-      }
-    }).catchError((err) {
-      if (err is MeteorError) {
-        print(err.message);
-      }
-    });
-    notifyListeners();
+    ]);
+
+    return SaleInvoiceModel.fromJson(result);
+  }
+
+  Future<Map<String, dynamic>> fetchOneTable({required String branchId}) async {
+    Map<String, dynamic> selector = {'branchId': branchId};
+    Map<String, dynamic> result = await meteor.call('rest.findOneTable', args: [
+      {'selector': selector}
+    ]);
+    return result;
   }
 }

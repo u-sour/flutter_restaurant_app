@@ -9,34 +9,33 @@ class BranchWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final AppProvider readAppProvider = context.read<AppProvider>();
     return Selector<AppProvider, List<BranchModel>>(
-      selector: (context, state) => state.branches,
-      builder: (context, branches, child) => MenuAnchor(
-        builder:
-            (BuildContext context, MenuController controller, Widget? child) {
-          return TextButton.icon(
-            onPressed: () {
-              if (controller.isOpen) {
-                controller.close();
-              } else {
-                controller.open();
-              }
-            },
-            icon: const Icon(RestaurantDefaultIcons.branch),
-            label: Selector<AppProvider, BranchModel?>(
-                selector: (context, state) => state.selectedBranch,
-                builder: (context, sb, child) =>
-                    Text(sb != null ? '${sb.id} : ${sb.localName}' : '')),
-          );
-        },
-        menuChildren: branches
-            .map((b) => MenuItemButton(
-                  onPressed: () =>
-                      context.read<AppProvider>().setBranch(branch: b),
-                  child: Text('${b.id} : ${b.localName}'),
-                ))
-            .toList(),
-      ),
-    );
+        selector: (context, state) => state.branches,
+        builder: (context, branches, child) => MenuAnchor(
+              builder: (BuildContext context, MenuController controller,
+                  Widget? child) {
+                return TextButton.icon(
+                  onPressed: () {
+                    if (controller.isOpen) {
+                      controller.close();
+                    } else {
+                      controller.open();
+                    }
+                  },
+                  icon: const Icon(RestaurantDefaultIcons.branch),
+                  label: Selector<AppProvider, BranchModel?>(
+                      selector: (context, state) => state.selectedBranch,
+                      builder: (context, sb, child) =>
+                          Text(sb != null ? '${sb.id} : ${sb.localName}' : '')),
+                );
+              },
+              menuChildren: branches
+                  .map((b) => MenuItemButton(
+                        onPressed: () => readAppProvider.setBranch(branch: b),
+                        child: Text('${b.id} : ${b.localName}'),
+                      ))
+                  .toList(),
+            ));
   }
 }

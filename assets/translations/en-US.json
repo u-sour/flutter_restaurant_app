@@ -79,6 +79,12 @@
         "busy": "BUSY",
         "isPrintBill": "PRINTED BILL",
         "closed": "REQUEST PAYMENT"
+      },
+      "emptyData": {
+        "description": {
+          "floor": "Floors not found.",
+          "table": "Tables not found."
+        }
       }
     },
     "sale": {
@@ -246,7 +252,7 @@
     }
   },
   "noImage": "No Image Available",
-  "emptyData": { "description": "No Data" },
+  "emptyData": { "title": "No Data", "description": "No Data Available." },
   "loading": {
     "title": "Wait a minute!",
     "description": "Application is processing."
