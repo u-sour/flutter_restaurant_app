@@ -1,6 +1,5 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/responsive/responsive_layout.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/widgets/avatar_initial_widget_model.dart';
 import '../../../../models/widgets/avatar_menu_widget_model.dart';
@@ -8,6 +7,7 @@ import '../../../../providers/app_provider.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../router/route_utils.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../../widgets/avatar_widget.dart';
 import '../../../models/department/department_model.dart';
 import '../../../models/user/user_model.dart';
@@ -33,9 +33,7 @@ class SaleAppBarSearchWidget extends StatelessWidget {
           const EdgeInsets.symmetric(horizontal: AppStyleDefaultProperties.p),
       child: Row(
         children: [
-          Expanded(
-              child: SearchWidget(
-            controller: readSaleProductsProvider.searchController,
+          Expanded(child: SearchWidget(
             onChanged: (String? search) {
               if (search != null) {
                 debounce.run(() {

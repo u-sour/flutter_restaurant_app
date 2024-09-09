@@ -1,26 +1,28 @@
-import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:go_router/go_router.dart';
+import 'package:provider/provider.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
+import '../../../providers/sale/sale_provider.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../form_builder_touch_spin.dart';
+import '../../icon_with_text_widget.dart';
 
 class EditSaleDetailDataTableRowWidget extends StatelessWidget {
   final GlobalKey<FormBuilderState> fbEditRowKey;
+  final IconData titleIcon;
   final SaleDetailDTRowType rowType;
-  final int index;
   final SaleDetailModel item;
 
   const EditSaleDetailDataTableRowWidget(
       {super.key,
       required this.fbEditRowKey,
+      this.titleIcon = RestaurantDefaultIcons.edit,
       required this.rowType,
-      required this.index,
       required this.item});
 
   @override
@@ -34,9 +36,10 @@ class EditSaleDetailDataTableRowWidget extends StatelessWidget {
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(rowType.toTitle,
-                    style: const TextStyle(fontWeight: FontWeight.bold))
-                .tr(),
+            IconWithTextWidget(
+              icon: titleIcon,
+              text: rowType.toTitle,
+            ),
             IconButton(
                 onPressed: () => context.pop(),
                 icon: const Icon(AppDefaultIcons.close))
@@ -48,7 +51,6 @@ class EditSaleDetailDataTableRowWidget extends StatelessWidget {
             key: fbEditRowKey,
             child: EditSaleDetailDataTableRow(
               rowType: rowType,
-              index: index,
               item: item,
             ),
           ),
@@ -58,14 +60,10 @@ class EditSaleDetailDataTableRowWidget extends StatelessWidget {
 
 class EditSaleDetailDataTableRow extends StatefulWidget {
   final SaleDetailDTRowType rowType;
-  final int index;
   final SaleDetailModel item;
 
   const EditSaleDetailDataTableRow(
-      {super.key,
-      required this.rowType,
-      required this.index,
-      required this.item});
+      {super.key, required this.rowType, required this.item});
 
   @override
   State<EditSaleDetailDataTableRow> createState() =>
@@ -74,14 +72,30 @@ class EditSaleDetailDataTableRow extends StatefulWidget {
 
 class _EditSaleDetailDataTableRowState
     extends State<EditSaleDetailDataTableRow> {
+  late SaleProvider readProvider;
+  TextEditingController priceController = TextEditingController();
+  TextEditingController disRateController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
   TextEditingController returnQtyController = TextEditingController();
-  // TextEditingController priceController = TextEditingController();
-  // TextEditingController disRateController = TextEditingController();
+
+  @override
+  void initState() {
+    readProvider = context.read<SaleProvider>();
+    priceController.value = TextEditingValue(text: '${widget.item.price}');
+    disRateController.value = TextEditingValue(text: '${widget.item.discount}');
+    super.initState();
+  }
+
+  void selectInputText({required TextEditingController controller}) {
+    controller.selection = TextSelection(
+        baseOffset: 0, extentOffset: controller.value.text.length);
+  }
 
   @override
   void dispose() {
     super.dispose();
+    priceController.dispose();
+    disRateController.dispose();
     qtyController.dispose();
     returnQtyController.dispose();
   }
@@ -96,52 +110,64 @@ class _EditSaleDetailDataTableRowState
           if (widget.rowType.name == 'price')
             FormBuilderTextField(
               name: 'price',
-              // controller: priceController,
+              controller: priceController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              // decoration: fbTextFieldStyle(label: 'Price', theme: theme),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
               ],
               onChanged: (String? price) {
-                // readProvider.saleOrderDetailRowChange(
-                //     index: widget.index,
-                //     onChangeValue: price,
-                //     item: widget.item,
-                //     type: 'price');
+                if (price != null) {
+                  readProvider.handleItemUpdate(
+                      onChangedValue: price,
+                      item: widget.item,
+                      rowType: SaleDetailDTRowType.price);
+                }
               },
+              onTap: () => selectInputText(controller: priceController),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.min(0),
+              ]),
             ),
           if (widget.rowType.name == 'discountRate')
             FormBuilderTextField(
               name: 'discountRate',
-              // controller: priceController,
+              controller: disRateController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              // decoration: fbTextFieldStyle(label: 'Price', theme: theme),
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
               ],
               onChanged: (String? discountRate) {
-                // readProvider.saleOrderDetailRowChange(
-                //     index: widget.index,
-                //     onChangeValue: price,
-                //     item: widget.item,
-                //     type: 'price');
+                if (discountRate != null) {
+                  readProvider.handleItemUpdate(
+                      onChangedValue: discountRate,
+                      item: widget.item,
+                      rowType: SaleDetailDTRowType.discountRate);
+                }
               },
+              onTap: () => selectInputText(controller: disRateController),
+              validator: FormBuilderValidators.compose([
+                FormBuilderValidators.required(),
+                FormBuilderValidators.min(0),
+                FormBuilderValidators.max(100),
+              ]),
             ),
           if (widget.rowType.name == 'note')
             FormBuilderTextField(
               name: 'note',
               initialValue: widget.item.note,
-              // decoration: fbTextFieldStyle(label: 'Memo', theme: theme),
+              maxLines: 3,
               onChanged: (String? note) {
-                // readProvider.saleOrderDetailRowChange(
-                //     index: widget.index,
-                //     onChangeValue: memo,
-                //     item: widget.item,
-                //     type: 'memo');
+                if (note != null) {
+                  readProvider.handleItemUpdate(
+                      onChangedValue: note,
+                      item: widget.item,
+                      rowType: SaleDetailDTRowType.note);
+                }
               },
               onTap: () {
                 final FocusScopeNode currentScope = FocusScope.of(context);
@@ -153,59 +179,47 @@ class _EditSaleDetailDataTableRowState
           if (widget.rowType.name == 'qty')
             FormBuilderTouchSpin(
               name: 'qty',
+              initialValue: widget.item.totalQty,
+              controller: qtyController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              // decoration: fbTextFieldStyle(label: 'qty', theme: theme),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
               ],
-              minValue: 1,
-              controller: qtyController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              onTap: () {
-                qtyController.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: qtyController.value.text.length);
-              },
+              onTap: () => selectInputText(controller: qtyController),
               onChanged: (qty) {
-                // readProvider.saleOrderDetailRowChange(
-                //     index: widget.index,
-                //     onChangeValue: '$qty',
-                //     item: widget.item,
-                //     type: 'qty');
+                readProvider.handleItemUpdate(
+                    onChangedValue: '$qty',
+                    item: widget.item,
+                    rowType: SaleDetailDTRowType.qty);
               },
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.min(1),
                 FormBuilderValidators.required(),
+                FormBuilderValidators.min(0),
               ]),
             ),
           if (widget.rowType.name == 'returnQty')
             FormBuilderTouchSpin(
               name: 'returnQty',
+              initialValue: widget.item.returnQty,
+              controller: returnQtyController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
-              // decoration: fbTextFieldStyle(label: 'qty', theme: theme),
               inputFormatters: [
                 FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
               ],
-              minValue: 1,
-              controller: returnQtyController,
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
-              onTap: () {
-                returnQtyController.selection = TextSelection(
-                    baseOffset: 0,
-                    extentOffset: returnQtyController.value.text.length);
-              },
+              onTap: () => selectInputText(controller: returnQtyController),
               onChanged: (returnQty) {
-                // readProvider.saleOrderDetailRowChange(
-                //     index: widget.index,
-                //     onChangeValue: '$qty',
-                //     item: widget.item,
-                //     type: 'qty');
+                readProvider.handleItemUpdate(
+                    onChangedValue: '$returnQty',
+                    item: widget.item,
+                    rowType: SaleDetailDTRowType.returnQty);
               },
               validator: FormBuilderValidators.compose([
-                FormBuilderValidators.min(1),
                 FormBuilderValidators.required(),
+                FormBuilderValidators.min(0),
               ]),
             ),
         ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/app_provider.dart';
 import '../../../../screens/app_screen.dart';
@@ -8,48 +9,51 @@ import '../../../models/sale/product/sale_product_model.dart';
 import '../../../models/sale/product/sale_product_result_model.dart';
 
 class SaleProductsProvider extends ChangeNotifier {
-  late TextEditingController _searchController;
-  TextEditingController get searchController => _searchController;
+  late GlobalKey<FormBuilderState> fbSearchKey;
   late String _branchId;
   late String _depId;
   late String _ipAddress;
   String get ipAddress => _ipAddress;
-  List<SaleProductGroupModel> _productGroup = [];
+  late List<SaleProductGroupModel> _productGroup;
   List<SaleProductGroupModel> get productGroup => _productGroup;
-  List<SaleProductModel> _products = [];
+  late List<SaleProductModel> _products;
   List<SaleProductModel> get products => [..._products];
   late int _productCount;
   String _search = '';
-  String _productGroupId = '';
+  String get search => _search;
+  late String _productGroupId;
   String get productGroupId => _productGroupId;
   bool _showExtraFood = false;
   bool get showExtraFood => _showExtraFood;
-  int _skip = 0;
+  late int _skip;
   int get skip => _skip;
-  int _limit = 25;
+  late int _limit;
   int get limit => _limit;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
   bool _isLoadMore = false;
   bool get isLoadMore => _isLoadMore;
   // current index of product item when user scrolling
-  int _currentProductIndex = 0;
+  late int _currentProductIndex;
   int get currentProductIndex => _currentProductIndex;
 
   Future<void> initData(
-      {required BuildContext context,
-      required int skip,
-      required int limit}) async {
+      {required BuildContext context, int skip = 0, int limit = 25}) async {
     _isLoading = true;
-    _searchController = TextEditingController();
     AppProvider readAppProvider = context.read<AppProvider>();
     _branchId = readAppProvider.selectedBranch!.id;
     _depId = readAppProvider.selectedDepartment!.id;
+    _products = [];
+    _productGroup = [];
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
         branchId: _branchId, depId: _depId, skip: skip, limit: limit);
-    _productCount = saleProductsResult.itemCount;
     _products = saleProductsResult.items;
+    _productCount = saleProductsResult.itemCount;
     _ipAddress = (await ConnectionStorage().getIpAddress())!;
+    _productGroupId = '';
+    _skip = skip;
+    _limit = limit;
+    _currentProductIndex = 0;
     _isLoading = false;
     notifyListeners();
   }
@@ -208,21 +212,12 @@ class SaleProductsProvider extends ChangeNotifier {
 
   void clearSearchTextFieldAndState() {
     _search = '';
-    if (_searchController.text.isNotEmpty) {
-      _searchController.clear();
+    if (fbSearchKey.currentState!.saveAndValidate()) {
+      final String search = fbSearchKey.currentState?.value['search'] ?? '';
+      if (search.isNotEmpty) {
+        fbSearchKey.currentState!.reset();
+      }
     }
     notifyListeners();
-  }
-
-  void clearState() {
-    _productGroup = [];
-    _products = [];
-    _searchController.dispose();
-    _productGroupId = '';
-    _showExtraFood = false;
-    _search = '';
-    _skip = 0;
-    _limit = 25;
-    _currentProductIndex = 0;
   }
 }

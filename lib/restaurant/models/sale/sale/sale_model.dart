@@ -1,5 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../../utils/model_converter/date_model_converter.dart';
+import '../../../../utils/model_converter/date_model_converter.dart';
 import 'sale_status_date_model.dart';
 part 'sale_model.g.dart';
 
@@ -23,6 +23,7 @@ class SaleModel {
   final String employeeId;
   final String? employeeName;
   final String guestId;
+  final String? guestName;
   final int numOfGuest;
   final int billed;
   final String branchId;
@@ -37,11 +38,9 @@ class SaleModel {
   final DateTime createdAt;
   final String createdBy;
   @JsonKey(
-      disallowNullValue: true,
       fromJson: DateModelConverter.convertDateTimeOptionalForModel,
       toJson: DateModelConverter.convertDateTimeOptionalForModel)
   final DateTime? updatedAt;
-  @JsonKey(disallowNullValue: true)
   final String? updatedBy;
 
   const SaleModel({
@@ -59,6 +58,7 @@ class SaleModel {
     required this.employeeId,
     this.employeeName,
     required this.guestId,
+    this.guestName,
     required this.numOfGuest,
     required this.billed,
     required this.branchId,

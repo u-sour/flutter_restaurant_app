@@ -4,11 +4,10 @@ import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../no_image_widget.dart';
-import '../../price_widget.dart';
+import '../../format_currency_widget.dart';
 
 class SaleProductItemWidget extends StatelessWidget {
   final SaleProductModel product;
-  // final String name;
   final double? imgHeight;
   final String ipAddress;
   final VoidCallback? onTap;
@@ -79,8 +78,8 @@ class SaleProductItemWidget extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                         ),
-                                        child:
-                                            PriceWidget(price: product.price)),
+                                        child: FormatCurrencyWidget(
+                                            value: product.price)),
                                   ],
                                 ),
                               ),
@@ -134,7 +133,8 @@ class SaleProductItemWidget extends StatelessWidget {
                                         borderRadius:
                                             BorderRadius.circular(10.0),
                                       ),
-                                      child: PriceWidget(price: product.price)),
+                                      child: FormatCurrencyWidget(
+                                          value: product.price)),
                                 ],
                               ),
                             ),
@@ -180,7 +180,8 @@ class SaleProductItemWidget extends StatelessWidget {
                                           .withOpacity(priceBgColorOpacity),
                                       borderRadius: BorderRadius.circular(10.0),
                                     ),
-                                    child: PriceWidget(price: product.price)),
+                                    child: FormatCurrencyWidget(
+                                        value: product.price)),
                               ],
                             ),
                           ),
@@ -195,11 +196,27 @@ class SaleProductItemWidget extends StatelessWidget {
         Padding(
           padding:
               const EdgeInsets.symmetric(vertical: AppStyleDefaultProperties.h),
-          child: Text(
-            product.name,
-            style: theme.textTheme.bodyMedium!.copyWith(
-              fontWeight: FontWeight.bold,
-            ),
+          child: Column(
+            children: [
+              if (product.code != null)
+                Text(
+                  product.code!,
+                  style: theme.textTheme.bodyMedium!.copyWith(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              if (product.category != null && product.showCategory == true)
+                Text(product.category!,
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: AppThemeColors.primary)),
+              Text(
+                product.name,
+                style: theme.textTheme.bodyMedium!.copyWith(
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
         ),
       ],

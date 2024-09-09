@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/router/route_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
@@ -11,15 +12,15 @@ import 'feature_item_widget.dart';
 class FeatureWidget extends StatelessWidget {
   FeatureWidget({super.key});
   final List<SelectOptionModel> features = [
-    const SelectOptionModel(
+    SelectOptionModel(
         icon: RestaurantDefaultIcons.newSale,
         label: "screens.dashboard.features.newSale",
-        value: "saleTable",
+        value: SCREENS.saleTable.toName,
         extra: AppThemeColors.primary),
-    const SelectOptionModel(
+    SelectOptionModel(
         icon: RestaurantDefaultIcons.fastSale,
         label: "screens.dashboard.features.fastSale",
-        value: "sale",
+        value: SCREENS.sale.toName,
         extra: AppThemeColors.failure)
   ];
   final double height = 100.0;

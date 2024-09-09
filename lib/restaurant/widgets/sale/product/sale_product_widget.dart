@@ -2,11 +2,15 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
+import '../../../../models/servers/response_model.dart';
+import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
+import '../../../models/sale/add-product/sale_add_product_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../../providers/sale/categories/sale_categories_provider.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
+import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/debounce.dart';
 import '../../empty_data_widget.dart';
 import '../../loading_widget.dart';
@@ -23,6 +27,7 @@ class SaleProductWidget extends StatefulWidget {
 
 class _SaleProductWidgetState extends State<SaleProductWidget> {
   late ScrollController _productScrollController;
+  late SaleProvider _readSaleProvider;
   late SaleCategoriesProvider _readSaleCategoriesProvider;
   late SaleProductsProvider _readSaleProductsProvider;
   final Debounce _debounce = Debounce();
@@ -30,6 +35,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
   void initState() {
     super.initState();
     _productScrollController = ScrollController();
+    _readSaleProvider = context.read<SaleProvider>();
     _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
     _readSaleProductsProvider = context.read<SaleProductsProvider>();
 
@@ -130,7 +136,24 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                           ipAddress: _readSaleProductsProvider
                                               .ipAddress,
                                           imgHeight: imageHeight,
-                                          onTap: () {},
+                                          onTap: () async {
+                                            ResponseModel? result =
+                                                await _readSaleProvider
+                                                    .handleItemClick(
+                                                        item: SaleAddProductModel
+                                                            .fromJson(product
+                                                                .toJson()));
+                                            if (result != null) {
+                                              late SnackBar snackBar;
+                                              snackBar = Alert.awesomeSnackBar(
+                                                  message: result.message,
+                                                  type: result.type);
+                                              if (!context.mounted) return;
+                                              ScaffoldMessenger.of(context)
+                                                ..hideCurrentSnackBar()
+                                                ..showSnackBar(snackBar);
+                                            }
+                                          },
                                         ),
                                       );
                                     }),

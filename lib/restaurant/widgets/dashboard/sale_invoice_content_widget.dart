@@ -5,7 +5,6 @@ import '../../providers/dashboard/dashboard_provider.dart';
 import '../../utils/debounce.dart';
 import '../search_widget.dart';
 import 'sale_invoice_card_widget.dart';
-import 'sale_invoice_data_table_widget.dart';
 
 enum SaleInvoiceContentType { card, dataTable }
 
@@ -56,7 +55,7 @@ class _SaleInvoiceContentWidgetState extends State<SaleInvoiceContentWidget> {
       ),
       widget.type.name == 'card'
           ? const Expanded(child: SaleInvoiceCardWidget())
-          : const Expanded(child: SaleInvoiceDataTableWidget())
+          : const Expanded(child: Placeholder())
     ]);
   }
 }

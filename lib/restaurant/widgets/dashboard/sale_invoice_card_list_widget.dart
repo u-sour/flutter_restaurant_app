@@ -6,7 +6,7 @@ import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../models/company/company_accounting_model.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
-import '../price_widget.dart';
+import '../format_currency_widget.dart';
 
 class SaleInvoiceCardListWidget extends StatelessWidget {
   final SaleInvoiceDataModel data;
@@ -76,11 +76,8 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
                       const EdgeInsets.all(AppStyleDefaultProperties.bp / 3))),
               child: Selector<AppProvider, CompanyAccountingModel>(
                 selector: (context, state) => state.companyAccounting,
-                builder: (context, companyAccounting, child) => PriceWidget(
-                  price: data.total,
-                  priceFontSize: 20.0,
-                  baseCurrencyFontSize: 24.0,
-                ),
+                builder: (context, companyAccounting, child) =>
+                    FormatCurrencyWidget(value: data.total),
               ),
             )
           ],

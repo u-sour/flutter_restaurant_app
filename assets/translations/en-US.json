@@ -71,6 +71,19 @@
         "fastSale": "Fast Sale"
       }
     },
+    "guest": {
+      "title": "Guest",
+      "form": {
+        "name": "Name",
+        "telephone": "Telephone",
+        "address": "Address"
+      },
+      "alert": {
+        "success": {
+          "message": "Awesome, your guest has been successfully created."
+        }
+      }
+    },
     "saleTable": {
       "title": "RESTAURANT MANAGEMENT SYSTEM",
       "tab": { "all": "All" },
@@ -95,7 +108,8 @@
       },
       "search": "Search ...",
       "category": {
-        "extraFoods": "Extra Foods"
+        "extraFoods": "Extra Foods",
+        "catalog": "Catalog"
       },
       "detail": {
         "dataTable": {
@@ -112,30 +126,135 @@
             "note": "Note",
             "qty": "QTY",
             "returnQty": "RETURN QTY"
+          }
+        },
+        "operations": {
+          "title": "Operations",
+          "children": {
+            "merge": "Merge",
+            "transfer": "Transfer",
+            "split": "Split",
+            "cancel": "Cancel"
           },
-          "footer": {
-            "subTotal": "Sub Total : ",
-            "disPercent": "Dis | % : {percent}",
-            "disAmount": "Dis | {baseCurrency} : {amount}",
-            "total": "Total : "
+          "form": {
+            "saleId": "Invoice",
+            "tableId": "Table"
+          },
+          "dataTable": {
+            "header": {
+              "no": "No.",
+              "itemName": "Name",
+              "qty": "Qty",
+              "price": "Price",
+              "discountRate": "Dis (%)",
+              "amount": "Amount"
+            },
+            "content": {
+              "qty": "QTY",
+              "discountRate": "Dis"
+            }
           }
         },
         "footerActions": {
           "changeTable": "Table",
+          "table": "Table",
+          "guest": "Guest",
           "cancelCopy": "Cancel & Copy",
-          "operations": {
-            "title": "Operations",
-            "children": {
-              "merge": "Merge",
-              "transfer": "Transfer",
-              "split": "Split",
-              "cancel": "Cancel"
-            }
-          },
           "chef": "Chef",
           "print": "Print",
           "preview": "Preview",
-          "payment": "Payment"
+          "payment": "Payment",
+          "paymentLabel": "Sale Receipt",
+          "form": {
+            "saleReceipt": {
+              "invoice": "Invoice",
+              "customer": "Customer",
+              "date": "Date",
+              "exchangeRate": "Exchange rate",
+              "paymentBy": "Payment By",
+              "memo": "Memo",
+              "total": "Total",
+              "receive": {
+                "khr": "Receive (KHR)",
+                "usd": "Receive (USD)",
+                "thb": "Receive (THB)"
+              },
+              "fee": "Fee",
+              "return": "Return"
+            }
+          }
+        },
+        "dialog": {
+          "actions": {
+            "submit": "Submit"
+          },
+          "confirm": {
+            "cancelSale": {
+              "start": "Invoice ",
+              "end": " will be cancel. Continue?",
+              "endNewCopy": " will be cancel and new copy. Continue?",
+              "form": {
+                "password": {
+                  "title": "Password",
+                  "errorText": "Password is incorrect."
+                }
+              }
+            },
+            "submitOrders": {
+              "description": "New orders will add to this invoice. Continue?"
+            }
+          }
+        },
+        "footer": {
+          "subTotal": "Sub Total : ",
+          "disRate": "Dis | % : {rate}",
+          "disRateLabel": "Discount Percent",
+          "disAmount": "Dis | ",
+          "disAmountLabel": "Discount Amount",
+          "total": "Total : "
+        },
+        "alert": {
+          "success": {
+            "merge": "Merge invoice success.",
+            "transfer": "Transfer items success.",
+            "split": "Split invoice success.",
+            "cancelAndCopy": "Cancel & new copy invoice success."
+          },
+          "info": {
+            "noItemsMerge": "No items to merge.",
+            "noSelectedItemsTransfer": "No selected items to transfer.",
+            "noSelectedItemsSplit": "No selected items to split.",
+            "printBeforeCancel": "Can not cancel before print.",
+            "noSelectedItems": "No selected items.",
+            "saleDetailEmpty": "No items.",
+            "saleEmpty": "This invoice is empty.",
+            "noNewItem": "No new orders."
+          }
+        }
+      },
+      "invoice": {
+        "info": {
+          "invoice": "Invoice : ",
+          "customer": "Customer : ",
+          "tableLocation": "Location : ",
+          "user": "User : ",
+          "date": "Date : "
+        },
+        "dataTable": {
+          "header": {
+            "item": "Item",
+            "qty": "QTY",
+            "price": "Price",
+            "amount": "Amount"
+          },
+          "content": {
+            "discountRate": "Dis"
+          }
+        },
+        "footer": {
+          "subTotal": "Sub Total : ",
+          "discountAmount": "Discount : ",
+          "total": "Total : "
         }
       }
     },
@@ -256,6 +375,21 @@
   "loading": {
     "title": "Wait a minute!",
     "description": "Application is processing."
+  },
+  "dialog": {
+    "actions": {
+      "cancel": "Cancel",
+      "insert": "Save",
+      "insertAndPrint": "Save & Print",
+      "update": "Update"
+    },
+    "confirm": {
+      "title": "Confirmation",
+      "remove": {
+        "description": " will immediately remove. Continue?"
+      },
+      "actions": { "cancel": "Cancel", "agree": "Okay" }
+    }
   },
   "alert": {
     "success": {

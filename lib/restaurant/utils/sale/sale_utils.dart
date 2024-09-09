@@ -1,3 +1,6 @@
+import 'package:flutter/material.dart';
+import '../constants.dart';
+
 enum SaleDetailDTRowType {
   price,
   discountRate,
@@ -9,7 +12,7 @@ enum SaleDetailDTRowType {
 const prefixSaleDetailDataTableContent =
     "screens.sale.detail.dataTable.content";
 
-extension SaleScreenExtension on SaleDetailDTRowType {
+extension SaleDetailDTExtension on SaleDetailDTRowType {
   String get toTitle {
     switch (this) {
       case SaleDetailDTRowType.price:
@@ -22,6 +25,69 @@ extension SaleScreenExtension on SaleDetailDTRowType {
         return '$prefixSaleDetailDataTableContent.qty';
       default:
         return '$prefixSaleDetailDataTableContent.returnQty';
+    }
+  }
+}
+
+enum SaleDetailOperationType { merge, transfer, split, cancel }
+
+const prefixSaleDetailOperation = "screens.sale.detail.operations.children";
+
+extension SaleDetailOperationExtension on SaleDetailOperationType {
+  String get toTitle {
+    switch (this) {
+      case SaleDetailOperationType.merge:
+        return '$prefixSaleDetailOperation.merge';
+      case SaleDetailOperationType.transfer:
+        return '$prefixSaleDetailOperation.transfer';
+      case SaleDetailOperationType.split:
+        return '$prefixSaleDetailOperation.split';
+      default:
+        return '$prefixSaleDetailOperation.cancel';
+    }
+  }
+
+  IconData get toIcon {
+    switch (this) {
+      case SaleDetailOperationType.merge:
+        return RestaurantDefaultIcons.merge;
+      case SaleDetailOperationType.transfer:
+        return RestaurantDefaultIcons.transfer;
+      case SaleDetailOperationType.split:
+        return RestaurantDefaultIcons.split;
+      default:
+        return RestaurantDefaultIcons.cancel;
+    }
+  }
+}
+
+enum SaleDetailFooterType {
+  changeTable,
+  changeGuest,
+  preview,
+  payment,
+  discountRate,
+  discountAmount,
+}
+
+const prefixSaleDetailFooterAction = "screens.sale.detail.footerActions";
+const prefixSaleDetailFooter = "screens.sale.detail.footer";
+
+extension SaleDetailFooterExtension on SaleDetailFooterType {
+  String get toTitle {
+    switch (this) {
+      case SaleDetailFooterType.changeTable:
+        return '$prefixSaleDetailFooterAction.table';
+      case SaleDetailFooterType.changeGuest:
+        return '$prefixSaleDetailFooterAction.guest';
+      case SaleDetailFooterType.preview:
+        return '$prefixSaleDetailFooterAction.preview';
+      case SaleDetailFooterType.payment:
+        return '$prefixSaleDetailFooterAction.paymentLabel';
+      case SaleDetailFooterType.discountRate:
+        return '$prefixSaleDetailFooter.disRateLabel';
+      default:
+        return '$prefixSaleDetailFooter.disAmountLabel';
     }
   }
 }

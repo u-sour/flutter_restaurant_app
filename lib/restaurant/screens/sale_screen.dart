@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 import '../../utils/constants.dart';
@@ -30,26 +29,21 @@ class _SaleScreenState extends State<SaleScreen> {
     _readSaleProvider = context.read<SaleProvider>();
     _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
     _readSaleProductsProvider = context.read<SaleProductsProvider>();
-    _readSaleProvider.initData();
-    // init categories
+    // init sales,categories & products data
+    _readSaleProvider.initData(context: context);
     _readSaleCategoriesProvider.initData(context: context);
-    // init products
-    int skip = _readSaleProductsProvider.skip;
-    int limit = _readSaleProductsProvider.limit;
-    _readSaleProductsProvider.initData(
-        context: context, skip: skip, limit: limit);
+    _readSaleProductsProvider.initData(context: context);
   }
 
   @override
   void dispose() {
     super.dispose();
-    _readSaleCategoriesProvider.clearState();
-    _readSaleProductsProvider.clearState();
+    _readSaleProvider.removeEmptySaleInvoiceMethod();
+    _readSaleProvider.unSubscribe();
   }
 
   @override
   Widget build(BuildContext context) {
-    print(GoRouterState.of(context).uri.queryParameters);
     final theme = Theme.of(context);
     Orientation orientation = MediaQuery.orientationOf(context);
     double minHeight = 65.0;
