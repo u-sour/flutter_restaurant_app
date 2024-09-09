@@ -71,6 +71,19 @@
         "fastSale": "លក់លឿន"
       }
     },
+    "guest": {
+      "title": "ភ្ញៀវ",
+      "form": {
+        "name": "ឈ្មោះ",
+        "telephone": "ទូរស័ព្ទ",
+        "address": "អាសយដ្ឋាន"
+      },
+      "alert": {
+        "success": {
+          "message": "អស្ចារ្យណាស់ ភ្ញៀវរបស់អ្នកត្រូវបានបង្កើតដោយជោគជ័យ។"
+        }
+      }
+    },
     "saleTable": {
       "title": "ប្រព័ន្ធគ្រប់គ្រងភោជនីយដ្ឋាន",
       "tab": { "all": "ទាំងអស់" },
@@ -92,7 +105,8 @@
       },
       "search": "ស្វែងរក ...",
       "category": {
-        "extraFoods": "គ្រឿងថែម"
+        "extraFoods": "គ្រឿងថែម",
+        "catalog": "អាហារឈុត"
       },
       "detail": {
         "dataTable": {
@@ -104,35 +118,140 @@
           },
           "content": {
             "price": "តមៃ្ល",
-            "discountRate": "បញ្ចុះ (%)",
+            "discountRate": "បញ្ចុះ",
             "discountRateLabel": "បញ្ចុះ (%)",
             "note": "សម្គាល់",
             "qty": "ចំនួន",
             "returnQty": "ចំនួនត្រលប់"
+          }
+        },
+        "operations": {
+          "title": "ប្រតិបត្តិការ",
+          "children": {
+            "merge": "បញ្ចូលគ្នា",
+            "transfer": "ផ្ទេរ",
+            "split": "បំបែក",
+            "cancel": "បោះបង់"
           },
-          "footer": {
-            "subTotal": "សរុបរង : ",
-            "disPercent": "បញ្ចុះ | % : {percent}",
-            "disAmount": "បញ្ចុះ | {baseCurrency} : {amount}",
-            "total": "សរុប : "
+          "form": {
+            "saleId": "វិក្កយបត្រ",
+            "tableId": "តុ"
+          },
+          "dataTable": {
+            "header": {
+              "no": "លរ.",
+              "itemName": "ទំនិញ",
+              "qty": "ចំនួន",
+              "price": "តមៃ្ល",
+              "discountRate": "បញ្ចុះ (%)",
+              "amount": "ចំនួនប្រាក់"
+            },
+            "content": {
+              "qty": "ចំនួន",
+              "discountRate": "បញ្ចុះ"
+            }
           }
         },
         "footerActions": {
           "changeTable": "ប្តូរតុ",
+          "table": "តុ",
+          "guest": "ភ្ញៀវ",
           "cancelCopy": "បោះបង់ & ចំលង",
-          "operations": {
-            "title": "ប្រតិបត្តិការ",
-            "children": {
-              "merge": "បញ្ចូលគ្នា",
-              "transfer": "ផ្ទេរ",
-              "split": "បំបែក",
-              "cancel": "បោះបង់"
-            }
-          },
           "chef": "ចុងភៅ",
           "print": "ព្រីន",
           "preview": "មើលជាមុន",
-          "payment": "បង់ប្រាក់"
+          "payment": "បង់ប្រាក់",
+          "paymentLabel": "ទទួលបា្រក់",
+          "form": {
+            "saleReceipt": {
+              "invoice": "វិក្កយបត្រ",
+              "customer": "អតិថិជន",
+              "date": "កាលបរិច្ឆេទ",
+              "exchangeRate": "អត្រាប្តូរប្រាក់",
+              "paymentBy": "បង់ប្រាក់តាម",
+              "memo": "បរិយាយ",
+              "total": "ប្រាក់សរុប",
+              "receive": {
+                "khr": "ប្រាក់បានទទួល (KHR)",
+                "usd": "ប្រាក់បានទទួល (USD)",
+                "thb": "ប្រាក់បានទទួល (THB)"
+              },
+              "fee": "ថ្លៃសេវា",
+              "return": "ប្រាក់អាប់"
+            }
+          }
+        },
+        "dialog": {
+          "actions": {
+            "submit": "បញ្ជូន"
+          },
+          "confirm": {
+            "cancelSale": {
+              "start": "វិក្កយបត្រ ",
+              "end": " នឹងត្រូវបោះបង់ភ្លាមៗ។ បន្ត?",
+              "endNewCopy": " នឹងត្រូវបោះបង់និងចម្លងថ្មីភ្លាមៗ។ បន្ត?",
+              "form": {
+                "password": {
+                  "title": "ពាក្យសម្ងាត់",
+                  "errorText": "ពាក្យ​សម្ងាត់​មិន​ត្រឹមត្រូវ។"
+                }
+              }
+            },
+            "submitOrders": {
+              "description": "ការកម្មង់ថ្មីនិងត្រូវបញ្ចូលវិក្កយបត្រនេះ។ បន្ត?"
+            }
+          }
+        },
+        "footer": {
+          "subTotal": "សរុបរង : ",
+          "disRate": "បញ្ចុះ | % : {rate}",
+          "disRateLabel": "បញ្ចុះតម្លៃជាភាគរយ",
+          "disAmount": "បញ្ចុះ | ",
+          "disAmountLabel": "បញ្ចុះតម្លៃជាប្រាក់",
+          "total": "សរុប : "
+        },
+        "alert": {
+          "success": {
+            "merge": "វិក្កយបត្របញ្ចូលគ្នាបានជោគជ័យ។",
+            "transfer": "ផ្ទេរទំនិញបានជោគជ័យ។",
+            "split": "បំបែកវិក្កយបត្របានជោគជ័យ។",
+            "cancelAndCopy": "បោះបង់ & ចម្លងវិក្កយបត្រថ្មីបានជោគជ័យ។"
+          },
+          "info": {
+            "noItemsMerge": "គ្មានទំនិញសម្រាប់បញ្ចូល។",
+            "noSelectedItemsTransfer": "គ្មានទំនិញដែលបានជ្រើសរើសសម្រាប់ផ្ទេរ។",
+            "noSelectedItemsSplit": "គ្មានទំនិញដែលបានជ្រើសរើសសម្រាប់បំបែក។",
+            "printBeforeCancel": "មិនអាចបោះបង់មុនព្រីនទេ។",
+            "noSelectedItems": "មិនមានទំនិញដែលបានជ្រើសរើសទេ។",
+            "saleDetailEmpty": "គ្មានទំនិញទេ។",
+            "saleEmpty": "វិក្កយបត្រនេះគឺទទេ។",
+            "noNewItem": "គ្មានការកម្មង់ថ្មី។"
+          }
+        }
+      },
+      "invoice": {
+        "info": {
+          "invoice": "វិក្កយបត្រ : ",
+          "customer": "អតិថិជន : ",
+          "tableLocation": "ទីតាំង : ",
+          "user": "អ្នកប្រើបា្រស់ : ",
+          "date": "កាលបរិច្ឆេទ : "
+        },
+        "dataTable": {
+          "header": {
+            "item": "ទំនិញ",
+            "qty": "ចំនួន",
+            "price": "តមៃ្ល",
+            "amount": "ចំនួនប្រាក់"
+          },
+          "content": {
+            "discountRate": "បញ្ចុះ"
+          }
+        },
+        "footer": {
+          "subTotal": "សរុបរង : ",
+          "discountAmount": "បញ្ចុះតម្លៃ : ",
+          "total": "សរុប : "
         }
       }
     },
@@ -252,6 +371,21 @@
   "loading": {
     "title": "ចាំ​បន្តិច!",
     "description": "កម្មវិធីកំពុងដំណើរការ។"
+  },
+  "dialog": {
+    "actions": {
+      "cancel": "បោះបង់",
+      "insert": "រក្សាទុក",
+      "insertAndPrint": "រក្សាទុក & ព្រីន",
+      "update": "កែប្រែ"
+    },
+    "confirm": {
+      "title": "ការបញ្ជាក់",
+      "remove": {
+        "description": " នឹងដកចេញភ្លាមៗ។ បន្ត?"
+      },
+      "actions": { "cancel": "បោះបង់", "agree": "យល់ព្រម" }
+    }
   },
   "alert": {
     "success": {

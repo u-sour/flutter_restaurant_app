@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_template/utils/constants.dart';
+import '../../utils/constants.dart';
 
 class FormBuilderTouchSpin extends StatefulWidget {
   final String name;
-  final String? initialValue;
+  final num initialValue;
   final AutovalidateMode autovalidateMode;
   final int minValue;
   final int maxValue;
@@ -24,7 +24,7 @@ class FormBuilderTouchSpin extends StatefulWidget {
   const FormBuilderTouchSpin({
     super.key,
     required this.name,
-    this.initialValue,
+    this.initialValue = 0,
     this.autovalidateMode = AutovalidateMode.disabled,
     this.minValue = 0,
     this.maxValue = 10000,
@@ -52,6 +52,12 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
   @override
   void initState() {
     super.initState();
+    // init text field value
+    _setQtyTextField(
+        value: widget.minValue != 0 && widget.initialValue == 0
+            ? '${widget.minValue}'
+            : '${widget.initialValue}');
+
     if (widget.controller.text.isNotEmpty) {
       _value = num.parse(widget.controller.text);
     }
@@ -69,10 +75,7 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
         FilledButton(
           style: FilledButton.styleFrom(
             elevation: 0.0,
-            padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(2.0),
-            // ),
+            padding: const EdgeInsets.all(AppStyleDefaultProperties.p + 4.0),
           ),
           onPressed: widget.enableButton
               ? () {
@@ -80,7 +83,7 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
                     _value--;
                     //set qty text field
                     _setQtyTextField(value: '$_value');
-                    //set onchange value text field
+                    //set onChanged value text field
                     setState(() {
                       widget.onChanged(_value);
                     });
@@ -93,9 +96,8 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
         Expanded(
           child: FormBuilderTextField(
             name: widget.name,
-            initialValue: widget.initialValue,
             autovalidateMode: widget.autovalidateMode,
-            // decoration: widget.decoration,
+            textAlign: TextAlign.center,
             controller: widget.controller,
             keyboardType: widget.keyboardType,
             inputFormatters: widget.inputFormatters,
@@ -115,10 +117,7 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
         FilledButton(
           style: FilledButton.styleFrom(
             elevation: 0.0,
-            padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-            // shape: RoundedRectangleBorder(
-            //   borderRadius: BorderRadius.circular(2.0),
-            // ),
+            padding: const EdgeInsets.all(AppStyleDefaultProperties.p + 4.0),
           ),
           onPressed: widget.enableButton
               ? () {
@@ -126,7 +125,7 @@ class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
                     _value++;
                     //set qty text field
                     _setQtyTextField(value: '$_value');
-                    //set onchange value text field
+                    //set onChanged value text field
                     setState(() {
                       widget.onChanged(_value);
                     });

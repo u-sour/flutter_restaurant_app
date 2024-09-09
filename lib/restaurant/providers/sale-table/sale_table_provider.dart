@@ -12,12 +12,12 @@ import '../../utils/debounce.dart';
 class SaleTableProvider with ChangeNotifier {
   late SubscriptionHandler _saleSubscription;
   SubscriptionHandler get saleSubscription => _saleSubscription;
-  StreamSubscription<Map<String, dynamic>>? _saleListener;
-  String _activeFloor = 'All';
+  late StreamSubscription<Map<String, dynamic>> _saleListener;
+  late String _activeFloor;
   String get activeFloor => _activeFloor;
-  List<FloorModel> _floors = [];
+  late List<FloorModel> _floors;
   List<FloorModel> get floors => _floors;
-  List<TableModel> _tables = [];
+  late List<TableModel> _tables;
   List<TableModel> get tables => _tables;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -43,6 +43,9 @@ class SaleTableProvider with ChangeNotifier {
 
   void subscribeSales({required BuildContext context}) {
     final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    _activeFloor = 'All';
+    _floors = [];
+    _tables = [];
     String branchId =
         context.select<AppProvider, String>((ap) => ap.selectedBranch!.id);
     String depId =
@@ -78,7 +81,6 @@ class SaleTableProvider with ChangeNotifier {
       {required String branchId,
       required String depId,
       required bool? displayTableAllDepartment}) async {
-    _activeFloor = 'All';
     _floors = await fetchFloors(
         branchId: branchId,
         depId: depId,
@@ -194,13 +196,7 @@ class SaleTableProvider with ChangeNotifier {
   void unSubscribe() {
     if (_saleSubscription.subId.isNotEmpty) {
       _saleSubscription.stop();
+      _saleListener.cancel();
     }
-    _saleListener?.cancel();
-  }
-
-  void clearState() {
-    _activeFloor = 'All';
-    _floors = [];
-    _tables = [];
   }
 }

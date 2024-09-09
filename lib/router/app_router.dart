@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../restaurant/models/user/user_model.dart';
@@ -149,7 +150,10 @@ class AppRouter {
       GoRoute(
         path: SCREENS.sale.toPath,
         name: SCREENS.sale.toName,
-        builder: (context, state) => const SaleScreen(),
+        builder: (context, state) => SaleScreen(
+          // Note: same route and refresh that route
+          key: UniqueKey(),
+        ),
       ),
       GoRoute(
         path: SCREENS.error.toPath,

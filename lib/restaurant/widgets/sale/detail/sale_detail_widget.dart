@@ -30,7 +30,7 @@ class SaleDetailWidget extends StatelessWidget {
         // Data Table
         const Expanded(child: SaleDetailDataTableWidget()),
         // Footer
-        const SizedBox(height: 200.0, child: SaleDetailFooterActionsWidget())
+        const SizedBox(height: 202.0, child: SaleDetailFooterActionsWidget())
       ],
     );
   }

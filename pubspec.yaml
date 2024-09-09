@@ -36,7 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   dart_meteor: ^4.0.0-beta.2
-  go_router: ^14.1.4
+  go_router: ^14.2.6
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   easy_localization: ^3.0.7
@@ -63,6 +63,7 @@ dependencies:
   sliding_up_panel: ^2.0.0+1
   badges: ^3.1.2
   rotated_corner_decoration: ^2.1.0+1
+  big_dart: ^1.0.1
 dev_dependencies:
   flutter_test:
     sdk: flutter

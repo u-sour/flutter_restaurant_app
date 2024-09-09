@@ -5,10 +5,8 @@ import '../../../../screens/app_screen.dart';
 import '../../../models/sale/category/sale_category_model.dart';
 
 class SaleCategoriesProvider extends ChangeNotifier {
-  List<SaleCategoryModel> _categories = [];
-  List<SaleCategoryModel> _selectedCategories = [
-    const SaleCategoryModel(id: '', name: 'All', level: 0)
-  ];
+  late List<SaleCategoryModel> _categories;
+  late List<SaleCategoryModel> _selectedCategories;
 
   //getter
   List<SaleCategoryModel> get categories => _categories;
@@ -38,19 +36,14 @@ class SaleCategoriesProvider extends ChangeNotifier {
 
   Future<void> initData({required BuildContext context}) async {
     AppProvider readAppProvider = context.read<AppProvider>();
+    _categories = [];
+    _selectedCategories = [
+      const SaleCategoryModel(id: '', name: 'All', level: 0)
+    ];
     String branchId = readAppProvider.selectedBranch!.id;
     String depId = readAppProvider.selectedDepartment!.id;
-    // check if user has selected category or not
-    // if (_selectedCategories.length > 1) {
-    //   _categories = await fetchSaleCategories(
-    //     branchId: branchId,
-    //     depId: depId,
-    //     parentId: _selectedCategories.last.id,
-    //   );
-    // } else {
     _categories =
         await fetchSaleCategories(branchId: branchId, depId: depId, level: 0);
-    // }
     notifyListeners();
   }
 
@@ -87,12 +80,5 @@ class SaleCategoriesProvider extends ChangeNotifier {
     List<SaleCategoryModel> toModelList =
         result.map((json) => SaleCategoryModel.fromJson(json)).toList();
     return toModelList;
-  }
-
-  void clearState() {
-    _categories.clear();
-    _selectedCategories = [
-      const SaleCategoryModel(id: '', name: 'All', level: 0)
-    ];
   }
 }

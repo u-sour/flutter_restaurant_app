@@ -40,7 +40,6 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
   void dispose() {
     super.dispose();
     _readSaleTableProvider.unSubscribe();
-    _readSaleTableProvider.clearState();
   }
 
   @override

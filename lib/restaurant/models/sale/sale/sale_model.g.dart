@@ -9,12 +9,7 @@ part of 'sale_model.dart';
 SaleModel _$SaleModelFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    disallowNullValues: const [
-      '_id',
-      'requestPayment',
-      'updatedAt',
-      'updatedBy'
-    ],
+    disallowNullValues: const ['_id', 'requestPayment'],
   );
   return SaleModel(
     id: json['_id'] as String,
@@ -32,6 +27,7 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) {
     employeeId: json['employeeId'] as String,
     employeeName: json['employeeName'] as String?,
     guestId: json['guestId'] as String,
+    guestName: json['guestName'] as String?,
     numOfGuest: (json['numOfGuest'] as num).toInt(),
     billed: (json['billed'] as num).toInt(),
     branchId: json['branchId'] as String,
@@ -64,6 +60,7 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) {
     'employeeId': instance.employeeId,
     'employeeName': instance.employeeName,
     'guestId': instance.guestId,
+    'guestName': instance.guestName,
     'numOfGuest': instance.numOfGuest,
     'billed': instance.billed,
     'branchId': instance.branchId,
@@ -82,8 +79,8 @@ Map<String, dynamic> _$SaleModelToJson(SaleModel instance) {
   val['createdAt'] =
       DateModelConverter.convertDateTimeForModel(instance.createdAt);
   val['createdBy'] = instance.createdBy;
-  writeNotNull('updatedAt',
-      DateModelConverter.convertDateTimeOptionalForModel(instance.updatedAt));
-  writeNotNull('updatedBy', instance.updatedBy);
+  val['updatedAt'] =
+      DateModelConverter.convertDateTimeOptionalForModel(instance.updatedAt);
+  val['updatedBy'] = instance.updatedBy;
   return val;
 }

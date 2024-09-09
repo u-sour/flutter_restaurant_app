@@ -52,7 +52,7 @@ class SaleTableWidget extends StatelessWidget {
                   name: table.label,
                   status: table.status ?? '',
                   onTap: () {
-                    context.goNamed(SCREENS.sale.name, queryParameters: {
+                    context.goNamed(SCREENS.sale.toName, queryParameters: {
                       'table': table.id,
                       'fastSale': 'false'
                     });

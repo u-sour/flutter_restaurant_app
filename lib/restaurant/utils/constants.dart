@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/constants.dart';
+import '../../utils/constants.dart';
 
 class RestaurantTableStatusColors {
   static const MaterialColor open = AppThemeColors.primary;
@@ -20,6 +20,8 @@ class RestaurantTableStatusColors {
 }
 
 class RestaurantDefaultIcons {
+  //confirmation
+  static const IconData confirmation = Icons.quiz_rounded;
   // loading
   static const IconData loading = Icons.on_device_training;
   // branch
@@ -39,26 +41,30 @@ class RestaurantDefaultIcons {
   static const IconData next = Icons.chevron_right;
   static const IconData search = Icons.search;
   static const IconData notification = Icons.notifications;
+  static const IconData tableLocation = Icons.room;
   static const IconData invoiceList = Icons.list;
   static const IconData addInvoice = Icons.add;
   static const IconData noImage = Icons.photo;
   // sale - category
   static const IconData categories = Icons.menu_book;
   static const IconData extraFoods = Icons.soup_kitchen;
+  static const IconData catalogCombo = Icons.brunch_dining;
   // sale - detail data table actions
   static const IconData actions = Icons.more_horiz;
   static const IconData edit = Icons.edit;
   static const IconData editNote = Icons.edit_note;
-  static const IconData remove = Icons.remove_circle_outline;
+  static const IconData remove = Icons.delete_outline;
+  static const IconData removeSelectedItem = Icons.remove_circle_outline;
   static const IconData emptyData = Icons.storage;
   // sale - detail footer actions
   static const IconData changeTable = Icons.move_up;
-  static const IconData changeCustomer = Icons.manage_accounts;
+  static const IconData changeCustomer = Icons.person;
   static const IconData cancelCopy = Icons.content_copy;
-  static const IconData chef = Icons.local_dining;
+  static const IconData chef = Icons.breakfast_dining_outlined;
   static const IconData print = Icons.print;
   static const IconData preview = Icons.receipt_long;
   static const IconData payment = Icons.payments;
+  static const IconData saleReceipt = Icons.paid_outlined;
   static const IconData operations = Icons.settings_applications;
   // sale - detail footer actions - operations - children
   static const IconData merge = Icons.merge;
