@@ -3,7 +3,6 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_template/utils/responsive/responsive_layout.dart';
 import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -11,6 +10,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../providers/printer_provider.dart';
 import '../providers/setting_provider.dart';
 import '../restaurant/providers/dashboard/dashboard_provider.dart';
+import '../restaurant/providers/invoice-template/invoice_template_provider.dart';
+import '../restaurant/providers/invoice/invoice_provider.dart';
 import '../restaurant/providers/sale-table/sale_table_provider.dart';
 import '../restaurant/providers/sale/categories/sale_categories_provider.dart';
 import '../restaurant/providers/sale/products/sale_products_provider.dart';
@@ -23,6 +24,7 @@ import '../providers/my_profile_provider.dart';
 import '../providers/route_provider.dart';
 import '../providers/theme_provider.dart';
 import '../storages/connection_storage.dart';
+import '../utils/responsive/responsive_layout.dart';
 import '../utils/theme/theme.dart';
 
 MeteorClient meteor = MeteorClient.connect(url: '');
@@ -54,6 +56,8 @@ class _AppScreenState extends State<AppScreen> {
   late SaleProductsProvider saleProductsProvider;
   late SaleProvider saleProvider;
   late SaleTableProvider saleTableProvider;
+  late InvoiceProvider invoiceProvider;
+  late InvoiceTemplateProvider invoiceTemplateProvider;
 
   @override
   void initState() {
@@ -71,6 +75,8 @@ class _AppScreenState extends State<AppScreen> {
     saleProductsProvider = SaleProductsProvider();
     saleProvider = SaleProvider();
     saleTableProvider = SaleTableProvider();
+    invoiceProvider = InvoiceProvider();
+    invoiceTemplateProvider = InvoiceTemplateProvider();
     onStartUp();
     super.initState();
   }
@@ -123,7 +129,10 @@ class _AppScreenState extends State<AppScreen> {
             create: (_) => saleProductsProvider),
         ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider),
         ChangeNotifierProvider<SaleTableProvider>(
-            create: (_) => saleTableProvider)
+            create: (_) => saleTableProvider),
+        ChangeNotifierProvider<InvoiceProvider>(create: (_) => invoiceProvider),
+        ChangeNotifierProvider<InvoiceTemplateProvider>(
+            create: (_) => invoiceTemplateProvider)
       ],
       child: Builder(
         builder: (context) {

@@ -9,6 +9,7 @@ enum SCREENS {
   dashboard,
   saleTable,
   sale,
+  invoice,
   formBuilder,
   formBuilderDefault,
   formBuilderValidation,
@@ -29,6 +30,8 @@ extension AppScreenExtension on SCREENS {
         return "/restaurant/sale-table";
       case SCREENS.sale:
         return "/restaurant/sale";
+      case SCREENS.invoice:
+        return "/restaurant/invoice";
       case SCREENS.formBuilder:
         return "/form-builder";
       case SCREENS.formBuilderDefault:
@@ -68,6 +71,8 @@ extension AppScreenExtension on SCREENS {
         return "saleTable";
       case SCREENS.sale:
         return "sale";
+      case SCREENS.invoice:
+        return "invoice";
       case SCREENS.formBuilder:
         return "formBuilder";
       case SCREENS.formBuilderDefault:

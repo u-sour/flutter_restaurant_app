@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../restaurant/models/user/user_model.dart';
+import '../restaurant/screens/invoice_screen.dart';
 import 'route_utils.dart';
 import '../restaurant/screens/sale_table_screen.dart';
 import '../screens/connection_screen.dart';
@@ -154,6 +155,18 @@ class AppRouter {
           // Note: same route and refresh that route
           key: UniqueKey(),
         ),
+      ),
+      GoRoute(
+        path: SCREENS.invoice.toPath,
+        name: SCREENS.invoice.toName,
+        builder: (context, state) {
+          Map<String, dynamic> queryRouter = state.uri.queryParameters;
+          final String invoiceId = queryRouter['invoiceId'];
+          final bool receiptPrint = queryRouter['receiptPrint'] != null &&
+              queryRouter['receiptPrint']! == 'true';
+          return InvoiceScreen(
+              invoiceId: invoiceId, receiptPrint: receiptPrint);
+        },
       ),
       GoRoute(
         path: SCREENS.error.toPath,

@@ -4,20 +4,17 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import 'package:flutter_template/restaurant/models/exchange/exchange_model.dart';
-import 'package:flutter_template/restaurant/models/sale/receipt/sale_receipt_allow_currency_amount_model.dart';
-import 'package:flutter_template/restaurant/models/sale/receipt/sale_receipt_model.dart';
-import 'package:flutter_template/restaurant/widgets/data-table/nav_helper.dart';
-import 'package:flutter_template/router/route_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
+import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/convert_date_time.dart';
+import '../../models/exchange/exchange_model.dart';
 import '../../models/sale/add-product/sale_add_product_model.dart';
 import '../../models/sale/app-bar/sale_app_bar_action_model.dart';
 import '../../models/sale/detail/sale_detail_extra_item_model.dart';
@@ -27,6 +24,8 @@ import '../../models/sale/guest/insert_guest_model.dart';
 import '../../models/sale/insert-item-input/insert_item_input_model.dart';
 import '../../models/sale/invoice/sale_invoice_action_model.dart';
 import '../../models/sale/invoice/sale_invoice_status_date_model.dart';
+import '../../models/sale/receipt/sale_receipt_allow_currency_amount_model.dart';
+import '../../models/sale/receipt/sale_receipt_model.dart';
 import '../../models/sale/sale/sale_model.dart';
 import '../../models/sale/table-location/table_location_model.dart';
 import '../../services/sale_service.dart';
@@ -336,7 +335,6 @@ class SaleProvider extends ChangeNotifier {
       {required SaleAddProductModel item, required String invoiceId}) async {
     ResponseModel? result;
     if (item.catalogType != null && item.catalogType == 'Set') {
-      print('catalog set added ...');
       // Make doc
       List<Map<String, dynamic>> products =
           item.products?.map((p) => p.toJson()).toList() ?? [];
@@ -374,7 +372,6 @@ class SaleProvider extends ChangeNotifier {
       // Add item list
       result = await addItemList(doc: InsertItemInputModel.fromJson(doc));
     } else if (item.type == 'ExtraFood' && _selectedSaleDetails.isNotEmpty) {
-      print('extra food added ...');
       // Filter by checkPrintKitchen == null or checkPrintKitchen == false
       List<SaleDetailModel> selectedSaleDetailFilter = _selectedSaleDetails
           .where((sd) =>
@@ -407,7 +404,6 @@ class SaleProvider extends ChangeNotifier {
       // clear all selected items
       selectAllRows(false);
     } else {
-      print('item added ...');
       Map<String, dynamic> doc = {
         'itemId': item.id,
         'qty': 1,
@@ -1083,12 +1079,17 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<ResponseModel?> printBill() async {
+  Future<ResponseModel?> printBill({required BuildContext context}) async {
     ResponseModel? result;
     if (_saleDetails.isNotEmpty) {
       try {
         if (_currentSale != null) {
           await updateOnPrintMethod(saleId: _currentSale!.id);
+          // go to invoice
+          if (context.mounted) {
+            context.pushNamed(SCREENS.invoice.toName,
+                queryParameters: {'invoiceId': currentSale!.id});
+          }
         }
       } catch (e) {
         if (e is MeteorError) {
@@ -1527,6 +1528,13 @@ class SaleProvider extends ChangeNotifier {
           // Save & Print
           if (isPrint) {
             print('go to invoice');
+            // context.pushNamed(SCREENS.invoice.toName, queryParameters: {
+            //   'receiptId': receiptId,
+            //   'invoiceId': saleReceipt.orderDoc.id,
+            //   'fromReceiptForm': true,
+            //   'receiptPrint': true,
+            //   'isRepaid': this.isRepaid,
+            // });
           }
           // Back to sale table
           context.goNamed(SCREENS.saleTable.toName);
