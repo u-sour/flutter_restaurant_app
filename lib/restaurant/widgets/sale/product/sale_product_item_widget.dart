@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/product/sale_product_model.dart';
+import '../../../utils/sale/sale_utils.dart';
 import '../../no_image_widget.dart';
 import '../../format_currency_widget.dart';
 
@@ -38,7 +39,8 @@ class SaleProductItemWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
           child: product.photoUrl != null
               ? CachedNetworkImage(
-                  imageUrl: "http://$ipAddress${product.photoUrl}",
+                  imageUrl: getImgSrc(
+                      ipAddress: ipAddress, imgUrl: product.photoUrl!),
                   errorWidget: (context, url, error) {
                     return Container(
                       width: double.infinity,

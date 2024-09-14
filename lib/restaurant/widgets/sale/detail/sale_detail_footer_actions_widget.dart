@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
+import 'package:flutter_template/router/route_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/select-option/select_option_model.dart';
@@ -177,7 +178,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                     onPressed: () async {
-                      final result = await readSaleProvider.printBill();
+                      final result =
+                          await readSaleProvider.printBill(context: context);
                       if (result != null) {
                         late SnackBar snackBar;
                         snackBar = Alert.awesomeSnackBar(

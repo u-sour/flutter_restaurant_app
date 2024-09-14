@@ -91,3 +91,9 @@ extension SaleDetailFooterExtension on SaleDetailFooterType {
     }
   }
 }
+
+String getImgSrc({required String ipAddress, required String imgUrl}) =>
+    'http://$ipAddress$imgUrl';
+
+double convertValueFromCSS({required String value}) =>
+    double.parse(value.substring(0, value.length - 1));
