@@ -104,6 +104,11 @@
         "categories": "ផ្នែក"
       },
       "search": "ស្វែងរក ...",
+      "notification": {
+        "title": "ការជូនដំណឹង",
+        "noMessages": "គ្មានសារ",
+        "btn": { "removeAll": "លុបទាំងអស់" }
+      },
       "category": {
         "extraFoods": "គ្រឿងថែម",
         "catalog": "អាហារឈុត"

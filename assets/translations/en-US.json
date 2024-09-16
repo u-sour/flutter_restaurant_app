@@ -107,6 +107,11 @@
         "categories": "Categories"
       },
       "search": "Search ...",
+      "notification": {
+        "title": "Notification",
+        "noMessages": "No messages",
+        "btn": { "removeAll": "Remove All" }
+      },
       "category": {
         "extraFoods": "Extra Foods",
         "catalog": "Catalog"

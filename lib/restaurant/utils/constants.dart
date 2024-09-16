@@ -41,6 +41,9 @@ class RestaurantDefaultIcons {
   static const IconData next = Icons.chevron_right;
   static const IconData search = Icons.search;
   static const IconData notification = Icons.notifications;
+  static const IconData notificationInvoice = Icons.receipt_long;
+  static const IconData notificationFromKitchen = Icons.food_bank;
+  static const IconData removeNotification = Icons.clear;
   static const IconData tableLocation = Icons.room;
   static const IconData invoiceList = Icons.list;
   static const IconData addInvoice = Icons.add;
