@@ -14,6 +14,7 @@ import '../restaurant/providers/invoice-template/invoice_template_provider.dart'
 import '../restaurant/providers/invoice/invoice_provider.dart';
 import '../restaurant/providers/sale-table/sale_table_provider.dart';
 import '../restaurant/providers/sale/categories/sale_categories_provider.dart';
+import '../restaurant/providers/sale/notification_provider.dart';
 import '../restaurant/providers/sale/products/sale_products_provider.dart';
 import '../restaurant/providers/sale/sale_provider.dart';
 import '../router/app_router.dart';
@@ -55,6 +56,7 @@ class _AppScreenState extends State<AppScreen> {
   late SaleCategoriesProvider saleCategoriesProvider;
   late SaleProductsProvider saleProductsProvider;
   late SaleProvider saleProvider;
+  late NotificationProvider notificationProvider;
   late SaleTableProvider saleTableProvider;
   late InvoiceProvider invoiceProvider;
   late InvoiceTemplateProvider invoiceTemplateProvider;
@@ -74,6 +76,7 @@ class _AppScreenState extends State<AppScreen> {
     saleCategoriesProvider = SaleCategoriesProvider();
     saleProductsProvider = SaleProductsProvider();
     saleProvider = SaleProvider();
+    notificationProvider = NotificationProvider();
     saleTableProvider = SaleTableProvider();
     invoiceProvider = InvoiceProvider();
     invoiceTemplateProvider = InvoiceTemplateProvider();
@@ -128,6 +131,8 @@ class _AppScreenState extends State<AppScreen> {
         ChangeNotifierProvider<SaleProductsProvider>(
             create: (_) => saleProductsProvider),
         ChangeNotifierProvider<SaleProvider>(create: (_) => saleProvider),
+        ChangeNotifierProvider<NotificationProvider>(
+            create: (_) => notificationProvider),
         ChangeNotifierProvider<SaleTableProvider>(
             create: (_) => saleTableProvider),
         ChangeNotifierProvider<InvoiceProvider>(create: (_) => invoiceProvider),

@@ -1,11 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/restaurant/widgets/notification/notification_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/widgets/avatar_initial_widget_model.dart';
 import '../../../../models/widgets/avatar_menu_widget_model.dart';
 import '../../../../providers/app_provider.dart';
 import '../../../../providers/auth_provider.dart';
 import '../../../../router/route_utils.dart';
+import '../../../../services/global_service.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../../widgets/avatar_widget.dart';
@@ -17,6 +19,7 @@ import '../../../utils/constants.dart';
 import '../../../utils/debounce.dart';
 import '../../badge_widget.dart';
 import '../../department_widget.dart';
+import '../../notification/notification_dialog_widget.dart';
 import '../../search_widget.dart';
 
 class SaleAppBarSearchWidget extends StatelessWidget {
@@ -75,7 +78,16 @@ class SaleAppBarSearchWidget extends StatelessWidget {
               width: 48.0,
               height: 48.0,
               child: FilledButton(
-                onPressed: () {},
+                onPressed: () {
+                  GlobalService.openDialog(
+                    contentWidget: const NotificationDialogWidget(
+                      titleIcon: RestaurantDefaultIcons.notification,
+                      title: 'screens.sale.notification.title',
+                      content: NotificationWidget(),
+                    ),
+                    context: context,
+                  );
+                },
                 style: FilledButton.styleFrom(
                   padding: EdgeInsets.zero,
                 ),
