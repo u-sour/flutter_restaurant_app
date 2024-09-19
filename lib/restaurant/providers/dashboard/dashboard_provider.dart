@@ -14,6 +14,10 @@ class DashboardProvider extends ChangeNotifier {
   bool get isLoading => _isLoading;
   bool _isFiltering = false;
   bool get isFiltering => _isFiltering;
+  late String _filterText;
+  String get filterText => _filterText;
+  final int _pageSize = 10;
+  int get pageSize => _pageSize;
 
   void initData({required String branchId, required String depId}) async {
     _isLoading = true;
@@ -23,15 +27,33 @@ class DashboardProvider extends ChangeNotifier {
     _saleInvoice = await fetchSaleForDataTable(
         tab: _selectedTab, branchId: _branchId, depId: _depId);
     _isLoading = false;
+    _filterText = '';
     notifyListeners();
   }
 
-  Future<void> filter({int tab = 0, String filter = ''}) async {
+  Future<void> search({int tab = 0, String filterText = ''}) async {
+    await filter(tab: tab, filterText: filterText);
+  }
+
+  Future<void> pageNavigationChange({
+    required int page,
+  }) async {
+    await filter(tab: _selectedTab, filterText: _filterText, page: page += 1);
+  }
+
+  Future<void> filter(
+      {int tab = 0, String filterText = '', int? page, int? pageSize}) async {
     _isFiltering = true;
     notifyListeners();
     _selectedTab = tab;
+    _filterText = filterText;
     _saleInvoice = await fetchSaleForDataTable(
-        tab: _selectedTab, filter: filter, branchId: _branchId, depId: _depId);
+        tab: _selectedTab,
+        filter: filterText,
+        page: page,
+        pageSize: pageSize,
+        branchId: _branchId,
+        depId: _depId);
     _isFiltering = false;
     notifyListeners();
   }
@@ -39,6 +61,8 @@ class DashboardProvider extends ChangeNotifier {
   Future<SaleInvoiceModel> fetchSaleForDataTable({
     int tab = 0,
     String filter = '',
+    int? page,
+    int? pageSize,
     required String branchId,
     required String depId,
   }) async {
@@ -63,15 +87,15 @@ class DashboardProvider extends ChangeNotifier {
     if (tab == 2 || tab == 3 || tab == 4) {
       // If fetch for table with paginate (tab = 2,3,4)
       tableQuery = {
-        'page': 1,
-        'pageSize': 10,
+        'page': page ?? 1,
+        'pageSize': pageSize ?? _pageSize,
       };
     }
     if (tab == 0 || tab == 1) {
       // If fetch for card (tab = 0,1)
       tableQuery = {
-        'page': 1,
-        'pageSize': 1 << 32,
+        'page': page ?? 1,
+        'pageSize': page ?? 1 << 32,
       };
     }
 
@@ -79,7 +103,6 @@ class DashboardProvider extends ChangeNotifier {
         await meteor.call('rest.findSaleForTableData', args: [
       {'params': params, 'tableQuery': tableQuery, 'branchId': branchId}
     ]);
-
     return SaleInvoiceModel.fromJson(result);
   }
 

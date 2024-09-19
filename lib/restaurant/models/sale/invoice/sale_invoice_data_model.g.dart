@@ -32,7 +32,7 @@ SaleInvoiceDataModel _$SaleInvoiceDataModelFromJson(Map<String, dynamic> json) {
     orderNum: json['orderNum'] as String,
     refNo: json['refNo'] as String,
     branchId: json['branchId'] as String,
-    receiptId: json['receiptId'] as bool,
+    receiptId: json['receiptId'],
     requestPayment: json['requestPayment'] as bool?,
   );
 }

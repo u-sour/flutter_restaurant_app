@@ -1,9 +1,9 @@
 import 'package:dynamic_tabbar/dynamic_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/models/select-option/select_option_model.dart';
 import 'package:flutter_template/restaurant/utils/map_index.dart';
 import 'package:provider/provider.dart';
+import '../../../models/select-option/select_option_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../loading_widget.dart';
@@ -53,6 +53,7 @@ class SaleInvoiceWidget extends StatelessWidget {
       builder: (context, isLoading, child) => isLoading
           ? const LoadingWidget()
           : DynamicTabBarWidget(
+              physicsTabBarView: const NeverScrollableScrollPhysics(),
               dynamicTabs: tabs.mapIndexed((tab, index) {
                 return TabData(
                     index: index,
@@ -64,10 +65,13 @@ class SaleInvoiceWidget extends StatelessWidget {
               isScrollable: isScrollable,
               padding: EdgeInsets.zero,
               onTabControllerUpdated: (controller) {
-                controller.index = readDashboardProvider.selectedTab;
+                // run when user swipe
+                controller.addListener(() async {
+                  await readDashboardProvider.search(tab: controller.index);
+                });
               },
-              onTabChanged: (index) {
-                readDashboardProvider.filter(tab: index!);
+              onTabChanged: (index) async {
+                await readDashboardProvider.search(tab: index!);
               },
               showBackIcon: showBackIcon,
               showNextIcon: showNextIcon,

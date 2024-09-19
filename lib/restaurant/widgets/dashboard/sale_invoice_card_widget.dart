@@ -36,10 +36,6 @@ class SaleInvoiceCardWidget extends StatelessWidget {
             return data.isFiltering
                 ? const LoadingWidget()
                 : GridView.builder(
-                    padding: const EdgeInsets.only(
-                      left: AppStyleDefaultProperties.p,
-                      right: AppStyleDefaultProperties.p,
-                    ),
                     itemCount: data.saleInvoice.data.length,
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisSpacing: AppStyleDefaultProperties.h,

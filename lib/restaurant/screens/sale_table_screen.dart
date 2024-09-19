@@ -36,6 +36,18 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
     _readSaleTableProvider = context.read<SaleTableProvider>();
   }
 
+  void setActiveFloor({required String floorId}) {
+    final String branchId = _readAppProvider.selectedBranch!.id;
+    final String depId = _readAppProvider.selectedDepartment!.id;
+    final bool? displayTableAllDepartment =
+        _readAppProvider.saleSetting.sale.displayTableAllDepartment;
+    _readSaleTableProvider.setActiveFloor(
+        floorId: floorId,
+        branchId: branchId,
+        depId: depId,
+        displayTableAllDepartment: displayTableAllDepartment);
+  }
+
   @override
   void dispose() {
     super.dispose();
@@ -102,24 +114,17 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
                                 );
                               }).toList(),
                               isScrollable: isScrollable,
-                              onTabControllerUpdated: (controller) {},
+                              onTabControllerUpdated: (controller) {
+                                // run when user swipe
+                                controller.addListener(() {
+                                  final String floorId =
+                                      data.floors[controller.index].id;
+                                  setActiveFloor(floorId: floorId);
+                                });
+                              },
                               onTabChanged: (index) {
                                 final String floorId = data.floors[index!].id;
-                                final String branchId =
-                                    _readAppProvider.selectedBranch!.id;
-                                final String depId =
-                                    _readAppProvider.selectedDepartment!.id;
-                                final bool? displayTableAllDepartment =
-                                    _readAppProvider.saleSetting.sale
-                                        .displayTableAllDepartment;
-                                context
-                                    .read<SaleTableProvider>()
-                                    .setActiveFloor(
-                                        floorId: floorId,
-                                        branchId: branchId,
-                                        depId: depId,
-                                        displayTableAllDepartment:
-                                            displayTableAllDepartment);
+                                setActiveFloor(floorId: floorId);
                               },
                               showBackIcon: showBackIcon,
                               showNextIcon: showNextIcon,

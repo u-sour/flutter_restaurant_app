@@ -36,13 +36,14 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
     RoundNumber roundNumber = RoundNumber(
         decimalNumber:
             defaultBaseCurrency == 'KHR' ? -decimalNumber : decimalNumber);
-    TextStyle currencySymbolStyle = theme.textTheme.bodyLarge!.copyWith(
+    TextStyle currencySymbolStyle = theme.textTheme.bodySmall!.copyWith(
         fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
         color: color ?? theme.colorScheme.onPrimary,
         fontWeight: fontWeight,
         height: defaultBaseCurrency == 'KHR' ? 0.1 : null);
     return Row(
       mainAxisAlignment: mainAxisAlignment,
+      textBaseline: TextBaseline.alphabetic,
       children: [
         // value
         Text(
@@ -50,7 +51,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
               value: roundNumber.round(value: value),
               baseCurrency: defaultBaseCurrency,
               decimalNumber: decimalNumber),
-          style: theme.textTheme.bodyLarge!.copyWith(
+          style: theme.textTheme.bodySmall!.copyWith(
             fontSize: priceFontSize,
             color: color ?? theme.colorScheme.onPrimary,
             fontWeight: fontWeight,

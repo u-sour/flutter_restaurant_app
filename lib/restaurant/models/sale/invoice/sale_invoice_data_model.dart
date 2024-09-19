@@ -28,7 +28,7 @@ class SaleInvoiceDataModel {
   final String orderNum;
   final String refNo;
   final String branchId;
-  final bool receiptId;
+  final dynamic receiptId;
   final bool? requestPayment;
 
   const SaleInvoiceDataModel({
