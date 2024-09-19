@@ -5,6 +5,7 @@ import '../../providers/dashboard/dashboard_provider.dart';
 import '../../utils/debounce.dart';
 import '../search_widget.dart';
 import 'sale_invoice_card_widget.dart';
+import 'sale_invoice_data_table_widget.dart';
 
 enum SaleInvoiceContentType { card, dataTable }
 
@@ -37,25 +38,24 @@ class _SaleInvoiceContentWidgetState extends State<SaleInvoiceContentWidget> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [
-      Padding(
-        padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-        child: SearchWidget(
-          onChanged: (String? query) {
-            if (query != null) {
-              debounce.run(() {
-                final int selectedTab = _readDashboardProvider.selectedTab;
-                _readDashboardProvider.filter(
-                  tab: selectedTab,
-                  filter: query,
-                );
-              });
-            }
-          },
-        ),
+      const SizedBox(height: AppStyleDefaultProperties.h),
+      SearchWidget(
+        onChanged: (String? query) {
+          if (query != null) {
+            debounce.run(() {
+              final int selectedTab = _readDashboardProvider.selectedTab;
+              _readDashboardProvider.search(
+                tab: selectedTab,
+                filterText: query,
+              );
+            });
+          }
+        },
       ),
+      const SizedBox(height: AppStyleDefaultProperties.h),
       widget.type.name == 'card'
           ? const Expanded(child: SaleInvoiceCardWidget())
-          : const Expanded(child: Placeholder())
+          : const Expanded(child: SaleInvoiceDataTableWidget())
     ]);
   }
 }
