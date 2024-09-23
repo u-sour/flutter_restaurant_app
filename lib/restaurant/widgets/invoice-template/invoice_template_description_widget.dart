@@ -5,7 +5,7 @@ import '../../models/exchange/exchange_model.dart';
 import '../../models/invoice-template/description/description_left_right_schema_model.dart';
 import '../../models/invoice-template/label_style_model.dart';
 import '../../models/invoice-template/value_style_model.dart';
-import '../../models/sale/invoice/sale_invoice_for_print_model.dart';
+import '../../models/sale/invoice/print/sale_invoice_for_print_model.dart';
 import '../../providers/sale/sale_provider.dart';
 
 class InvoiceTemplateDescriptionWidget extends StatelessWidget {
@@ -15,6 +15,7 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
   final LabelStyleModel subLabelStyle;
   final ValueStyleModel valueStyle;
   final SaleInvoiceForPrintModel sale;
+  final String paymentBy;
   final ExchangeModel exchange;
   final bool receiptPrint;
   const InvoiceTemplateDescriptionWidget({
@@ -25,6 +26,7 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
     required this.subLabelStyle,
     required this.valueStyle,
     required this.sale,
+    required this.paymentBy,
     required this.exchange,
     required this.receiptPrint,
   });
@@ -39,10 +41,9 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
     saleDoc['customerName'] = saleDoc['guestName'];
     saleDoc['timeIn'] =
         ConvertDateTime.formatTimeStampToString(saleDoc['date'], true);
-    if (!receiptPrint) {
-      saleDoc['timeOut'] =
-          ConvertDateTime.formatTimeStampToString(DateTime.now(), true);
-    }
+    saleDoc['timeOut'] =
+        ConvertDateTime.formatTimeStampToString(DateTime.now(), true);
+    saleDoc['paymentBy'] = paymentBy;
     List<String> allowedCurrencies =
         readSaleProvider.getAllowedCurrencies(context: context);
     String isShowTHB =
@@ -53,7 +54,7 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
               description.visible &&
                   description.showOnReceipt != null &&
                   description.showOnReceipt == true &&
-                  receiptPrint
+                  paymentBy.isNotEmpty
           ? [
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 // Label
@@ -86,7 +87,7 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
               // Value
               Expanded(
                 child: Text(
-                  saleDoc[description.field],
+                  '${saleDoc[description.field]}',
                   softWrap: true,
                   style: theme.textTheme.bodySmall!.copyWith(
                       color: baseColor,

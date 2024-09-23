@@ -1512,6 +1512,7 @@ class SaleProvider extends ChangeNotifier {
         // remove useless key
         form.remove('receiveKHR');
         form.remove('receiveUSD');
+        form.remove('receiveTHB');
         if (form['memo'] == null) {
           form.remove('memo');
         }
@@ -1521,23 +1522,24 @@ class SaleProvider extends ChangeNotifier {
         final String receiptId =
             await insertSaleReceiptMethod(methodName: methodName, doc: form);
         if (context.mounted) {
+          // close modal
+          context.pop();
           if (receiptId.isEmpty) {
             // back to Dashboard
             context.goNamed(SCREENS.dashboard.toName);
           }
           // Save & Print
           if (isPrint) {
-            print('go to invoice');
-            // context.pushNamed(SCREENS.invoice.toName, queryParameters: {
-            //   'receiptId': receiptId,
-            //   'invoiceId': saleReceipt.orderDoc.id,
-            //   'fromReceiptForm': true,
-            //   'receiptPrint': true,
-            //   'isRepaid': this.isRepaid,
-            // });
+            context.goNamed(SCREENS.invoice.toName, queryParameters: {
+              'invoiceId': saleReceipt.orderDoc.id,
+              'receiptId': receiptId,
+              'fromReceiptForm': 'true',
+              'receiptPrint': 'true',
+            });
+          } else {
+            // Back to sale table
+            context.goNamed(SCREENS.saleTable.toName);
           }
-          // Back to sale table
-          context.goNamed(SCREENS.saleTable.toName);
         }
       } catch (e) {
         if (e is MeteorError) {
@@ -1588,7 +1590,8 @@ class SaleProvider extends ChangeNotifier {
 
   List<String> getAllowedCurrencies({required BuildContext context}) {
     AppProvider readAppProvider = context.read<AppProvider>();
-    List<String> base = [_baseCurrency];
+    final baseCurrency = readAppProvider.companyAccounting.baseCurrency;
+    List<String> base = [baseCurrency];
     List<String> allowedCurrencies =
         readAppProvider.companyAccounting.allowedCurrencies;
     // merge base with allowedCurrencies and remove duplicate

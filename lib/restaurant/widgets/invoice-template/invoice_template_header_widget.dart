@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../models/invoice-template/header/header_list_schema_model.dart';
 import '../../models/invoice-template/header/header_schema_model.dart';
-import '../../models/sale/invoice/sale_invoice_for_print_model.dart';
+import '../../models/sale/invoice/print/sale_invoice_for_print_model.dart';
 import '../../utils/sale/sale_utils.dart';
 import 'invoice_template_cached_img_widget.dart';
 

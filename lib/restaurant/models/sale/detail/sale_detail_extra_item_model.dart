@@ -5,7 +5,7 @@ part 'sale_detail_extra_item_model.g.dart';
 class SaleDetailExtraItemModel {
   @JsonKey(name: '_id', disallowNullValue: true)
   final String id;
-  final String itemId;
+  final String? itemId;
   final String itemName;
   final num qty;
   final num price;
@@ -15,7 +15,7 @@ class SaleDetailExtraItemModel {
 
   SaleDetailExtraItemModel({
     required this.id,
-    required this.itemId,
+    this.itemId,
     required this.itemName,
     required this.qty,
     required this.price,

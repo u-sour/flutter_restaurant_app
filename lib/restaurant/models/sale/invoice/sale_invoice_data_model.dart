@@ -3,6 +3,7 @@ import '../../../../utils/model_converter/date_model_converter.dart';
 import 'sale_invoice_status_date_model.dart';
 part 'sale_invoice_data_model.g.dart';
 
+// Note: used on sale screen
 @JsonSerializable(explicitToJson: true)
 class SaleInvoiceDataModel {
   @JsonKey(name: '_id', disallowNullValue: true)

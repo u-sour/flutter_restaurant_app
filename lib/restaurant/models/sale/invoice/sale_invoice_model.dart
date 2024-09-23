@@ -2,6 +2,7 @@ import 'package:json_annotation/json_annotation.dart';
 import 'sale_invoice_data_model.dart';
 part 'sale_invoice_model.g.dart';
 
+// Note: used on dashboard screen
 @JsonSerializable(explicitToJson: true)
 class SaleInvoiceModel {
   final List<SaleInvoiceDataModel> data;

@@ -8,6 +8,7 @@ import '../../../../providers/app_provider.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/company/company_accounting_model.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/sale/sale_model.dart';
@@ -167,7 +168,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(RestaurantDefaultIcons.chef),
-                        const Text("$prefixSaleDetailFooterActions.chef").tr(),
+                        if (!ResponsiveLayout.isMobile(context))
+                          const Text("$prefixSaleDetailFooterActions.chef")
+                              .tr(),
                       ],
                     ),
                   ),
@@ -194,7 +197,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(RestaurantDefaultIcons.print),
-                        const Text("$prefixSaleDetailFooterActions.print").tr(),
+                        if (!ResponsiveLayout.isMobile(context))
+                          const Text("$prefixSaleDetailFooterActions.print")
+                              .tr(),
                       ],
                     ),
                   ),
@@ -221,10 +226,11 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(RestaurantDefaultIcons.preview),
-                        const Text(
-                          "$prefixSaleDetailFooterActions.preview",
-                          overflow: TextOverflow.ellipsis,
-                        ).tr(),
+                        if (!ResponsiveLayout.isMobile(context))
+                          const Text(
+                            "$prefixSaleDetailFooterActions.preview",
+                            overflow: TextOverflow.ellipsis,
+                          ).tr(),
                       ],
                     ),
                   ),
@@ -251,17 +257,18 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Icon(RestaurantDefaultIcons.payment),
-                        const Text(
-                          "$prefixSaleDetailFooterActions.payment",
-                          overflow: TextOverflow.ellipsis,
-                        ).tr(),
+                        if (!ResponsiveLayout.isMobile(context))
+                          const Text(
+                            "$prefixSaleDetailFooterActions.payment",
+                            overflow: TextOverflow.ellipsis,
+                          ).tr(),
                       ],
                     ),
                   ),
                 ),
                 VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
-                    flex: 3,
+                    flex: ResponsiveLayout.isMobile(context) ? 4 : 3,
                     child: Padding(
                       padding:
                           const EdgeInsets.all(AppStyleDefaultProperties.p),
@@ -289,180 +296,190 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                             num total = readSaleProvider.calculateTotal(
                                 subTotal: subTotal,
                                 discountValue: discountValue);
-                            return Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.end,
-                              children: [
-                                // Sub total
-                                RichText(
-                                  text: TextSpan(
-                                    text:
-                                        '$prefixDataTableFooter.subTotal'.tr(),
-                                    style: theme.textTheme.bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                    children: [
-                                      WidgetSpan(
-                                        alignment:
-                                            PlaceholderAlignment.baseline,
-                                        baseline: TextBaseline.alphabetic,
-                                        child: FormatCurrencyWidget(
-                                          value: subTotal,
-                                          color: AppThemeColors.primary,
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                ),
-                                const SizedBox(height: smallHeight),
-                                // Discount Percent
-                                InkWell(
-                                    onTap: () => GlobalService.openDialog(
-                                                contentWidget:
-                                                    EditSaleDetailFooterActionWidget(
-                                                        fbKey: _fbEditFooterKey,
-                                                        footerType:
-                                                            SaleDetailFooterType
-                                                                .discountRate,
-                                                        value: discountRate),
-                                                context: context)
-                                            .then((_) {
-                                          if (_fbEditFooterKey.currentState!
-                                              .saveAndValidate()) {
-                                            final num disRate = num.tryParse(
-                                                    _fbEditFooterKey
-                                                            .currentState!
-                                                            .value[
-                                                        'discountRate']) ??
-                                                0;
-                                            // check if new discount rate then update
-                                            if (saleId.isNotEmpty &&
-                                                disRate !=
-                                                    readSaleProvider
-                                                        .currentSale!
-                                                        .discountRate) {
-                                              readSaleProvider
-                                                  .updateSaleDiscountRate(
-                                                      id: saleId,
-                                                      discountRate: disRate);
-                                            }
-                                          }
-                                        }),
-                                    child: Text(
-                                      '$prefixDataTableFooter.disRate'.tr(
-                                          namedArgs: {"rate": "$discountRate"}),
+                            return SingleChildScrollView(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.end,
+                                children: [
+                                  // Sub total
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '$prefixDataTableFooter.subTotal'
+                                          .tr(),
                                       style: theme.textTheme.bodyMedium
                                           ?.copyWith(
-                                              overflow: TextOverflow.ellipsis),
-                                    )),
-                                const SizedBox(height: smallHeight),
-                                // Discount Amount
-                                InkWell(
-                                  onTap: () => GlobalService.openDialog(
-                                          contentWidget:
-                                              EditSaleDetailFooterActionWidget(
-                                                  fbKey: _fbEditFooterKey,
-                                                  footerType:
-                                                      SaleDetailFooterType
-                                                          .discountAmount,
-                                                  value: discountValue),
-                                          context: context)
-                                      .then((_) {
-                                    if (_fbEditFooterKey.currentState!
-                                        .saveAndValidate()) {
-                                      final num disAmount = num.tryParse(
-                                              _fbEditFooterKey.currentState!
-                                                  .value['discountAmount']) ??
-                                          0;
-                                      // check if new discount amount then update
-                                      if (saleId.isNotEmpty &&
-                                          disAmount !=
-                                              readSaleProvider
-                                                  .currentSale!.discountValue) {
-                                        readSaleProvider
-                                            .updateSaleDiscountAmount(
-                                                id: saleId,
-                                                discountAmount: disAmount);
-                                      }
-                                    }
-                                  }),
-                                  child: Selector<AppProvider,
-                                          CompanyAccountingModel>(
-                                      selector: (context, state) =>
-                                          state.companyAccounting,
-                                      builder: (context, companyAcc, child) {
-                                        final String baseCurrency =
-                                            companyAcc.baseCurrency;
-                                        return RichText(
-                                          text: TextSpan(
-                                              text:
-                                                  '$prefixDataTableFooter.disAmount'
-                                                      .tr(),
-                                              style: theme.textTheme.bodyMedium
-                                                  ?.copyWith(
-                                                      overflow: TextOverflow
-                                                          .ellipsis),
-                                              children: [
-                                                TextSpan(
-                                                  text: FormatCurrency
-                                                      .getBaseCurrencySymbol(
-                                                          baseCurrency:
-                                                              baseCurrency),
-                                                  style: theme
-                                                      .textTheme.bodyMedium
-                                                      ?.copyWith(
-                                                          fontSize:
-                                                              baseCurrency ==
-                                                                      'KHR'
-                                                                  ? 18.0
-                                                                  : null,
-                                                          overflow: TextOverflow
-                                                              .ellipsis),
-                                                ),
-                                                const TextSpan(text: " : "),
-                                                WidgetSpan(
-                                                  alignment:
-                                                      PlaceholderAlignment
-                                                          .baseline,
-                                                  baseline:
-                                                      TextBaseline.alphabetic,
-                                                  child: FormatCurrencyWidget(
-                                                    value: discountValue,
-                                                    color: theme.textTheme
-                                                        .bodyMedium!.color,
-                                                    priceFontSize: 14.0,
-                                                    currencySymbolFontSize:
-                                                        16.0,
-                                                    fontWeight:
-                                                        FontWeight.normal,
-                                                  ),
-                                                )
-                                                // TextSpan(
-                                                //     text: ' : $discountValue')
-                                              ]),
-                                        );
-                                      }),
-                                ),
-                                const SizedBox(height: smallHeight),
-                                // Total
-                                RichText(
-                                  text: TextSpan(
-                                    text: '$prefixDataTableFooter.total'.tr(),
-                                    style: theme.textTheme.bodyMedium
-                                        ?.copyWith(fontWeight: FontWeight.bold),
-                                    children: [
-                                      WidgetSpan(
-                                        alignment:
-                                            PlaceholderAlignment.baseline,
-                                        baseline: TextBaseline.alphabetic,
-                                        child: FormatCurrencyWidget(
-                                          value: total,
-                                          color: AppThemeColors.primary,
-                                        ),
-                                      )
-                                    ],
+                                              fontWeight: FontWeight.bold),
+                                      children: [
+                                        WidgetSpan(
+                                          alignment:
+                                              PlaceholderAlignment.baseline,
+                                          baseline: TextBaseline.alphabetic,
+                                          child: FormatCurrencyWidget(
+                                            value: subTotal,
+                                            color: AppThemeColors.primary,
+                                          ),
+                                        )
+                                      ],
+                                    ),
                                   ),
-                                )
-                              ],
+                                  const SizedBox(height: smallHeight),
+                                  // Discount Percent
+                                  InkWell(
+                                      onTap: () => GlobalService.openDialog(
+                                                  contentWidget:
+                                                      EditSaleDetailFooterActionWidget(
+                                                          fbKey:
+                                                              _fbEditFooterKey,
+                                                          footerType:
+                                                              SaleDetailFooterType
+                                                                  .discountRate,
+                                                          value: discountRate),
+                                                  context: context)
+                                              .then((_) {
+                                            if (_fbEditFooterKey.currentState!
+                                                .saveAndValidate()) {
+                                              final num disRate = num.tryParse(
+                                                      _fbEditFooterKey
+                                                              .currentState!
+                                                              .value[
+                                                          'discountRate']) ??
+                                                  0;
+                                              // check if new discount rate then update
+                                              if (saleId.isNotEmpty &&
+                                                  disRate !=
+                                                      readSaleProvider
+                                                          .currentSale!
+                                                          .discountRate) {
+                                                readSaleProvider
+                                                    .updateSaleDiscountRate(
+                                                        id: saleId,
+                                                        discountRate: disRate);
+                                              }
+                                            }
+                                          }),
+                                      child: Text(
+                                        '$prefixDataTableFooter.disRate'.tr(
+                                            namedArgs: {
+                                              "rate": "$discountRate"
+                                            }),
+                                        style: theme.textTheme.bodyMedium
+                                            ?.copyWith(
+                                                overflow:
+                                                    TextOverflow.ellipsis),
+                                      )),
+                                  const SizedBox(height: smallHeight),
+                                  // Discount Amount
+                                  InkWell(
+                                    onTap: () => GlobalService.openDialog(
+                                            contentWidget:
+                                                EditSaleDetailFooterActionWidget(
+                                                    fbKey: _fbEditFooterKey,
+                                                    footerType:
+                                                        SaleDetailFooterType
+                                                            .discountAmount,
+                                                    value: discountValue),
+                                            context: context)
+                                        .then((_) {
+                                      if (_fbEditFooterKey.currentState!
+                                          .saveAndValidate()) {
+                                        final num disAmount = num.tryParse(
+                                                _fbEditFooterKey.currentState!
+                                                    .value['discountAmount']) ??
+                                            0;
+                                        // check if new discount amount then update
+                                        if (saleId.isNotEmpty &&
+                                            disAmount !=
+                                                readSaleProvider.currentSale!
+                                                    .discountValue) {
+                                          readSaleProvider
+                                              .updateSaleDiscountAmount(
+                                                  id: saleId,
+                                                  discountAmount: disAmount);
+                                        }
+                                      }
+                                    }),
+                                    child: Selector<AppProvider,
+                                            CompanyAccountingModel>(
+                                        selector: (context, state) =>
+                                            state.companyAccounting,
+                                        builder: (context, companyAcc, child) {
+                                          final String baseCurrency =
+                                              companyAcc.baseCurrency;
+                                          return RichText(
+                                            text: TextSpan(
+                                                text:
+                                                    '$prefixDataTableFooter.disAmount'
+                                                        .tr(),
+                                                style: theme
+                                                    .textTheme.bodyMedium
+                                                    ?.copyWith(
+                                                        overflow: TextOverflow
+                                                            .ellipsis),
+                                                children: [
+                                                  TextSpan(
+                                                    text: FormatCurrency
+                                                        .getBaseCurrencySymbol(
+                                                            baseCurrency:
+                                                                baseCurrency),
+                                                    style: theme
+                                                        .textTheme.bodyMedium
+                                                        ?.copyWith(
+                                                            fontSize:
+                                                                baseCurrency ==
+                                                                        'KHR'
+                                                                    ? 18.0
+                                                                    : null,
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis),
+                                                  ),
+                                                  const TextSpan(text: " : "),
+                                                  WidgetSpan(
+                                                    alignment:
+                                                        PlaceholderAlignment
+                                                            .baseline,
+                                                    baseline:
+                                                        TextBaseline.alphabetic,
+                                                    child: FormatCurrencyWidget(
+                                                      value: discountValue,
+                                                      color: theme.textTheme
+                                                          .bodyMedium!.color,
+                                                      priceFontSize: 14.0,
+                                                      currencySymbolFontSize:
+                                                          16.0,
+                                                      fontWeight:
+                                                          FontWeight.normal,
+                                                    ),
+                                                  )
+                                                  // TextSpan(
+                                                  //     text: ' : $discountValue')
+                                                ]),
+                                          );
+                                        }),
+                                  ),
+                                  const SizedBox(height: smallHeight),
+                                  // Total
+                                  RichText(
+                                    text: TextSpan(
+                                      text: '$prefixDataTableFooter.total'.tr(),
+                                      style: theme.textTheme.bodyMedium
+                                          ?.copyWith(
+                                              fontWeight: FontWeight.bold),
+                                      children: [
+                                        WidgetSpan(
+                                          alignment:
+                                              PlaceholderAlignment.baseline,
+                                          baseline: TextBaseline.alphabetic,
+                                          child: FormatCurrencyWidget(
+                                            value: total,
+                                            color: AppThemeColors.primary,
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
                             );
                           }),
                     ))

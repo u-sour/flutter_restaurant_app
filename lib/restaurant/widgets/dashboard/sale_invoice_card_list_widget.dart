@@ -71,9 +71,11 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
             FilledButton(
               onPressed: () {},
               style: theme.filledButtonTheme.style?.copyWith(
-                  backgroundColor: WidgetStateProperty.all(cardColor),
-                  padding: WidgetStateProperty.all(
-                      const EdgeInsets.all(AppStyleDefaultProperties.bp / 3))),
+                backgroundColor: WidgetStateProperty.all(cardColor),
+                padding: WidgetStateProperty.all(
+                  const EdgeInsets.all(AppStyleDefaultProperties.bp / 3),
+                ),
+              ),
               child: Selector<AppProvider, CompanyAccountingModel>(
                 selector: (context, state) => state.companyAccounting,
                 builder: (context, companyAccounting, child) =>

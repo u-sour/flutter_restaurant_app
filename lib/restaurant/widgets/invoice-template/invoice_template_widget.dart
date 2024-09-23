@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
-import '../../models/exchange/exchange_model.dart';
 import '../../models/invoice-template/description/description_left_right_schema_model.dart';
 import '../../models/invoice-template/invoice_paper_model.dart';
 import '../../models/invoice-template/invoice_template_model.dart';
-import '../../models/sale/detail/sale_detail_model.dart';
-import '../../models/sale/invoice/sale_invoice_for_print_model.dart';
+import '../../models/sale/invoice/print/sale_invoice_content_model.dart';
 import 'invoice_template_copy_right_widget.dart';
 import 'invoice_template_description_widget.dart';
 import 'invoice_template_footer_widget.dart';
@@ -16,19 +14,20 @@ import 'invoice_template_total_widget.dart';
 
 class InvoiceTemplateWidget extends StatelessWidget {
   final String ipAddress;
+  final String? receiptId;
   final bool receiptPrint;
+  final bool isRepaid;
   final InvoiceTemplateModel template;
-  final SaleInvoiceForPrintModel sale;
-  final ExchangeModel exchange;
-  final List<SaleDetailModel> saleDetails;
+  final SaleInvoiceContentModel saleInvoiceContent;
+
   const InvoiceTemplateWidget({
     super.key,
     required this.ipAddress,
+    this.receiptId,
     required this.receiptPrint,
+    required this.isRepaid,
     required this.template,
-    required this.sale,
-    required this.exchange,
-    required this.saleDetails,
+    required this.saleInvoiceContent,
   });
 
   @override
@@ -45,7 +44,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
         InvoiceTemplateHeaderWidget(
           ipAddress: ipAddress,
           headerSchema: invoicePaper.headerSchema,
-          sale: sale,
+          sale: saleInvoiceContent.saleDoc,
         ),
         const Divider(color: baseColor),
         // Description
@@ -66,8 +65,9 @@ class InvoiceTemplateWidget extends StatelessWidget {
                       subLabelStyle:
                           invoicePaper.descriptionSchema.subLabelStyle,
                       valueStyle: invoicePaper.descriptionSchema.valueStyle,
-                      sale: sale,
-                      exchange: exchange,
+                      sale: saleInvoiceContent.saleDoc,
+                      paymentBy: saleInvoiceContent.receiptDoc?.paymentBy ?? '',
+                      exchange: saleInvoiceContent.exchangeDoc,
                       receiptPrint: receiptPrint,
                     ),
                 ],
@@ -86,8 +86,9 @@ class InvoiceTemplateWidget extends StatelessWidget {
                       subLabelStyle:
                           invoicePaper.descriptionSchema.subLabelStyle,
                       valueStyle: invoicePaper.descriptionSchema.valueStyle,
-                      sale: sale,
-                      exchange: exchange,
+                      sale: saleInvoiceContent.saleDoc,
+                      paymentBy: saleInvoiceContent.receiptDoc?.paymentBy ?? '',
+                      exchange: saleInvoiceContent.exchangeDoc,
                       receiptPrint: receiptPrint,
                     ),
                 ],
@@ -98,12 +99,14 @@ class InvoiceTemplateWidget extends StatelessWidget {
         // Table
         InvoiceTemplateTableWidget(
           tableSchema: invoicePaper.tableSchema,
-          saleDetails: saleDetails,
+          saleDetails: saleInvoiceContent.orderList,
         ),
         // Total
         InvoiceTemplateTotalWidget(
           totalSchema: invoicePaper.totalSchema,
-          sale: sale,
+          saleInvoiceContent: saleInvoiceContent,
+          isPaid: saleInvoiceContent.receiptDoc != null ? true : false,
+          isRepaid: isRepaid,
         ),
         // Signature
         InvoiceTemplateSignatureWidget(
