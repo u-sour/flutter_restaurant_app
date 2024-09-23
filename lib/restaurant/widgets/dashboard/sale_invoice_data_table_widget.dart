@@ -1,8 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import '../../../router/route_utils.dart';
 import '../../../utils/constants.dart';
+import '../../../utils/responsive/responsive_layout.dart';
+import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../services/data-table-sources/sale_data_table_source.dart';
@@ -106,7 +110,9 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
       children: [
         SfDataGrid(
           source: source,
-          columnWidthMode: ColumnWidthMode.fill,
+          columnWidthMode: ResponsiveLayout.isMobile(context)
+              ? ColumnWidthMode.none
+              : ColumnWidthMode.fill,
           rowHeight: 80.0,
           columns: buildGridColumns(),
           rowsPerPage: readDashboardProvider.pageSize,
@@ -124,13 +130,40 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
           },
           endSwipeActionsBuilder:
               (BuildContext context, DataGridRow row, int rowIndex) {
+            SaleInvoiceDataModel saleInvoice = row.getCells()[rowIndex].value;
             return Row(
               children: [
                 // Print
                 SfDataGridSwipeActionButton(
                   icon: RestaurantDefaultIcons.print,
                   bgColor: AppThemeColors.info,
-                  onPressed: () {},
+                  onPressed: () {
+                    final int selectedTab = readDashboardProvider.selectedTab;
+                    switch (selectedTab) {
+                      case 2:
+                        // Partial
+                        context.pushNamed(SCREENS.invoice.toName,
+                            queryParameters: {
+                              'invoiceId': saleInvoice.id,
+                              'isTotal': 'true'
+                            });
+                        break;
+                      case 3:
+                        // Closed
+                        context.pushNamed(SCREENS.invoice.toName,
+                            queryParameters: {
+                              'invoiceId': saleInvoice.id,
+                              'isTotal': 'true'
+                            });
+                        break;
+                      default:
+                        // Canceled
+                        context.pushNamed(SCREENS.invoice.toName,
+                            queryParameters: {
+                              'invoiceId': saleInvoice.id,
+                            });
+                    }
+                  },
                 ),
                 // Payment
                 SfDataGridSwipeActionButton(

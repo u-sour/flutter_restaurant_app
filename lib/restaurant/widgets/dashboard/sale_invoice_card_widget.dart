@@ -40,7 +40,7 @@ class SaleInvoiceCardWidget extends StatelessWidget {
                     gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         mainAxisSpacing: AppStyleDefaultProperties.h,
                         crossAxisSpacing: AppStyleDefaultProperties.w,
-                        mainAxisExtent: 180.0,
+                        mainAxisExtent: 200.0,
                         crossAxisCount: crossAxisCount),
                     itemBuilder: (context, index) {
                       final SaleInvoiceDataModel saleInvoiceData =

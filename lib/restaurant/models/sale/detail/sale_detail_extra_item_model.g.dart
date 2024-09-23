@@ -14,7 +14,7 @@ SaleDetailExtraItemModel _$SaleDetailExtraItemModelFromJson(
   );
   return SaleDetailExtraItemModel(
     id: json['_id'] as String,
-    itemId: json['itemId'] as String,
+    itemId: json['itemId'] as String?,
     itemName: json['itemName'] as String,
     qty: json['qty'] as num,
     price: json['price'] as num,

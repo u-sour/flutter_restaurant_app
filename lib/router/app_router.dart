@@ -162,10 +162,24 @@ class AppRouter {
         builder: (context, state) {
           Map<String, dynamic> queryRouter = state.uri.queryParameters;
           final String invoiceId = queryRouter['invoiceId'];
+          final String? receiptId = queryRouter['receiptId'];
+          // Note: for condition navigation app bar on invoice screen
+          final bool fromReceiptForm = queryRouter['fromReceiptForm'] != null &&
+              queryRouter['fromReceiptForm']! == 'true';
           final bool receiptPrint = queryRouter['receiptPrint'] != null &&
               queryRouter['receiptPrint']! == 'true';
+          final bool isTotal = queryRouter['isTotal'] != null &&
+              queryRouter['isTotal']! == 'true';
+          final bool isRepaid = queryRouter['isRepaid'] != null &&
+              queryRouter['isRepaid']! == 'true';
           return InvoiceScreen(
-              invoiceId: invoiceId, receiptPrint: receiptPrint);
+            invoiceId: invoiceId,
+            receiptId: receiptId,
+            fromReceiptForm: fromReceiptForm,
+            receiptPrint: receiptPrint,
+            isTotal: isTotal,
+            isRepaid: isRepaid,
+          );
         },
       ),
       GoRoute(

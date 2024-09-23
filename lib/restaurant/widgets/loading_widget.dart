@@ -20,30 +20,32 @@ class LoadingWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Center(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: iconSize),
-          const SizedBox(height: AppStyleDefaultProperties.h),
-          LoadingAnimationWidget.staggeredDotsWave(
-            color: theme.colorScheme.primary,
-            size: 48.0,
-          ),
-          const SizedBox(height: AppStyleDefaultProperties.h),
-          Text(
-            title.tr(),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleLarge!
-                .copyWith(fontWeight: FontWeight.bold),
-          ),
-          const SizedBox(height: AppStyleDefaultProperties.h),
-          Text(
-            description.tr(),
-            textAlign: TextAlign.center,
-            style: theme.textTheme.titleMedium!
-                .copyWith(fontWeight: FontWeight.normal),
-          ),
-        ],
+      child: SingleChildScrollView(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: iconSize),
+            const SizedBox(height: AppStyleDefaultProperties.h),
+            LoadingAnimationWidget.staggeredDotsWave(
+              color: theme.colorScheme.primary,
+              size: 48.0,
+            ),
+            const SizedBox(height: AppStyleDefaultProperties.h),
+            Text(
+              title.tr(),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleLarge!
+                  .copyWith(fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: AppStyleDefaultProperties.h),
+            Text(
+              description.tr(),
+              textAlign: TextAlign.center,
+              style: theme.textTheme.titleMedium!
+                  .copyWith(fontWeight: FontWeight.normal),
+            ),
+          ],
+        ),
       ),
     );
   }

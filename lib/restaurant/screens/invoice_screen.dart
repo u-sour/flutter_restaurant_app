@@ -6,22 +6,30 @@ import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
 import '../../services/global_service.dart';
 import '../../widgets/printer/printing_progress_widget.dart';
-import '../models/exchange/exchange_model.dart';
 import '../models/invoice-template/invoice_template_model.dart';
-import '../models/sale/detail/sale_detail_model.dart';
-import '../models/sale/invoice/sale_invoice_for_print_model.dart';
+import '../models/sale/invoice/print/sale_invoice_content_model.dart';
 import '../providers/invoice-template/invoice_template_provider.dart';
 import '../providers/invoice/invoice_provider.dart';
-import '../providers/sale/products/sale_products_provider.dart';
 import '../widgets/invoice-template/invoice_template_widget.dart';
 import '../widgets/invoice/app-bar/invoice_app_bar_widget.dart';
 import '../widgets/loading_widget.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String invoiceId;
+  final String? receiptId;
+  final bool fromReceiptForm;
   final bool receiptPrint;
-  const InvoiceScreen(
-      {super.key, required this.invoiceId, required this.receiptPrint});
+  final bool isTotal;
+  final bool isRepaid;
+  const InvoiceScreen({
+    super.key,
+    required this.invoiceId,
+    this.receiptId,
+    required this.fromReceiptForm,
+    required this.receiptPrint,
+    required this.isTotal,
+    required this.isRepaid,
+  });
 
   @override
   State<InvoiceScreen> createState() => _InvoiceScreenState();
@@ -29,19 +37,15 @@ class InvoiceScreen extends StatefulWidget {
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
   late InvoiceProvider readInvoiceProvider;
-  late SaleProductsProvider readSaleProductProvider;
   late PrinterProvider readPrinterProvider;
   late InvoiceTemplateProvider readInvoiceTemplateProvider;
-  late Future<SaleInvoiceForPrintModel> sale;
-  late Future<ExchangeModel> exchange;
-  late Future<List<SaleDetailModel>> saleDetails;
   late Future<InvoiceTemplateModel> invoiceTemplate;
+  late Future<SaleInvoiceContentModel> saleInvoiceContent;
 
   @override
   void initState() {
     super.initState();
     readInvoiceProvider = context.read<InvoiceProvider>();
-    readSaleProductProvider = context.read<SaleProductsProvider>();
     readPrinterProvider = context.read<PrinterProvider>();
     readInvoiceTemplateProvider = context.read<InvoiceTemplateProvider>();
     WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -49,19 +53,21 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     });
     invoiceTemplate =
         readInvoiceTemplateProvider.getInvoiceTemplate(context: context);
-    sale = readInvoiceProvider.fetchInvoiceData(
+    saleInvoiceContent = readInvoiceProvider.fetchInvoiceContentData(
         invoiceId: widget.invoiceId,
+        receiptId: widget.receiptId,
         receiptPrint: widget.receiptPrint,
+        isTotal: widget.isTotal,
+        isRepaid: widget.isRepaid,
         context: context);
-    exchange = readInvoiceProvider.findOneExchange();
-    saleDetails =
-        readInvoiceProvider.fetchSaleDetails(invoiceId: widget.invoiceId);
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: InvoiceAppBarWidget(title: SCREENS.printer.toTitle),
+      appBar: InvoiceAppBarWidget(
+          title: SCREENS.printer.toTitle,
+          fromReceiptForm: widget.fromReceiptForm),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -72,26 +78,26 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   readPrinterProvider.controller = controller;
                 },
                 builder: (context) => FutureBuilder(
-                    future: Future.wait(
-                        [invoiceTemplate, sale, exchange, saleDetails]),
+                    future: Future.wait([
+                      invoiceTemplate,
+                      saleInvoiceContent,
+                      // exchange, saleDetails
+                    ]),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                       if (snapshot.hasError) {
                         return Text('${snapshot.error}');
                       } else if (snapshot.hasData) {
-                        final String ipAddress =
-                            readSaleProductProvider.ipAddress;
+                        final String ipAddress = readInvoiceProvider.ipAddress;
                         final InvoiceTemplateModel template = snapshot.data![0];
-                        final SaleInvoiceForPrintModel sale = snapshot.data![1];
-                        final ExchangeModel exchange = snapshot.data![2];
-                        final List<SaleDetailModel> saleDetails =
-                            snapshot.data![3];
+                        final SaleInvoiceContentModel saleInvoiceContent =
+                            snapshot.data![1];
                         return InvoiceTemplateWidget(
                           ipAddress: ipAddress,
                           receiptPrint: widget.receiptPrint,
+                          isRepaid: widget.isRepaid,
+                          receiptId: widget.receiptId,
                           template: template,
-                          sale: sale,
-                          exchange: exchange,
-                          saleDetails: saleDetails,
+                          saleInvoiceContent: saleInvoiceContent,
                         );
                       } else {
                         return const LoadingWidget();
