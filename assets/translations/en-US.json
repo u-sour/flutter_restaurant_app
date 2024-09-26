@@ -69,6 +69,33 @@
       "features": {
         "newSale": "New Sale",
         "fastSale": "Fast Sale"
+      },
+      "dialog": {
+        "confirm": {
+          "editSaleReceipt": {
+            "title": "Sale Receipt",
+            "form": {
+              "password": {
+                "title": "Password",
+                "errorText": "Password is incorrect."
+              },
+              "invoice": "Invoice",
+              "saleDate": "Sale Date",
+              "customer": "Customer",
+              "receiptDate": "Receipt Date",
+              "paymentBy": "Payment By",
+              "memo": "Memo",
+              "receive": "Receive",
+              "fee": "Fee"
+            }
+          }
+        }
+      },
+      "alert": {
+        "success": {
+          "removeSale": "Invoice have been removed.",
+          "updateSaleReceipt": "Receipt have been updated."
+        }
       }
     },
     "guest": {
@@ -223,7 +250,8 @@
             "merge": "Merge invoice success.",
             "transfer": "Transfer items success.",
             "split": "Split invoice success.",
-            "cancelAndCopy": "Cancel & new copy invoice success."
+            "cancelAndCopy": "Cancel & new copy invoice success.",
+            "payment": "Invoice Payment success."
           },
           "info": {
             "noItemsMerge": "No items to merge.",

@@ -36,7 +36,7 @@ class DialogWidget extends StatelessWidget {
       this.onInsertPressed,
       this.insertAndPrintLabel = 'dialog.actions.insertAndPrint',
       this.onInsertAndPrintPressed,
-      this.updateLabel = "dialog.action.update",
+      this.updateLabel = "dialog.actions.update",
       this.onUpdatePressed});
 
   @override

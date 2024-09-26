@@ -7,6 +7,7 @@ import '../../utils/round_number.dart';
 
 class InvoiceFormatCurrencyWidget extends StatelessWidget {
   final num value;
+  final bool enableRoundNumber;
   final String? baseCurrency;
   final Color? color;
   final double? priceFontSize;
@@ -16,6 +17,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
   const InvoiceFormatCurrencyWidget(
       {super.key,
       required this.value,
+      this.enableRoundNumber = true,
       this.baseCurrency,
       this.color,
       this.priceFontSize,
@@ -48,7 +50,8 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
         // value
         Text(
           FormatCurrency.format(
-              value: roundNumber.round(value: value),
+              value:
+                  enableRoundNumber ? roundNumber.round(value: value) : value,
               baseCurrency: defaultBaseCurrency,
               decimalNumber: decimalNumber),
           style: theme.textTheme.bodySmall!.copyWith(

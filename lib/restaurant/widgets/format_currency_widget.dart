@@ -7,6 +7,7 @@ import '../utils/round_number.dart';
 
 class FormatCurrencyWidget extends StatelessWidget {
   final num value;
+  final bool enableRoundNumber;
   final String? baseCurrency;
   final bool prefixCurrencySymbol;
   final Color? color;
@@ -16,6 +17,7 @@ class FormatCurrencyWidget extends StatelessWidget {
   const FormatCurrencyWidget({
     super.key,
     required this.value,
+    this.enableRoundNumber = true,
     this.baseCurrency,
     this.prefixCurrencySymbol = false,
     this.color,
@@ -59,7 +61,8 @@ class FormatCurrencyWidget extends StatelessWidget {
         // value
         Text(
           FormatCurrency.format(
-              value: roundNumber.round(value: value),
+              value:
+                  enableRoundNumber ? roundNumber.round(value: value) : value,
               baseCurrency: defaultBaseCurrency,
               decimalNumber: decimalNumber),
           style: theme.textTheme.bodyLarge!.copyWith(

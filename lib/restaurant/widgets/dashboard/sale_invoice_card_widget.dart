@@ -5,6 +5,7 @@ import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
+import '../../providers/sale/sale_provider.dart';
 import '../empty_data_widget.dart';
 import '../loading_widget.dart';
 import 'sale_invoice_card_list_widget.dart';
@@ -14,6 +15,8 @@ class SaleInvoiceCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
+    SaleProvider readSaleProvider = context.read<SaleProvider>();
     Orientation orientation = MediaQuery.orientationOf(context);
     late int crossAxisCount;
     if (ResponsiveLayout.isMobile(context)) {
@@ -47,7 +50,24 @@ class SaleInvoiceCardWidget extends StatelessWidget {
                           data.saleInvoice.data[index];
                       return SaleInvoiceCardListWidget(
                         data: saleInvoiceData,
-                        onTap: () {},
+                        onTap: () {
+                          readSaleProvider.handleEnterSale(
+                              context: context,
+                              invoiceId: saleInvoiceData.id,
+                              tableId: saleInvoiceData.tableId);
+                        },
+                        onBtnPressed: () async {
+                          final result = await readSaleProvider.payment(
+                              context: context,
+                              invoiceId: saleInvoiceData.id,
+                              fromDashboard: true);
+                          // reload sale invoice on dashboard if payment success
+                          if (result != null && result.data.isNotEmpty) {
+                            await readDashboardProvider.filter(
+                                tab: readDashboardProvider.selectedTab,
+                                filterText: readDashboardProvider.filterText);
+                          }
+                        },
                       );
                     });
           } else {

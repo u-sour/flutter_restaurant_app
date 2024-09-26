@@ -166,6 +166,8 @@ class AppRouter {
           // Note: for condition navigation app bar on invoice screen
           final bool fromReceiptForm = queryRouter['fromReceiptForm'] != null &&
               queryRouter['fromReceiptForm']! == 'true';
+          final bool fromDashboard = queryRouter['fromDashboard'] != null &&
+              queryRouter['fromDashboard']! == 'true';
           final bool receiptPrint = queryRouter['receiptPrint'] != null &&
               queryRouter['receiptPrint']! == 'true';
           final bool isTotal = queryRouter['isTotal'] != null &&
@@ -176,6 +178,7 @@ class AppRouter {
             invoiceId: invoiceId,
             receiptId: receiptId,
             fromReceiptForm: fromReceiptForm,
+            fromDashboard: fromDashboard,
             receiptPrint: receiptPrint,
             isTotal: isTotal,
             isRepaid: isRepaid,

@@ -124,6 +124,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                         selector: (context, state) => state.currentGuest,
                         builder: (context, guest, child) => Text(guest.label))),
               ),
+              // Cancel & copy
               TextButton.icon(
                   onPressed: () async {
                     final result = await readSaleProvider.cancelSale(

@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
+import '../../utils/debounce.dart';
 import '../loading_widget.dart';
 import 'sale_invoice_content_widget.dart';
 
@@ -14,6 +15,7 @@ class SaleInvoiceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final Debounce debounce = Debounce();
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     String branchId = context
         .select<AppProvider, String>((ap) => ap.selectedBranch?.id ?? '');
@@ -48,6 +50,9 @@ class SaleInvoiceWidget extends StatelessWidget {
               SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable))
     ];
 
+    void tabChanged(int index) =>
+        debounce.run(() => readDashboardProvider.filter(tab: index));
+
     return Selector<DashboardProvider, bool>(
       selector: (context, state) => state.isLoading,
       builder: (context, isLoading, child) => isLoading
@@ -66,12 +71,12 @@ class SaleInvoiceWidget extends StatelessWidget {
               padding: EdgeInsets.zero,
               onTabControllerUpdated: (controller) {
                 // run when user swipe
-                controller.addListener(() async {
-                  await readDashboardProvider.search(tab: controller.index);
+                controller.addListener(() {
+                  tabChanged(controller.index);
                 });
               },
-              onTabChanged: (index) async {
-                await readDashboardProvider.search(tab: index!);
+              onTabChanged: (index) {
+                tabChanged(index!);
               },
               showBackIcon: showBackIcon,
               showNextIcon: showNextIcon,

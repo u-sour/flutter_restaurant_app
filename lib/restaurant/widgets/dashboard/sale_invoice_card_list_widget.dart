@@ -11,10 +11,12 @@ import '../format_currency_widget.dart';
 class SaleInvoiceCardListWidget extends StatelessWidget {
   final SaleInvoiceDataModel data;
   final Function()? onTap;
+  final Function()? onBtnPressed;
   const SaleInvoiceCardListWidget({
     super.key,
     required this.data,
     this.onTap,
+    this.onBtnPressed,
   });
 
   @override
@@ -69,7 +71,7 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
                     ?.copyWith(overflow: TextOverflow.ellipsis)),
             const SizedBox(height: AppStyleDefaultProperties.h),
             FilledButton(
-              onPressed: () {},
+              onPressed: onBtnPressed,
               style: theme.filledButtonTheme.style?.copyWith(
                 backgroundColor: WidgetStateProperty.all(cardColor),
                 padding: WidgetStateProperty.all(
@@ -79,7 +81,10 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
               child: Selector<AppProvider, CompanyAccountingModel>(
                 selector: (context, state) => state.companyAccounting,
                 builder: (context, companyAccounting, child) =>
-                    FormatCurrencyWidget(value: data.total),
+                    FormatCurrencyWidget(
+                  value: data.total,
+                  enableRoundNumber: false,
+                ),
               ),
             )
           ],

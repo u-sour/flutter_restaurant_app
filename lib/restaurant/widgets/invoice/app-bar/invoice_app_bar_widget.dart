@@ -7,16 +7,24 @@ class InvoiceAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
   final bool fromReceiptForm;
+  final bool fromDashboard;
   const InvoiceAppBarWidget(
-      {super.key, required this.title, required this.fromReceiptForm});
+      {super.key,
+      required this.title,
+      required this.fromReceiptForm,
+      required this.fromDashboard});
 
   @override
   Widget build(BuildContext context) {
+    print('fromReceiptForm: $fromReceiptForm');
+    print('fromDashBoard: $fromDashboard');
     return AppBar(
         leading: BackButton(
-            onPressed: () => fromReceiptForm
+            onPressed: () => fromReceiptForm && !fromDashboard
                 ? context.goNamed(SCREENS.saleTable.toName)
-                : context.pop()),
+                : fromReceiptForm && fromDashboard
+                    ? context.goNamed(SCREENS.dashboard.toName)
+                    : context.pop()),
         title: Text(title.tr()),
         centerTitle: false);
   }
