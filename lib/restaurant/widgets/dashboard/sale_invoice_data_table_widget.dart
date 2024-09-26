@@ -3,15 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
+import '../../../models/servers/response_model.dart';
 import '../../../router/route_utils.dart';
+import '../../../services/global_service.dart';
+import '../../../utils/alert/alert.dart';
+import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
+import '../../providers/sale/sale_provider.dart';
 import '../../services/data-table-sources/sale_data_table_source.dart';
 import '../../utils/constants.dart';
 import '../../utils/dashboard/dashboard_utils.dart';
+import '../confirm_dialog_widget.dart';
 import '../empty_data_widget.dart';
 import '../loading_widget.dart';
 
@@ -22,7 +28,6 @@ class SaleInvoiceDataTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
-
     return Selector<DashboardProvider, SaleInvoiceModel>(
         selector: (context, state) => state.saleInvoice,
         builder: (context, saleInvoice, child) {
@@ -83,6 +88,7 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    SaleProvider readSaleProvider = context.read<SaleProvider>();
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     List<GridColumn> buildGridColumns() {
       List<GridColumn> columns = [];
@@ -130,7 +136,7 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
           },
           endSwipeActionsBuilder:
               (BuildContext context, DataGridRow row, int rowIndex) {
-            SaleInvoiceDataModel saleInvoice = row.getCells()[rowIndex].value;
+            SaleInvoiceDataModel saleInvoice = row.getCells().first.value;
             return Row(
               children: [
                 // Print
@@ -166,22 +172,82 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
                   },
                 ),
                 // Payment
-                SfDataGridSwipeActionButton(
-                  icon: RestaurantDefaultIcons.payment,
-                  bgColor: AppThemeColors.primary,
-                  onPressed: () {},
-                ),
+                if (saleInvoice.status == 'Partial')
+                  SfDataGridSwipeActionButton(
+                    icon: RestaurantDefaultIcons.payment,
+                    bgColor: AppThemeColors.primary,
+                    onPressed: () async {
+                      final result = await readSaleProvider.payment(
+                          context: context,
+                          invoiceId: saleInvoice.id,
+                          makeRepaid: true,
+                          fromDashboard: true);
+                      // reload sale invoice on dashboard if payment success
+                      if (result != null &&
+                          result.type == AWESOMESNACKBARTYPE.success &&
+                          result.data.isNotEmpty) {
+                        await readDashboardProvider.filter(
+                            tab: readDashboardProvider.selectedTab,
+                            filterText: readDashboardProvider.filterText);
+                      }
+                    },
+                  ),
                 // Edit
-                SfDataGridSwipeActionButton(
-                  icon: RestaurantDefaultIcons.edit,
-                  bgColor: AppThemeColors.warning,
-                  onPressed: () {},
-                ),
+                if ((saleInvoice.status == 'Partial' ||
+                        saleInvoice.status == 'Closed') &&
+                    '${saleInvoice.receiptId}'.isNotEmpty &&
+                    '${saleInvoice.receiptId}' != 'false')
+                  SfDataGridSwipeActionButton(
+                    icon: RestaurantDefaultIcons.edit,
+                    bgColor: AppThemeColors.warning,
+                    onPressed: () async {
+                      final result =
+                          await readDashboardProvider.editSaleReceipt(
+                              receiptId: '${saleInvoice.receiptId}',
+                              context: context);
+                    },
+                  ),
                 // Remove
                 SfDataGridSwipeActionButton(
                   icon: RestaurantDefaultIcons.remove,
                   bgColor: AppThemeColors.failure,
-                  onPressed: () {},
+                  onPressed: () => GlobalService.openDialog(
+                      context: context,
+                      contentWidget: ConfirmDialogWidget(
+                        content: Row(
+                          children: [
+                            Text(saleInvoice.refNo,
+                                style: theme.textTheme.bodyMedium!
+                                    .copyWith(fontWeight: FontWeight.bold)),
+                            Text(
+                              'dialog.confirm.remove.description'.tr(),
+                              style: theme.textTheme.bodyMedium,
+                            ),
+                          ],
+                        ),
+                        onAgreePressed: () async {
+                          ResponseModel? result = await readDashboardProvider
+                              .removeSale(id: saleInvoice.id);
+                          if (result != null) {
+                            // reload sale invoice on dashboard if remove success
+                            if (result.type.name == 'success') {
+                              await readDashboardProvider.filter(
+                                  tab: readDashboardProvider.selectedTab,
+                                  filterText: readDashboardProvider.filterText);
+                            }
+                            late SnackBar snackBar;
+                            snackBar = Alert.awesomeSnackBar(
+                                message: result.message, type: result.type);
+                            if (!context.mounted) return;
+                            ScaffoldMessenger.of(context)
+                              ..hideCurrentSnackBar()
+                              ..showSnackBar(snackBar);
+                          }
+                          if (context.mounted) {
+                            context.pop();
+                          }
+                        },
+                      )),
                 ),
               ],
             );

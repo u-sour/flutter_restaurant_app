@@ -94,8 +94,6 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
   late SaleReceiptModel saleReceipt;
   late Future<List<SelectOptionModel>> paymentMethods;
   late List<String> allowedCurrencies;
-  bool fromDashboard = false;
-  bool makeRepaid = false;
   bool isAllowedTHB = false;
   int decimalNumber = 0;
   List<TextEditingController> receiveController = [];
@@ -125,8 +123,6 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
     if (widget.footerType.name == 'payment') {
       decimalNumber = readProvider.decimalNumber;
       paymentMethods = readProvider.fetchPaymentMethods();
-      fromDashboard = widget.value['fromDashboard'] ?? false;
-      makeRepaid = widget.value['makeRepaid'] ?? false;
       saleReceipt = widget.value['saleReceipt'];
       allowedCurrencies = widget.value['allowedCurrencies'];
       SaleReceiptAllowCurrencyAmountModel receiveAmount =

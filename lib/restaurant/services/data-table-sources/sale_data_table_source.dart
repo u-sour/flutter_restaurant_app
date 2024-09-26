@@ -53,6 +53,7 @@ class SaleInvoiceDataSource extends DataGridSource {
         case 'total' || 'totalReceived':
           cell = InvoiceFormatCurrencyWidget(
             value: sale.toJson()[column.name],
+            enableRoundNumber: false,
             color: theme.colorScheme.onSurface,
             fontWeight: FontWeight.normal,
             priceFontSize: theme.textTheme.bodySmall!.fontSize,

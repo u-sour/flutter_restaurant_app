@@ -63,15 +63,13 @@ class SaleTableProvider with ChangeNotifier {
         _isLoading = true;
         notifyListeners();
         _saleListener = meteor.collection('rest_sales').listen((event) {
-          if (event.isNotEmpty) {
-            //  call method only 1 time when sale data updated
-            debounce.run(() {
-              initData(
-                  branchId: branchId,
-                  depId: depId,
-                  displayTableAllDepartment: displayTableAllDepartment);
-            });
-          }
+          //  call method only 1 time when sale data updated
+          debounce.run(() {
+            initData(
+                branchId: branchId,
+                depId: depId,
+                displayTableAllDepartment: displayTableAllDepartment);
+          });
         });
       },
     );

@@ -9,6 +9,7 @@ import '../../utils/constants.dart';
 import '../models/sale-table/floor_model.dart';
 import '../models/sale-table/table_model.dart';
 import '../providers/sale-table/sale_table_provider.dart';
+import '../utils/debounce.dart';
 import '../widgets/department_widget.dart';
 import '../widgets/empty_data_widget.dart';
 import '../widgets/loading_widget.dart';
@@ -25,6 +26,7 @@ class SaleTableScreen extends StatefulWidget {
 class _SaleTableScreenState extends State<SaleTableScreen> {
   late AppProvider _readAppProvider;
   late SaleTableProvider _readSaleTableProvider;
+  final Debounce debounce = Debounce();
   bool isScrollable = true;
   bool showNextIcon = true;
   bool showBackIcon = true;
@@ -119,12 +121,16 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
                                 controller.addListener(() {
                                   final String floorId =
                                       data.floors[controller.index].id;
-                                  setActiveFloor(floorId: floorId);
+                                  debounce.run(() {
+                                    setActiveFloor(floorId: floorId);
+                                  });
                                 });
                               },
                               onTabChanged: (index) {
                                 final String floorId = data.floors[index!].id;
-                                setActiveFloor(floorId: floorId);
+                                debounce.run(() {
+                                  setActiveFloor(floorId: floorId);
+                                });
                               },
                               showBackIcon: showBackIcon,
                               showNextIcon: showNextIcon,

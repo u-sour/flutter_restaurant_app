@@ -18,6 +18,7 @@ class InvoiceScreen extends StatefulWidget {
   final String invoiceId;
   final String? receiptId;
   final bool fromReceiptForm;
+  final bool fromDashboard;
   final bool receiptPrint;
   final bool isTotal;
   final bool isRepaid;
@@ -26,6 +27,7 @@ class InvoiceScreen extends StatefulWidget {
     required this.invoiceId,
     this.receiptId,
     required this.fromReceiptForm,
+    required this.fromDashboard,
     required this.receiptPrint,
     required this.isTotal,
     required this.isRepaid,
@@ -66,8 +68,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: InvoiceAppBarWidget(
-          title: SCREENS.printer.toTitle,
-          fromReceiptForm: widget.fromReceiptForm),
+        title: SCREENS.printer.toTitle,
+        fromReceiptForm: widget.fromReceiptForm,
+        fromDashboard: widget.fromDashboard,
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [

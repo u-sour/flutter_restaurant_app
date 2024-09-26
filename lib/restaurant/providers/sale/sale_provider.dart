@@ -99,7 +99,8 @@ class SaleProvider extends ChangeNotifier {
     _baseCurrency = readAppProvider.companyAccounting.baseCurrency;
     _decimalNumber = readAppProvider.companyAccounting.decimalNumber;
     _roundNumber = RoundNumber(
-        decimalNumber: _baseCurrency == 'KHR' ? -decimalNumber : decimalNumber);
+        decimalNumber:
+            _baseCurrency == 'KHR' ? -_decimalNumber : _decimalNumber);
     _branchId = readAppProvider.selectedBranch!.id;
     _depId = readAppProvider.selectedDepartment!.id;
     _employeeId = readAppProvider.currentUser!.id;
@@ -119,12 +120,15 @@ class SaleProvider extends ChangeNotifier {
       _isDecimalQty = SaleService.isModuleActive(
           modules: ['decimal-qty'], overpower: false, context: context);
 
-      // get table Id & fastSale fom query router
+      // get table Id & fastSale from query router
       final Map<String, dynamic> queryRouter =
           GoRouterState.of(context).uri.queryParameters;
       _tableId = queryRouter['table']!;
       _fastSale = queryRouter['fastSale']! == 'true';
-
+      // get invoice Id and set _activeSaleInvoiceId from query router is route come from dashboard
+      if (queryRouter['id'] != null) {
+        _activeSaleInvoiceId = queryRouter['id'];
+      }
       // check insert a new sale if fast sale
       if (_fastSale) {
         addNewSale();
@@ -785,7 +789,7 @@ class SaleProvider extends ChangeNotifier {
     Map<String, dynamic> query = {
       'table': tableId ?? _tableId,
       'id': invoiceId,
-      'fastSale': fastSale.toString()
+      'fastSale': '$fastSale'
     };
     context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
   }
@@ -875,9 +879,9 @@ class SaleProvider extends ChangeNotifier {
   }
 
   // fetch Guests
-  // Note : Used for Change Guest
-  Future<List<SelectOptionModel>> fetchGuests() async {
-    Map<String, dynamic> selector = {'branchId': _branchId};
+  // Note : Used for Change Guest and Edit Sale Receipt
+  Future<List<SelectOptionModel>> fetchGuests({String? branchId}) async {
+    Map<String, dynamic> selector = {'branchId': branchId ?? _branchId};
     Map<String, dynamic> options = {
       'sort': {'name': -1}
     };
@@ -1442,15 +1446,31 @@ class SaleProvider extends ChangeNotifier {
   }
 
   // payment
-  Future<ResponseModel?> payment(
-      {required BuildContext context, bool isPrint = false}) async {
+  Future<ResponseModel?> payment({
+    required BuildContext context,
+    String? invoiceId,
+    bool fromDashboard = false,
+    bool makeRepaid = false,
+    bool isPrint = false,
+  }) async {
+    // Note: invoiceId exist if route come from dashboard
     ResponseModel? result;
-    if (_currentSale != null && _saleDetails.isNotEmpty) {
+    if (_currentSale != null && _saleDetails.isNotEmpty || fromDashboard) {
       final GlobalKey<FormBuilderState> fbPaymentKey =
           GlobalKey<FormBuilderState>();
-      SaleReceiptModel saleReceipt = await fetchSaleReceipt();
+      SaleReceiptModel saleReceipt = await fetchSaleReceipt(
+          invoiceId: !fromDashboard ? _currentSale!.id : invoiceId!);
       List<String> allowedCurrencies = [];
       if (context.mounted) {
+        if (fromDashboard) {
+          AppProvider readAppProvider = context.read<AppProvider>();
+          _baseCurrency = readAppProvider.companyAccounting.baseCurrency;
+          _decimalNumber = readAppProvider.companyAccounting.decimalNumber;
+          _roundNumber = RoundNumber(
+              decimalNumber:
+                  _baseCurrency == 'KHR' ? -_decimalNumber : _decimalNumber);
+          _branchId = readAppProvider.selectedBranch!.id;
+        }
         allowedCurrencies = getAllowedCurrencies(context: context);
         await getOpenReceiveReturn(
             allowedCurrencies: allowedCurrencies, saleReceipt: saleReceipt);
@@ -1469,12 +1489,16 @@ class SaleProvider extends ChangeNotifier {
                 result = await handleInsertPayment(
                     fbPaymentKey: fbPaymentKey,
                     saleReceipt: saleReceipt,
+                    makeRepaid: makeRepaid,
+                    fromDashboard: fromDashboard,
                     context: context);
               },
               onInsertAndPrintPressed: () async {
                 result = await handleInsertPayment(
                     fbPaymentKey: fbPaymentKey,
                     saleReceipt: saleReceipt,
+                    makeRepaid: makeRepaid,
+                    fromDashboard: fromDashboard,
                     isPrint: true,
                     context: context);
               },
@@ -1492,6 +1516,8 @@ class SaleProvider extends ChangeNotifier {
   Future<ResponseModel?> handleInsertPayment({
     required GlobalKey<FormBuilderState> fbPaymentKey,
     required SaleReceiptModel saleReceipt,
+    bool fromReceiptForm = true,
+    bool fromDashboard = false,
     bool makeRepaid = false,
     bool isPrint = false,
     required BuildContext context,
@@ -1522,22 +1548,29 @@ class SaleProvider extends ChangeNotifier {
         final String receiptId =
             await insertSaleReceiptMethod(methodName: methodName, doc: form);
         if (context.mounted) {
-          // close modal
+          result = ResponseModel(
+              message: 'screens.sale.detail.alert.success.payment',
+              type: AWESOMESNACKBARTYPE.success,
+              data: receiptId);
+          // Close modal
           context.pop();
           if (receiptId.isEmpty) {
-            // back to Dashboard
+            // Back to dashboard
             context.goNamed(SCREENS.dashboard.toName);
           }
           // Save & Print
           if (isPrint) {
+            // Go invoice
             context.goNamed(SCREENS.invoice.toName, queryParameters: {
               'invoiceId': saleReceipt.orderDoc.id,
               'receiptId': receiptId,
-              'fromReceiptForm': 'true',
+              'fromReceiptForm': '$fromReceiptForm',
+              'fromDashboard': '$fromDashboard',
               'receiptPrint': 'true',
+              'isRepaid': '$makeRepaid'
             });
-          } else {
-            // Back to sale table
+          } else if (!fromDashboard) {
+            // Back to sale table if fromDashboard == false
             context.goNamed(SCREENS.saleTable.toName);
           }
         }
@@ -1551,11 +1584,11 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<SaleReceiptModel> fetchSaleReceipt() async {
+  Future<SaleReceiptModel> fetchSaleReceipt({required String invoiceId}) async {
     late SaleReceiptModel toModel;
-    if (currentSale != null) {
+    if (invoiceId.isNotEmpty) {
       Map<String, dynamic> selector = {
-        'invoiceId': _currentSale!.id,
+        'invoiceId': invoiceId,
       };
       final Map<String, dynamic> result =
           await meteor.call('rest.findSaleReceiptFormData', args: [selector]);
@@ -1566,8 +1599,9 @@ class SaleProvider extends ChangeNotifier {
     return toModel;
   }
 
-  Future<List<SelectOptionModel>> fetchPaymentMethods() async {
-    Map<String, dynamic> selector = {'branchId': _branchId};
+  Future<List<SelectOptionModel>> fetchPaymentMethods(
+      {String? branchId}) async {
+    Map<String, dynamic> selector = {'branchId': branchId ?? _branchId};
     Map<String, dynamic> options = {
       'sort': {'name': 1}
     };
@@ -1609,10 +1643,9 @@ class SaleProvider extends ChangeNotifier {
   late SaleReceiptAllowCurrencyAmountModel _returnAmount;
   SaleReceiptAllowCurrencyAmountModel get returnAmount => _returnAmount;
 
-  Future<void> getOpenReceiveReturn({
-    required List<String> allowedCurrencies,
-    required SaleReceiptModel saleReceipt,
-  }) async {
+  Future<void> getOpenReceiveReturn(
+      {required List<String> allowedCurrencies,
+      required SaleReceiptModel saleReceipt}) async {
     _openAmount =
         const SaleReceiptAllowCurrencyAmountModel(khr: 0, usd: 0, thb: 0);
     _receiveAmount =
