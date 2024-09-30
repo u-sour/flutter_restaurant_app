@@ -1,9 +1,11 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/screens/invoice_screen.dart';
+import '../restaurant/screens/invoice_to_kitchen_screen.dart';
 import 'route_utils.dart';
 import '../restaurant/screens/sale_table_screen.dart';
 import '../screens/connection_screen.dart';
@@ -156,6 +158,24 @@ class AppRouter {
           key: UniqueKey(),
         ),
       ),
+      GoRoute(
+          path: SCREENS.invoiceToKitchen.toPath,
+          name: SCREENS.invoiceToKitchen.toName,
+          builder: (context, state) {
+            Map<String, dynamic> queryRouter = state.uri.queryParameters;
+            final String invoiceId = queryRouter['invoiceId'];
+            final String floorName = queryRouter['floorName'];
+            final String tableName = queryRouter['tableName'];
+            final String tempSaleDetailIds = queryRouter['saleDetailIds'];
+            // convert saleDetailIds json to array
+            final List<dynamic> saleDetailIds = jsonDecode(tempSaleDetailIds);
+            return InvoiceToKitchenScreen(
+              invoiceId: invoiceId,
+              floorName: floorName,
+              tableName: tableName,
+              saleDetailIds: List<String>.from(saleDetailIds),
+            );
+          }),
       GoRoute(
         path: SCREENS.invoice.toPath,
         name: SCREENS.invoice.toName,

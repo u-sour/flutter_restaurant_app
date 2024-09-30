@@ -33,6 +33,7 @@ class SaleProductModel {
       fromJson: DateModelConverter.convertDateTimeForModel,
       toJson: DateModelConverter.convertDateTimeForModel)
   final DateTime createdAt;
+  final num? discountAmount;
 
   const SaleProductModel({
     required this.id,
@@ -59,6 +60,7 @@ class SaleProductModel {
     required this.discount,
     required this.branchId,
     required this.createdAt,
+    this.discountAmount,
   });
   factory SaleProductModel.fromJson(Map<String, dynamic> json) =>
       _$SaleProductModelFromJson(json);

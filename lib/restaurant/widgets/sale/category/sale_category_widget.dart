@@ -7,6 +7,7 @@ import '../../../../utils/constants.dart';
 import '../../../models/sale/category/sale_category_model.dart';
 import '../../../providers/sale/categories/sale_categories_provider.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
+import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import 'sale_category_item_widget.dart';
 
@@ -19,6 +20,7 @@ class SaleCategoryWidget extends StatefulWidget {
 
 class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
   late AppProvider _readAppProvider;
+  late SaleProvider _readSaleProvider;
   late SaleCategoriesProvider _readSaleCategoriesProvider;
   late SaleProductsProvider _readSaleProductsProvider;
   late ItemScrollController _breadcrumbScrollController;
@@ -27,9 +29,27 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
   void initState() {
     super.initState();
     _readAppProvider = context.read<AppProvider>();
+    _readSaleProvider = context.read<SaleProvider>();
     _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
     _readSaleProductsProvider = context.read<SaleProductsProvider>();
     _breadcrumbScrollController = ItemScrollController();
+  }
+
+  void handleCategorySelected(SaleCategoryModel category) {
+    // clear search text field & state
+    _readSaleProductsProvider.clearSearchTextFieldAndState();
+
+    // selected category
+    String branchId = _readAppProvider.selectedBranch!.id;
+    String depId = _readAppProvider.selectedDepartment!.id;
+    _readSaleCategoriesProvider.setSelectedCategory(
+        category: category, branchId: branchId, depId: depId);
+
+    // filter product group and products by selected category
+    _readSaleProductsProvider.productGroupFilter(categoryId: category.id);
+    final String? invoiceId = _readSaleProvider.currentSale?.id;
+    _readSaleProductsProvider.filter(
+        categoryId: category.id, invoiceId: invoiceId);
   }
 
   @override
@@ -66,14 +86,15 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                 // clear search text field & state
                                 _readSaleProductsProvider
                                     .clearSearchTextFieldAndState();
-
                                 // clear product group
                                 _readSaleProductsProvider.productGroupFilter(
                                     isExtraFood: true);
-
                                 // filter products by selected extra food
+                                final String? invoiceId =
+                                    _readSaleProvider.currentSale?.id;
                                 _readSaleProductsProvider.filter(
-                                    showExtraFood: !showExtraFood);
+                                    showExtraFood: !showExtraFood,
+                                    invoiceId: invoiceId);
                               },
                               style: OutlinedButton.styleFrom(
                                   side: BorderSide(
@@ -132,28 +153,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                   // clear selected category
                                   _readSaleCategoriesProvider
                                       .clearSelectedCategory(index: index);
-
-                                  // clear search text field & state
-                                  _readSaleProductsProvider
-                                      .clearSearchTextFieldAndState();
-
-                                  String branchId =
-                                      _readAppProvider.selectedBranch!.id;
-                                  String depId =
-                                      _readAppProvider.selectedDepartment!.id;
-                                  _readSaleCategoriesProvider
-                                      .setSelectedCategory(
-                                          category: category,
-                                          branchId: branchId,
-                                          depId: depId);
-
-                                  // filter product group and products by selected category
-                                  _readSaleProductsProvider.productGroupFilter(
-                                      categoryId: category.id);
-
-                                  _readSaleProductsProvider.filter(
-                                      categoryId: category.id);
-
+                                  handleCategorySelected(category);
                                   // auto scroll to index
                                   _breadcrumbScrollController.scrollTo(
                                       index: index,
@@ -186,26 +186,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                       return SaleCategoryItemWidget(
                         category: category,
                         onPressed: () {
-                          // clear search text field & state
-                          _readSaleProductsProvider
-                              .clearSearchTextFieldAndState();
-                          String branchId = _readAppProvider.selectedBranch!.id;
-                          String depId =
-                              _readAppProvider.selectedDepartment!.id;
-
-                          // selected category
-                          _readSaleCategoriesProvider.setSelectedCategory(
-                              category: category,
-                              branchId: branchId,
-                              depId: depId);
-
-                          // filter product group and products by selected category
-                          _readSaleProductsProvider.productGroupFilter(
-                              categoryId: category.id);
-
-                          _readSaleProductsProvider.filter(
-                              categoryId: category.id);
-
+                          handleCategorySelected(category);
                           // auto scroll to last index
                           if (_breadcrumbScrollController.isAttached &&
                               selectedCategories.length > 1) {

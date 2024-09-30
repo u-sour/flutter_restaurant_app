@@ -39,6 +39,7 @@ SaleProductModel _$SaleProductModelFromJson(Map<String, dynamic> json) {
     branchId: json['branchId'] as String,
     createdAt: DateModelConverter.convertDateTimeForModel(
         json['createdAt'] as DateTime),
+    discountAmount: json['discountAmount'] as num?,
   );
 }
 
@@ -69,4 +70,5 @@ Map<String, dynamic> _$SaleProductModelToJson(SaleProductModel instance) =>
       'branchId': instance.branchId,
       'createdAt':
           DateModelConverter.convertDateTimeForModel(instance.createdAt),
+      'discountAmount': instance.discountAmount,
     };

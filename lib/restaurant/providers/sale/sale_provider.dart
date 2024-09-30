@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:big_dart/big_dart.dart';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
@@ -1068,6 +1069,9 @@ class SaleProvider extends ChangeNotifier {
                 overpower: false,
                 context: context)) {
           await updateOnPrintToKitchenMethod(saleId: _currentSale!.id);
+          result = const ResponseModel(
+              message: 'screens.sale.detail.alert.success.printToKitchen',
+              type: AWESOMESNACKBARTYPE.success);
         }
       } catch (e) {
         if (e is MeteorError) {
@@ -1078,6 +1082,24 @@ class SaleProvider extends ChangeNotifier {
     } else {
       result = ResponseModel(
           message: '$_prefixSaleDetailAlert.info.saleDetailEmpty',
+          type: AWESOMESNACKBARTYPE.info);
+    }
+    return result;
+  }
+
+  ResponseModel? printInvoiceToKitchen({required BuildContext context}) {
+    ResponseModel? result;
+    if (_selectedSaleDetails.isNotEmpty) {
+      context.pushNamed(SCREENS.invoiceToKitchen.toName, queryParameters: {
+        'invoiceId': currentSale!.id,
+        'floorName': _tableLocation.floor,
+        'tableName': _tableLocation.table,
+        'saleDetailIds':
+            jsonEncode(_selectedSaleDetails.map((sd) => sd.id).toList())
+      });
+    } else {
+      result = ResponseModel(
+          message: '$_prefixSaleDetailAlert.info.noSelectedItemsToPrint',
           type: AWESOMESNACKBARTYPE.info);
     }
     return result;
@@ -1340,7 +1362,7 @@ class SaleProvider extends ChangeNotifier {
     ResponseModel? result;
     AppProvider readAppProvider = context.read<AppProvider>();
     const String prefixSaleInvoice = 'screens.sale.invoice';
-    if (_currentSale != null && _saleDetails.isNotEmpty) {
+    if (_currentSale != null || _saleDetails.isNotEmpty) {
       List<String> saleDetailDraftItemIds = _saleDetails
           .where((sd) => sd.draft == true)
           .map((sd) => sd.id)

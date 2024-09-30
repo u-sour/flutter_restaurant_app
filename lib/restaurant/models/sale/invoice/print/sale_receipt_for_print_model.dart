@@ -10,7 +10,7 @@ class SaleReceiptForPrintModel {
       fromJson: DateModelConverter.convertDateTimeForModel,
       toJson: DateModelConverter.convertDateTimeForModel)
   final DateTime date;
-  final String paymentBy;
+  final String? paymentBy;
   final num receiveAmount;
   final num feeAmount;
   final num? prevReceiveAmount;
@@ -21,7 +21,7 @@ class SaleReceiptForPrintModel {
   const SaleReceiptForPrintModel({
     required this.id,
     required this.date,
-    required this.paymentBy,
+    this.paymentBy,
     required this.receiveAmount,
     required this.feeAmount,
     this.prevReceiveAmount,

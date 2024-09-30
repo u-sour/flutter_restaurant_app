@@ -14,6 +14,7 @@ class FormatCurrencyWidget extends StatelessWidget {
   final double? priceFontSize;
   final double currencySymbolFontSize;
   final FontWeight fontWeight;
+
   const FormatCurrencyWidget({
     super.key,
     required this.value,
@@ -40,10 +41,11 @@ class FormatCurrencyWidget extends StatelessWidget {
         decimalNumber:
             defaultBaseCurrency == 'KHR' ? -decimalNumber : decimalNumber);
     TextStyle currencySymbolStyle = theme.textTheme.bodyLarge!.copyWith(
-        fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
-        color: color ?? theme.colorScheme.onPrimary,
-        fontWeight: fontWeight,
-        height: defaultBaseCurrency == 'KHR' ? 0.1 : null);
+      fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
+      color: color ?? theme.colorScheme.onPrimary,
+      fontWeight: fontWeight,
+      height: defaultBaseCurrency == 'KHR' ? 0.1 : null,
+    );
     return Row(
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,

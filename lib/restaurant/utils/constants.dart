@@ -64,6 +64,7 @@ class RestaurantDefaultIcons {
   static const IconData changeCustomer = Icons.person;
   static const IconData cancelCopy = Icons.content_copy;
   static const IconData chef = Icons.breakfast_dining_outlined;
+  static const IconData printChefItems = Icons.notification_important;
   static const IconData print = Icons.print;
   static const IconData preview = Icons.receipt_long;
   static const IconData payment = Icons.payments;

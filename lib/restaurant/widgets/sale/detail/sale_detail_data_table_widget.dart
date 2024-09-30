@@ -216,10 +216,11 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                               }),
                       child: Row(
                         children: [
-                          Icon(row.checkPrintKitchen != null &&
+                          row.checkPrintKitchen != null &&
                                   row.checkPrintKitchen == true
-                              ? RestaurantDefaultIcons.chef
-                              : RestaurantDefaultIcons.editNote),
+                              ? const Icon(RestaurantDefaultIcons.chef,
+                                  color: AppThemeColors.primary)
+                              : const Icon(RestaurantDefaultIcons.editNote),
                           const SizedBox(width: 4.0),
                           Expanded(
                             child: Text(

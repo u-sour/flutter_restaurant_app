@@ -29,10 +29,25 @@ class SaleProductItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    double priceBgColorOpacity = 0.8;
     double discountBgColorOpacity = 0.8;
     // double lastSelectedItemOpacity = 1;
     // double normalSelectedItemOpacity = 0.45;
+    // discount
+    Decoration? discountDecoration;
+    if (product.discount > 0) {
+      discountDecoration = RotatedCornerDecoration.withColor(
+        textSpan: TextSpan(
+            text: '${product.discount}%',
+            style: theme.textTheme.bodyMedium?.copyWith(
+                color: theme.colorScheme.onPrimary,
+                fontWeight: FontWeight.bold)),
+        badgeCornerRadius: const Radius.circular(AppStyleDefaultProperties.r),
+        color: AppThemeColors.primary.withOpacity(discountBgColorOpacity),
+        badgeSize: const Size(64, 64),
+        badgePosition: BadgePosition.bottomStart,
+        textDirection: TextDirection.rtl,
+      );
+    }
     return Column(
       children: [
         ClipRRect(
@@ -45,20 +60,7 @@ class SaleProductItemWidget extends StatelessWidget {
                     return Container(
                       width: double.infinity,
                       height: imgHeight,
-                      foregroundDecoration: RotatedCornerDecoration.withColor(
-                        textSpan: TextSpan(
-                            text: '0%',
-                            style: theme.textTheme.bodyMedium?.copyWith(
-                                color: theme.colorScheme.onPrimary,
-                                fontWeight: FontWeight.bold)),
-                        badgeCornerRadius:
-                            const Radius.circular(AppStyleDefaultProperties.r),
-                        color: AppThemeColors.primary
-                            .withOpacity(discountBgColorOpacity),
-                        badgeSize: const Size(64, 64),
-                        badgePosition: BadgePosition.bottomStart,
-                        textDirection: TextDirection.rtl,
-                      ),
+                      foregroundDecoration: discountDecoration,
                       child: Material(
                         color: theme.highlightColor,
                         child: InkWell(
@@ -66,25 +68,7 @@ class SaleProductItemWidget extends StatelessWidget {
                           child: Column(
                             children: [
                               // Price
-                              Padding(
-                                padding: const EdgeInsets.all(10.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Container(
-                                        padding: const EdgeInsets.all(5.0),
-                                        decoration: BoxDecoration(
-                                          color: AppThemeColors.primary
-                                              .withOpacity(priceBgColorOpacity),
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                        ),
-                                        child: FormatCurrencyWidget(
-                                            value: product.price)),
-                                  ],
-                                ),
-                              ),
+                              SaleProductItemPriceWidget(product: product),
                               // Image
                               const NoImageWidget()
                             ],
@@ -96,20 +80,7 @@ class SaleProductItemWidget extends StatelessWidget {
                   imageBuilder: (context, imageProvider) => Container(
                     width: double.infinity,
                     height: imgHeight,
-                    foregroundDecoration: RotatedCornerDecoration.withColor(
-                      textSpan: TextSpan(
-                          text: '0%',
-                          style: theme.textTheme.bodyMedium?.copyWith(
-                              color: theme.colorScheme.onPrimary,
-                              fontWeight: FontWeight.bold)),
-                      badgeCornerRadius:
-                          const Radius.circular(AppStyleDefaultProperties.r),
-                      color: AppThemeColors.primary
-                          .withOpacity(discountBgColorOpacity),
-                      badgeSize: const Size(64, 64),
-                      badgePosition: BadgePosition.bottomStart,
-                      textDirection: TextDirection.rtl,
-                    ),
+                    foregroundDecoration: discountDecoration,
                     decoration: BoxDecoration(
                       color: theme.primaryColor,
                       image: DecorationImage(
@@ -121,25 +92,8 @@ class SaleProductItemWidget extends StatelessWidget {
                         onTap: onTap,
                         child: Column(
                           children: [
-                            Padding(
-                              padding: const EdgeInsets.all(10.0),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                      padding: const EdgeInsets.all(5.0),
-                                      decoration: BoxDecoration(
-                                        color: AppThemeColors.primary
-                                            .withOpacity(priceBgColorOpacity),
-                                        borderRadius:
-                                            BorderRadius.circular(10.0),
-                                      ),
-                                      child: FormatCurrencyWidget(
-                                          value: product.price)),
-                                ],
-                              ),
-                            ),
+                            // Price
+                            SaleProductItemPriceWidget(product: product),
                           ],
                         ),
                       ),
@@ -149,20 +103,7 @@ class SaleProductItemWidget extends StatelessWidget {
               : Container(
                   width: double.infinity,
                   height: imgHeight,
-                  foregroundDecoration: RotatedCornerDecoration.withColor(
-                    textSpan: TextSpan(
-                        text: '0%',
-                        style: theme.textTheme.bodyMedium?.copyWith(
-                            color: theme.colorScheme.onPrimary,
-                            fontWeight: FontWeight.bold)),
-                    badgeCornerRadius:
-                        const Radius.circular(AppStyleDefaultProperties.r),
-                    color: AppThemeColors.primary
-                        .withOpacity(discountBgColorOpacity),
-                    badgeSize: const Size(64, 64),
-                    badgePosition: BadgePosition.bottomStart,
-                    textDirection: TextDirection.rtl,
-                  ),
+                  foregroundDecoration: discountDecoration,
                   child: Material(
                     color: theme.highlightColor,
                     child: InkWell(
@@ -170,23 +111,7 @@ class SaleProductItemWidget extends StatelessWidget {
                       child: Column(
                         children: [
                           // Price
-                          Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Container(
-                                    padding: const EdgeInsets.all(5.0),
-                                    decoration: BoxDecoration(
-                                      color: AppThemeColors.primary
-                                          .withOpacity(priceBgColorOpacity),
-                                      borderRadius: BorderRadius.circular(10.0),
-                                    ),
-                                    child: FormatCurrencyWidget(
-                                        value: product.price)),
-                              ],
-                            ),
-                          ),
+                          SaleProductItemPriceWidget(product: product),
                           // Image
                           const NoImageWidget()
                         ],
@@ -222,6 +147,48 @@ class SaleProductItemWidget extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+}
+
+class SaleProductItemPriceWidget extends StatelessWidget {
+  const SaleProductItemPriceWidget({
+    super.key,
+    this.priceBgColorOpacity = 0.8,
+    required this.product,
+  });
+
+  final double priceBgColorOpacity;
+  final SaleProductModel product;
+
+  @override
+  Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.all(10.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+              padding: const EdgeInsets.all(5.0),
+              decoration: BoxDecoration(
+                color: AppThemeColors.primary.withOpacity(priceBgColorOpacity),
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Column(
+                children: [
+                  FormatCurrencyWidget(
+                    value: product.price,
+                    color: product.discountAmount != null
+                        ? theme.colorScheme.onPrimary.withOpacity(.35)
+                        : null,
+                  ),
+                  if (product.discountAmount != null)
+                    FormatCurrencyWidget(value: product.discountAmount!),
+                ],
+              )),
+        ],
+      ),
     );
   }
 }

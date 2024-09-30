@@ -29,6 +29,7 @@ class DrawerWidget extends StatelessWidget {
             screen.toPath != "/restaurant/sale-table" &&
             screen.toPath != "/restaurant/sale" &&
             screen.toPath != "/restaurant/sale" &&
+            screen.toPath != "/restaurant/invoice-to-kitchen" &&
             screen.toPath != "/restaurant/invoice" &&
             screen.toPath != "/error")
         .toList();

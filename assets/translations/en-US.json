@@ -251,6 +251,7 @@
             "transfer": "Transfer items success.",
             "split": "Split invoice success.",
             "cancelAndCopy": "Cancel & new copy invoice success.",
+            "printToKitchen": "Sent item to chef monitor success.",
             "payment": "Invoice Payment success."
           },
           "info": {
@@ -258,6 +259,7 @@
             "noSelectedItemsTransfer": "No selected items to transfer.",
             "noSelectedItemsSplit": "No selected items to split.",
             "printBeforeCancel": "Can not cancel before print.",
+            "noSelectedItemsToPrint": "No selected items to print.",
             "noSelectedItems": "No selected items.",
             "saleDetailEmpty": "No items.",
             "saleEmpty": "This invoice is empty.",
@@ -275,8 +277,8 @@
         },
         "dataTable": {
           "header": {
-            "item": "Item",
-            "qty": "QTY",
+            "item": "Items",
+            "qty": "Qty",
             "price": "Price",
             "amount": "Amount"
           },

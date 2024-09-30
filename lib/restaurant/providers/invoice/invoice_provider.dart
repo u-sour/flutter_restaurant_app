@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
 import '../../../screens/app_screen.dart';
 import '../../../storages/connection_storage.dart';
+import '../../models/sale/detail/sale_detail_model.dart';
 import '../../models/sale/invoice/print/sale_invoice_content_model.dart';
 
 class InvoiceProvider extends ChangeNotifier {
@@ -37,5 +38,19 @@ class InvoiceProvider extends ChangeNotifier {
         await meteor.call('rest.mobile.fetchInvoiceContent', args: [selector]);
     SaleInvoiceContentModel toModel = SaleInvoiceContentModel.fromJson(result);
     return toModel;
+  }
+
+  // fetch
+  Future<List<SaleDetailModel>> fetchOrderListByIds(
+      {required String invoiceId, required List<String> saleDetailIds}) async {
+    List<SaleDetailModel> toModelList = [];
+    Map<String, dynamic> selector = {
+      'invoiceId': invoiceId,
+      'ids': saleDetailIds
+    };
+    final List<dynamic> result =
+        await meteor.call('rest.findOrderListByIds', args: [selector]);
+    toModelList = result.map((json) => SaleDetailModel.fromJson(json)).toList();
+    return toModelList;
   }
 }
