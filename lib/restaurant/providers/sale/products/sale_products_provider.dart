@@ -11,7 +11,9 @@ import '../../../models/sale/product/sale_product_result_model.dart';
 class SaleProductsProvider extends ChangeNotifier {
   late GlobalKey<FormBuilderState> fbSearchKey;
   late String _branchId;
+  String get branchId => _branchId;
   late String _depId;
+  String get depId => _depId;
   late String _ipAddress;
   String get ipAddress => _ipAddress;
   late List<SaleProductGroupModel> _productGroup;
@@ -21,6 +23,8 @@ class SaleProductsProvider extends ChangeNotifier {
   late int _productCount;
   String _search = '';
   String get search => _search;
+  late String _categoryId;
+  String get categoryId => _categoryId;
   late String _productGroupId;
   String get productGroupId => _productGroupId;
   bool _showExtraFood = false;
@@ -37,8 +41,11 @@ class SaleProductsProvider extends ChangeNotifier {
   late int _currentProductIndex;
   int get currentProductIndex => _currentProductIndex;
 
-  Future<void> initData(
-      {required BuildContext context, int skip = 0, int limit = 25}) async {
+  Future<void> initData({
+    required BuildContext context,
+    int skip = 0,
+    int limit = 25,
+  }) async {
     _isLoading = true;
     AppProvider readAppProvider = context.read<AppProvider>();
     _branchId = readAppProvider.selectedBranch!.id;
@@ -46,10 +53,15 @@ class SaleProductsProvider extends ChangeNotifier {
     _products = [];
     _productGroup = [];
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
-        branchId: _branchId, depId: _depId, skip: skip, limit: limit);
+      branchId: _branchId,
+      depId: _depId,
+      skip: skip,
+      limit: limit,
+    );
     _products = saleProductsResult.items;
     _productCount = saleProductsResult.itemCount;
     _ipAddress = (await ConnectionStorage().getIpAddress())!;
+    _categoryId = '';
     _productGroupId = '';
     _skip = skip;
     _limit = limit;
@@ -124,7 +136,6 @@ class SaleProductsProvider extends ChangeNotifier {
         'depId': depId
       }
     ]);
-
     return SaleProductResultModel.fromJson(result);
   }
 
@@ -158,15 +169,18 @@ class SaleProductsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> filter(
-      {String search = '',
-      String categoryId = '',
-      String productGroupId = '',
-      bool showExtraFood = false}) async {
+  Future<void> filter({
+    String search = '',
+    String categoryId = '',
+    String productGroupId = '',
+    bool showExtraFood = false,
+    String? invoiceId,
+  }) async {
     _limit = 25;
     _skip = 0;
     _products = [];
     _search = search;
+    _categoryId = categoryId;
     _productGroupId = productGroupId;
     _showExtraFood = showExtraFood;
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
@@ -174,6 +188,7 @@ class SaleProductsProvider extends ChangeNotifier {
         activeCategory: categoryId,
         activeGroup: _productGroupId,
         showExtraFood: _showExtraFood,
+        invoiceId: invoiceId,
         branchId: _branchId,
         depId: _depId,
         skip: _skip,

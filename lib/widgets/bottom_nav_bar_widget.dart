@@ -36,6 +36,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
             screen.toPath != "/printer" &&
             screen.toPath != "/restaurant/sale-table" &&
             screen.toPath != "/restaurant/sale" &&
+            screen.toPath != "/restaurant/invoice-to-kitchen" &&
             screen.toPath != "/restaurant/invoice" &&
             screen.toPath != "/error")
         .toList();

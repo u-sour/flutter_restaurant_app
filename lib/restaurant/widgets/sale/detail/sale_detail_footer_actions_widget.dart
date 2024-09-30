@@ -12,6 +12,7 @@ import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/company/company_accounting_model.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/sale/sale_model.dart';
+import '../../../providers/sale/products/sale_products_provider.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../screens/insert_guest_screen.dart';
 import '../../../utils/constants.dart';
@@ -31,6 +32,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
     SaleProvider readSaleProvider = context.read<SaleProvider>();
+    SaleProductsProvider readSaleProductsProvider =
+        context.read<SaleProductsProvider>();
     const prefixSaleDetailFooterActions = "screens.sale.detail.footerActions";
     const prefixDataTableFooter = "screens.sale.detail.footer";
     final btnStyleNormalShape =
@@ -43,106 +46,137 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
       child: Column(
         children: [
           Divider(height: 0.0, color: dividerColor),
-          ButtonBar(
-            alignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Change Table
-              TextButton.icon(
-                  onPressed: () => GlobalService.openDialog(
-                              contentWidget: EditSaleDetailFooterActionWidget(
-                                  fbKey: _fbEditFooterKey,
-                                  footerType: SaleDetailFooterType.changeTable,
-                                  value: readSaleProvider.tableLocation.id),
-                              context: context)
-                          .then((_) async {
-                        if (_fbEditFooterKey.currentState!.saveAndValidate()) {
-                          final String tableId = _fbEditFooterKey
-                              .currentState!.value['changeTable'];
-                          // check if new table then update
-                          if (tableId != readSaleProvider.tableLocation.id) {
-                            await readSaleProvider.updateSaleTable(
-                                tableId: tableId, context: context);
-                          }
-                        }
-                      }),
-                  icon: const Icon(RestaurantDefaultIcons.changeTable),
-                  label:
-                      const Text("$prefixSaleDetailFooterActions.changeTable")
-                          .tr()),
-              // Change Guest
-              InkWell(
-                onDoubleTap: () => GlobalService.openDialog(
-                    contentWidget: DialogWidget(
-                      titleIcon: RestaurantDefaultIcons.changeCustomer,
-                      title: 'screens.guest.title',
-                      content: InsertGuestScreen(fbKey: _fbInsertGuestKey),
-                      onInsertPressed: () async {
-                        if (_fbInsertGuestKey.currentState!.saveAndValidate()) {
-                          Map<String, dynamic> form =
-                              Map.of(_fbInsertGuestKey.currentState!.value);
-                          final result =
-                              await readSaleProvider.addGuest(form: form);
-                          if (result != null) {
-                            late SnackBar snackBar;
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
-                          }
-                          if (context.mounted) {
-                            context.pop();
-                          }
-                        }
-                      },
-                    ),
-                    context: context),
-                child: TextButton.icon(
-                    onPressed: () => GlobalService.openDialog(
-                                contentWidget: EditSaleDetailFooterActionWidget(
-                                    fbKey: _fbEditFooterKey,
-                                    footerType:
-                                        SaleDetailFooterType.changeGuest,
-                                    value: readSaleProvider.currentGuest),
-                                context: context)
-                            .then((_) async {
-                          if (_fbEditFooterKey.currentState!
-                              .saveAndValidate()) {
-                            final String guestId = _fbEditFooterKey
-                                .currentState!.value['changeGuest'];
-                            // check if new guest then update
-                            if (guestId !=
-                                readSaleProvider.currentGuest.value) {
-                              await readSaleProvider.updateSaleGuest(
-                                  guestId: guestId);
+          Selector<SaleProvider, SaleModel?>(
+            selector: (context, state) => state.currentSale,
+            builder: (context, currentSale, child) => currentSale != null
+                ? ButtonBar(
+                    alignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      // Change Table
+                      TextButton.icon(
+                          onPressed: () => GlobalService.openDialog(
+                                      contentWidget:
+                                          EditSaleDetailFooterActionWidget(
+                                              fbKey: _fbEditFooterKey,
+                                              footerType: SaleDetailFooterType
+                                                  .changeTable,
+                                              value: readSaleProvider
+                                                  .tableLocation.id),
+                                      context: context)
+                                  .then((_) async {
+                                if (_fbEditFooterKey.currentState!
+                                    .saveAndValidate()) {
+                                  final String tableId = _fbEditFooterKey
+                                      .currentState!.value['changeTable'];
+                                  // check if new table then update
+                                  if (tableId !=
+                                      readSaleProvider.tableLocation.id) {
+                                    await readSaleProvider.updateSaleTable(
+                                        tableId: tableId, context: context);
+                                  }
+                                }
+                              }),
+                          icon: const Icon(RestaurantDefaultIcons.changeTable),
+                          label: const Text(
+                                  "$prefixSaleDetailFooterActions.changeTable")
+                              .tr()),
+                      // Change Guest
+                      InkWell(
+                        onDoubleTap: () => GlobalService.openDialog(
+                            contentWidget: DialogWidget(
+                              titleIcon: RestaurantDefaultIcons.changeCustomer,
+                              title: 'screens.guest.title',
+                              content:
+                                  InsertGuestScreen(fbKey: _fbInsertGuestKey),
+                              onInsertPressed: () async {
+                                if (_fbInsertGuestKey.currentState!
+                                    .saveAndValidate()) {
+                                  Map<String, dynamic> form = Map.of(
+                                      _fbInsertGuestKey.currentState!.value);
+                                  final result = await readSaleProvider
+                                      .addGuest(form: form);
+                                  if (result != null) {
+                                    late SnackBar snackBar;
+                                    snackBar = Alert.awesomeSnackBar(
+                                        message: result.message,
+                                        type: result.type);
+                                    if (!context.mounted) return;
+                                    ScaffoldMessenger.of(context)
+                                      ..hideCurrentSnackBar()
+                                      ..showSnackBar(snackBar);
+                                  }
+                                  if (context.mounted) {
+                                    context.pop();
+                                  }
+                                }
+                              },
+                            ),
+                            context: context),
+                        child: TextButton.icon(
+                            onPressed: () => GlobalService.openDialog(
+                                        contentWidget:
+                                            EditSaleDetailFooterActionWidget(
+                                                fbKey: _fbEditFooterKey,
+                                                footerType: SaleDetailFooterType
+                                                    .changeGuest,
+                                                value: readSaleProvider
+                                                    .currentGuest),
+                                        context: context)
+                                    .then((_) async {
+                                  if (_fbEditFooterKey.currentState!
+                                      .saveAndValidate()) {
+                                    final String guestId = _fbEditFooterKey
+                                        .currentState!.value['changeGuest'];
+                                    // check if new guest then update
+                                    if (guestId !=
+                                        readSaleProvider.currentGuest.value) {
+                                      await readSaleProvider.updateSaleGuest(
+                                          guestId: guestId);
+                                      // fetch products again
+                                      await readSaleProductsProvider.filter(
+                                        search: readSaleProductsProvider.search,
+                                        categoryId:
+                                            readSaleProductsProvider.categoryId,
+                                        productGroupId: readSaleProductsProvider
+                                            .productGroupId,
+                                        showExtraFood: readSaleProductsProvider
+                                            .showExtraFood,
+                                        invoiceId:
+                                            readSaleProvider.currentSale!.id,
+                                      );
+                                    }
+                                  }
+                                }),
+                            icon: const Icon(
+                                RestaurantDefaultIcons.changeCustomer),
+                            label: Selector<SaleProvider, SelectOptionModel>(
+                                selector: (context, state) =>
+                                    state.currentGuest,
+                                builder: (context, guest, child) =>
+                                    Text(guest.label))),
+                      ),
+                      // Cancel & copy
+                      TextButton.icon(
+                          onPressed: () async {
+                            final result = await readSaleProvider.cancelSale(
+                                context: context, copy: true);
+                            if (result != null) {
+                              late SnackBar snackBar;
+                              snackBar = Alert.awesomeSnackBar(
+                                  message: result.message, type: result.type);
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(snackBar);
                             }
-                          }
-                        }),
-                    icon: const Icon(RestaurantDefaultIcons.changeCustomer),
-                    label: Selector<SaleProvider, SelectOptionModel>(
-                        selector: (context, state) => state.currentGuest,
-                        builder: (context, guest, child) => Text(guest.label))),
-              ),
-              // Cancel & copy
-              TextButton.icon(
-                  onPressed: () async {
-                    final result = await readSaleProvider.cancelSale(
-                        context: context, copy: true);
-                    if (result != null) {
-                      late SnackBar snackBar;
-                      snackBar = Alert.awesomeSnackBar(
-                          message: result.message, type: result.type);
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(snackBar);
-                    }
-                  },
-                  icon: const Icon(RestaurantDefaultIcons.cancelCopy),
-                  label: const Text("$prefixSaleDetailFooterActions.cancelCopy")
-                      .tr()),
-            ],
+                          },
+                          icon: const Icon(RestaurantDefaultIcons.cancelCopy),
+                          label: const Text(
+                                  "$prefixSaleDetailFooterActions.cancelCopy")
+                              .tr()),
+                    ],
+                  )
+                : const SizedBox.shrink(),
           ),
           Divider(height: 0.0, color: dividerColor),
           // Print to Kitchen
@@ -150,30 +184,59 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
             child: Row(
               children: [
                 Expanded(
-                  child: TextButton(
-                    onPressed: () async {
-                      final result = await readSaleProvider.printToKitchen(
-                          context: context);
-                      if (result != null) {
-                        late SnackBar snackBar;
-                        snackBar = Alert.awesomeSnackBar(
-                            message: result.message, type: result.type);
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
-                      }
-                    },
-                    style: btnStyleNormalShape,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(RestaurantDefaultIcons.chef),
-                        if (!ResponsiveLayout.isMobile(context))
-                          const Text("$prefixSaleDetailFooterActions.chef")
-                              .tr(),
-                      ],
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Expanded(
+                          child: FilledButton(
+                              onPressed: () {
+                                final result = readSaleProvider
+                                    .printInvoiceToKitchen(context: context);
+                                if (result != null) {
+                                  late SnackBar snackBar;
+                                  snackBar = Alert.awesomeSnackBar(
+                                      message: result.message,
+                                      type: result.type);
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(snackBar);
+                                }
+                              },
+                              style: FilledButton.styleFrom(
+                                  padding: EdgeInsets.zero,
+                                  shape: const LinearBorder()),
+                              child: const Icon(
+                                  RestaurantDefaultIcons.printChefItems))),
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () async {
+                            final result = await readSaleProvider
+                                .printToKitchen(context: context);
+                            if (result != null) {
+                              late SnackBar snackBar;
+                              snackBar = Alert.awesomeSnackBar(
+                                  message: result.message, type: result.type);
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(snackBar);
+                            }
+                          },
+                          style: btnStyleNormalShape,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(RestaurantDefaultIcons.chef),
+                              if (!ResponsiveLayout.isMobile(context))
+                                const Text(
+                                        "$prefixSaleDetailFooterActions.chef")
+                                    .tr(),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
                 VerticalDivider(width: 0.0, color: dividerColor),

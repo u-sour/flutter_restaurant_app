@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/invoice-template/table/table_list_schema_model.dart';
 import '../../models/invoice-template/table/table_schema_model.dart';
 import '../../models/sale/invoice/print/sale_detail_for_print_model.dart';
@@ -17,38 +16,19 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     // filter table list
     // Note: isVisible == true
     final List<TableListSchemaModel> tables =
         tableSchema.list.where((t) => t.isVisible).toList();
-    double columnSpacing;
-    switch (tables.length) {
-      case 5:
-        columnSpacing = 18.0;
-        break;
-      case 4:
-        columnSpacing = 42.0;
-        break;
-      case 3:
-        columnSpacing = 80.0;
-        break;
-      case 2:
-        columnSpacing = 220.0;
-        break;
-      default:
-        columnSpacing = 0.0;
-    }
-
-    if (ResponsiveLayout.isMobile(context)) {
-      columnSpacing -= 6;
-    }
     return tables.isNotEmpty
         ? Container(
+            width: width,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             child: DataTable(
               dataRowMaxHeight: double.infinity,
-              columnSpacing: columnSpacing,
+              columnSpacing: 0.0,
               horizontalMargin: 0.0,
               headingRowColor: WidgetStateColor.resolveWith(
                   (states) => theme.highlightColor),
@@ -64,24 +44,26 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                   thTextAlign = TextAlign.end;
                 }
                 return DataColumn(
-                  label: Container(
-                    width: tables[i].thStyle.width,
-                    padding: EdgeInsets.fromLTRB(
-                      tableSchema.thStyle.paddingLeft ?? 0.0,
-                      tableSchema.thStyle.paddingTop ?? 0.0,
-                      tableSchema.thStyle.paddingRight ?? 0.0,
-                      tableSchema.thStyle.paddingBottom ?? 0.0,
+                  label: Expanded(
+                    child: Container(
+                      width: tables[i].thStyle.width,
+                      padding: EdgeInsets.fromLTRB(
+                        tableSchema.thStyle.paddingLeft ?? 0.0,
+                        tableSchema.thStyle.paddingTop ?? 0.0,
+                        tableSchema.thStyle.paddingRight ?? 0.0,
+                        tableSchema.thStyle.paddingBottom ?? 0.0,
+                      ),
+                      child: Text(
+                          tableSchema.showThSubLabel
+                              ? '${tables[i].label}\n${tables[i].subLabel}'
+                              : tables[i].label,
+                          style: theme.textTheme.bodySmall!.copyWith(
+                              color: baseColor,
+                              fontSize: tableSchema.thStyle.fontSize,
+                              fontWeight: FontWeight.bold),
+                          textAlign: thTextAlign,
+                          softWrap: true),
                     ),
-                    child: Text(
-                        tableSchema.showThSubLabel
-                            ? '${tables[i].label}\n${tables[i].subLabel}'
-                            : tables[i].label,
-                        style: theme.textTheme.bodySmall!.copyWith(
-                            color: baseColor,
-                            fontSize: tableSchema.thStyle.fontSize,
-                            fontWeight: FontWeight.bold),
-                        textAlign: thTextAlign,
-                        softWrap: true),
                   ),
                 );
               }),

@@ -15,7 +15,7 @@ SaleReceiptForPrintModel _$SaleReceiptForPrintModelFromJson(
   return SaleReceiptForPrintModel(
     id: json['_id'] as String,
     date: DateModelConverter.convertDateTimeForModel(json['date'] as DateTime),
-    paymentBy: json['paymentBy'] as String,
+    paymentBy: json['paymentBy'] as String?,
     receiveAmount: json['receiveAmount'] as num,
     feeAmount: json['feeAmount'] as num,
     prevReceiveAmount: json['prevReceiveAmount'] as num?,
