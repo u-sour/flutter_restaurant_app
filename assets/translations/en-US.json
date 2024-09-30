@@ -129,7 +129,7 @@
       }
     },
     "printer": {
-      "title": "Print Preview",
+      "title": "Printer",
       "dialog": {
         "title": "Printing",
         "Processing": "Processing: {progress}%"
