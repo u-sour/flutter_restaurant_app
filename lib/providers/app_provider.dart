@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../restaurant/models/branch/branch_model.dart';
 import '../restaurant/models/company/company_accounting_model.dart';
@@ -18,8 +18,8 @@ String ONBOARD_KEY = "GD2G82CG9G82VDFGVD22DVG";
 
 class AppProvider extends ChangeNotifier {
   // Allowed Modules
-  List<String> _allowedModules = [];
-  List<String> get allowedModules => _allowedModules;
+  List<String> _allowModules = [];
+  List<String> get allowModules => _allowModules;
 
   // Current User
   UserModel? _currentUser;
@@ -107,8 +107,8 @@ class AppProvider extends ChangeNotifier {
     meteor.status().listen((onData) {
       _connected = onData.connected;
       if (_connected) {
-        // get allowed modules
-        getAllowedModules();
+        // get allow modules
+        getAllowModules();
         meteor.user().listen((currentUserDoc) {
           _loginState = currentUserDoc != null ? true : false;
           if (currentUserDoc != null) {
@@ -160,13 +160,13 @@ class AppProvider extends ChangeNotifier {
     });
   }
 
-  void getAllowedModules() async {
+  void getAllowModules() async {
     Map<String, dynamic> selector = {'active': true};
     List<dynamic> result = await meteor.call('app.findModules', args: [
       {'selector': selector}
     ]);
     // loop and get only field name
-    _allowedModules = result.map((e) => e['name'].toString()).toList();
+    _allowModules = result.map((e) => e['name'].toString()).toList();
     notifyListeners();
   }
 

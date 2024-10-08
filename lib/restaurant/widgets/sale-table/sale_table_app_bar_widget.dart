@@ -11,6 +11,7 @@ import '../../../utils/constants.dart';
 import '../../../widgets/avatar_widget.dart';
 import '../../models/user/user_model.dart';
 import '../branch_widget.dart';
+import '../notification/notification_center_widget.dart';
 
 class SaleTableAppBarWidget extends StatelessWidget
     implements PreferredSizeWidget {
@@ -30,7 +31,13 @@ class SaleTableAppBarWidget extends StatelessWidget
       title: Text(context.tr(title)),
       titleSpacing: 0.0,
       actions: [
+        // Branch
         const BranchWidget(),
+        const SizedBox(width: AppStyleDefaultProperties.w),
+        // Notification Center
+        const NotificationCenterWidget(),
+        const SizedBox(width: AppStyleDefaultProperties.w),
+        // Avatar
         Selector<AppProvider, UserModel?>(
             selector: (context, state) => state.currentUser,
             builder: (context, currentUser, child) {

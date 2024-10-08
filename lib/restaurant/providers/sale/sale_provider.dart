@@ -781,7 +781,7 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
-  // enter sale
+  // Enter sale
   void handleEnterSale(
       {required BuildContext context,
       String? tableId,
@@ -923,11 +923,11 @@ class SaleProvider extends ChangeNotifier {
     final List<dynamic> result =
         await meteor.call('rest.findSales', args: [selector]);
 
-    List<SaleModel> toModelList = [];
+    List<SaleModel> toListModel = [];
     if (result.isNotEmpty) {
-      toModelList = result.map((json) => SaleModel.fromJson(json)).toList();
+      toListModel = result.map((json) => SaleModel.fromJson(json)).toList();
     }
-    return toModelList;
+    return toListModel;
   }
 
   // fetch Sale Detail

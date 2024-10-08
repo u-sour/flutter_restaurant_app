@@ -136,6 +136,18 @@
       "search": "Search ...",
       "notification": {
         "title": "Notification",
+        "tabs": {
+          "invoice": "Invoice",
+          "chefMonitor": "Chef Monitor",
+          "stock": "Stock"
+        },
+        "content": {
+          "invoice": {
+            "itemsOrdered": "You have receive a payment request from ",
+            "requestPayment": "You have receive new orders from "
+          },
+          "stock": "Remaining in stock | {qty}"
+        },
         "noMessages": "No messages",
         "btn": { "removeAll": "Remove All" }
       },
