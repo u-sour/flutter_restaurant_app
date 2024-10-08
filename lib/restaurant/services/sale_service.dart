@@ -16,8 +16,7 @@ class SaleService {
       if (currentUserRoles.contains('super')) return true;
     }
 
-    final List<String> allowedModules =
-        context.read<AppProvider>().allowedModules;
+    final List<String> allowModules = context.read<AppProvider>().allowModules;
 
     List<String> mods = [];
     if (modules is String) {
@@ -27,7 +26,7 @@ class SaleService {
     }
 
     final result = mods.firstWhere(
-      (el) => allowedModules.contains(el),
+      (el) => allowModules.contains(el),
       orElse: () => '',
     );
 

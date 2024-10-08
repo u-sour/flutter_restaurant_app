@@ -7,6 +7,7 @@ import '../providers/app_provider.dart';
 import '../providers/auth_provider.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/widgets/branch_widget.dart';
+import '../restaurant/widgets/notification/notification_center_widget.dart';
 import '../router/route_utils.dart';
 import '../utils/constants.dart';
 import 'avatar_widget.dart';
@@ -26,7 +27,13 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         //   padding: const EdgeInsets.symmetric(vertical: 10.0, horizontal: 10.0),
         //   child: const ToggleSwitchThemeWidget(),
         // ),
+        // Branch
         const BranchWidget(),
+        const SizedBox(width: AppStyleDefaultProperties.w),
+        // Notification Center
+        const NotificationCenterWidget(),
+        const SizedBox(width: AppStyleDefaultProperties.w),
+        // Avatar
         Selector<AppProvider, UserModel?>(
             selector: (context, state) => state.currentUser,
             builder: (context, currentUser, child) {

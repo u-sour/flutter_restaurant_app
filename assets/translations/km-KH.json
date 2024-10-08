@@ -133,6 +133,18 @@
       "search": "ស្វែងរក ...",
       "notification": {
         "title": "ការជូនដំណឹង",
+        "tabs": {
+          "invoice": "វិក្កយបត្រ",
+          "chefMonitor": "ត្រួតពិនិត្យពីចុងភៅ",
+          "stock": "ស្តុក"
+        },
+        "content": {
+          "invoice": {
+            "itemsOrdered": "អ្នកបានទទួលការកម្មង់ថ្មីពី ",
+            "requestPayment": "អ្នកបានទទួលការស្នើសុំបង់ប្រាក់ពី "
+          },
+          "stock": "នៅសល់ក្នុងស្តុក | {qty}"
+        },
         "noMessages": "គ្មានសារ",
         "btn": { "removeAll": "លុបទាំងអស់" }
       },

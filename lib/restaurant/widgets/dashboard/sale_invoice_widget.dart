@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
+import '../../providers/sale/notification_provider.dart';
 import '../../utils/debounce.dart';
 import '../loading_widget.dart';
 import 'sale_invoice_content_widget.dart';
@@ -16,12 +17,16 @@ class SaleInvoiceWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final Debounce debounce = Debounce();
+    NotificationProvider readNotificationProvider =
+        context.read<NotificationProvider>();
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     String branchId = context
         .select<AppProvider, String>((ap) => ap.selectedBranch?.id ?? '');
     String depId = context
         .select<AppProvider, String>((ap) => ap.selectedDepartment?.id ?? '');
+    // init data notification & dashboard
     WidgetsBinding.instance.addPostFrameCallback((_) {
+      readNotificationProvider.initData(context: context);
       readDashboardProvider.initData(branchId: branchId, depId: depId);
     });
     const String prefixSaleInvoiceTab = 'screens.dashboard.saleInvoiceTabs';

@@ -73,7 +73,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
     if (ResponsiveLayout.isTablet(context) &&
         orientation == Orientation.landscape) {
       crossAxisCount = 3;
-      imageHeight = 145.0;
+      imageHeight = 170.0;
     }
 
     //Mobile portrait mode

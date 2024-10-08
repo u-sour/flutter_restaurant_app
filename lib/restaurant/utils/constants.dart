@@ -31,6 +31,16 @@ class RestaurantDefaultIcons {
   // dashboard
   static const IconData newSale = Icons.deck;
   static const IconData fastSale = Icons.takeout_dining;
+  // notification
+  static const IconData notification = Icons.notifications;
+  static const IconData notificationInvoice = Icons.receipt_long;
+  static const IconData notificationInvoiceRead = Icons.circle_outlined;
+  static const IconData notificationInvoiceUnread = Icons.circle;
+  static const IconData notificationFromChefMonitor = Icons.food_bank;
+  static const IconData notificationFromChefMonitorReady = Icons.task_alt;
+  static const IconData notificationStock = Icons.inventory;
+  static const IconData notificationStockWarning = Icons.error_outline;
+  static const IconData removeNotification = Icons.clear;
   // sale table
   static const IconData table = Icons.table_restaurant;
   static const IconData tableStatus = Icons.fiber_manual_record;
@@ -40,10 +50,6 @@ class RestaurantDefaultIcons {
   static const IconData back = Icons.arrow_back_ios_new;
   static const IconData next = Icons.chevron_right;
   static const IconData search = Icons.search;
-  static const IconData notification = Icons.notifications;
-  static const IconData notificationInvoice = Icons.receipt_long;
-  static const IconData notificationFromKitchen = Icons.food_bank;
-  static const IconData removeNotification = Icons.clear;
   static const IconData tableLocation = Icons.room;
   static const IconData invoiceList = Icons.list;
   static const IconData addInvoice = Icons.add;
