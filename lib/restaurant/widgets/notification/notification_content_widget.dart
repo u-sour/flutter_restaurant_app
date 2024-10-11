@@ -5,6 +5,7 @@ import '../../../utils/alert/alert.dart';
 import '../../models/notification/notification_data_model.dart';
 import '../../models/notification/notification_model.dart';
 import '../../providers/sale/notification_provider.dart';
+import '../../services/user_service.dart';
 import '../../utils/notification/notification_utils.dart';
 import '../empty_data_widget.dart';
 import '../loading_widget.dart';
@@ -63,7 +64,8 @@ class NotificationContentWidget extends StatelessWidget {
                                 }
                               : null,
                       onRemove: notificationType !=
-                              NotificationType.stockAlert.toValue
+                                  NotificationType.stockAlert.toValue &&
+                              UserService.userInRole(roles: ['cashier'])
                           ? () async {
                               final ResponseModel? result =
                                   await readNotificationProvider

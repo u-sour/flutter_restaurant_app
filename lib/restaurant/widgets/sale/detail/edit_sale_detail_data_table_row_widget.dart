@@ -7,9 +7,10 @@ import 'package:provider/provider.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
+import '../../../services/sale_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../form_builder_touch_spin.dart';
+import '../../form_builder_custom_touch_spin.dart';
 import '../../icon_with_text_widget.dart';
 
 class EditSaleDetailDataTableRowWidget extends StatelessWidget {
@@ -77,12 +78,16 @@ class _EditSaleDetailDataTableRowState
   TextEditingController disRateController = TextEditingController();
   TextEditingController qtyController = TextEditingController();
   TextEditingController returnQtyController = TextEditingController();
+  late bool isDecimalQtyModule;
+  RegExp regExpDecimalNumber = RegExp(r"[0-9.]");
 
   @override
   void initState() {
     readProvider = context.read<SaleProvider>();
     priceController.value = TextEditingValue(text: '${widget.item.price}');
     disRateController.value = TextEditingValue(text: '${widget.item.discount}');
+    isDecimalQtyModule =
+        SaleService.isModuleActive(modules: ['decimal-qty'], context: context);
     super.initState();
   }
 
@@ -115,7 +120,7 @@ class _EditSaleDetailDataTableRowState
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                FilteringTextInputFormatter.allow(regExpDecimalNumber),
               ],
               onChanged: (String? price) {
                 if (price != null) {
@@ -139,7 +144,7 @@ class _EditSaleDetailDataTableRowState
               keyboardType:
                   const TextInputType.numberWithOptions(decimal: true),
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                FilteringTextInputFormatter.allow(regExpDecimalNumber),
               ],
               onChanged: (String? discountRate) {
                 if (discountRate != null) {
@@ -177,16 +182,19 @@ class _EditSaleDetailDataTableRowState
               },
             ),
           if (widget.rowType.name == 'qty')
-            FormBuilderTouchSpin(
+            FormBuilderCustomTouchSpin(
               name: 'qty',
               initialValue: widget.item.totalQty,
               controller: qtyController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                isDecimalQtyModule
+                    ? FilteringTextInputFormatter.allow(regExpDecimalNumber)
+                    : FilteringTextInputFormatter.digitsOnly,
               ],
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: isDecimalQtyModule
+                  ? const TextInputType.numberWithOptions(decimal: true)
+                  : TextInputType.number,
               onTap: () => selectInputText(controller: qtyController),
               onChanged: (qty) {
                 readProvider.handleItemUpdate(
@@ -200,16 +208,19 @@ class _EditSaleDetailDataTableRowState
               ]),
             ),
           if (widget.rowType.name == 'returnQty')
-            FormBuilderTouchSpin(
+            FormBuilderCustomTouchSpin(
               name: 'returnQty',
               initialValue: widget.item.returnQty,
               controller: returnQtyController,
               autovalidateMode: AutovalidateMode.onUserInteraction,
               inputFormatters: [
-                FilteringTextInputFormatter.allow(RegExp(r"[0-9.]")),
+                isDecimalQtyModule
+                    ? FilteringTextInputFormatter.allow(regExpDecimalNumber)
+                    : FilteringTextInputFormatter.digitsOnly,
               ],
-              keyboardType:
-                  const TextInputType.numberWithOptions(decimal: true),
+              keyboardType: isDecimalQtyModule
+                  ? const TextInputType.numberWithOptions(decimal: true)
+                  : TextInputType.number,
               onTap: () => selectInputText(controller: returnQtyController),
               onChanged: (returnQty) {
                 readProvider.handleItemUpdate(

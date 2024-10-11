@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/restaurant/providers/dashboard/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
 import '../../../utils/constants.dart';
@@ -21,6 +22,8 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final DashboardProvider readDashboardProvider =
+        context.read<DashboardProvider>();
     final ThemeData theme = Theme.of(context);
     const String prefixSaleInvoiceContentCard =
         "screens.dashboard.saleInvoiceContent.card";
@@ -58,8 +61,10 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
             const SizedBox(height: AppStyleDefaultProperties.h),
             // Content
             Text(
-                '$prefixSaleInvoiceContentCard.invoice'
-                    .tr(namedArgs: {'refNo': data.refNo}),
+                '$prefixSaleInvoiceContentCard.invoice'.tr(namedArgs: {
+                  'invoice': readDashboardProvider.getInvoiceText(
+                      invoice: data, context: context)
+                }),
                 style: theme.textTheme.bodyLarge
                     ?.copyWith(overflow: TextOverflow.ellipsis)),
             Text(

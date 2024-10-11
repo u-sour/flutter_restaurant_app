@@ -52,7 +52,7 @@
       "saleInvoiceContent": {
         "card": {
           "table": "តុ: {tableName}",
-          "invoice": "វិក្កយបត្រ: {refNo}",
+          "invoice": "វិក្កយបត្រ: {invoice}",
           "date": "កាលបរិច្ឆេទ: {date}"
         },
         "dataTable": {
@@ -175,6 +175,7 @@
             "merge": "បញ្ចូលគ្នា",
             "transfer": "ផ្ទេរ",
             "split": "បំបែក",
+            "customerCount": "ចំនួនអតិថិជន",
             "cancel": "បោះបង់"
           },
           "form": {
@@ -259,6 +260,7 @@
             "merge": "វិក្កយបត្របញ្ចូលគ្នាបានជោគជ័យ។",
             "transfer": "ផ្ទេរទំនិញបានជោគជ័យ។",
             "split": "បំបែកវិក្កយបត្របានជោគជ័យ។",
+            "customerCount": "កែប្រែចំនួនអតិថិជនបានជោគជ័យ។",
             "cancelAndCopy": "បោះបង់ & ចម្លងវិក្កយបត្រថ្មីបានជោគជ័យ។",
             "printToKitchen": "បញ្ជូនអាហារទៅចុងភៅត្រួតពិនិត្យជោគជ័យ។",
             "payment": "ការទូទាត់វិក្កយបត្រជោគជ័យ។"
@@ -434,6 +436,7 @@
       "actions": { "cancel": "បោះបង់", "agree": "យល់ព្រម" }
     }
   },
+  "permissionDenied": "ការអនុញ្ញាតត្រូវបានបដិសេធ។",
   "alert": {
     "success": {
       "title": "ជោគជ័យ",

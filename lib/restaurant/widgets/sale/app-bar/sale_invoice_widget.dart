@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/models/sale/table-location/table_location_model.dart';
-import 'package:flutter_template/restaurant/providers/sale/sale_provider.dart';
-import 'package:flutter_template/restaurant/widgets/icon_with_text_widget.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/sale/sale_model.dart';
+import '../../../models/sale/table-location/table_location_model.dart';
+import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
+import '../../icon_with_text_widget.dart';
 import 'sale_invoice_item_widget.dart';
 
 class SaleInvoiceWidget extends StatelessWidget {
@@ -49,7 +49,8 @@ class SaleInvoiceWidget extends StatelessWidget {
                 onTap: () async {
                   await context
                       .read<SaleProvider>()
-                      .getCurrentSaleWithSaleDetail(invoiceId: sale.id);
+                      .getCurrentSaleWithSaleDetail(
+                          invoiceId: sale.id, context: context);
                 },
               );
             },

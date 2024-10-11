@@ -9,6 +9,7 @@ import '../../../../utils/constants.dart';
 import '../../../models/sale/app-bar/sale_app_bar_action_model.dart';
 import '../../../models/sale/sale/sale_model.dart';
 import '../../../providers/sale/sale_provider.dart';
+import '../../../services/user_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../badge_widget.dart';
@@ -24,30 +25,41 @@ class SaleAppBarActionWidget extends StatelessWidget {
     const double btnSize = 48.0;
     final List<SelectOptionModel> operations = [
       SelectOptionModel(
-        icon: SaleDetailOperationType.merge.toIcon,
-        label: SaleDetailOperationType.merge.toTitle,
-        value: SaleDetailOperationType.merge.name,
-      ),
-      SelectOptionModel(
-        icon: SaleDetailOperationType.transfer.toIcon,
-        label: SaleDetailOperationType.transfer.toTitle,
-        value: SaleDetailOperationType.transfer.name,
-      ),
-      SelectOptionModel(
-        icon: SaleDetailOperationType.split.toIcon,
-        label: SaleDetailOperationType.split.toTitle,
-        value: SaleDetailOperationType.split.name,
-      ),
-      SelectOptionModel(
+        icon: SaleDetailOperationType.customerCount.toIcon,
+        label: SaleDetailOperationType.customerCount.toTitle,
+        value: SaleDetailOperationType.customerCount.name,
+      )
+    ];
+    // Note: Merge, Transfer, Split & Cancel បង្ហាញពេល user role != tablet-orders
+    if (!UserService.userInRole(roles: ['tablet-orders'])) {
+      operations.insertAll(0, [
+        SelectOptionModel(
+          icon: SaleDetailOperationType.merge.toIcon,
+          label: SaleDetailOperationType.merge.toTitle,
+          value: SaleDetailOperationType.merge.name,
+        ),
+        SelectOptionModel(
+          icon: SaleDetailOperationType.transfer.toIcon,
+          label: SaleDetailOperationType.transfer.toTitle,
+          value: SaleDetailOperationType.transfer.name,
+        ),
+        SelectOptionModel(
+          icon: SaleDetailOperationType.split.toIcon,
+          label: SaleDetailOperationType.split.toTitle,
+          value: SaleDetailOperationType.split.name,
+        ),
+      ]);
+      operations.add(SelectOptionModel(
         icon: SaleDetailOperationType.cancel.toIcon,
         label: SaleDetailOperationType.cancel.toTitle,
         value: SaleDetailOperationType.cancel.name,
-      )
-    ];
+      ));
+    }
     return Padding(
       padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
       child: Row(
         children: [
+          // Sale List
           Selector<SaleProvider, List<SaleModel>>(
             selector: (context, state) => state.sales,
             builder: (context, sales, child) => BadgeWidget(
@@ -68,6 +80,7 @@ class SaleAppBarActionWidget extends StatelessWidget {
             ),
           ),
           const SizedBox(width: AppStyleDefaultProperties.w),
+          // Operation
           MenuAnchor(
             builder: (BuildContext context, MenuController controller,
                 Widget? child) {
@@ -88,50 +101,84 @@ class SaleAppBarActionWidget extends StatelessWidget {
               );
             },
             menuChildren: operations
-                .map((o) => MenuItemButton(
-                      leadingIcon: Icon(o.icon),
-                      onPressed: () async {
-                        SnackBar? snackBar;
-                        if (o.value == "merge") {
-                          final result = await readSaleProvider.mergeSale(
-                              context: context);
-                          if (result != null) {
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                          }
-                        } else if (o.value == 'transfer') {
-                          final result = await readSaleProvider
-                              .transferSaleDetailItems(context: context);
-                          if (result != null) {
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                          }
-                        } else if (o.value == 'split') {
-                          final result = await readSaleProvider
-                              .splitSaleDetailItems(context: context);
-                          if (result != null) {
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                          }
-                        } else {
-                          final result = await readSaleProvider.cancelSale(
-                              context: context);
-                          if (result != null) {
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                          }
+                .map(
+                  (o) => MenuItemButton(
+                    leadingIcon: Icon(o.icon),
+                    onPressed: () async {
+                      SnackBar? snackBar;
+                      if (o.value == SaleDetailOperationType.merge.name) {
+                        final result =
+                            await readSaleProvider.mergeSale(context: context);
+                        if (result != null) {
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
                         }
-                        if (!context.mounted) return;
-                        if (snackBar != null) {
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
+                      } else if (o.value ==
+                          SaleDetailOperationType.transfer.name) {
+                        final result = await readSaleProvider
+                            .transferSaleDetailItems(context: context);
+                        if (result != null) {
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
                         }
+                      } else if (o.value ==
+                          SaleDetailOperationType.split.name) {
+                        final result = await readSaleProvider
+                            .splitSaleDetailItems(context: context);
+                        if (result != null) {
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
+                        }
+                      } else if (o.value ==
+                          SaleDetailOperationType.customerCount.name) {
+                        final result = await readSaleProvider
+                            .updateSaleCustomerCount(context: context);
+                        if (result != null) {
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
+                        }
+                      } else {
+                        final result =
+                            await readSaleProvider.cancelSale(context: context);
+                        if (result != null) {
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
+                        }
+                      }
+                      if (!context.mounted) return;
+                      if (snackBar != null) {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(snackBar);
+                      }
+                    },
+                    child: Selector<SaleProvider, SaleModel?>(
+                      selector: (context, state) => state.currentSale,
+                      builder: (context, currentSale, child) {
+                        return o.value ==
+                                SaleDetailOperationType.customerCount.name
+                            ? RichText(
+                                text: TextSpan(
+                                    text: o.label.tr(),
+                                    style: theme.textTheme.bodyMedium,
+                                    children: [
+                                    TextSpan(
+                                      text: ' (${currentSale?.numOfGuest})',
+                                      style:
+                                          theme.textTheme.bodyMedium!.copyWith(
+                                        fontWeight: FontWeight.bold,
+                                        color: theme.colorScheme.primary,
+                                      ),
+                                    )
+                                  ]))
+                            : Text(o.label).tr();
                       },
-                      child: Text(o.label).tr(),
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           ),
+          // Title
           Expanded(
               child: Selector<SaleProvider,
                   ({SaleAppBarActionModel? appBarTitle, bool isLoading})>(
@@ -162,26 +209,30 @@ class SaleAppBarActionWidget extends StatelessWidget {
                     ],
                   ),
           )),
-          SizedBox(
-            width: btnSize,
-            height: btnSize,
-            child: FilledButton(
-              onPressed: () async {
-                final result = await context.read<SaleProvider>().addNewSale();
-                if (result != null) {
-                  late SnackBar snackBar;
-                  snackBar = Alert.awesomeSnackBar(
-                      message: result.message, type: result.type);
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(snackBar);
-                }
-              },
-              style: FilledButton.styleFrom(padding: EdgeInsets.zero),
-              child: const Icon(RestaurantDefaultIcons.addInvoice),
+          // Add new sale (Invoice)
+          // Note: បិទមិនអោយ ថែម invoice បានបើ user role != insert-invoice
+          if (UserService.userInRole(roles: ['insert-invoice']))
+            SizedBox(
+              width: btnSize,
+              height: btnSize,
+              child: FilledButton(
+                onPressed: () async {
+                  final result =
+                      await context.read<SaleProvider>().addNewSale();
+                  if (result != null) {
+                    late SnackBar snackBar;
+                    snackBar = Alert.awesomeSnackBar(
+                        message: result.message, type: result.type);
+                    if (!context.mounted) return;
+                    ScaffoldMessenger.of(context)
+                      ..hideCurrentSnackBar()
+                      ..showSnackBar(snackBar);
+                  }
+                },
+                style: FilledButton.styleFrom(padding: EdgeInsets.zero),
+                child: const Icon(RestaurantDefaultIcons.addInvoice),
+              ),
             ),
-          ),
         ],
       ),
     );

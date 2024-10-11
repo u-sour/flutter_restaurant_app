@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import '../../utils/constants.dart';
 
-class FormBuilderTouchSpin extends StatefulWidget {
+class FormBuilderCustomTouchSpin extends StatefulWidget {
   final String name;
   final num initialValue;
   final AutovalidateMode autovalidateMode;
@@ -21,7 +21,7 @@ class FormBuilderTouchSpin extends StatefulWidget {
   final ValueChanged<num> onChanged;
   final bool enableButton;
 
-  const FormBuilderTouchSpin({
+  const FormBuilderCustomTouchSpin({
     super.key,
     required this.name,
     this.initialValue = 0,
@@ -42,12 +42,13 @@ class FormBuilderTouchSpin extends StatefulWidget {
   });
 
   @override
-  State<FormBuilderTouchSpin> createState() {
-    return _FormBuilderTouchSpinState();
+  State<FormBuilderCustomTouchSpin> createState() {
+    return _FormBuilderCustomTouchSpinState();
   }
 }
 
-class _FormBuilderTouchSpinState extends State<FormBuilderTouchSpin> {
+class _FormBuilderCustomTouchSpinState
+    extends State<FormBuilderCustomTouchSpin> {
   num _value = 0;
   @override
   void initState() {

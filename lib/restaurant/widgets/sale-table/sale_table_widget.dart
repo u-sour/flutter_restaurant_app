@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import '../../../router/route_utils.dart';
+import 'package:provider/provider.dart';
+import '../../../utils/alert/alert.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/sale-table/table_model.dart';
+import '../../providers/sale-table/sale_table_provider.dart';
 import 'table_status_info.dart';
 import 'table_widget.dart';
 
@@ -13,6 +14,7 @@ class SaleTableWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SaleTableProvider saleTableProvider = context.read<SaleTableProvider>();
     Orientation orientation = MediaQuery.orientationOf(context);
     late int crossAxisCount;
     if (ResponsiveLayout.isMobile(context)) {
@@ -51,11 +53,18 @@ class SaleTableWidget extends StatelessWidget {
                   maxChair: table.numOfGuest,
                   name: table.label,
                   status: table.status ?? '',
-                  onTap: () {
-                    context.goNamed(SCREENS.sale.toName, queryParameters: {
-                      'table': table.id,
-                      'fastSale': 'false'
-                    });
+                  onTap: () async {
+                    final result = saleTableProvider.enterSale(
+                        table: table, context: context);
+                    if (result != null) {
+                      late SnackBar snackBar;
+                      snackBar = Alert.awesomeSnackBar(
+                          message: result.message, type: result.type);
+                      if (!context.mounted) return;
+                      ScaffoldMessenger.of(context)
+                        ..hideCurrentSnackBar()
+                        ..showSnackBar(snackBar);
+                    }
                   },
                 );
               }),

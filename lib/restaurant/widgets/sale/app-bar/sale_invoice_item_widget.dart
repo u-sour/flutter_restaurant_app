@@ -10,11 +10,13 @@ class SaleInvoiceItemWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SaleProvider readSaleProvider = context.read<SaleProvider>();
     return Selector<SaleProvider, String?>(
       selector: (context, state) => state.activeSaleInvoiceId,
       builder: (context, activeSaleInvoiceId, child) => ListTile(
         selected: sale.id == activeSaleInvoiceId,
-        title: Text(sale.refNo),
+        title:
+            Text(readSaleProvider.getInvoiceText(sale: sale, context: context)),
         onTap: onTap,
       ),
     );

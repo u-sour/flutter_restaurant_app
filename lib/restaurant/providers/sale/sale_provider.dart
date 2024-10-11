@@ -87,10 +87,14 @@ class SaleProvider extends ChangeNotifier {
   // sale action title (table floor & name, sale id & sale date)
   SaleAppBarActionModel? _saleActionAppBarTitle;
   SaleAppBarActionModel? get saleActionAppBarTitle => _saleActionAppBarTitle;
+  late String _tableLocationText;
+  late String _invoiceText;
 
   Future<void> initData({required BuildContext context}) async {
     AppProvider readAppProvider = context.read<AppProvider>();
     _activeSaleInvoiceId = '';
+    _tableLocationText = '';
+    _invoiceText = '';
     _sales = [];
     _currentSale = null;
     _saleDetails = [];
@@ -135,16 +139,21 @@ class SaleProvider extends ChangeNotifier {
         addNewSale();
       }
 
-      // get table location
+      // get & set table location
       _tableLocation = await fetchTableLocation(tableId: _tableId);
     }
 
     // subscribe sales
-    subscribeSales();
+    if (context.mounted) {
+      // Note: used on Sale Action AppBar Title
+      _tableLocationText =
+          getTableLocationText(tableLocation: _tableLocation, context: context);
+      subscribeSales(context: context);
+    }
     notifyListeners();
   }
 
-  void subscribeSales() {
+  void subscribeSales({required BuildContext context}) {
     final debounce = Debounce(delay: const Duration(milliseconds: 800));
     Map<String, dynamic> selector = {
       'branchId': _branchId,
@@ -182,17 +191,20 @@ class SaleProvider extends ChangeNotifier {
               // get current sale with sale detail
               // if _activeSaleInvoiceId empty set the first sale to _currentSale by id
               // else set _currentSale by _activeSaleInvoiceId
-              await getCurrentSaleWithSaleDetail(
-                  invoiceId: _activeSaleInvoiceId.isEmpty
-                      ? sales.first.id
-                      : _activeSaleInvoiceId);
+              if (context.mounted) {
+                await getCurrentSaleWithSaleDetail(
+                    invoiceId: _activeSaleInvoiceId.isEmpty
+                        ? sales.first.id
+                        : _activeSaleInvoiceId,
+                    context: context);
+              }
             } else {
               _sales = [];
               _currentSale = null;
               _saleDetails = [];
               // set sale action app bar title
-              _saleActionAppBarTitle = SaleAppBarActionModel(
-                  title: "${_tableLocation.floor} (${_tableLocation.table})");
+              _saleActionAppBarTitle =
+                  SaleAppBarActionModel(title: _tableLocationText);
             }
             _isLoading = false;
             notifyListeners();
@@ -200,6 +212,26 @@ class SaleProvider extends ChangeNotifier {
         });
       },
     );
+  }
+
+  String getTableLocationText(
+      {required TableLocationModel tableLocation,
+      required BuildContext context}) {
+    String result = '${_tableLocation.floor} (${_tableLocation.table})';
+    if (SaleService.isModuleActive(modules: ['skip-table'], context: context)) {
+      result = '';
+    }
+    return result;
+  }
+
+  String getInvoiceText(
+      {required SaleModel sale, required BuildContext context}) {
+    String result = sale.refNo;
+    if (SaleService.isModuleActive(
+        modules: ['order-number'], overpower: false, context: context)) {
+      result += '-${sale.orderNum}';
+    }
+    return result;
   }
 
   // add new guest
@@ -264,7 +296,8 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
-  Future<void> getCurrentSaleWithSaleDetail({required String invoiceId}) async {
+  Future<void> getCurrentSaleWithSaleDetail(
+      {required String invoiceId, required BuildContext context}) async {
     // clear selected details
     _selectedSaleDetails = [];
 
@@ -279,6 +312,10 @@ class SaleProvider extends ChangeNotifier {
       // set current sale
       _currentSale = currentSale.first;
 
+      // Note: used on Sale Action AppBar Title
+      // set invoice text
+      _invoiceText = getInvoiceText(sale: _currentSale!, context: context);
+
       // set current guest
       GuestModel guest = await fetchOneGuest(id: _currentSale!.guestId);
       setCurrentGuest(
@@ -287,8 +324,9 @@ class SaleProvider extends ChangeNotifier {
       // set sale action app bar title
       if (_currentSale != null) {
         _saleActionAppBarTitle = SaleAppBarActionModel(
-          title:
-              "${_tableLocation.floor} (${_tableLocation.table}) : ${_currentSale!.refNo}",
+          title: _tableLocationText.isNotEmpty
+              ? "$_tableLocationText : $_invoiceText"
+              : _invoiceText,
           date:
               ConvertDateTime.formatTimeStampToString(_currentSale!.date, true),
         );
@@ -959,7 +997,7 @@ class SaleProvider extends ChangeNotifier {
       // set sale action app bar title
       _saleActionAppBarTitle = SaleAppBarActionModel(
         title:
-            "${_tableLocation.floor} (${_tableLocation.table}) : ${_currentSale!.refNo}",
+            "${_tableLocation.floor} (${_tableLocation.table}) : $_invoiceText",
         date: ConvertDateTime.formatTimeStampToString(_currentSale!.date, true),
       );
       await updateSaleMethod(doc: doc);
@@ -1271,6 +1309,48 @@ class SaleProvider extends ChangeNotifier {
           message: '$_prefixSaleDetailAlert.info.noSelectedItemsSplit',
           type: AWESOMESNACKBARTYPE.info);
     }
+    return result;
+  }
+
+  // update customer count sale
+  Future<ResponseModel?> updateSaleCustomerCount(
+      {required BuildContext context}) async {
+    final GlobalKey<FormBuilderState> fbCustomerCountKey =
+        GlobalKey<FormBuilderState>();
+    ResponseModel? result;
+    try {
+      await GlobalService.openDialog(
+          contentWidget: EditSaleDetailOperationActionWidget(
+            fbKey: fbCustomerCountKey,
+            operationType: SaleDetailOperationType.customerCount,
+            value: _currentSale?.numOfGuest,
+            onInsertPressed: () async {
+              if (fbCustomerCountKey.currentState!.saveAndValidate()) {
+                final int numOfGuest = int.parse(
+                    fbCustomerCountKey.currentState!.value['numOfGuest']);
+                final String data =
+                    await updateSaleCustomerCountMethod(numOfGuest: numOfGuest);
+                print(data);
+                if (data.isNotEmpty && context.mounted) {
+                  result = ResponseModel(
+                      message: '$_prefixSaleDetailAlert.success.customerCount',
+                      type: AWESOMESNACKBARTYPE.success,
+                      data: data);
+
+                  // close modal
+                  context.pop();
+                }
+              }
+            },
+          ),
+          context: context);
+    } catch (e) {
+      if (e is MeteorError) {
+        result = ResponseModel(
+            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+      }
+    }
+
     return result;
   }
 
@@ -2017,7 +2097,8 @@ class SaleProvider extends ChangeNotifier {
 
   // Operations
   // merge
-  Future<List<SelectOptionModel>> fetchSaleGroupByTable() async {
+  Future<List<SelectOptionModel>> fetchSaleGroupByTable(
+      {required BuildContext context}) async {
     List<SelectOptionModel> toListModel = [];
     if (_currentSale != null) {
       Map<String, dynamic> selector = {
@@ -2038,10 +2119,19 @@ class SaleProvider extends ChangeNotifier {
           );
           if (result[i]['invoices'].isNotEmpty) {
             for (int j = 0; j < result[i]['invoices'].length; j++) {
+              String label = result[i]['invoices'][j]['refNo'];
+              if (context.mounted &&
+                  SaleService.isModuleActive(
+                      modules: ['order-number'],
+                      overpower: false,
+                      context: context)) {
+                label += "-${result[i]['invoices'][j]['orderNum']}";
+              }
               toListModel.add(
                 SelectOptionModel(
-                    label: result[i]['invoices'][j]['refNo'],
-                    value: result[i]['invoices'][j]['_id']),
+                  label: label,
+                  value: result[i]['invoices'][j]['_id'],
+                ),
               );
             }
           }
@@ -2102,6 +2192,16 @@ class SaleProvider extends ChangeNotifier {
   Future<dynamic> cancelSaleMethod({required String saleId}) {
     Map<String, dynamic> selector = {'_id': saleId, 'employeeId': _employeeId};
     return meteor.call('rest.cancelOrder', args: [selector]);
+  }
+
+  Future<dynamic> updateSaleCustomerCountMethod({required int numOfGuest}) {
+    Map<String, dynamic> selector = {
+      '_id': _currentSale!.id,
+      'numOfGuest': numOfGuest
+    };
+    return meteor.call('rest.updateSale', args: [
+      {'doc': selector}
+    ]);
   }
 
   Future<dynamic> cancelAndCopySaleMethod({required String saleId}) {

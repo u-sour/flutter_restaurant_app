@@ -15,6 +15,8 @@ import '../../../models/sale/sale/sale_model.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../screens/insert_guest_screen.dart';
+import '../../../services/sale_service.dart';
+import '../../../services/user_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/format_currency.dart';
 import '../../../utils/sale/sale_utils.dart';
@@ -53,33 +55,37 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     alignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Change Table
-                      TextButton.icon(
-                          onPressed: () => GlobalService.openDialog(
-                                      contentWidget:
-                                          EditSaleDetailFooterActionWidget(
-                                              fbKey: _fbEditFooterKey,
-                                              footerType: SaleDetailFooterType
-                                                  .changeTable,
-                                              value: readSaleProvider
-                                                  .tableLocation.id),
-                                      context: context)
-                                  .then((_) async {
-                                if (_fbEditFooterKey.currentState!
-                                    .saveAndValidate()) {
-                                  final String tableId = _fbEditFooterKey
-                                      .currentState!.value['changeTable'];
-                                  // check if new table then update
-                                  if (tableId !=
-                                      readSaleProvider.tableLocation.id) {
-                                    await readSaleProvider.updateSaleTable(
-                                        tableId: tableId, context: context);
+                      // Note: បង្ហាញពេល module skip-table មិន active
+                      if (!SaleService.isModuleActive(
+                          modules: ['skip-table'], context: context))
+                        TextButton.icon(
+                            onPressed: () => GlobalService.openDialog(
+                                        contentWidget:
+                                            EditSaleDetailFooterActionWidget(
+                                                fbKey: _fbEditFooterKey,
+                                                footerType: SaleDetailFooterType
+                                                    .changeTable,
+                                                value: readSaleProvider
+                                                    .tableLocation.id),
+                                        context: context)
+                                    .then((_) async {
+                                  if (_fbEditFooterKey.currentState!
+                                      .saveAndValidate()) {
+                                    final String tableId = _fbEditFooterKey
+                                        .currentState!.value['changeTable'];
+                                    // check if new table then update
+                                    if (tableId !=
+                                        readSaleProvider.tableLocation.id) {
+                                      await readSaleProvider.updateSaleTable(
+                                          tableId: tableId, context: context);
+                                    }
                                   }
-                                }
-                              }),
-                          icon: const Icon(RestaurantDefaultIcons.changeTable),
-                          label: const Text(
-                                  "$prefixSaleDetailFooterActions.changeTable")
-                              .tr()),
+                                }),
+                            icon:
+                                const Icon(RestaurantDefaultIcons.changeTable),
+                            label: const Text(
+                                    "$prefixSaleDetailFooterActions.changeTable")
+                                .tr()),
                       // Change Guest
                       InkWell(
                         onDoubleTap: () => GlobalService.openDialog(
@@ -156,150 +162,166 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                     Text(guest.label))),
                       ),
                       // Cancel & copy
-                      TextButton.icon(
-                          onPressed: () async {
-                            final result = await readSaleProvider.cancelSale(
-                                context: context, copy: true);
-                            if (result != null) {
-                              late SnackBar snackBar;
-                              snackBar = Alert.awesomeSnackBar(
-                                  message: result.message, type: result.type);
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            }
-                          },
-                          icon: const Icon(RestaurantDefaultIcons.cancelCopy),
-                          label: const Text(
-                                  "$prefixSaleDetailFooterActions.cancelCopy")
-                              .tr()),
+                      // Note: បង្ហាញពេល user role != tablet-orders
+                      if (!UserService.userInRole(roles: ['tablet-orders']))
+                        TextButton.icon(
+                            onPressed: () async {
+                              final result = await readSaleProvider.cancelSale(
+                                  context: context, copy: true);
+                              if (result != null) {
+                                late SnackBar snackBar;
+                                snackBar = Alert.awesomeSnackBar(
+                                    message: result.message, type: result.type);
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(snackBar);
+                              }
+                            },
+                            icon: const Icon(RestaurantDefaultIcons.cancelCopy),
+                            label: const Text(
+                                    "$prefixSaleDetailFooterActions.cancelCopy")
+                                .tr()),
                     ],
                   )
                 : const SizedBox.shrink(),
           ),
           Divider(height: 0.0, color: dividerColor),
-          // Print to Kitchen
           Expanded(
             child: Row(
               children: [
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Expanded(
-                          child: FilledButton(
-                              onPressed: () {
-                                final result = readSaleProvider
-                                    .printInvoiceToKitchen(context: context);
-                                if (result != null) {
-                                  late SnackBar snackBar;
-                                  snackBar = Alert.awesomeSnackBar(
-                                      message: result.message,
-                                      type: result.type);
-                                  if (!context.mounted) return;
-                                  ScaffoldMessenger.of(context)
-                                    ..hideCurrentSnackBar()
-                                    ..showSnackBar(snackBar);
-                                }
-                              },
-                              style: FilledButton.styleFrom(
-                                  padding: EdgeInsets.zero,
-                                  shape: const LinearBorder()),
-                              child: const Icon(
-                                  RestaurantDefaultIcons.printChefItems))),
-                      Expanded(
-                        child: TextButton(
-                          onPressed: () async {
-                            final result = await readSaleProvider
-                                .printToKitchen(context: context);
-                            if (result != null) {
-                              late SnackBar snackBar;
-                              snackBar = Alert.awesomeSnackBar(
-                                  message: result.message, type: result.type);
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
-                            }
-                          },
-                          style: btnStyleNormalShape,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              const Icon(RestaurantDefaultIcons.chef),
-                              if (!ResponsiveLayout.isMobile(context))
-                                const Text(
-                                        "$prefixSaleDetailFooterActions.chef")
-                                    .tr(),
-                            ],
+                // Print to Kitchen (Sent selected item to Chef Monitor)
+                // Note: បង្ហាញពេល user role != tablet-orders
+                if (!UserService.userInRole(roles: ['tablet-orders'])) ...[
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Print invoice to kitchen
+                        // Note: បង្ហាញពេល module == chef-monitor
+                        if (SaleService.isModuleActive(
+                            modules: ['chef-monitor'], context: context))
+                          Expanded(
+                              child: FilledButton(
+                                  onPressed: () {
+                                    final result =
+                                        readSaleProvider.printInvoiceToKitchen(
+                                            context: context);
+                                    if (result != null) {
+                                      late SnackBar snackBar;
+                                      snackBar = Alert.awesomeSnackBar(
+                                          message: result.message,
+                                          type: result.type);
+                                      if (!context.mounted) return;
+                                      ScaffoldMessenger.of(context)
+                                        ..hideCurrentSnackBar()
+                                        ..showSnackBar(snackBar);
+                                    }
+                                  },
+                                  style: FilledButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      shape: const LinearBorder()),
+                                  child: const Icon(
+                                      RestaurantDefaultIcons.printChefItems))),
+                        Expanded(
+                          child: TextButton(
+                            onPressed: () async {
+                              final result = await readSaleProvider
+                                  .printToKitchen(context: context);
+                              if (result != null) {
+                                late SnackBar snackBar;
+                                snackBar = Alert.awesomeSnackBar(
+                                    message: result.message, type: result.type);
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(snackBar);
+                              }
+                            },
+                            style: btnStyleNormalShape,
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(RestaurantDefaultIcons.chef),
+                                if (!ResponsiveLayout.isMobile(context))
+                                  const Text(
+                                          "$prefixSaleDetailFooterActions.chef")
+                                      .tr(),
+                              ],
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ),
-                VerticalDivider(width: 0.0, color: dividerColor),
+                  VerticalDivider(width: 0.0, color: dividerColor),
+                ],
                 // Print Bill
-                Expanded(
-                  child: TextButton(
-                    onPressed: () async {
-                      final result =
-                          await readSaleProvider.printBill(context: context);
-                      if (result != null) {
-                        late SnackBar snackBar;
-                        snackBar = Alert.awesomeSnackBar(
-                            message: result.message, type: result.type);
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
-                      }
-                    },
-                    style: btnStyleNormalShape,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(RestaurantDefaultIcons.print),
-                        if (!ResponsiveLayout.isMobile(context))
-                          const Text("$prefixSaleDetailFooterActions.print")
-                              .tr(),
-                      ],
+                // Note: បង្ហាញពេល user role != tablet-orders
+                if (!UserService.userInRole(roles: ['tablet-orders'])) ...[
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () async {
+                        final result =
+                            await readSaleProvider.printBill(context: context);
+                        if (result != null) {
+                          late SnackBar snackBar;
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                        }
+                      },
+                      style: btnStyleNormalShape,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(RestaurantDefaultIcons.print),
+                          if (!ResponsiveLayout.isMobile(context))
+                            const Text("$prefixSaleDetailFooterActions.print")
+                                .tr(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                VerticalDivider(width: 0.0, color: dividerColor),
+                  VerticalDivider(width: 0.0, color: dividerColor),
+                ],
                 // Preview
-                Expanded(
-                  child: TextButton(
-                    onPressed: () async {
-                      final result =
-                          await readSaleProvider.preview(context: context);
-                      if (result != null) {
-                        late SnackBar snackBar;
-                        snackBar = Alert.awesomeSnackBar(
-                            message: result.message, type: result.type);
-                        if (!context.mounted) return;
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
-                      }
-                    },
-                    style: btnStyleNormalShape,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        const Icon(RestaurantDefaultIcons.preview),
-                        if (!ResponsiveLayout.isMobile(context))
-                          const Text(
-                            "$prefixSaleDetailFooterActions.preview",
-                            overflow: TextOverflow.ellipsis,
-                          ).tr(),
-                      ],
+                // Note: បង្ហាញពេល user role == tablet-orders
+                if (UserService.userInRole(roles: ['tablet-orders'])) ...[
+                  Expanded(
+                    child: TextButton(
+                      onPressed: () async {
+                        final result =
+                            await readSaleProvider.preview(context: context);
+                        if (result != null) {
+                          late SnackBar snackBar;
+                          snackBar = Alert.awesomeSnackBar(
+                              message: result.message, type: result.type);
+                          if (!context.mounted) return;
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(snackBar);
+                        }
+                      },
+                      style: btnStyleNormalShape,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(RestaurantDefaultIcons.preview),
+                          if (!ResponsiveLayout.isMobile(context))
+                            const Text(
+                              "$prefixSaleDetailFooterActions.preview",
+                              overflow: TextOverflow.ellipsis,
+                            ).tr(),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-                VerticalDivider(width: 0.0, color: dividerColor),
+                  VerticalDivider(width: 0.0, color: dividerColor),
+                ],
                 // Payment
                 Expanded(
                   child: TextButton(
@@ -515,8 +537,6 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                                           FontWeight.normal,
                                                     ),
                                                   )
-                                                  // TextSpan(
-                                                  //     text: ' : $discountValue')
                                                 ]),
                                           );
                                         }),

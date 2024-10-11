@@ -12,6 +12,8 @@ import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/data-table/data_table_column_model.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
+import '../../../services/sale_service.dart';
+import '../../../services/user_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../confirm_dialog_widget.dart';
@@ -43,15 +45,23 @@ class SaleDetailDataTableWidget extends StatelessWidget {
       DataTableColumnModel(
           label: "$prefixDataTableHeader.qty", value: "qty", width: 50.0),
       DataTableColumnModel(
-          label: "$prefixDataTableHeader.returnQty",
-          value: "returnQty",
-          width: 68.0),
-      DataTableColumnModel(
           label: "$prefixDataTableHeader.total",
           value: "total",
           alignment: Alignment.centerRight,
           width: 100.0),
     ];
+    // Note: ReturnQty បង្ហាញពេលមាន module soup & user role != tablet-orders
+    bool allowReturnQty =
+        SaleService.isModuleActive(modules: ['soup'], context: context) &&
+            !UserService.userInRole(roles: ['tablet-orders']);
+    if (allowReturnQty) {
+      columns.insert(
+          2,
+          DataTableColumnModel(
+              label: "$prefixDataTableHeader.returnQty",
+              value: "returnQty",
+              width: 68.0));
+    }
     return Consumer<SaleProvider>(builder: (context, state, child) {
       return Theme(
         data: theme.copyWith(
@@ -236,10 +246,13 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                   ],
                 )),
                 // Qty
+                // Note: Item qty មិនអាចកែបានពេល print bill រួច || print ទៅ kitchen រួច || user role == tablet-orders ហើយ item មិនមែន draft || item status != Done
                 DataCell(
                     onTap: row.checkPrint ||
-                            row.checkPrintKitchen != null &&
-                                row.checkPrintKitchen == true
+                            row.checkPrintKitchen == true ||
+                            UserService.userInRole(roles: ['tablet-orders']) &&
+                                row.draft != true ||
+                            row.status != 'Done'
                         ? null
                         : () => GlobalService.openDialog(
                                 contentWidget: EditSaleDetailDataTableRowWidget(
@@ -251,24 +264,28 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                 readProvider.updateSaleDetailItem(item: row)),
                     Center(child: Text('${row.totalQty}'))),
                 // Return Qty
-                DataCell(
-                    onTap: row.checkPrint ||
-                            row.extraItemDoc.isNotEmpty ||
-                            row.totalQty < 1 ||
-                            row.checkPrintKitchen != null &&
-                                row.checkPrintKitchen == true
-                        ? null
-                        : () => GlobalService.openDialog(
-                                contentWidget: EditSaleDetailDataTableRowWidget(
-                                    fbEditRowKey: _fbEditRowKey,
-                                    rowType: SaleDetailDTRowType.returnQty,
-                                    item: row),
-                                context: context)
-                            .then((_) =>
-                                readProvider.updateSaleDetailItem(item: row)),
-                    Center(
-                      child: Text('${row.returnQty}'),
-                    )),
+                // Note: បង្ហាញពេលមាន module soup & user role != tablet-orders
+                if (allowReturnQty)
+                  DataCell(
+                      onTap: row.checkPrint ||
+                              row.extraItemDoc.isNotEmpty ||
+                              row.totalQty < 1 ||
+                              row.checkPrintKitchen != null &&
+                                  row.checkPrintKitchen == true
+                          ? null
+                          : () => GlobalService.openDialog(
+                                  contentWidget:
+                                      EditSaleDetailDataTableRowWidget(
+                                          fbEditRowKey: _fbEditRowKey,
+                                          rowType:
+                                              SaleDetailDTRowType.returnQty,
+                                          item: row),
+                                  context: context)
+                              .then((_) =>
+                                  readProvider.updateSaleDetailItem(item: row)),
+                      Center(
+                        child: Text('${row.returnQty}'),
+                      )),
                 // Total Amount
                 DataCell(
                   Align(
@@ -281,9 +298,13 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                   ),
                 ),
                 // Remove Action
+                // Note: Item មិនអាចលុបបានពេល print bill រួច || user role == tablet-orders && item មិនមែន draft
                 DataCell(Center(
                   child: IconButton(
-                      onPressed: row.checkPrint
+                      onPressed: row.checkPrint ||
+                              UserService.userInRole(
+                                      roles: ['tablet-orders']) &&
+                                  row.draft != true
                           ? null
                           : () => GlobalService.openDialog(
                                 context: context,

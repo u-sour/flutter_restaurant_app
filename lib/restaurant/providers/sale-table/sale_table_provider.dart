@@ -1,12 +1,17 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/models/servers/response_model.dart';
+import 'package:flutter_template/utils/alert/awesome_snack_bar_utils.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
+import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
 import '../../models/sale-table/floor_model.dart';
 import '../../models/sale-table/table_model.dart';
 import '../../models/sale/sale/sale_model.dart';
+import '../../services/user_service.dart';
 import '../../utils/debounce.dart';
 
 class SaleTableProvider with ChangeNotifier {
@@ -189,6 +194,26 @@ class SaleTableProvider with ChangeNotifier {
     }
     List<TableModel> toModelList = tempTables;
     return toModelList;
+  }
+
+  ResponseModel? enterSale(
+      {required TableModel table, required BuildContext context}) {
+    // Note: user អាចចូល `form លក់` ពេល:
+    // បើ user role == `insert-invoice`
+    // user role == `cashier` || `tablet-orders` អាចចូលបានបើ `table status == 'busy' || 'close'` នៅក្នុងតុនឹង
+    ResponseModel? result;
+    bool allowEnterSale =
+        UserService.userInRole(roles: ['cashier', 'tablet-orders']) &&
+                table.status == 'closed' ||
+            table.status == 'busy';
+    if (UserService.userInRole(roles: ['insert-invoice']) || allowEnterSale) {
+      context.goNamed(SCREENS.sale.toName,
+          queryParameters: {'table': table.id, 'fastSale': 'false'});
+    } else {
+      result = const ResponseModel(
+          message: 'permissionDenied', type: AWESOMESNACKBARTYPE.info);
+    }
+    return result;
   }
 
   void unSubscribe() {

@@ -80,5 +80,6 @@ class RestaurantDefaultIcons {
   static const IconData merge = Icons.merge;
   static const IconData transfer = Icons.swap_horiz;
   static const IconData split = Icons.alt_route;
+  static const IconData customerCount = Icons.groups;
   static const IconData cancel = Icons.cancel_outlined;
 }
