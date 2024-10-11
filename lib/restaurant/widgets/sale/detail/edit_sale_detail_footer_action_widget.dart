@@ -223,7 +223,9 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                                           '${"$prefixSaleReceipt.invoice".tr()}: ',
                                       children: [
                                     TextSpan(
-                                        text: saleReceipt.orderDoc.refNo,
+                                        text: readProvider.getInvoiceText(
+                                            sale: saleReceipt.orderDoc,
+                                            context: context),
                                         style: const TextStyle(
                                             fontWeight: FontWeight.bold))
                                   ])),

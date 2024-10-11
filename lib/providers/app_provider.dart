@@ -107,13 +107,12 @@ class AppProvider extends ChangeNotifier {
     meteor.status().listen((onData) {
       _connected = onData.connected;
       if (_connected) {
-        // get allow modules
-        getAllowModules();
         meteor.user().listen((currentUserDoc) {
           _loginState = currentUserDoc != null ? true : false;
           if (currentUserDoc != null) {
             // convert from map to user model
             _currentUser = UserModel.fromJson(currentUserDoc);
+            startSubscribeModule();
             startSubscribeBranch(currentUser!);
             startSubscribeSaleSettings();
             startSubscribeDepartment();
@@ -156,6 +155,19 @@ class AppProvider extends ChangeNotifier {
           _companyAccounting = toListModel.first.accounting;
         }
         notifyListeners();
+      });
+    });
+  }
+
+  void startSubscribeModule() {
+    // Keep listening to sale setting collection from server
+    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    _subSaleSettingsHandler = meteor.subscribe('app.module', onReady: () {
+      meteor.collection('app_modules').listen((result) {
+        //  call method only 1 time when module data updated
+        debounce.run(() {
+          getAllowModules();
+        });
       });
     });
   }

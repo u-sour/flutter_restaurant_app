@@ -6,12 +6,15 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
+import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/alert.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
+import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../models/sale/receipt/edit_sale_receipt_model.dart';
+import '../../services/sale_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/round_number.dart';
 import '../../widgets/confirm_dialog_widget.dart';
@@ -136,6 +139,39 @@ class DashboardProvider extends ChangeNotifier {
       {'selector': selector}
     ]);
     return result;
+  }
+
+  Future<void> printInvoice(
+      {required SaleInvoiceDataModel saleInvoice,
+      required BuildContext context}) async {
+    //  status : Partial & Close
+    if (_selectedTab == 2 || _selectedTab == 3) {
+      // go to invoice
+      context.pushNamed(SCREENS.invoice.toName,
+          queryParameters: {'invoiceId': saleInvoice.id, 'isTotal': 'true'});
+    } else {
+      //  status : Canceled
+      AppProvider readAppProvider = context.read<AppProvider>();
+      String confirmSalePassword = readAppProvider.saleSetting.sale.password!;
+      final GlobalKey<FormBuilderState> fbConfirmKey =
+          GlobalKey<FormBuilderState>();
+      await GlobalService.openDialog(
+          contentWidget: ConfirmDialogWidget(
+              content: EditSaleReceiptCdcWidget(
+                  confirmSalePassword: confirmSalePassword,
+                  fbKey: fbConfirmKey),
+              onAgreePressed: () {
+                if (fbConfirmKey.currentState!.saveAndValidate()) {
+                  // close modal
+                  context.pop();
+                  // go to invoice
+                  context.pushNamed(SCREENS.invoice.toName, queryParameters: {
+                    'invoiceId': saleInvoice.id,
+                  });
+                }
+              }),
+          context: context);
+    }
   }
 
   Future<ResponseModel?> removeSale({required String id}) async {
@@ -297,6 +333,16 @@ class DashboardProvider extends ChangeNotifier {
   void setReceiveAmount({required num receiveAmount}) {
     _receiveAmount = receiveAmount;
     notifyListeners();
+  }
+
+  String getInvoiceText(
+      {required SaleInvoiceDataModel invoice, required BuildContext context}) {
+    String result = invoice.refNo;
+    if (SaleService.isModuleActive(
+        modules: ['order-number'], overpower: false, context: context)) {
+      result += '-${invoice.orderNum}';
+    }
+    return result;
   }
 
   void getFeeAmount({

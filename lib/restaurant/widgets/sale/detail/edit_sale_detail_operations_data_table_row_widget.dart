@@ -9,7 +9,7 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../form_builder_touch_spin.dart';
+import '../../form_builder_custom_touch_spin.dart';
 import '../../icon_with_text_widget.dart';
 
 class EditSaleDetailOperationsDataTableRowWidget extends StatelessWidget {
@@ -180,7 +180,7 @@ class _EditSaleDetailOperationsDataTableRowState
           //     },
           // ),
           if (widget.rowType.name == 'qty')
-            FormBuilderTouchSpin(
+            FormBuilderCustomTouchSpin(
               name: 'qty',
               initialValue: widget.item.qty,
               controller: qtyController,

@@ -1,5 +1,5 @@
 enum SaleInvoiceDTRowType {
-  refNo,
+  invoice,
   date,
   tableName,
   status,
@@ -14,7 +14,7 @@ const prefixSaleInvoiceDataTableContent =
 extension SaleInvoiceDTExtension on SaleInvoiceDTRowType {
   String get toTitle {
     switch (this) {
-      case SaleInvoiceDTRowType.refNo:
+      case SaleInvoiceDTRowType.invoice:
         return '$prefixSaleInvoiceDataTableContent.invoice';
       case SaleInvoiceDTRowType.date:
         return '$prefixSaleInvoiceDataTableContent.date';

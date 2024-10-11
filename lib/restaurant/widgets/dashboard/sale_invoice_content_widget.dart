@@ -31,11 +31,6 @@ class _SaleInvoiceContentWidgetState extends State<SaleInvoiceContentWidget> {
   }
 
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Column(children: [
       const SizedBox(height: AppStyleDefaultProperties.h),

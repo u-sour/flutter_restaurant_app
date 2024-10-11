@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
+import '../../providers/dashboard/dashboard_provider.dart';
 import '../../utils/dashboard/dashboard_utils.dart';
 import '../../widgets/invoice/invoice_format_currency_widget.dart';
 
 class SaleInvoiceDataSource extends DataGridSource {
   List<SaleInvoiceDataModel> _paginatedSales = [];
   List<DataGridRow> dataGridRows = [];
+  late BuildContext ctx;
   late ThemeData theme;
 
   @override
@@ -22,7 +25,16 @@ class SaleInvoiceDataSource extends DataGridSource {
       final column = SaleInvoiceDTRowType.values
           .firstWhere((value) => value.name == dataGridCell.columnName);
       late Widget cell;
+      String invoiceText = ctx
+          .read<DashboardProvider>()
+          .getInvoiceText(invoice: sale, context: ctx);
       switch (column.name) {
+        case 'invoice':
+          cell = Container(
+            alignment: Alignment.center,
+            child: Text(invoiceText, style: theme.textTheme.bodySmall),
+          );
+          break;
         case 'date':
           cell = Container(
             alignment: Alignment.center,
@@ -76,6 +88,7 @@ class SaleInvoiceDataSource extends DataGridSource {
     required List<SaleInvoiceDataModel> sales,
     required BuildContext context,
   }) {
+    ctx = context;
     theme = Theme.of(context);
     _paginatedSales = sales;
     buildPaginatedDataGridRows();

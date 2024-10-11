@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../screens/app_screen.dart';
@@ -11,6 +12,7 @@ import '../../models/notification/notification_model.dart';
 import '../../models/user/user_profile_model.dart';
 import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
+import '../../utils/constants.dart';
 import '../../utils/debounce.dart';
 import '../../utils/notification/notification_utils.dart';
 import 'sale_provider.dart';
@@ -21,6 +23,8 @@ class NotificationProvider extends ChangeNotifier {
   late StreamSubscription<Map<String, dynamic>> _notificationListener;
   late String _branchId;
   late List<String> _allowDepIds;
+  late List<SelectOptionModel> _notificationTabs;
+  List<SelectOptionModel> get notificationTabs => _notificationTabs;
   int _selectedTab = 0;
   int get selectedTab => _selectedTab;
   late List<String> _allowNotificationTypes;
@@ -37,13 +41,43 @@ class NotificationProvider extends ChangeNotifier {
 
   void initData({required BuildContext context}) {
     AppProvider readAppProvider = context.read<AppProvider>();
-    _branchId = readAppProvider.selectedBranch!.id;
+    _branchId = readAppProvider.selectedBranch?.id ?? '';
     _allowDepIds = [];
     UserProfileModel? profile = readAppProvider.currentUser?.profile;
     if (profile != null && profile.depIds.isNotEmpty) {
       _allowDepIds = profile.depIds;
     }
-    _notificationType = NotificationType.invoice.toValue;
+    const String prefixNotificationTabs = "screens.sale.notification.tabs";
+    _notificationTabs = [];
+    // Note: Tab Invoice បង្ហាញពេល module tablet-orders active && user role == cashier
+    if (SaleService.isModuleActive(
+            modules: ['tablet-orders'], context: context) &&
+        UserService.userInRole(roles: ['cashier'])) {
+      _notificationTabs.add(SelectOptionModel(
+        icon: RestaurantDefaultIcons.notificationInvoice,
+        label: "$prefixNotificationTabs.invoice",
+        value: NotificationType.invoice.toValue,
+      ));
+    }
+    // Note: Tab Chef Monitor បង្ហាញពេល module chef-monitor active
+    if (SaleService.isModuleActive(
+        modules: ['chef-monitor'], context: context)) {
+      _notificationTabs.add(SelectOptionModel(
+        icon: RestaurantDefaultIcons.notificationFromChefMonitor,
+        label: "$prefixNotificationTabs.chefMonitor",
+        value: NotificationType.chefMonitor.toValue,
+      ));
+    }
+    // Note: Tab Stock Alert បង្ហាញពេល module purchase active
+    if (SaleService.isModuleActive(modules: ['purchase'], context: context)) {
+      _notificationTabs.add(SelectOptionModel(
+        icon: RestaurantDefaultIcons.notificationStock,
+        label: "$prefixNotificationTabs.stock",
+        value: NotificationType.stockAlert.toValue,
+      ));
+    }
+    _notificationType =
+        _notificationTabs.isNotEmpty ? _notificationTabs.first.value : "";
     _allowNotificationTypes = getAllowNotificationTypes(context: context);
     subscribeNotifications();
     notifyListeners();

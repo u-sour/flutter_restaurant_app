@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
@@ -12,6 +13,7 @@ import '../../dialog_widget.dart';
 import '../../empty_data_widget.dart';
 import '../../loading_widget.dart';
 import 'sale_detail_data_table_operations_widget.dart';
+import '../../form_builder_custom_touch_spin.dart';
 
 class EditSaleDetailOperationActionWidget extends StatelessWidget {
   final GlobalKey<FormBuilderState> fbKey;
@@ -34,7 +36,8 @@ class EditSaleDetailOperationActionWidget extends StatelessWidget {
       title: operationType.toTitle,
       titleIcon: titleIcon,
       content: SizedBox(
-        width: operationType.name == 'merge'
+        width: operationType.name == 'merge' ||
+                operationType.name == 'customerCount'
             ? double.minPositive
             : double.maxFinite,
         child: FormBuilder(
@@ -66,18 +69,31 @@ class _EditSaleDetailOperationState extends State<EditSaleDetailOperation> {
   late SaleProvider readProvider;
   Future<List<SelectOptionModel>>? sales;
   Future<List<SelectOptionModel>>? tables;
+  TextEditingController customerCountController = TextEditingController();
+  int minCustomerCount = 1;
   @override
   void initState() {
     super.initState();
     readProvider = context.read<SaleProvider>();
     if (widget.operationType.name == 'merge' ||
         widget.operationType.name == 'transfer') {
-      sales = readProvider.fetchSaleGroupByTable();
+      sales = readProvider.fetchSaleGroupByTable(context: context);
     }
 
     if (widget.operationType.name == 'split') {
       tables = readProvider.fetchTables();
     }
+  }
+
+  void selectInputText({required TextEditingController controller}) {
+    controller.selection = TextSelection(
+        baseOffset: 0, extentOffset: controller.value.text.length);
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    customerCountController.dispose();
   }
 
   @override
@@ -188,7 +204,26 @@ class _EditSaleDetailOperationState extends State<EditSaleDetailOperation> {
             widget.operationType.name == 'split')
           const Expanded(
             child: SaleDetailDataTableOperationsWidget(),
-          )
+          ),
+        // Customer Count
+        if (widget.operationType.name == 'customerCount')
+          FormBuilderCustomTouchSpin(
+            name: 'numOfGuest',
+            initialValue: widget.value,
+            controller: customerCountController,
+            autovalidateMode: AutovalidateMode.onUserInteraction,
+            minValue: minCustomerCount,
+            inputFormatters: [
+              FilteringTextInputFormatter.allow(RegExp(r"[0-9]")),
+            ],
+            keyboardType: TextInputType.number,
+            onTap: () => selectInputText(controller: customerCountController),
+            onChanged: (qty) {},
+            validator: FormBuilderValidators.compose([
+              FormBuilderValidators.required(),
+              FormBuilderValidators.min(minCustomerCount),
+            ]),
+          ),
       ],
     );
   }

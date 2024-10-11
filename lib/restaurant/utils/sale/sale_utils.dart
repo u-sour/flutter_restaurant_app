@@ -29,7 +29,7 @@ extension SaleDetailDTExtension on SaleDetailDTRowType {
   }
 }
 
-enum SaleDetailOperationType { merge, transfer, split, cancel }
+enum SaleDetailOperationType { merge, transfer, split, customerCount, cancel }
 
 const prefixSaleDetailOperation = "screens.sale.detail.operations.children";
 
@@ -42,6 +42,8 @@ extension SaleDetailOperationExtension on SaleDetailOperationType {
         return '$prefixSaleDetailOperation.transfer';
       case SaleDetailOperationType.split:
         return '$prefixSaleDetailOperation.split';
+      case SaleDetailOperationType.customerCount:
+        return '$prefixSaleDetailOperation.customerCount';
       default:
         return '$prefixSaleDetailOperation.cancel';
     }
@@ -55,6 +57,8 @@ extension SaleDetailOperationExtension on SaleDetailOperationType {
         return RestaurantDefaultIcons.transfer;
       case SaleDetailOperationType.split:
         return RestaurantDefaultIcons.split;
+      case SaleDetailOperationType.customerCount:
+        return RestaurantDefaultIcons.customerCount;
       default:
         return RestaurantDefaultIcons.cancel;
     }

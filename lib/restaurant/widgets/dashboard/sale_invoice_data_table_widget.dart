@@ -1,12 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import '../../../models/servers/response_model.dart';
-import '../../../router/route_utils.dart';
-import '../../../services/global_service.dart';
-import '../../../utils/alert/alert.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
@@ -15,9 +10,9 @@ import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/sale_provider.dart';
 import '../../services/data-table-sources/sale_data_table_source.dart';
+import '../../services/user_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/dashboard/dashboard_utils.dart';
-import '../confirm_dialog_widget.dart';
 import '../empty_data_widget.dart';
 import '../loading_widget.dart';
 
@@ -141,38 +136,15 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
               children: [
                 // Print
                 SfDataGridSwipeActionButton(
-                  icon: RestaurantDefaultIcons.print,
-                  bgColor: AppThemeColors.info,
-                  onPressed: () {
-                    final int selectedTab = readDashboardProvider.selectedTab;
-                    switch (selectedTab) {
-                      case 2:
-                        // Partial
-                        context.pushNamed(SCREENS.invoice.toName,
-                            queryParameters: {
-                              'invoiceId': saleInvoice.id,
-                              'isTotal': 'true'
-                            });
-                        break;
-                      case 3:
-                        // Closed
-                        context.pushNamed(SCREENS.invoice.toName,
-                            queryParameters: {
-                              'invoiceId': saleInvoice.id,
-                              'isTotal': 'true'
-                            });
-                        break;
-                      default:
-                        // Canceled
-                        context.pushNamed(SCREENS.invoice.toName,
-                            queryParameters: {
-                              'invoiceId': saleInvoice.id,
-                            });
-                    }
-                  },
-                ),
+                    icon: RestaurantDefaultIcons.print,
+                    bgColor: AppThemeColors.info,
+                    onPressed: () async {
+                      await readDashboardProvider.printInvoice(
+                          saleInvoice: saleInvoice, context: context);
+                    }),
                 // Payment
-                if (saleInvoice.status == 'Partial')
+                if (saleInvoice.status == 'Partial' &&
+                    UserService.userInRole(roles: ['cashier']))
                   SfDataGridSwipeActionButton(
                     icon: RestaurantDefaultIcons.payment,
                     bgColor: AppThemeColors.primary,
@@ -201,54 +173,53 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
                     icon: RestaurantDefaultIcons.edit,
                     bgColor: AppThemeColors.warning,
                     onPressed: () async {
-                      final result =
-                          await readDashboardProvider.editSaleReceipt(
-                              receiptId: '${saleInvoice.receiptId}',
-                              context: context);
+                      await readDashboardProvider.editSaleReceipt(
+                          receiptId: '${saleInvoice.receiptId}',
+                          context: context);
                     },
                   ),
                 // Remove
-                SfDataGridSwipeActionButton(
-                  icon: RestaurantDefaultIcons.remove,
-                  bgColor: AppThemeColors.failure,
-                  onPressed: () => GlobalService.openDialog(
-                      context: context,
-                      contentWidget: ConfirmDialogWidget(
-                        content: Row(
-                          children: [
-                            Text(saleInvoice.refNo,
-                                style: theme.textTheme.bodyMedium!
-                                    .copyWith(fontWeight: FontWeight.bold)),
-                            Text(
-                              'dialog.confirm.remove.description'.tr(),
-                              style: theme.textTheme.bodyMedium,
-                            ),
-                          ],
-                        ),
-                        onAgreePressed: () async {
-                          ResponseModel? result = await readDashboardProvider
-                              .removeSale(id: saleInvoice.id);
-                          if (result != null) {
-                            // reload sale invoice on dashboard if remove success
-                            if (result.type.name == 'success') {
-                              await readDashboardProvider.filter(
-                                  tab: readDashboardProvider.selectedTab,
-                                  filterText: readDashboardProvider.filterText);
-                            }
-                            late SnackBar snackBar;
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
-                          }
-                          if (context.mounted) {
-                            context.pop();
-                          }
-                        },
-                      )),
-                ),
+                // SfDataGridSwipeActionButton(
+                //   icon: RestaurantDefaultIcons.remove,
+                //   bgColor: AppThemeColors.failure,
+                //   onPressed: () => GlobalService.openDialog(
+                //       context: context,
+                //       contentWidget: ConfirmDialogWidget(
+                //         content: Row(
+                //           children: [
+                //             Text(saleInvoice.refNo,
+                //                 style: theme.textTheme.bodyMedium!
+                //                     .copyWith(fontWeight: FontWeight.bold)),
+                //             Text(
+                //               'dialog.confirm.remove.description'.tr(),
+                //               style: theme.textTheme.bodyMedium,
+                //             ),
+                //           ],
+                //         ),
+                //         onAgreePressed: () async {
+                //           ResponseModel? result = await readDashboardProvider
+                //               .removeSale(id: saleInvoice.id);
+                //           if (result != null) {
+                //             // reload sale invoice on dashboard if remove success
+                //             if (result.type.name == 'success') {
+                //               await readDashboardProvider.filter(
+                //                   tab: readDashboardProvider.selectedTab,
+                //                   filterText: readDashboardProvider.filterText);
+                //             }
+                //             late SnackBar snackBar;
+                //             snackBar = Alert.awesomeSnackBar(
+                //                 message: result.message, type: result.type);
+                //             if (!context.mounted) return;
+                //             ScaffoldMessenger.of(context)
+                //               ..hideCurrentSnackBar()
+                //               ..showSnackBar(snackBar);
+                //           }
+                //           if (context.mounted) {
+                //             context.pop();
+                //           }
+                //         },
+                //       )),
+                // ),
               ],
             );
           },
