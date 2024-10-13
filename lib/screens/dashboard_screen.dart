@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../restaurant/services/notification_service.dart';
 import '../restaurant/services/user_service.dart';
 import '../restaurant/widgets/dashboard/feature_widget.dart';
 import '../restaurant/widgets/dashboard/sale_invoice_widget.dart';
@@ -35,6 +36,25 @@ class DashboardScreen extends StatelessWidget {
                 : const Spacer(),
             const SizedBox(height: AppStyleDefaultProperties.h),
             FeatureWidget(),
+            TextButton(
+                onPressed: () {
+                  DateTime scheduleTime =
+                      DateTime.now().add(const Duration(seconds: 10));
+                  NotificationService.showScheduleNotification(
+                      title: 'Scheduled Notification',
+                      body: 'this is a schedule notification.',
+                      scheduledTime: scheduleTime);
+                },
+                child: const Text('schedule notification')),
+
+            TextButton(
+              onPressed: () {
+                NotificationService.showInstantNotification(
+                    title: 'Instance Notification',
+                    body: 'this is an instance notification.');
+              },
+              child: const Text('instance notification'),
+            ),
           ]),
         ),
       ),
