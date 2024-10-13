@@ -97,6 +97,10 @@ class NotificationProvider extends ChangeNotifier {
       _notificationListener = _notificationListener =
           meteor.collection('rest_notifications').listen((event) {
         debounce.run(() async {
+          final notificationsFromServer = event.values.toList();
+          showNotification(
+              notificationsFromServer: notificationsFromServer,
+              localNotifications: _notifications.data);
           _notifications = await fetchNotification(
               notificationType: _notificationType,
               allowNotificationTypes: _allowNotificationTypes,
@@ -107,6 +111,35 @@ class NotificationProvider extends ChangeNotifier {
         });
       });
     });
+  }
+
+  void showNotification(
+      {required List<dynamic> notificationsFromServer,
+      required List<NotificationDataModel> localNotifications}) {
+    print(notificationsFromServer.toList().last);
+    // filter type == 'RP' || 'IO' and map data get only _id
+    List<dynamic> notificationIdsFromServer = notificationsFromServer
+        .where((nfs) =>
+            nfs['type'] == 'RP' && nfs['markAsRead'] == false ||
+            nfs['type'] == 'IO' && nfs['markAsRead'] == false)
+        .map((nfs) => nfs['_id'])
+        .toList();
+    List<String> localNotificationIds =
+        localNotifications.map((ln) => ln.id).toList();
+    // check '_id' notificationsFromServer exist in localNotifications or not
+    // if not then show notification
+    if (notificationIdsFromServer.isNotEmpty) {
+      List<dynamic> showNotificationIds = notificationIdsFromServer
+          .where((id) => !localNotificationIds.contains(id))
+          .toList();
+      if (showNotificationIds.isNotEmpty) {
+        print('show notification ....');
+      }
+    }
+    print('from server : $notificationIdsFromServer');
+    print('from server count : ${notificationIdsFromServer.length}');
+    print('local: $localNotificationIds');
+    print('localNotification count: ${localNotificationIds.length}');
   }
 
   List<String> getAllowNotificationTypes({required BuildContext context}) {

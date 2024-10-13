@@ -3,6 +3,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_web_plugins/url_strategy.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:timezone/data/latest.dart' as tz;
+import 'restaurant/services/notification_service.dart';
 import 'screens/app_screen.dart';
 import 'utils/constants.dart';
 
@@ -17,6 +19,10 @@ void main() async {
   // local storage
   final SharedPreferences sharedPreferences =
       await SharedPreferences.getInstance();
+  // local notification
+  await NotificationService.init();
+  tz.initializeTimeZones();
+
   runApp(EasyLocalization(
     supportedLocales: AppSupportedLocales.supportedLocales,
     path: 'assets/translations',
