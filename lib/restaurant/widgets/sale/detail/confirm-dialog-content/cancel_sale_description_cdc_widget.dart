@@ -10,6 +10,7 @@ class CancelSaleDescriptionCdcWidget extends StatelessWidget {
   const CancelSaleDescriptionCdcWidget({super.key, required this.copy});
   @override
   Widget build(BuildContext context) {
+    SaleProvider readSaleProvider = context.read<SaleProvider>();
     final theme = Theme.of(context);
     return Row(
       children: [
@@ -20,7 +21,10 @@ class CancelSaleDescriptionCdcWidget extends StatelessWidget {
         Selector<SaleProvider, SaleModel?>(
           selector: (context, state) => state.currentSale,
           builder: (context, currentSale, child) => Text(
-              currentSale?.refNo ?? '',
+              currentSale != null
+                  ? readSaleProvider.getInvoiceText(
+                      sale: currentSale, context: context)
+                  : '',
               style: theme.textTheme.bodyMedium!
                   .copyWith(fontWeight: FontWeight.bold)),
         ),
