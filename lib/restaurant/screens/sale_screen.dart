@@ -12,7 +12,11 @@ import '../widgets/sale/detail/sale_detail_widget.dart';
 import '../widgets/sale/product/sale_product_widget.dart';
 
 class SaleScreen extends StatefulWidget {
-  const SaleScreen({super.key});
+  final String? id;
+  final String table;
+  final bool fastSale;
+  const SaleScreen(
+      {super.key, this.id, required this.table, required this.fastSale});
 
   @override
   State<SaleScreen> createState() => _SaleScreenState();
@@ -30,7 +34,12 @@ class _SaleScreenState extends State<SaleScreen> {
     _readSaleCategoriesProvider = context.read<SaleCategoriesProvider>();
     _readSaleProductsProvider = context.read<SaleProductsProvider>();
     // init sales,categories & products data
-    _readSaleProvider.initData(context: context);
+    _readSaleProvider.initData(
+      invoiceId: widget.id,
+      table: widget.table,
+      fastSale: widget.fastSale,
+      context: context,
+    );
     _readSaleCategoriesProvider.initData(context: context);
     _readSaleProductsProvider.initData(context: context);
   }

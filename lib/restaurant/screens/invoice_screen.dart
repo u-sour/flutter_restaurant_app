@@ -2,14 +2,18 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:provider/provider.dart';
+import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
 import '../../services/global_service.dart';
+import '../../utils/alert/alert.dart';
 import '../../widgets/printer/printing_progress_widget.dart';
 import '../models/invoice-template/invoice_template_model.dart';
 import '../models/sale/invoice/print/sale_invoice_content_model.dart';
+import '../models/sale/setting/sale_setting_model.dart';
 import '../providers/invoice-template/invoice_template_provider.dart';
 import '../providers/invoice/invoice_provider.dart';
+import '../providers/sale/sale_provider.dart';
 import '../widgets/invoice-template/invoice_template_widget.dart';
 import '../widgets/invoice/app-bar/invoice_app_bar_widget.dart';
 import '../widgets/loading_widget.dart';
@@ -22,6 +26,7 @@ class InvoiceScreen extends StatefulWidget {
   final bool receiptPrint;
   final bool isTotal;
   final bool isRepaid;
+  final bool showEditInvoiceBtn;
   const InvoiceScreen({
     super.key,
     required this.invoiceId,
@@ -31,6 +36,7 @@ class InvoiceScreen extends StatefulWidget {
     required this.receiptPrint,
     required this.isTotal,
     required this.isRepaid,
+    required this.showEditInvoiceBtn,
   });
 
   @override
@@ -38,15 +44,18 @@ class InvoiceScreen extends StatefulWidget {
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+  late SaleProvider readSaleProvider;
   late InvoiceProvider readInvoiceProvider;
   late PrinterProvider readPrinterProvider;
   late InvoiceTemplateProvider readInvoiceTemplateProvider;
   late Future<InvoiceTemplateModel> invoiceTemplate;
   late Future<SaleInvoiceContentModel> saleInvoiceContent;
+  final String prefixPrinterBtn = 'screens.printer.btn';
 
   @override
   void initState() {
     super.initState();
+    readSaleProvider = context.read<SaleProvider>();
     readInvoiceProvider = context.read<InvoiceProvider>();
     readPrinterProvider = context.read<PrinterProvider>();
     readInvoiceTemplateProvider = context.read<InvoiceTemplateProvider>();
@@ -66,6 +75,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.fromDashboard);
     return Scaffold(
       appBar: InvoiceAppBarWidget(
         title: SCREENS.printer.toTitle,
@@ -113,6 +123,41 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 children: [
+                  // Edit invoice (cancel & copy)
+                  // Note: enable when sale setting allow to edit Invoice 'active'
+                  Selector<AppProvider, SaleSettingModel>(
+                      selector: (context, state) => state.saleSetting,
+                      builder: (context, saleSetting, child) {
+                        return saleSetting.sale.editableInvoice != false &&
+                                widget.showEditInvoiceBtn
+                            ? Expanded(
+                                child: ElevatedButton(
+                                  onPressed: () async {
+                                    final result =
+                                        await readSaleProvider.cancelSale(
+                                            context: context,
+                                            copy: true,
+                                            editableInvoice: saleSetting
+                                                    .sale.editableInvoice !=
+                                                false,
+                                            invoiceId: widget.invoiceId);
+                                    if (result != null) {
+                                      late SnackBar snackBar;
+                                      snackBar = Alert.awesomeSnackBar(
+                                          message: result.message,
+                                          type: result.type);
+                                      if (!context.mounted) return;
+                                      ScaffoldMessenger.of(context)
+                                        ..hideCurrentSnackBar()
+                                        ..showSnackBar(snackBar);
+                                    }
+                                  },
+                                  child: Text('$prefixPrinterBtn.edit'.tr()),
+                                ),
+                              )
+                            : const SizedBox.shrink();
+                      }),
+                  // Print
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
@@ -121,7 +166,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           context: context,
                         );
                       },
-                      child: Text('screens.printer.btn'.tr()),
+                      child: Text('$prefixPrinterBtn.print'.tr()),
                     ),
                   ),
                 ],

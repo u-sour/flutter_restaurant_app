@@ -16,8 +16,6 @@ class InvoiceAppBarWidget extends StatelessWidget
 
   @override
   Widget build(BuildContext context) {
-    print('fromReceiptForm: $fromReceiptForm');
-    print('fromDashBoard: $fromDashboard');
     return AppBar(
         leading: BackButton(
             onPressed: () => fromReceiptForm && !fromDashboard

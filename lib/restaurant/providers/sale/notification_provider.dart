@@ -97,10 +97,10 @@ class NotificationProvider extends ChangeNotifier {
       _notificationListener = _notificationListener =
           meteor.collection('rest_notifications').listen((event) {
         debounce.run(() async {
-          final notificationsFromServer = event.values.toList();
-          showNotification(
-              notificationsFromServer: notificationsFromServer,
-              localNotifications: _notifications.data);
+          // final notificationsFromServer = event.values.toList();
+          // showNotification(
+          //     notificationsFromServer: notificationsFromServer,
+          //     localNotifications: _notifications.data);
           _notifications = await fetchNotification(
               notificationType: _notificationType,
               allowNotificationTypes: _allowNotificationTypes,
@@ -116,7 +116,6 @@ class NotificationProvider extends ChangeNotifier {
   void showNotification(
       {required List<dynamic> notificationsFromServer,
       required List<NotificationDataModel> localNotifications}) {
-    print(notificationsFromServer.toList().last);
     // filter type == 'RP' || 'IO' and map data get only _id
     List<dynamic> notificationIdsFromServer = notificationsFromServer
         .where((nfs) =>

@@ -399,7 +399,7 @@
         "title": "Printing",
         "Processing": "Processing: {progress}%"
       },
-      "btn": "PRINT",
+      "btn": { "edit": "EDIT", "print": "PRINT" },
       "alert": {
         "success": {
           "message": "Printing is completed."

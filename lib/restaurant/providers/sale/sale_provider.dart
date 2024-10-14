@@ -90,7 +90,11 @@ class SaleProvider extends ChangeNotifier {
   late String _tableLocationText;
   late String _invoiceText;
 
-  Future<void> initData({required BuildContext context}) async {
+  Future<void> initData(
+      {String? invoiceId,
+      required String table,
+      required bool fastSale,
+      required BuildContext context}) async {
     AppProvider readAppProvider = context.read<AppProvider>();
     _activeSaleInvoiceId = '';
     _tableLocationText = '';
@@ -126,13 +130,11 @@ class SaleProvider extends ChangeNotifier {
           modules: ['decimal-qty'], overpower: false, context: context);
 
       // get table Id & fastSale from query router
-      final Map<String, dynamic> queryRouter =
-          GoRouterState.of(context).uri.queryParameters;
-      _tableId = queryRouter['table']!;
-      _fastSale = queryRouter['fastSale']! == 'true';
+      _tableId = table;
+      _fastSale = fastSale;
       // get invoice Id and set _activeSaleInvoiceId from query router is route come from dashboard
-      if (queryRouter['id'] != null) {
-        _activeSaleInvoiceId = queryRouter['id'];
+      if (invoiceId != null) {
+        _activeSaleInvoiceId = invoiceId;
       }
       // check insert a new sale if fast sale
       if (_fastSale) {
@@ -148,12 +150,12 @@ class SaleProvider extends ChangeNotifier {
       // Note: used on Sale Action AppBar Title
       _tableLocationText =
           getTableLocationText(tableLocation: _tableLocation, context: context);
-      subscribeSales(context: context);
+      subscribeSales(invoiceId: invoiceId, context: context);
     }
     notifyListeners();
   }
 
-  void subscribeSales({required BuildContext context}) {
+  void subscribeSales({String? invoiceId, required BuildContext context}) {
     final debounce = Debounce(delay: const Duration(milliseconds: 800));
     Map<String, dynamic> selector = {
       'branchId': _branchId,
@@ -186,15 +188,14 @@ class SaleProvider extends ChangeNotifier {
                 tableId: _tableId,
                 depId: _depId,
                 isTabletOrder: _isTabletOrder);
-
-            if (sales.isNotEmpty && sales.first.id.isNotEmpty) {
+            if (_sales.isNotEmpty) {
               // get current sale with sale detail
               // if _activeSaleInvoiceId empty set the first sale to _currentSale by id
               // else set _currentSale by _activeSaleInvoiceId
               if (context.mounted) {
                 await getCurrentSaleWithSaleDetail(
-                    invoiceId: _activeSaleInvoiceId.isEmpty
-                        ? sales.first.id
+                    invoiceId: invoiceId == null
+                        ? _sales.first.id
                         : _activeSaleInvoiceId,
                     context: context);
               }
@@ -311,7 +312,6 @@ class SaleProvider extends ChangeNotifier {
     if (currentSale.isNotEmpty) {
       // set current sale
       _currentSale = currentSale.first;
-
       // Note: used on Sale Action AppBar Title
       // set invoice text
       _invoiceText = getInvoiceText(sale: _currentSale!, context: context);
@@ -947,9 +947,9 @@ class SaleProvider extends ChangeNotifier {
       required String depId,
       required bool isTabletOrder}) async {
     Map<String, dynamic> selector = {
-      'branchId': _branchId,
-      'tableId': _tableId,
-      'depId': _depId,
+      'branchId': branchId,
+      'tableId': tableId,
+      'depId': depId,
       'status': 'Open',
     };
 
@@ -1151,8 +1151,10 @@ class SaleProvider extends ChangeNotifier {
           await updateOnPrintMethod(saleId: _currentSale!.id);
           // go to invoice
           if (context.mounted) {
-            context.pushNamed(SCREENS.invoice.toName,
-                queryParameters: {'invoiceId': currentSale!.id});
+            context.pushNamed(SCREENS.invoice.toName, queryParameters: {
+              'invoiceId': currentSale!.id,
+              'showEditInvoiceBtn': 'true'
+            });
           }
         }
       } catch (e) {
@@ -1330,7 +1332,6 @@ class SaleProvider extends ChangeNotifier {
                     fbCustomerCountKey.currentState!.value['numOfGuest']);
                 final String data =
                     await updateSaleCustomerCountMethod(numOfGuest: numOfGuest);
-                print(data);
                 if (data.isNotEmpty && context.mounted) {
                   result = ResponseModel(
                       message: '$_prefixSaleDetailAlert.success.customerCount',
@@ -1356,8 +1357,12 @@ class SaleProvider extends ChangeNotifier {
 
   // cancel sale, cancel and copy a new sale
   // Note: copy == true it mean cancelAndCopy
-  Future<ResponseModel?> cancelSale(
-      {required BuildContext context, bool copy = false}) async {
+  Future<ResponseModel?> cancelSale({
+    required BuildContext context,
+    bool copy = false,
+    bool editableInvoice = false,
+    String invoiceId = '',
+  }) async {
     AppProvider readAppProvider = context.read<AppProvider>();
     // Note: used for enable password text field on cancel sale alert dialog
     bool enablePassword =
@@ -1365,10 +1370,12 @@ class SaleProvider extends ChangeNotifier {
     String confirmSalePassword = readAppProvider.saleSetting.sale.password!;
     final GlobalKey<FormBuilderState> fbCancelSaleKey =
         GlobalKey<FormBuilderState>();
-
     ResponseModel? result;
-    if (_currentSale != null && _currentSale!.billed > 0) {
+    if (_currentSale != null && _currentSale!.billed > 0 || editableInvoice) {
       try {
+        // Note: invoiceId exist when user edit invoice (cancel & copy) on print preview
+        final String currentSaleId =
+            editableInvoice ? invoiceId : _currentSale!.id;
         await GlobalService.openDialog(
             contentWidget: ConfirmDialogWidget(
               content: CancelSaleCdcWidget(
@@ -1381,18 +1388,19 @@ class SaleProvider extends ChangeNotifier {
                 if (enablePassword) {
                   if (fbCancelSaleKey.currentState!.saveAndValidate()) {
                     if (copy) {
-                      final String newInvoiceId = await cancelAndCopySaleMethod(
-                          saleId: _currentSale!.id);
+                      final String newInvoiceId =
+                          await cancelAndCopySaleMethod(saleId: currentSaleId);
                       if (context.mounted) {
                         result = ResponseModel(
                             message:
                                 '$_prefixSaleDetailAlert.success.cancelAndCopy',
                             type: AWESOMESNACKBARTYPE.success);
+                        // go to sale
                         handleEnterSale(
                             context: context, invoiceId: newInvoiceId);
                       }
                     } else {
-                      await cancelSaleMethod(saleId: _currentSale!.id);
+                      await cancelSaleMethod(saleId: currentSaleId);
                     }
                     // close modal
                     if (context.mounted) {
@@ -1403,17 +1411,19 @@ class SaleProvider extends ChangeNotifier {
                   // cancel sale or cancel & copy without password
                   if (copy) {
                     final String newInvoiceId =
-                        await cancelAndCopySaleMethod(saleId: _currentSale!.id);
+                        await cancelAndCopySaleMethod(saleId: currentSaleId);
+
                     if (context.mounted) {
                       result = ResponseModel(
                           message:
                               '$_prefixSaleDetailAlert.success.cancelAndCopy',
                           type: AWESOMESNACKBARTYPE.success);
+                      // go to sale
                       handleEnterSale(
                           context: context, invoiceId: newInvoiceId);
                     }
                   } else {
-                    await cancelSaleMethod(saleId: _currentSale!.id);
+                    await cancelSaleMethod(saleId: currentSaleId);
                   }
                   // close modal
                   if (context.mounted) {

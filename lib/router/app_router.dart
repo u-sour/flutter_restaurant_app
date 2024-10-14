@@ -151,13 +151,22 @@ class AppRouter {
         builder: (context, state) => const SaleTableScreen(),
       ),
       GoRoute(
-        path: SCREENS.sale.toPath,
-        name: SCREENS.sale.toName,
-        builder: (context, state) => SaleScreen(
-          // Note: same route and refresh that route
-          key: UniqueKey(),
-        ),
-      ),
+          path: SCREENS.sale.toPath,
+          name: SCREENS.sale.toName,
+          builder: (context, state) {
+            Map<String, dynamic> queryRouter = state.uri.queryParameters;
+            final String? invoiceId = queryRouter['id'];
+            final String table = queryRouter['table'];
+            final bool fastSale = queryRouter['fastSale']! == 'true';
+
+            return SaleScreen(
+              // Note: same route and refresh that route
+              key: UniqueKey(),
+              id: invoiceId,
+              table: table,
+              fastSale: fastSale,
+            );
+          }),
       GoRoute(
           path: SCREENS.invoiceToKitchen.toPath,
           name: SCREENS.invoiceToKitchen.toName,
@@ -194,6 +203,9 @@ class AppRouter {
               queryRouter['isTotal']! == 'true';
           final bool isRepaid = queryRouter['isRepaid'] != null &&
               queryRouter['isRepaid']! == 'true';
+          final bool showEditInvoiceBtn =
+              queryRouter['showEditInvoiceBtn'] != null &&
+                  queryRouter['showEditInvoiceBtn']! == 'true';
           return InvoiceScreen(
             invoiceId: invoiceId,
             receiptId: receiptId,
@@ -202,6 +214,7 @@ class AppRouter {
             receiptPrint: receiptPrint,
             isTotal: isTotal,
             isRepaid: isRepaid,
+            showEditInvoiceBtn: showEditInvoiceBtn,
           );
         },
       ),
