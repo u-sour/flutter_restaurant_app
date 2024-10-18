@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import '../../providers/app_provider.dart';
 import '../../router/route_utils.dart';
 import '../../utils/constants.dart';
+import '../../widgets/no_internet_connection_widget.dart';
 import '../models/sale-table/floor_model.dart';
 import '../models/sale-table/table_model.dart';
 import '../providers/sale-table/sale_table_provider.dart';
@@ -63,86 +64,91 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
     _readSaleTableProvider.subscribeSales(context: context);
 
     return Scaffold(
-        appBar: SaleTableAppBarWidget(title: SCREENS.saleTable.toTitle),
-        body: SafeArea(
-          child: Column(
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(AppStyleDefaultProperties.p),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [DepartmentWidget()],
-                ),
+      appBar: SaleTableAppBarWidget(title: SCREENS.saleTable.toTitle),
+      body: SafeArea(
+        child: Column(
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(AppStyleDefaultProperties.p),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [DepartmentWidget()],
               ),
-              Expanded(
-                child: Selector<
-                    SaleTableProvider,
-                    ({
-                      bool isLoading,
-                      List<FloorModel> floors,
-                      List<TableModel> tables,
-                      bool isFiltering
-                    })>(
-                  selector: (context, state) => (
-                    isLoading: state.isLoading,
-                    floors: state.floors,
-                    tables: state.tables,
-                    isFiltering: state.isFiltering
-                  ),
-                  builder: (context, data, child) {
-                    if (data.isLoading) {
-                      return const LoadingWidget();
-                    } else {
-                      return data.floors.isNotEmpty
-                          ? DynamicTabBarWidget(
-                              dynamicTabs: data.floors.mapIndexed((e, i) {
-                                return TabData(
-                                  index: i,
-                                  title: Tab(
-                                    child: Text(
-                                        e.id == 'All'
-                                            ? context.tr(e.name)
-                                            : e.name,
-                                        style: theme.textTheme.bodyLarge),
-                                  ),
-                                  content: data.isFiltering
-                                      ? const LoadingWidget()
-                                      : data.tables.isEmpty
-                                          ? EmptyDataWidget(
-                                              description:
-                                                  '$_prefixSaleTableEmptyData.table')
-                                          : SaleTableWidget(
-                                              tables: data.tables),
-                                );
-                              }).toList(),
-                              isScrollable: isScrollable,
-                              onTabControllerUpdated: (controller) {
-                                // run when user swipe
-                                controller.addListener(() {
-                                  final String floorId =
-                                      data.floors[controller.index].id;
-                                  debounce.run(() {
-                                    setActiveFloor(floorId: floorId);
-                                  });
-                                });
-                              },
-                              onTabChanged: (index) {
-                                final String floorId = data.floors[index!].id;
+            ),
+            Expanded(
+              child: Selector<
+                  SaleTableProvider,
+                  ({
+                    bool isLoading,
+                    List<FloorModel> floors,
+                    List<TableModel> tables,
+                    bool isFiltering
+                  })>(
+                selector: (context, state) => (
+                  isLoading: state.isLoading,
+                  floors: state.floors,
+                  tables: state.tables,
+                  isFiltering: state.isFiltering
+                ),
+                builder: (context, data, child) {
+                  if (data.isLoading) {
+                    return const LoadingWidget();
+                  } else {
+                    return data.floors.isNotEmpty
+                        ? DynamicTabBarWidget(
+                            dynamicTabs: data.floors.mapIndexed((e, i) {
+                              return TabData(
+                                index: i,
+                                title: Tab(
+                                  child: Text(
+                                      e.id == 'All'
+                                          ? context.tr(e.name)
+                                          : e.name,
+                                      style: theme.textTheme.bodyLarge),
+                                ),
+                                content: data.isFiltering
+                                    ? const LoadingWidget()
+                                    : data.tables.isEmpty
+                                        ? EmptyDataWidget(
+                                            description:
+                                                '$_prefixSaleTableEmptyData.table')
+                                        : SaleTableWidget(tables: data.tables),
+                              );
+                            }).toList(),
+                            isScrollable: isScrollable,
+                            onTabControllerUpdated: (controller) {
+                              // run when user swipe
+                              controller.addListener(() {
+                                final String floorId =
+                                    data.floors[controller.index].id;
                                 debounce.run(() {
                                   setActiveFloor(floorId: floorId);
                                 });
-                              },
-                              showBackIcon: showBackIcon,
-                              showNextIcon: showNextIcon,
-                            )
-                          : EmptyDataWidget(
-                              description: '$_prefixSaleTableEmptyData.floor');
-                    }
-                  },
-                ),
+                              });
+                            },
+                            onTabChanged: (index) {
+                              final String floorId = data.floors[index!].id;
+                              debounce.run(() {
+                                setActiveFloor(floorId: floorId);
+                              });
+                            },
+                            showBackIcon: showBackIcon,
+                            showNextIcon: showNextIcon,
+                          )
+                        : EmptyDataWidget(
+                            description: '$_prefixSaleTableEmptyData.floor');
+                  }
+                },
               ),
-            ],
-          ),
-        ));
+            ),
+          ],
+        ),
+      ),
+      bottomSheet: Selector<AppProvider, bool>(
+          selector: (_, state) => state.connected,
+          builder: (context, connected, child) => !connected
+              ? const NoInternetConnectionWidget()
+              : const SizedBox.shrink()),
+    );
   }
 }

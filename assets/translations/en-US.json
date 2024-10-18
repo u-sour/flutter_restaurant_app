@@ -143,8 +143,9 @@
         },
         "content": {
           "invoice": {
-            "itemsOrdered": "You have receive a payment request from ",
-            "requestPayment": "You have receive new orders from "
+            "static": "You have a new notification.",
+            "itemsOrdered": "You have receive new orders from ",
+            "requestPayment": "You have receive a payment request from "
           },
           "stock": "Remaining in stock | {qty}"
         },

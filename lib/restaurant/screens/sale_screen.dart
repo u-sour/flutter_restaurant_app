@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import '../../providers/app_provider.dart';
 import '../../utils/constants.dart';
 import '../../utils/responsive/responsive_layout.dart';
+import '../../widgets/no_internet_connection_widget.dart';
 import '../providers/sale/categories/sale_categories_provider.dart';
 import '../providers/sale/products/sale_products_provider.dart';
 import '../providers/sale/sale_provider.dart';
@@ -95,6 +97,11 @@ class _SaleScreenState extends State<SaleScreen> {
       //       Expanded(child: SaleDetailWidget()),
       //     ],
       //   ),
+      bottomSheet: Selector<AppProvider, bool>(
+          selector: (_, state) => state.connected,
+          builder: (context, connected, child) => !connected
+              ? const NoInternetConnectionWidget()
+              : const SizedBox.shrink()),
       resizeToAvoidBottomInset: false,
     );
 
@@ -144,12 +151,17 @@ class _SaleScreenState extends State<SaleScreen> {
               Expanded(child: SaleProductWidget()),
               Expanded(child: SaleDetailWidget()),
             ]),
+      bottomSheet: Selector<AppProvider, bool>(
+          selector: (_, state) => state.connected,
+          builder: (context, connected, child) => !connected
+              ? const NoInternetConnectionWidget()
+              : const SizedBox.shrink()),
       resizeToAvoidBottomInset: false,
     );
 
-    const Scaffold desktopScaffold = Scaffold(
-      appBar: SaleAppBarWidget(),
-      body: Row(children: [
+    Scaffold desktopScaffold = Scaffold(
+      appBar: const SaleAppBarWidget(),
+      body: const Row(children: [
         SizedBox(
             width: 200.0,
             child: Padding(
@@ -161,6 +173,11 @@ class _SaleScreenState extends State<SaleScreen> {
         Expanded(flex: 3, child: SaleProductWidget()),
         Expanded(flex: 3, child: SaleDetailWidget()),
       ]),
+      bottomSheet: Selector<AppProvider, bool>(
+          selector: (_, state) => state.connected,
+          builder: (context, connected, child) => !connected
+              ? const NoInternetConnectionWidget()
+              : const SizedBox.shrink()),
       resizeToAvoidBottomInset: false,
     );
     return ResponsiveLayout(
