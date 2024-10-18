@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
@@ -7,9 +8,11 @@ import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../screens/app_screen.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
+import '../../../utils/convert_date_time.dart';
 import '../../models/notification/notification_data_model.dart';
 import '../../models/notification/notification_model.dart';
 import '../../models/user/user_profile_model.dart';
+import '../../services/notification_service.dart';
 import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/constants.dart';
@@ -23,6 +26,7 @@ class NotificationProvider extends ChangeNotifier {
   late StreamSubscription<Map<String, dynamic>> _notificationListener;
   late String _branchId;
   late List<String> _allowDepIds;
+  late String _currentUserId;
   late List<SelectOptionModel> _notificationTabs;
   List<SelectOptionModel> get notificationTabs => _notificationTabs;
   int _selectedTab = 0;
@@ -32,7 +36,7 @@ class NotificationProvider extends ChangeNotifier {
   late String _notificationType;
   String get notificationType => _notificationType;
   NotificationModel _notifications =
-      const NotificationModel(data: [], totalCount: 0);
+      const NotificationModel(data: [], unreadCount: 0, newCount: 0, type: '');
   NotificationModel get notifications => _notifications;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
@@ -43,6 +47,9 @@ class NotificationProvider extends ChangeNotifier {
     AppProvider readAppProvider = context.read<AppProvider>();
     _branchId = readAppProvider.selectedBranch?.id ?? '';
     _allowDepIds = [];
+    if (readAppProvider.currentUser != null) {
+      _currentUserId = readAppProvider.currentUser!.id;
+    }
     UserProfileModel? profile = readAppProvider.currentUser?.profile;
     if (profile != null && profile.depIds.isNotEmpty) {
       _allowDepIds = profile.depIds;
@@ -97,15 +104,14 @@ class NotificationProvider extends ChangeNotifier {
       _notificationListener = _notificationListener =
           meteor.collection('rest_notifications').listen((event) {
         debounce.run(() async {
-          // final notificationsFromServer = event.values.toList();
-          // showNotification(
-          //     notificationsFromServer: notificationsFromServer,
-          //     localNotifications: _notifications.data);
           _notifications = await fetchNotification(
               notificationType: _notificationType,
               allowNotificationTypes: _allowNotificationTypes,
               depIds: _allowDepIds,
-              branchId: _branchId);
+              branchId: _branchId,
+              userId: _currentUserId);
+          // show notification
+          showNotification(notifications: _notifications);
           _isLoading = false;
           notifyListeners();
         });
@@ -113,32 +119,45 @@ class NotificationProvider extends ChangeNotifier {
     });
   }
 
-  void showNotification(
-      {required List<dynamic> notificationsFromServer,
-      required List<NotificationDataModel> localNotifications}) {
-    // filter type == 'RP' || 'IO' and map data get only _id
-    List<dynamic> notificationIdsFromServer = notificationsFromServer
-        .where((nfs) =>
-            nfs['type'] == 'RP' && nfs['markAsRead'] == false ||
-            nfs['type'] == 'IO' && nfs['markAsRead'] == false)
-        .map((nfs) => nfs['_id'])
-        .toList();
-    List<String> localNotificationIds =
-        localNotifications.map((ln) => ln.id).toList();
-    // check '_id' notificationsFromServer exist in localNotifications or not
-    // if not then show notification
-    if (notificationIdsFromServer.isNotEmpty) {
-      List<dynamic> showNotificationIds = notificationIdsFromServer
-          .where((id) => !localNotificationIds.contains(id))
-          .toList();
-      if (showNotificationIds.isNotEmpty) {
-        print('show notification ....');
-      }
+  void showNotification({required NotificationModel notifications}) {
+    if (notifications.newCount > 0) {
+      const String prefixNotificationContent =
+          "screens.sale.notification.content";
+      // NotificationDataModel newNotification = notifications.data.first;
+      String title = 'screens.sale.notification.title'.tr();
+      // String invoiceTitle =
+      //     '${ConvertDateTime.formatTimeStampToString(newNotification.date ?? DateTime.now(), true)}\n${newNotification.department?.name} - ${newNotification.table?.name}';
+      String body = '$prefixNotificationContent.invoice.static'.tr();
+      // switch (notifications.type) {
+      //   case 'IO':
+      //     title = invoiceTitle;
+      //     body =
+      //         "${'$prefixNotificationContent.invoice.itemsOrdered'.tr()} ${newNotification.refNo}";
+      //     break;
+      //   case 'RP':
+      //     title = invoiceTitle;
+      //     body =
+      //         "${'$prefixNotificationContent.invoice.requestPayment'.tr()} ${newNotification.refNo}";
+      //     break;
+      //   case 'CM':
+      //     title =
+      //         '${newNotification.floorName} - ${newNotification.tableName} | ${newNotification.itemName} | ${newNotification.qty}';
+      //     // if (notification.extraItemDoc != null) {
+      //     //   for (int i = 0; i < notification.extraItemDoc!.length; i++) {
+      //     //     body = ' -${notification.extraItemDoc![i].itemName}';
+      //     //   }
+      //     // }
+      //     break;
+      //   default:
+      //     title = '${newNotification.itemName}';
+      //     body = '$prefixNotificationContent.stock'
+      //         .tr(namedArgs: {'qty': '${newNotification.qty}'});
+      // }
+      NotificationService.showInstantNotification(
+        title: title,
+        body: body,
+      );
     }
-    print('from server : $notificationIdsFromServer');
-    print('from server count : ${notificationIdsFromServer.length}');
-    print('local: $localNotificationIds');
-    print('localNotification count: ${localNotificationIds.length}');
   }
 
   List<String> getAllowNotificationTypes({required BuildContext context}) {
@@ -168,7 +187,8 @@ class NotificationProvider extends ChangeNotifier {
         notificationType: _notificationType,
         allowNotificationTypes: _allowNotificationTypes,
         depIds: _allowDepIds,
-        branchId: _branchId);
+        branchId: _branchId,
+        userId: _currentUserId);
     _isFiltering = false;
     notifyListeners();
   }
@@ -227,16 +247,17 @@ class NotificationProvider extends ChangeNotifier {
       {required String notificationType,
       required List<String> allowNotificationTypes,
       required List<String> depIds,
-      required String branchId}) async {
+      required String branchId,
+      required String userId}) async {
     Map<String, dynamic> selector = {
       'type': notificationType,
       'allowTypes': allowNotificationTypes,
       'depIds': depIds,
       'branchId': branchId,
-      'currentDate': DateTime.now(),
+      'userId': userId
     };
     final Map<String, dynamic> result =
-        await meteor.call('rest.mobile.findNotifications', args: [selector]);
+        await meteor.call('rest.findNotifications', args: [selector]);
     late NotificationModel toModel;
     if (result.isNotEmpty) {
       toModel = NotificationModel.fromJson(result);
