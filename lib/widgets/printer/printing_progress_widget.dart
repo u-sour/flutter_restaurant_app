@@ -12,17 +12,19 @@ class PrintingProgressWidget extends StatefulWidget {
 }
 
 class _PrintingProgressWidgetState extends State<PrintingProgressWidget> {
+  late PrinterProvider readPrinterProvider;
   final String dialogPrinterPrefix = 'screens.printer.dialog';
   @override
   void initState() {
     super.initState();
+    readPrinterProvider = context.read<PrinterProvider>();
+    readPrinterProvider.init();
     _asyncMethods();
   }
 
   _asyncMethods() async {
     late SnackBar snackBar;
-    final result = await context.read<PrinterProvider>().btPrinterPrinting();
-    await Future.delayed(const Duration(seconds: 4));
+    final result = await readPrinterProvider.btPrinterPrinting();
     if (!mounted) return;
     Navigator.of(context).pop();
     snackBar =

@@ -6,13 +6,15 @@ import '../utils/alert/awesome_snack_bar_utils.dart';
 
 class PrinterProvider extends ChangeNotifier {
   late ReceiptController controller;
-  double _progress = 0;
+  late double _progress;
+  double get progress => _progress;
   final String _alertPrefix = 'screens.printer.alert';
 
-  //getter
-  double get progress => _progress;
+  void init() {
+    _progress = 0.0;
+  }
 
-  Future<ResponseModel> btPrinterPrinting({int addFeeds = 2}) async {
+  Future<ResponseModel> btPrinterPrinting({int addFeeds = 5}) async {
     final PrinterStorage printerStorage = PrinterStorage();
     final BluetoothDevice btPrinter = await printerStorage.getBTPrinter();
     final String printerPaperSize = await printerStorage.getPrinterPaperSize();
@@ -27,7 +29,7 @@ class PrinterProvider extends ChangeNotifier {
       late PaperSize paperSize;
       switch (printerPaperSize) {
         case '80mm':
-          paperSize = PaperSize.mm58;
+          paperSize = PaperSize.mm80;
           break;
         default:
           paperSize = PaperSize.mm58;
