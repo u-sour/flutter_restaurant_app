@@ -4,13 +4,13 @@ import '../utils/constants.dart';
 class DrawerHeaderWidget extends StatelessWidget {
   final String company;
   final String address;
-  final String telephone;
+  final String? telephone;
   final double height;
   const DrawerHeaderWidget({
     super.key,
     this.company = 'FLUTTER',
     this.address = 'Mountain View, California, United States',
-    this.telephone = '(650) 253-0000',
+    this.telephone,
     this.height = 250.0,
   });
 
@@ -34,11 +34,12 @@ class DrawerHeaderWidget extends StatelessWidget {
             style: theme.textTheme.bodyMedium,
             textAlign: TextAlign.center,
           ),
-          Text(
-            telephone,
-            style: theme.textTheme.bodyMedium,
-            textAlign: TextAlign.center,
-          ),
+          if (telephone != null)
+            Text(
+              telephone!,
+              style: theme.textTheme.bodyMedium,
+              textAlign: TextAlign.center,
+            ),
         ],
       )),
     );

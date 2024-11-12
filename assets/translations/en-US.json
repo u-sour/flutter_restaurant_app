@@ -308,6 +308,230 @@
         }
       }
     },
+    "reportTemplate": {
+      "layouts": {
+        "title": "Layouts",
+        "children": {
+          "header": "Header",
+          "filter": "Filter",
+          "content": "Content",
+          "footer": "Footer",
+          "signature": {
+            "title": "Signature",
+            "children": {
+              "approved": "Approved",
+              "verified": "Verified",
+              "prepared": "Prepared"
+            }
+          },
+          "timestamp": { "title": "Timestamp", "children": { "by": "By" } }
+        }
+      },
+      "actions": {
+        "print": "Print"
+      }
+    },
+    "reports": {
+      "title": "REPORTS",
+      "customer": {
+        "title": "Customer",
+        "children": {
+          "expansionFormTitle": "Form",
+          "sale": {
+            "title": "Sale",
+            "reportTitle": "SALE REPORT",
+            "form": {
+              "reportPeriod": "Report period",
+              "departments": "Departments",
+              "customers": "Customers",
+              "employees": "Employees",
+              "status": {
+                "title": "Status",
+                "children": {
+                  "open": "Open",
+                  "partial": "Partial",
+                  "closed": "Closed",
+                  "cancel": "Cancel"
+                }
+              },
+              "groupBy": {
+                "title": "Group By",
+                "children": {
+                  "invoice": "Invoice",
+                  "date": "Date",
+                  "employee": "Employee"
+                }
+              },
+              "summary": "Summary",
+              "paperSize": "Paper Size"
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "location": "LOCATION",
+                "invoice": "INVOICE",
+                "refInvoice": "REF.INVOICE",
+                "date": "DATE",
+                "department": "DEPARTMENT",
+                "employee": "EMPLOYEE",
+                "customer": "CUSTOMER",
+                "status": "STATUS",
+                "subTotal": "SUB TOTAL",
+                "discountRate": "DISCOUNT RATE",
+                "discountAmount": "DISCOUNT AMOUNT",
+                "total": "TOTAL"
+              },
+              "summaryHeader": {
+                "description": "DESCRIPTION",
+                "total": "TOTAL"
+              },
+              "summaryContent": {
+                "totalSale": "បានលក់ជាក់ស្ដែង",
+                "openSale": "កំពុងលក់",
+                "partialSale": "ជំពាក់",
+                "receivedSale": "បានបញ្ចប់ និង បង់ប្រាក់"
+              },
+              "footer": {
+                "subTotal": "Sub Total: ",
+                "discount": "Discount: ",
+                "totalKHR": "Total (៛): ",
+                "totalUSD": "Total ($): ",
+                "totalTHB": "Total (฿): "
+              }
+            }
+          },
+          "saleDetail": {
+            "title": "Sale Detail",
+            "reportTitle": "SALE DETAIL REPORT",
+            "form": {
+              "reportPeriod": "Report period",
+              "employees": "Employees",
+              "categories": "Categories",
+              "groups": "Groups",
+              "products": "Products",
+              "departments": "Departments",
+              "groupBy": {
+                "title": "Group By",
+                "children": {
+                  "item": "Item",
+                  "date": "Date",
+                  "employee": "Employee"
+                }
+              },
+              "paperSize": "Paper Size",
+              "discountOnly": "Discount Only"
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "item": "ITEM",
+                "invoice": "INVOICE",
+                "date": "DATE",
+                "department": "DEPARTMENT",
+                "employee": "EMPLOYEE",
+                "price": "PRICE",
+                "qty": "QUANTITY",
+                "discount": "DISCOUNT",
+                "amount": "TOTAL"
+              },
+              "footer": {
+                "qty": "Quantity: ",
+                "discount": "Discount: ",
+                "totalKHR": "Total (៛): ",
+                "totalUSD": "Total ($): ",
+                "totalTHB": "Total (฿): "
+              }
+            }
+          },
+          "profitAndLossByItem": {
+            "title": "Profit And Loss By Item",
+            "reportTitle": "PROFIT AND LOSS BY ITEM REPORT",
+            "form": {
+              "reportPeriod": "Report period",
+              "categories": "Categories",
+              "product": "Product",
+              "department": "Department",
+              "employee": "Employee"
+            },
+            "dataTable": {
+              "header": {
+                "category": "CATEGORY",
+                "name": "NAME",
+                "date": "DATE",
+                "qty": "QTY",
+                "cost": "COST",
+                "totalCost": "TOTAL COST",
+                "price": "PRICE",
+                "totalPrice": "TOTAL PRICE",
+                "discount": "DISCOUNT",
+                "total": "TOTAL",
+                "profit": "PROFIT"
+              },
+              "footer": {
+                "totalQty": "Total Qty:",
+                "totalCost": "Total Cost:",
+                "totalPrice": "Total Price:",
+                "totalDiscount": "Total Discount:",
+                "totalProfitKHR": "Total Profit (៛):",
+                "totalProfitUSD": "Total Profit ($):",
+                "totalProfitTHB": "Total Profit (฿):"
+              }
+            }
+          },
+          "saleReceipt": {
+            "title": "Sale Receipt",
+            "reportTitle": "SALE RECEIPT REPORT",
+            "form": {
+              "reportPeriod": "Report period",
+              "customers": "Customers",
+              "employees": "Employees",
+              "departments": "Departments",
+              "paymentBy": "Payment By",
+              "status": "Status",
+              "orderBy": {
+                "title": "Order By",
+                "children": {
+                  "date": "Date",
+                  "invoice": "Invoice",
+                  "department": "Department",
+                  "customer": "Customer",
+                  "employee": "Employee",
+                  "status": "Status"
+                }
+              }
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "invoice": "INVOICE",
+                "date": "DATE",
+                "department": "DEPARTMENT",
+                "employee": "EMPLOYEE",
+                "customer": "CUSTOMER",
+                "status": "STATUS",
+                "paymentBy": "PAYMENT BY",
+                "memo": "MEMO",
+                "openAmount": "OPEN AMOUNT",
+                "receivedAmount": "RECEIVED AMOUNT",
+                "fee": "FEE",
+                "balance": "BALANCE"
+              },
+              "footer": {
+                "openAmount": "Open Amount: ",
+                "receivedAmount": "Received Amount: ",
+                "fee": "Fee: ",
+                "balance": "Balance: "
+              }
+            }
+          }
+        }
+      }
+    },
+    "formBuilderInputDecoration": {
+      "search": "Search ...",
+      "selectOne": "Select One",
+      "selectAll": "Select All"
+    },
     "formBuilder": {
       "title": "FORM BUILDER",
       "children": {

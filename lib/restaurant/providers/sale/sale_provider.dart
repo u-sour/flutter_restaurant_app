@@ -11,7 +11,7 @@ import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
-import '../../../screens/app_screen.dart';
+import '../../../widgets/screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/convert_date_time.dart';
@@ -1507,9 +1507,9 @@ class SaleProvider extends ChangeNotifier {
                 onInsertPressed: () async {
                   // station list
                   // Note: this feature not add yet with Module "multi-printers"
-                  List<dynamic> stationList =
-                      await findSaleDetailGroupByStationMethod(
-                          saleDetailIds: saleDetailDraftItemIds);
+                  // List<dynamic> stationList =
+                  //     await findSaleDetailGroupByStationMethod(
+                  //         saleDetailIds: saleDetailDraftItemIds);
                   // open confirm dialog
                   if (context.mounted) {
                     await GlobalService.openDialog(

@@ -12,8 +12,8 @@ import '../../../providers/sale/categories/sale_categories_provider.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/debounce.dart';
-import '../../empty_data_widget.dart';
-import '../../loading_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
+import '../../../../widgets/loading_widget.dart';
 import '../product-group/sale_product_group_widget.dart';
 import 'sale_product_item_widget.dart';
 

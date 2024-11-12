@@ -8,7 +8,7 @@ import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/data-table/data_table_column_model.dart';
 import '../../../providers/sale/sale_provider.dart';
-import '../../empty_data_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
 import '../../format_currency_widget.dart';
 import '../detail/combo-items/sale_detail_combo_items_widget.dart';
 import '../detail/extra-items/sale_detail_extra_items_widget.dart';

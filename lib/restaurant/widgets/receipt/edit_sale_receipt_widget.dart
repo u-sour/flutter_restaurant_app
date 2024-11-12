@@ -14,9 +14,9 @@ import '../../models/sale/receipt/edit_sale_receipt_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/sale_provider.dart';
 import '../../utils/constants.dart';
-import '../empty_data_widget.dart';
+import '../../../widgets/empty_data_widget.dart';
 import '../format_currency_widget.dart';
-import '../loading_widget.dart';
+import '../../../widgets/loading_widget.dart';
 
 class EditSaleReceiptWidget extends StatefulWidget {
   final GlobalKey<FormBuilderState> fbEditSaleReceiptKey;

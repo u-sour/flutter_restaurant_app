@@ -1,5 +1,26 @@
 import 'package:flutter/material.dart';
 import '../models/select-option/select_option_model.dart';
+import '../router/route_utils.dart';
+
+class AppNavigation {
+  AppNavigation._();
+
+  // routes for drawer and bottom navigation bar
+  static List<SCREENS> drawer = [
+    SCREENS.dashboard,
+    SCREENS.reports,
+    SCREENS.profile,
+    SCREENS.settings,
+    SCREENS.logout
+  ];
+
+  static List<SCREENS> bottomNavBar = [
+    SCREENS.dashboard,
+    SCREENS.reports,
+    SCREENS.profile,
+    SCREENS.settings,
+  ];
+}
 
 class AppThemeColors {
   AppThemeColors._();
@@ -103,7 +124,9 @@ class AppStyleDefaultProperties {
 
 class AppDefaultIcons {
   AppDefaultIcons._();
-
+  // Data
+  static const IconData loading = Icons.on_device_training;
+  static const IconData emptyData = Icons.storage;
   // Login
   static const IconData login = Icons.login;
   static const IconData username = Icons.face;
@@ -147,6 +170,8 @@ class AppDefaultIcons {
   static const IconData submit = Icons.done;
   // Dialog
   static const IconData close = Icons.close;
+  // Form builder
+  static const IconData search = Icons.search;
 }
 
 class AppThemes {

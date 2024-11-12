@@ -10,8 +10,8 @@ import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../dialog_widget.dart';
-import '../../empty_data_widget.dart';
-import '../../loading_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
+import '../../../../widgets/loading_widget.dart';
 import 'sale_detail_data_table_operations_widget.dart';
 import '../../form_builder_custom_touch_spin.dart';
 

@@ -19,9 +19,9 @@ import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../dialog_widget.dart';
-import '../../empty_data_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
 import '../../format_currency_widget.dart';
-import '../../loading_widget.dart';
+import '../../../../widgets/loading_widget.dart';
 import '../invoices/sale_invoice_widget.dart';
 
 class EditSaleDetailFooterActionWidget extends StatelessWidget {
