@@ -40,6 +40,7 @@ dependencies:
   provider: ^6.1.2
   shared_preferences: ^2.2.3
   easy_localization: ^3.0.7
+  dart_date: ^1.4.0
   flutter_form_builder: ^9.3.0
   form_builder_extra_fields: ^10.2.0
   form_builder_validators: ^11.0.0
@@ -68,6 +69,7 @@ dependencies:
   dotted_decoration: ^2.0.0
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
+  two_dimensional_scrollables: ^0.3.3
 dev_dependencies:
   flutter_test:
     sdk: flutter

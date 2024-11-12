@@ -7,8 +7,8 @@ import '../../models/notification/notification_model.dart';
 import '../../providers/sale/notification_provider.dart';
 import '../../services/user_service.dart';
 import '../../utils/notification/notification_utils.dart';
-import '../empty_data_widget.dart';
-import '../loading_widget.dart';
+import '../../../widgets/empty_data_widget.dart';
+import '../../../widgets/loading_widget.dart';
 import 'notification_content_list_widget.dart';
 
 class NotificationContentWidget extends StatelessWidget {

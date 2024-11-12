@@ -5,6 +5,7 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
 import '../router/route_utils.dart';
 import '../providers/route_provider.dart';
+import '../utils/constants.dart';
 
 class BottomNavBarWidget extends StatefulWidget {
   final StatefulNavigationShell navigationShell;
@@ -23,23 +24,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
-    final List<SCREENS> screens = SCREENS.values
-        .where((screen) =>
-            screen.toPath != "/connection" &&
-            screen.toPath != "/splash" &&
-            screen.toPath != "/start" &&
-            screen.toPath != "my-profile" &&
-            screen.toPath != "form-builder-default" &&
-            screen.toPath != "form-builder-validation" &&
-            screen.toPath != "/login" &&
-            screen.toPath != "/logout" &&
-            screen.toPath != "/printer" &&
-            screen.toPath != "/restaurant/sale-table" &&
-            screen.toPath != "/restaurant/sale" &&
-            screen.toPath != "/restaurant/invoice-to-kitchen" &&
-            screen.toPath != "/restaurant/invoice" &&
-            screen.toPath != "/error")
-        .toList();
+    final List<SCREENS> screens = AppNavigation.bottomNavBar;
     // Tabs
     final List<GButton> tabs = [];
     for (int i = 0; i < screens.length; i++) {

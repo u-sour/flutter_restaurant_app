@@ -40,7 +40,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
             defaultBaseCurrency == 'KHR' ? -decimalNumber : decimalNumber);
     TextStyle currencySymbolStyle = theme.textTheme.bodySmall!.copyWith(
         fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
-        color: color ?? theme.colorScheme.onPrimary,
+        color: color ?? theme.colorScheme.onSurface,
         fontWeight: fontWeight,
         height: defaultBaseCurrency == 'KHR' ? 0.1 : null);
     return Row(
@@ -56,7 +56,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
               decimalNumber: decimalNumber),
           style: theme.textTheme.bodySmall!.copyWith(
             fontSize: priceFontSize,
-            color: color ?? theme.colorScheme.onPrimary,
+            color: color ?? theme.colorScheme.onSurface,
             fontWeight: fontWeight,
           ),
           overflow: TextOverflow.ellipsis,

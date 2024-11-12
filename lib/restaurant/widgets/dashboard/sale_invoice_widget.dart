@@ -8,7 +8,7 @@ import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/notification_provider.dart';
 import '../../utils/debounce.dart';
-import '../loading_widget.dart';
+import '../../../widgets/loading_widget.dart';
 import 'sale_invoice_content_widget.dart';
 
 class SaleInvoiceWidget extends StatelessWidget {

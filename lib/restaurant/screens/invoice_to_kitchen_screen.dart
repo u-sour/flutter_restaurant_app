@@ -9,7 +9,7 @@ import '../../widgets/printer/printing_progress_widget.dart';
 import '../models/sale/detail/sale_detail_model.dart';
 import '../providers/invoice/invoice_provider.dart';
 import '../widgets/invoice-to-kitchen-template/invoice_to_kitchen_template_widget.dart';
-import '../widgets/loading_widget.dart';
+import '../../widgets/loading_widget.dart';
 
 class InvoiceToKitchenScreen extends StatefulWidget {
   final String invoiceId;

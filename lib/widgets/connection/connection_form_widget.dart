@@ -1,7 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
-import '../../screens/app_screen.dart';
+import '../screens/app_screen.dart';
 import '../../services/global_service.dart';
 import '../../utils/constants.dart';
 import 'setup_ip_address_form_widget.dart';

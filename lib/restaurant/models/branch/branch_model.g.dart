@@ -15,8 +15,8 @@ BranchModel _$BranchModelFromJson(Map<String, dynamic> json) {
     id: json['_id'] as String,
     code: json['code'] as String,
     localName: json['localName'] as String,
-    localAddress: json['localAddress'] as String,
-    telephone: json['telephone'] as String,
+    localAddress: json['localAddress'] as String?,
+    telephone: json['telephone'] as String?,
     status: json['status'] as String,
   );
 }

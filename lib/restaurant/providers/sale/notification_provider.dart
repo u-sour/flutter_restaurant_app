@@ -6,9 +6,8 @@ import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
-import '../../../screens/app_screen.dart';
+import '../../../widgets/screens/app_screen.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
-import '../../../utils/convert_date_time.dart';
 import '../../models/notification/notification_data_model.dart';
 import '../../models/notification/notification_model.dart';
 import '../../models/user/user_profile_model.dart';
@@ -104,14 +103,14 @@ class NotificationProvider extends ChangeNotifier {
       _notificationListener = _notificationListener =
           meteor.collection('rest_notifications').listen((event) {
         debounce.run(() async {
-          _notifications = await fetchNotification(
-              notificationType: _notificationType,
-              allowNotificationTypes: _allowNotificationTypes,
-              depIds: _allowDepIds,
-              branchId: _branchId,
-              userId: _currentUserId);
-          // show notification
-          showNotification(notifications: _notifications);
+          // _notifications = await fetchNotification(
+          //     notificationType: _notificationType,
+          //     allowNotificationTypes: _allowNotificationTypes,
+          //     depIds: _allowDepIds,
+          //     branchId: _branchId,
+          //     userId: _currentUserId);
+          // // show notification
+          // showNotification(notifications: _notifications);
           _isLoading = false;
           notifyListeners();
         });

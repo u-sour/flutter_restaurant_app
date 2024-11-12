@@ -12,8 +12,8 @@ import '../models/sale-table/table_model.dart';
 import '../providers/sale-table/sale_table_provider.dart';
 import '../utils/debounce.dart';
 import '../widgets/department_widget.dart';
-import '../widgets/empty_data_widget.dart';
-import '../widgets/loading_widget.dart';
+import '../../widgets/empty_data_widget.dart';
+import '../../widgets/loading_widget.dart';
 import '../widgets/sale-table/sale_table_app_bar_widget.dart';
 import '../widgets/sale-table/sale_table_widget.dart';
 

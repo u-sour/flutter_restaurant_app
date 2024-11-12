@@ -16,7 +16,7 @@ import '../providers/invoice/invoice_provider.dart';
 import '../providers/sale/sale_provider.dart';
 import '../widgets/invoice-template/invoice_template_widget.dart';
 import '../widgets/invoice/app-bar/invoice_app_bar_widget.dart';
-import '../widgets/loading_widget.dart';
+import '../../widgets/loading_widget.dart';
 
 class InvoiceScreen extends StatefulWidget {
   final String invoiceId;
@@ -75,7 +75,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
-    print(widget.fromDashboard);
     return Scaffold(
       appBar: InvoiceAppBarWidget(
         title: SCREENS.printer.toTitle,

@@ -7,8 +7,8 @@ class BranchModel {
   final String id;
   final String code;
   final String localName;
-  final String localAddress;
-  final String telephone;
+  final String? localAddress;
+  final String? telephone;
   final String status;
 
   const BranchModel({

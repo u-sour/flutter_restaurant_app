@@ -305,6 +305,230 @@
         }
       }
     },
+    "reportTemplate": {
+      "layouts": {
+        "title": "ប្លង់",
+        "children": {
+          "header": "ផ្នែកខាងលើ",
+          "filter": "ច្រោះ",
+          "content": "ខ្លឹមសារ",
+          "footer": "ផ្នែកខាងក្រោយ",
+          "signature": {
+            "title": "ហត្ថលេខា",
+            "children": {
+              "approved": "បានអនុម័ត",
+              "verified": "ផ្ទៀងផ្ទាត់",
+              "prepared": "បានរៀបចំ"
+            }
+          },
+          "timestamp": { "title": "ពេលវេលា", "children": { "by": "ដោយ" } }
+        }
+      },
+      "actions": {
+        "print": "បោះពុម្ព"
+      }
+    },
+    "reports": {
+      "title": "របាយការណ៍",
+      "customer": {
+        "title": "អតិថិជន",
+        "children": {
+          "expansionFormTitle": "ទម្រង់",
+          "sale": {
+            "title": "លក់",
+            "reportTitle": "របាយការណ៍លក់",
+            "form": {
+              "reportPeriod": "រយៈពេល",
+              "departments": "នាយកដ្ឋាន",
+              "customers": "អតិថិជន",
+              "employees": "បុគ្គលិក",
+              "status": {
+                "title": "ស្ថានភាព",
+                "children": {
+                  "open": "កំពុងលក់",
+                  "partial": "ជំពាក់",
+                  "closed": "បង់ប្រាក់រួច",
+                  "cancel": "បោះបង់"
+                }
+              },
+              "groupBy": {
+                "title": "តាមក្រុម",
+                "children": {
+                  "invoice": "វិក្កយបត្រ",
+                  "date": "កាលបរិច្ឆេទ",
+                  "employee": "បុគ្គលិក"
+                }
+              },
+              "summary": "សង្ខេប",
+              "paperSize": "ទំហំក្រដាស"
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "location": "ទីតាំង",
+                "invoice": "វិក្កយបត្រ",
+                "refInvoice": "វិក្កយបត្រយោង",
+                "date": "កាលបរិច្ឆេទ",
+                "department": "នាយកដ្ឋាន",
+                "employee": "បុគ្គលិក",
+                "customer": "អតិថិជន",
+                "status": "ស្ថានភាព",
+                "subTotal": "សរុបរង",
+                "discountRate": "បញ្ចុះតម្លៃ (%)",
+                "discountAmount": "បញ្ចុះតម្លៃ (ប្រាក់)",
+                "total": "សរុប"
+              },
+              "summaryHeader": {
+                "description": "បរិយាយ",
+                "total": "សរុប"
+              },
+              "summaryContent": {
+                "totalSale": "បានលក់ជាក់ស្ដែង",
+                "openSale": "កំពុងលក់",
+                "partialSale": "ជំពាក់",
+                "receivedSale": "បានបញ្ចប់ និង បង់ប្រាក់"
+              },
+              "footer": {
+                "subTotal": "សរុបរង: ",
+                "discount": "បញ្ចុះតម្លៃ: ",
+                "totalKHR": "សរុប (៛): ",
+                "totalUSD": "សរុប ($): ",
+                "totalTHB": "សរុប (฿): "
+              }
+            }
+          },
+          "saleDetail": {
+            "title": "លក់លម្អិត",
+            "reportTitle": "របាយការណ៍លក់លម្អិត",
+            "form": {
+              "reportPeriod": "រយៈពេល",
+              "employees": "បុគ្គលិក",
+              "categories": "ផ្នែក",
+              "groups": "ក្រុម",
+              "products": "ទំនិញ",
+              "departments": "នាយកដ្ឋាន",
+              "groupBy": {
+                "title": "តាមក្រុម",
+                "children": {
+                  "item": "ទំនិញ",
+                  "date": "កាលបរិច្ឆេទ",
+                  "employee": "បុគ្គលិក"
+                }
+              },
+              "paperSize": "ទំហំក្រដាស",
+              "discountOnly": "យកតែបញ្ចុះតម្លៃ"
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "item": "ទំនិញ",
+                "invoice": "វិក្កយបត្រ",
+                "date": "កាលបរិច្ឆេទ",
+                "department": "នាយកដ្ឋាន",
+                "employee": "បុគ្គលិក",
+                "price": "តមៃ្ល",
+                "qty": "ចំនួន",
+                "discount": "បញ្ចុះតម្លៃ",
+                "amount": "សរុប"
+              },
+              "footer": {
+                "qty": "ចំនួន: ",
+                "discount": "បញ្ចុះតម្លៃ: ",
+                "totalKHR": "សរុប (៛): ",
+                "totalUSD": "សរុប ($): ",
+                "totalTHB": "សរុប (฿): "
+              }
+            }
+          },
+          "profitAndLossByItem": {
+            "title": "ចំនេញខាតតាមមុខទំនិញ",
+            "reportTitle": "របាយការណ៍ចំនេញខាតតាមមុខទំនិញ",
+            "form": {
+              "reportPeriod": "រយៈពេល",
+              "categories": "ផ្នែក",
+              "product": "ទំនិញ",
+              "department": "នាយកដ្ឋាន",
+              "employee": "បុគ្គលិក"
+            },
+            "dataTable": {
+              "header": {
+                "category": "ផែ្នក",
+                "name": "ឈ្មោះ",
+                "date": "កាលបរិច្ឆេទ",
+                "qty": "ចំនួន",
+                "cost": "ថ្លៃដើម",
+                "totalCost": "ថ្លៃដើមសរុប",
+                "price": "តមៃ្ល",
+                "totalPrice": "តម្លៃសរុប",
+                "discount": "បញ្ចុះតម្លៃ",
+                "total": "សរុប",
+                "profit": "ចំនេញ"
+              },
+              "footer": {
+                "totalQty": "ចំនួនទំនិញសរុប:",
+                "totalCost": "ថ្លៃដើមសរុប:",
+                "totalPrice": "តម្លៃសរុប:",
+                "totalDiscount": "បញ្ចុះតម្លៃសរុប:",
+                "totalProfitKHR": "ចំនេញសរុប (៛):",
+                "totalProfitUSD": "ចំនេញសរុប ($):",
+                "totalProfitTHB": "ចំនេញសរុប (฿):"
+              }
+            }
+          },
+          "saleReceipt": {
+            "title": "ទទួលបា្រក់",
+            "reportTitle": "របាយការណ៍ទទួលប្រាក់",
+            "form": {
+              "reportPeriod": "រយៈពេល",
+              "customers": "អតិថិជន",
+              "employees": "បុគ្គលិក",
+              "departments": "នាយកដ្ឋាន",
+              "paymentBy": "បង់ប្រាក់តាម",
+              "status": "ស្ថានភាព",
+              "orderBy": {
+                "title": "តម្រៀបតាម",
+                "children": {
+                  "date": "កាលបរិច្ឆេទ",
+                  "invoice": "វិក្កយបត្រ",
+                  "department": "នាយកដ្ឋាន",
+                  "customer": "អតិថិជន",
+                  "employee": "បុគ្គលិក",
+                  "status": "ស្ថានភាព"
+                }
+              }
+            },
+            "dataTable": {
+              "header": {
+                "no": "#",
+                "invoice": "វិក្កយបត្រ",
+                "date": "កាលបរិច្ឆេទ",
+                "department": "នាយកដ្ឋាន",
+                "employee": "បុគ្គលិក",
+                "customer": "អតិថិជន",
+                "status": "ស្ថានភាព",
+                "paymentBy": "បង់ប្រាក់តាម",
+                "memo": "បរិយាយ",
+                "openAmount": "បា្រក់ត្រូវបង់",
+                "receivedAmount": "បា្រក់បានទទួល",
+                "fee": "ថ្លៃសេវា",
+                "balance": "បា្រក់ជំពាក់"
+              },
+              "footer": {
+                "openAmount": "បា្រក់ត្រូវបង់: ",
+                "receivedAmount": "បា្រក់បានទទួល: ",
+                "fee": "ថ្លៃសេវា: ",
+                "balance": "បា្រក់ជំពាក់: "
+              }
+            }
+          }
+        }
+      }
+    },
+    "formBuilderInputDecoration": {
+      "search": "ស្វែងរក ...",
+      "selectOne": "ជ្រើសរើសយកមួយ",
+      "selectAll": "ជ្រើសរើសយកទាំងអស់"
+    },
     "formBuilder": {
       "title": "បង្កើតទម្រង់បែបបទ",
       "children": {
