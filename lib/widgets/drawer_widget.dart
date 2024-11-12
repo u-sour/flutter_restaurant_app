@@ -6,6 +6,7 @@ import '../restaurant/models/company/company_model.dart';
 import '../router/route_utils.dart';
 import '../providers/auth_provider.dart';
 import '../providers/route_provider.dart';
+import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
 import 'drawer_header_widget.dart';
 import 'drawer_list_tile_widget.dart';
@@ -15,26 +16,10 @@ class DrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<SCREENS> screens = SCREENS.values
-        .where((screen) =>
-            screen.toPath != "/connection" &&
-            screen.toPath != "/splash" &&
-            screen.toPath != "/start" &&
-            screen.toPath != "my-profile" &&
-            screen.toPath != "form-builder-default" &&
-            screen.toPath != "form-builder-validation" &&
-            screen.toPath != "/login" &&
-            screen.toPath != "/logout" &&
-            screen.toPath != "/printer" &&
-            screen.toPath != "/restaurant/sale-table" &&
-            screen.toPath != "/restaurant/sale" &&
-            screen.toPath != "/restaurant/sale" &&
-            screen.toPath != "/restaurant/invoice-to-kitchen" &&
-            screen.toPath != "/restaurant/invoice" &&
-            screen.toPath != "/error")
+    final List<SCREENS> screens = AppNavigation.drawer
+        .where((screen) => screen != SCREENS.logout)
         .toList();
-    final SCREENS loginScreen =
-        SCREENS.values.firstWhere((screen) => screen.toPath == "/logout");
+    final SCREENS logoutScreen = AppNavigation.drawer.last;
     return Drawer(
         child: Column(
       children: [
@@ -75,8 +60,8 @@ class DrawerWidget extends StatelessWidget {
           ),
         ),
         DrawerListTileWidget(
-            icon: loginScreen.toIcon,
-            title: loginScreen.toTitle,
+            icon: logoutScreen.toIcon,
+            title: logoutScreen.toTitle,
             onTap: () => context.read<AuthProvider>().logOut()),
       ],
     ));

@@ -9,12 +9,12 @@ import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/sale_provider.dart';
-import '../../services/data-table-sources/sale_data_table_source.dart';
+import '../../services/data-table-sources/sale_invoice_dt_source.dart';
 import '../../services/user_service.dart';
 import '../../utils/constants.dart';
 import '../../utils/dashboard/dashboard_utils.dart';
-import '../empty_data_widget.dart';
-import '../loading_widget.dart';
+import '../../../widgets/empty_data_widget.dart';
+import '../../../widgets/loading_widget.dart';
 
 class SaleInvoiceDataTableWidget extends StatelessWidget {
   const SaleInvoiceDataTableWidget({super.key});
@@ -27,17 +27,17 @@ class SaleInvoiceDataTableWidget extends StatelessWidget {
         selector: (context, state) => state.saleInvoice,
         builder: (context, saleInvoice, child) {
           final dtSource =
-              SaleInvoiceDataSource(sales: saleInvoice.data, context: context);
+              SaleInvoiceDTSource(sales: saleInvoice.data, context: context);
           if (saleInvoice.data.isNotEmpty) {
-            return LayoutBuilder(builder: (context, constraint) {
+            return LayoutBuilder(builder: (context, constraints) {
               return Column(children: [
                 SizedBox(
-                  height: constraint.maxHeight - dataPagerHeight,
-                  width: constraint.maxWidth,
+                  height: constraints.maxHeight - dataPagerHeight,
+                  width: constraints.maxWidth,
                   child: SaleInvoiceDataTableBuildDataGridWidget(
                     source: dtSource,
                     readDashboardProvider: readDashboardProvider,
-                    constraints: constraint,
+                    constraints: constraints,
                   ),
                 ),
                 SizedBox(
@@ -76,7 +76,7 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
     required this.constraints,
   });
 
-  final SaleInvoiceDataSource source;
+  final SaleInvoiceDTSource source;
   final DashboardProvider readDashboardProvider;
   final BoxConstraints constraints;
 

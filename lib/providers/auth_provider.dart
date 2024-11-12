@@ -3,7 +3,7 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
 import '../models/auth/login_model.dart';
 import '../models/servers/response_model.dart';
-import '../screens/app_screen.dart';
+import '../widgets/screens/app_screen.dart';
 import '../storages/auth_storage.dart';
 import '../utils/alert/awesome_snack_bar_utils.dart';
 

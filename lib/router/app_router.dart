@@ -1,31 +1,35 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/screens/invoice_screen.dart';
 import '../restaurant/screens/invoice_to_kitchen_screen.dart';
+import '../restaurant/screens/report_screen.dart';
+import '../restaurant/screens/reports/sale_report_screen.dart';
+import '../restaurant/screens/reports/sale_detail_report_screen.dart';
+import '../restaurant/screens/reports/sale_receipt_report_screen.dart';
+import '../restaurant/screens/reports/sale_detail_profit_and_loss_by_item_report_screen.dart';
 import 'route_utils.dart';
 import '../restaurant/screens/sale_table_screen.dart';
-import '../screens/connection_screen.dart';
+import '../widgets/screens/connection_screen.dart';
 import '../storages/connection_storage.dart';
 import '../providers/app_provider.dart';
-import '../screens/error_screen.dart';
-import '../screens/main_wrapper_screen.dart';
-import '../screens/dashboard_screen.dart';
+import '../widgets/screens/error_screen.dart';
+import '../widgets/screens/main_wrapper_screen.dart';
+import '../widgets/screens/dashboard_screen.dart';
 import '../restaurant/screens/sale_screen.dart';
-import '../screens/form-builder/form_builder_screen.dart';
-import '../screens/form-builder/children/form_builder_default_screen.dart';
-import '../screens/form-builder/children/form_builder_validation_screen.dart';
-import '../screens/profile/profile_screen.dart';
-import '../screens/profile/children/my_profile_screen.dart';
-import '../screens/settings_screen.dart';
-import '../screens/printer/printer_screen.dart';
+// import '../screens/form-builder/form_builder_screen.dart';
+// import '../screens/form-builder/children/form_builder_default_screen.dart';
+// import '../screens/form-builder/children/form_builder_validation_screen.dart';
+import '../widgets/screens/profile/profile_screen.dart';
+import '../widgets/screens/profile/children/my_profile_screen.dart';
+import '../widgets/screens/settings_screen.dart';
+import '../widgets/screens/printer/printer_screen.dart';
 import '../widgets/printer/invoice.dart';
-import '../screens/login_screen.dart';
-import '../screens/onboarding_screen.dart';
-import '../screens/splash_screen.dart';
+import '../widgets/screens/login_screen.dart';
+import '../widgets/screens/onboarding_screen.dart';
+import '../widgets/screens/splash_screen.dart';
 
 class AppRouter {
   late final AppProvider appProvider;
@@ -37,8 +41,10 @@ class AppRouter {
   static final _rootNavigatorKey = GlobalKey<NavigatorState>();
   static final _rootNavigatorHome =
       GlobalKey<NavigatorState>(debugLabel: 'shellHome');
-  static final _rootNavigatorFormBuilder =
-      GlobalKey<NavigatorState>(debugLabel: 'shellFormBuilder');
+  // static final _rootNavigatorFormBuilder =
+  //     GlobalKey<NavigatorState>(debugLabel: 'shellFormBuilder');
+  static final _rootNavigatorReport =
+      GlobalKey<NavigatorState>(debugLabel: 'shellReport');
   static final _rootNavigatorProfile =
       GlobalKey<NavigatorState>(debugLabel: 'shellProfile');
   static final _rootNavigatorSettings =
@@ -64,28 +70,36 @@ class AppRouter {
               ),
             ]),
             // Form Builder
-            StatefulShellBranch(
-                navigatorKey: _rootNavigatorFormBuilder,
-                routes: [
-                  GoRoute(
-                      path: SCREENS.formBuilder.toPath,
-                      name: SCREENS.formBuilder.toName,
-                      builder: (context, state) => const FormBuilderScreen(),
-                      routes: [
-                        GoRoute(
-                          path: SCREENS.formBuilderDefault.toPath,
-                          name: SCREENS.formBuilderDefault.toName,
-                          builder: (context, state) =>
-                              FormBuilderDefaultScreen(key: state.pageKey),
-                        ),
-                        GoRoute(
-                          path: SCREENS.formBuilderValidation.toPath,
-                          name: SCREENS.formBuilderValidation.toName,
-                          builder: (context, state) =>
-                              FormBuilderValidationScreen(key: state.pageKey),
-                        ),
-                      ]),
-                ]),
+            // StatefulShellBranch(
+            //     navigatorKey: _rootNavigatorFormBuilder,
+            //     routes: [
+            //       GoRoute(
+            //           path: SCREENS.formBuilder.toPath,
+            //           name: SCREENS.formBuilder.toName,
+            //           builder: (context, state) => const FormBuilderScreen(),
+            //           routes: [
+            //             GoRoute(
+            //               path: SCREENS.formBuilderDefault.toPath,
+            //               name: SCREENS.formBuilderDefault.toName,
+            //               builder: (context, state) =>
+            //                   FormBuilderDefaultScreen(key: state.pageKey),
+            //             ),
+            //             GoRoute(
+            //               path: SCREENS.formBuilderValidation.toPath,
+            //               name: SCREENS.formBuilderValidation.toName,
+            //               builder: (context, state) =>
+            //                   FormBuilderValidationScreen(key: state.pageKey),
+            //             ),
+            //           ]),
+            //     ]),
+            // Report
+            StatefulShellBranch(navigatorKey: _rootNavigatorReport, routes: [
+              GoRoute(
+                path: SCREENS.reports.toPath,
+                name: SCREENS.reports.toName,
+                builder: (context, state) => const ReportScreen(),
+              ),
+            ]),
             // Profile
             StatefulShellBranch(navigatorKey: _rootNavigatorProfile, routes: [
               GoRoute(
@@ -217,6 +231,27 @@ class AppRouter {
             showEditInvoiceBtn: showEditInvoiceBtn,
           );
         },
+      ),
+      GoRoute(
+        path: SCREENS.saleReport.toPath,
+        name: SCREENS.saleReport.toName,
+        builder: (context, state) => const SaleReportScreen(),
+      ),
+      GoRoute(
+        path: SCREENS.saleDetailReport.toPath,
+        name: SCREENS.saleDetailReport.toName,
+        builder: (context, state) => const SaleDetailReportScreen(),
+      ),
+      GoRoute(
+        path: SCREENS.profitAndLossByItemReport.toPath,
+        name: SCREENS.profitAndLossByItemReport.toName,
+        builder: (context, state) =>
+            const SaleDetailProfitAndLossByItemReportScreen(),
+      ),
+      GoRoute(
+        path: SCREENS.saleReceiptReport.toPath,
+        name: SCREENS.saleReceiptReport.toName,
+        builder: (context, state) => const SaleReceiptReportScreen(),
       ),
       GoRoute(
         path: SCREENS.error.toPath,

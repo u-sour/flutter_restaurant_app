@@ -7,7 +7,7 @@ import 'package:provider/provider.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
-import '../../../screens/app_screen.dart';
+import '../../../widgets/screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/alert.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';

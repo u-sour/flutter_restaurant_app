@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../screens/app_screen.dart';
+import 'screens/app_screen.dart';
 import '../utils/constants.dart';
 
 class NoInternetConnectionWidget extends StatelessWidget {

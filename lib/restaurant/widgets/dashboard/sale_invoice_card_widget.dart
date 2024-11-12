@@ -7,8 +7,8 @@ import '../../models/sale/invoice/sale_invoice_model.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/sale_provider.dart';
 import '../../services/user_service.dart';
-import '../empty_data_widget.dart';
-import '../loading_widget.dart';
+import '../../../widgets/empty_data_widget.dart';
+import '../../../widgets/loading_widget.dart';
 import 'sale_invoice_card_list_widget.dart';
 
 class SaleInvoiceCardWidget extends StatelessWidget {

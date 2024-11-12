@@ -17,7 +17,7 @@ import '../../../services/user_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../confirm_dialog_widget.dart';
-import '../../empty_data_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
 import '../../format_currency_widget.dart';
 import 'combo-items/sale_detail_combo_items_widget.dart';
 import 'edit_sale_detail_data_table_row_widget.dart';

@@ -11,7 +11,7 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../empty_data_widget.dart';
+import '../../../../widgets/empty_data_widget.dart';
 import '../../format_currency_widget.dart';
 import 'edit_sale_detail_operations_data_table_row_widget.dart';
 import 'extra-items/sale_detail_extra_items_widget.dart';

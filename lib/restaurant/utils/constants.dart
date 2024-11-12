@@ -22,8 +22,7 @@ class RestaurantTableStatusColors {
 class RestaurantDefaultIcons {
   //confirmation
   static const IconData confirmation = Icons.quiz_rounded;
-  // loading
-  static const IconData loading = Icons.on_device_training;
+
   // branch
   static const IconData branch = Icons.domain;
   // department
@@ -82,4 +81,9 @@ class RestaurantDefaultIcons {
   static const IconData split = Icons.alt_route;
   static const IconData customerCount = Icons.groups;
   static const IconData cancel = Icons.cancel_outlined;
+  // report
+  static const IconData report = Icons.description;
+  static const IconData templateLayouts = Icons.preview;
+  static const IconData reportForm = Icons.fact_check;
+  static const IconData submitReportForm = Icons.check_circle_outline;
 }
