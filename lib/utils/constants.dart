@@ -112,7 +112,9 @@ class AppStyleDefaultProperties {
 
 class AppDefaultIcons {
   AppDefaultIcons._();
-
+  // Data
+  static const IconData loading = Icons.on_device_training;
+  static const IconData emptyData = Icons.storage;
   // Login
   static const IconData login = Icons.login;
   static const IconData username = Icons.face;
