@@ -6,6 +6,7 @@ import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/select-option/select_option_model.dart';
+import '../../../../widgets/custom-form-builder/form_builder_custom_touch_spin.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
@@ -13,7 +14,6 @@ import '../../dialog_widget.dart';
 import '../../../../widgets/empty_data_widget.dart';
 import '../../../../widgets/loading_widget.dart';
 import 'sale_detail_data_table_operations_widget.dart';
-import '../../form_builder_custom_touch_spin.dart';
 
 class EditSaleDetailOperationActionWidget extends StatelessWidget {
   final GlobalKey<FormBuilderState> fbKey;

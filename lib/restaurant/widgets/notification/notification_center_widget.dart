@@ -20,7 +20,7 @@ class NotificationCenterWidget extends StatelessWidget {
     NotificationProvider readNotificationProvider =
         context.read<NotificationProvider>();
     return Selector<NotificationProvider, int>(
-      selector: (context, state) => state.notifications.unreadCount,
+      selector: (context, state) => state.newNotification.unreadCount,
       builder: (context, totalCount, child) => BadgeWidget(
         count: totalCount,
         child: SizedBox(
