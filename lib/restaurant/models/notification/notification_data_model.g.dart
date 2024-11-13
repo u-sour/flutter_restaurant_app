@@ -18,7 +18,8 @@ NotificationDataModel _$NotificationDataModelFromJson(
     refId: json['refId'] as String?,
     date: DateModelConverter.convertDateTimeOptionalForModel(
         json['date'] as DateTime?),
-    markAsRead: json['markAsRead'] as bool?,
+    isNew: json['isNew'] as bool?,
+    isRead: json['isRead'] as bool?,
     tableId: json['tableId'] as String?,
     refNo: json['refNo'] as String?,
     table: json['table'] == null
@@ -50,7 +51,8 @@ Map<String, dynamic> _$NotificationDataModelToJson(
       'type': instance.type,
       'refId': instance.refId,
       'date': DateModelConverter.convertDateTimeOptionalForModel(instance.date),
-      'markAsRead': instance.markAsRead,
+      'isNew': instance.isNew,
+      'isRead': instance.isRead,
       'tableId': instance.tableId,
       'refNo': instance.refNo,
       'table': instance.table?.toJson(),

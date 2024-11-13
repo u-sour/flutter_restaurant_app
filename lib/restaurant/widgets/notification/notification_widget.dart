@@ -5,28 +5,41 @@ import 'package:flutter_template/restaurant/utils/map_index.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../providers/sale/notification_provider.dart';
-import '../../utils/debounce.dart';
 import 'notification_content_widget.dart';
 
-class NotificationWidget extends StatelessWidget {
+class NotificationWidget extends StatefulWidget {
   const NotificationWidget({super.key});
+
+  @override
+  State<NotificationWidget> createState() => _NotificationWidgetState();
+}
+
+class _NotificationWidgetState extends State<NotificationWidget> {
+  late NotificationProvider readNotificationProvider;
+  @override
+  void initState() {
+    super.initState();
+    readNotificationProvider = context.read<NotificationProvider>();
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      await filter(
+          index: readNotificationProvider.selectedTab,
+          notificationType: readNotificationProvider.notificationType);
+    });
+  }
+
+  Future<void> filter(
+      {required int index, required String notificationType}) async {
+    await readNotificationProvider.filter(
+        tab: index, notificationType: notificationType);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final Debounce debounce = Debounce();
-    NotificationProvider readNotificationProvider =
-        context.read<NotificationProvider>();
     List<SelectOptionModel> tabs = readNotificationProvider.notificationTabs;
     Size deviceSize = MediaQuery.sizeOf(context);
     bool isScrollable = true;
     bool showNextIcon = true;
     bool showBackIcon = true;
-
-    void filter({required int index, required String notificationType}) {
-      debounce.run(() async {
-        await readNotificationProvider.filter(
-            tab: index, notificationType: notificationType);
-      });
-    }
 
     return SizedBox(
       width: double.minPositive,
