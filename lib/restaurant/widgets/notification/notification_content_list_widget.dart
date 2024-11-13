@@ -54,7 +54,7 @@ class NotificationContentListWidget extends StatelessWidget {
     }
     titleWidget = ['IO', 'RP'].contains(notification.type)
         ? IconWithTextWidget(
-            icon: notification.markAsRead == true
+            icon: notification.isRead == true
                 ? RestaurantDefaultIcons.notificationInvoiceRead
                 : RestaurantDefaultIcons.notificationInvoiceUnread,
             iconSize: AppStyleDefaultProperties.w,
@@ -69,10 +69,9 @@ class NotificationContentListWidget extends StatelessWidget {
 
     return ListTile(
       dense: true,
-      tileColor:
-          notification.markAsRead != null && notification.markAsRead != true
-              ? theme.focusColor
-              : null,
+      tileColor: notification.isRead != null && notification.isRead != true
+          ? theme.focusColor
+          : null,
       leading: leadingWidget,
       title: titleWidget,
       subtitle: RichText(

@@ -5,14 +5,10 @@ part 'notification_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class NotificationModel {
   final List<NotificationDataModel> data;
-  final int unreadCount;
-  final int newCount;
   final String type;
 
   const NotificationModel({
     required this.data,
-    required this.unreadCount,
-    required this.newCount,
     required this.type,
   });
 

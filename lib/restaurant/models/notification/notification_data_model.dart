@@ -15,7 +15,8 @@ class NotificationDataModel {
       fromJson: DateModelConverter.convertDateTimeOptionalForModel,
       toJson: DateModelConverter.convertDateTimeOptionalForModel)
   final DateTime? date;
-  final bool? markAsRead;
+  final bool? isNew;
+  final bool? isRead;
   final String? tableId;
   final String? refNo;
   final NotificationTableModel? table;
@@ -36,7 +37,8 @@ class NotificationDataModel {
     required this.type,
     this.refId,
     this.date,
-    this.markAsRead,
+    this.isNew,
+    this.isRead,
     this.tableId,
     this.refNo,
     this.table,
