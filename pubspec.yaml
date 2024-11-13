@@ -50,11 +50,7 @@ dependencies:
   restart_app: ^1.2.1
   loading_animation_widget: ^1.2.1
   json_annotation: ^4.9.0
-  flutter_bluetooth_printer:
-    git:
-      url: https://github.com/u-sour/flutter_bluetooth_printer_plugin.git
-      ref: bug-fix-addFeeds
-      path: packages/flutter_bluetooth_printer
+  flutter_bluetooth_printer: ^2.17.1
   flutter_barcode_scanner: ^2.0.0
   cached_network_image: ^3.3.1
   flutter_svg: ^2.0.10+1
