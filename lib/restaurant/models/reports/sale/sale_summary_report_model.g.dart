@@ -9,7 +9,7 @@ part of 'sale_summary_report_model.dart';
 SaleSummaryReportModel _$SaleSummaryReportModelFromJson(
         Map<String, dynamic> json) =>
     SaleSummaryReportModel(
-      depName: json['depName'] as String,
+      depName: json['depName'] as String?,
       totalSale: json['totalSale'] == null
           ? null
           : SaleSummaryStatusReportModel.fromJson(
@@ -29,11 +29,19 @@ SaleSummaryReportModel _$SaleSummaryReportModelFromJson(
     );
 
 Map<String, dynamic> _$SaleSummaryReportModelToJson(
-        SaleSummaryReportModel instance) =>
-    <String, dynamic>{
-      'depName': instance.depName,
-      'totalSale': instance.totalSale?.toJson(),
-      'openSale': instance.openSale?.toJson(),
-      'partialSale': instance.partialSale?.toJson(),
-      'receivedSale': instance.receivedSale?.toJson(),
-    };
+    SaleSummaryReportModel instance) {
+  final val = <String, dynamic>{};
+
+  void writeNotNull(String key, dynamic value) {
+    if (value != null) {
+      val[key] = value;
+    }
+  }
+
+  writeNotNull('depName', instance.depName);
+  writeNotNull('totalSale', instance.totalSale?.toJson());
+  writeNotNull('openSale', instance.openSale?.toJson());
+  writeNotNull('partialSale', instance.partialSale?.toJson());
+  writeNotNull('receivedSale', instance.receivedSale?.toJson());
+  return val;
+}

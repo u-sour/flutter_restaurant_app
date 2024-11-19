@@ -155,4 +155,13 @@ extension SaleSummaryReportDTRowTypeExtension on SaleSummaryReportDTRowType {
         return '$prefixSaleSummaryReportDataTableContent.receivedSale';
     }
   }
+
+  double get columnSpanSize {
+    switch (this) {
+      case SaleSummaryReportDTRowType.totalSale:
+        return 500.0;
+      default:
+        return 200.0;
+    }
+  }
 }

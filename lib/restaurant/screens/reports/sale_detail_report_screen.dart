@@ -64,8 +64,8 @@ class _SaleDetailReportScreenState extends State<SaleDetailReportScreen> {
             readReportTemplateProvider.setIsFiltering(isFiltering: true);
             ResponseModel? result =
                 await readSaleDetailReportProvider.submit(formDoc: formDoc);
+            readReportTemplateProvider.setIsFiltering(isFiltering: false);
             if (result != null) {
-              readReportTemplateProvider.setIsFiltering(isFiltering: false);
               // show alert
               if (result.type == AWESOMESNACKBARTYPE.failure) {
                 late SnackBar snackBar;
