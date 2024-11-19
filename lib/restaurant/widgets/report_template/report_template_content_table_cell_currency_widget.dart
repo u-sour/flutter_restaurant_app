@@ -4,10 +4,15 @@ import '../invoice/invoice_format_currency_widget.dart';
 
 class ReportTemplateContentTableCellCurrencyWidget extends StatelessWidget {
   final num value;
+  final String? baseCurrency;
   final BoxBorder? border;
   final FontWeight? fontWeight;
   const ReportTemplateContentTableCellCurrencyWidget(
-      {super.key, required this.value, this.border, this.fontWeight});
+      {super.key,
+      required this.value,
+      this.baseCurrency,
+      this.border,
+      this.fontWeight});
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +21,7 @@ class ReportTemplateContentTableCellCurrencyWidget extends StatelessWidget {
       decoration: BoxDecoration(border: border),
       child: InvoiceFormatCurrencyWidget(
         value: value,
+        baseCurrency: baseCurrency,
         mainAxisAlignment: MainAxisAlignment.end,
         fontWeight: fontWeight,
         currencySymbolFontSize: 17.0,
