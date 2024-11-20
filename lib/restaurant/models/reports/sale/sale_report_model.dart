@@ -11,7 +11,7 @@ class SaleReportModel {
   final num grandTotal;
   final ReportExchangeModel grandTotalDoc;
 
-  SaleReportModel(
+  const SaleReportModel(
       {required this.data,
       required this.grandSubTotal,
       required this.grandDiscount,

@@ -9,7 +9,8 @@ class ReportExchangeModel {
   final num usd;
   @JsonKey(name: 'THB')
   final num thb;
-  ReportExchangeModel({
+
+  const ReportExchangeModel({
     required this.khr,
     required this.usd,
     required this.thb,

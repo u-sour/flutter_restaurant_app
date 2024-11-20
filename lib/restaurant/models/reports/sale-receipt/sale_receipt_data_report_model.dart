@@ -26,7 +26,7 @@ class SaleReceiptDataReportModel {
   final num remainingAmount;
   final String status;
 
-  SaleReceiptDataReportModel({
+  const SaleReceiptDataReportModel({
     required this.id,
     required this.invoiceId,
     required this.guestName,

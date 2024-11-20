@@ -8,7 +8,7 @@ class SaleReceiptReportModel {
   final List<SaleReceiptDataReportModel> data;
   final SaleReceiptTotalDocReportModel totalDoc;
 
-  SaleReceiptReportModel({
+  const SaleReceiptReportModel({
     required this.data,
     required this.totalDoc,
   });

@@ -20,7 +20,7 @@ class SaleDetailDataReportModel {
   final List<SaleDetailDataDetailReportModel> details;
   final String groupLabel;
 
-  SaleDetailDataReportModel({
+  const SaleDetailDataReportModel({
     required this.id,
     required this.date,
     required this.employeeName,

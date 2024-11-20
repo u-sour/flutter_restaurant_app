@@ -13,6 +13,7 @@ import '../../restaurant/providers/dashboard/dashboard_provider.dart';
 import '../../restaurant/providers/invoice-template/invoice_template_provider.dart';
 import '../../restaurant/providers/invoice/invoice_provider.dart';
 import '../../restaurant/providers/report-template/report_template_provider.dart';
+import '../../restaurant/providers/reports/sale_detail_profit_and_loss_by_item_report_provider.dart';
 import '../../restaurant/providers/reports/sale_detail_report_provider.dart';
 import '../../restaurant/providers/reports/sale_receipt_report_provider.dart';
 import '../../restaurant/providers/reports/sale_report_provider.dart';
@@ -68,6 +69,8 @@ class _AppScreenState extends State<AppScreen> {
   late SaleReportProvider saleReportProvider;
   late SaleDetailReportProvider saleDetailReportProvider;
   late SaleReceiptReportProvider saleReceiptReportProvider;
+  late SaleDetailProfitAndLossByItemReportProvider
+      saleDetailProfitAndLossByItemReportProvider;
 
   @override
   void initState() {
@@ -92,6 +95,8 @@ class _AppScreenState extends State<AppScreen> {
     saleReportProvider = SaleReportProvider();
     saleDetailReportProvider = SaleDetailReportProvider();
     saleReceiptReportProvider = SaleReceiptReportProvider();
+    saleDetailProfitAndLossByItemReportProvider =
+        SaleDetailProfitAndLossByItemReportProvider();
     onStartUp();
     super.initState();
   }
@@ -157,7 +162,9 @@ class _AppScreenState extends State<AppScreen> {
         ChangeNotifierProvider<SaleDetailReportProvider>(
             create: (_) => saleDetailReportProvider),
         ChangeNotifierProvider<SaleReceiptReportProvider>(
-            create: (_) => saleReceiptReportProvider)
+            create: (_) => saleReceiptReportProvider),
+        ChangeNotifierProvider<SaleDetailProfitAndLossByItemReportProvider>(
+            create: (_) => saleDetailProfitAndLossByItemReportProvider),
       ],
       child: Builder(
         builder: (context) {

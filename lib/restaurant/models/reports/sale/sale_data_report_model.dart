@@ -19,7 +19,7 @@ class SaleDataReportModel {
   final num total;
   final num totalReceived;
 
-  SaleDataReportModel({
+  const SaleDataReportModel({
     required this.id,
     required this.groupLabel,
     required this.date,

@@ -10,7 +10,7 @@ class SaleSummaryReportModel {
   final SaleSummaryStatusReportModel? partialSale;
   final SaleSummaryStatusReportModel? receivedSale;
 
-  SaleSummaryReportModel({
+  const SaleSummaryReportModel({
     this.depName,
     this.totalSale,
     this.openSale,

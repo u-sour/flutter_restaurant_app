@@ -2,39 +2,55 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../../models/select-option/select_option_model.dart';
 import '../../../../utils/constants.dart';
-import '../../../models/reports/sale-detail/sale_detail_report_model.dart';
-import '../../../utils/report/sale_detail_report_utils.dart';
+import '../../../models/reports/profit-and-loss-by-item/sale_detail_profit_and_loss_by_item_report_model.dart';
+import '../../../utils/report/sale_detail_profit_and_loss_by_item_report_utils.dart';
 import '../../invoice/invoice_format_currency_widget.dart';
 
-class SaleDetailReportContentFooterWidget extends StatelessWidget {
-  final SaleDetailReportModel saleDetailReport;
-  const SaleDetailReportContentFooterWidget(
-      {super.key, required this.saleDetailReport});
+class SaleDetailProfitAndLossByItemReportContentFooterWidget
+    extends StatelessWidget {
+  final SaleDetailProfitAndLossByItemReportModel
+      saleDetailProfitAndLossByItemReport;
+  const SaleDetailProfitAndLossByItemReportContentFooterWidget(
+      {super.key, required this.saleDetailProfitAndLossByItemReport});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     List<SelectOptionModel> footers = [
       SelectOptionModel(
-          label: SaleDetailReportDTFooterType.qty.toTitle,
-          value: saleDetailReport.qty,
+          label:
+              SaleDetailProfitAndLossByItemReportDTFooterType.totalQty.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalQty,
           extra: 'qty'),
       SelectOptionModel(
-          label: SaleDetailReportDTFooterType.discount.toTitle,
-          value: saleDetailReport.discountAmount),
+          label:
+              SaleDetailProfitAndLossByItemReportDTFooterType.totalCost.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalCost),
       SelectOptionModel(
-          label: SaleDetailReportDTFooterType.totalKhr.toTitle,
-          value: saleDetailReport.totalDoc.khr,
+          label: SaleDetailProfitAndLossByItemReportDTFooterType
+              .totalPrice.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalPrice),
+      SelectOptionModel(
+          label: SaleDetailProfitAndLossByItemReportDTFooterType
+              .totalDiscount.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalDiscountAmount),
+      SelectOptionModel(
+          label: SaleDetailProfitAndLossByItemReportDTFooterType
+              .totalProfitKHR.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalProfitDoc.khr,
           extra: 'KHR'),
       SelectOptionModel(
-          label: SaleDetailReportDTFooterType.totalUsd.toTitle,
-          value: saleDetailReport.totalDoc.usd,
+          label: SaleDetailProfitAndLossByItemReportDTFooterType
+              .totalProfitUSD.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalProfitDoc.usd,
           extra: 'USD'),
       SelectOptionModel(
-          label: SaleDetailReportDTFooterType.totalThb.toTitle,
-          value: saleDetailReport.totalDoc.thb,
+          label: SaleDetailProfitAndLossByItemReportDTFooterType
+              .totalProfitTHB.toTitle,
+          value: saleDetailProfitAndLossByItemReport.totalProfitDoc.thb,
           extra: 'THB'),
     ];
+
     TextStyle? style =
         theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold);
     return Padding(
