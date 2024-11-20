@@ -8,7 +8,7 @@ class SaleSummaryStatusReportModel {
   final num total;
   final String? invoiceIds;
   final ReportExchangeModel totalDoc;
-  SaleSummaryStatusReportModel({
+  const SaleSummaryStatusReportModel({
     required this.count,
     required this.total,
     this.invoiceIds,

@@ -31,40 +31,46 @@ class SaleReceiptReportContentFooterWidget extends StatelessWidget {
         value: saleReceiptTotalDoc.remainingAmountDoc,
       ),
     ];
+    TextStyle? style =
+        theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.bold);
     return Padding(
       padding: const EdgeInsets.only(top: AppStyleDefaultProperties.p),
       child: Column(
         children: [
           for (int i = 0; i < footers.length; i++)
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                RichText(
-                  text: TextSpan(
-                      text: footers[i].label.tr(),
-                      style: theme.textTheme.bodyMedium,
-                      children: [
-                        WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: InvoiceFormatCurrencyWidget(
-                                value: footers[i].value.khr)),
-                        const TextSpan(text: ' = '),
-                        WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: InvoiceFormatCurrencyWidget(
-                                baseCurrency: 'USD',
-                                value: footers[i].value.usd)),
-                        const TextSpan(text: ' = '),
-                        WidgetSpan(
-                            alignment: PlaceholderAlignment.baseline,
-                            baseline: TextBaseline.alphabetic,
-                            child: InvoiceFormatCurrencyWidget(
-                                baseCurrency: "THB",
-                                value: footers[i].value.thb))
-                      ]),
-                ),
+                Expanded(
+                    child: Text(
+                  footers[i].label.tr(),
+                  textAlign: TextAlign.end,
+                  style: style,
+                )),
+                const SizedBox(width: AppStyleDefaultProperties.w),
+                SizedBox(
+                  width: 200.0,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      InvoiceFormatCurrencyWidget(
+                        value: footers[i].value.khr,
+                        currencySymbolFontSize: 14.0,
+                      ),
+                      Text(
+                        ' = ',
+                        style: style,
+                      ),
+                      InvoiceFormatCurrencyWidget(
+                          baseCurrency: 'USD', value: footers[i].value.usd),
+                      Text(
+                        ' = ',
+                        style: style,
+                      ),
+                      InvoiceFormatCurrencyWidget(
+                          baseCurrency: "THB", value: footers[i].value.thb)
+                    ],
+                  ),
+                )
               ],
             ),
         ],

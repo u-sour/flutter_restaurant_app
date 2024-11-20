@@ -389,11 +389,11 @@
                 "receivedSale": "បានបញ្ចប់ និង បង់ប្រាក់"
               },
               "footer": {
-                "subTotal": "សរុបរង: ",
-                "discount": "បញ្ចុះតម្លៃ: ",
-                "totalKHR": "សរុប (៛): ",
-                "totalUSD": "សរុប ($): ",
-                "totalTHB": "សរុប (฿): "
+                "subTotal": "សរុបរង:",
+                "discount": "បញ្ចុះតម្លៃ:",
+                "totalKHR": "សរុប (៛):",
+                "totalUSD": "សរុប ($):",
+                "totalTHB": "សរុប (฿):"
               }
             }
           },
@@ -432,11 +432,11 @@
                 "amount": "សរុប"
               },
               "footer": {
-                "qty": "ចំនួន: ",
-                "discount": "បញ្ចុះតម្លៃ: ",
-                "totalKHR": "សរុប (៛): ",
-                "totalUSD": "សរុប ($): ",
-                "totalTHB": "សរុប (฿): "
+                "qty": "ចំនួន:",
+                "discount": "បញ្ចុះតម្លៃ:",
+                "totalKHR": "សរុប (៛):",
+                "totalUSD": "សរុប ($):",
+                "totalTHB": "សរុប (฿):"
               }
             }
           },
@@ -446,9 +446,9 @@
             "form": {
               "reportPeriod": "រយៈពេល",
               "categories": "ផ្នែក",
-              "product": "ទំនិញ",
-              "department": "នាយកដ្ឋាន",
-              "employee": "បុគ្គលិក"
+              "products": "ទំនិញ",
+              "departments": "នាយកដ្ឋាន",
+              "employees": "បុគ្គលិក"
             },
             "dataTable": {
               "header": {
@@ -514,10 +514,10 @@
                 "balance": "បា្រក់ជំពាក់"
               },
               "footer": {
-                "openAmount": "បា្រក់ត្រូវបង់: ",
-                "receivedAmount": "បា្រក់បានទទួល: ",
-                "fee": "ថ្លៃសេវា: ",
-                "balance": "បា្រក់ជំពាក់: "
+                "openAmount": "បា្រក់ត្រូវបង់:",
+                "receivedAmount": "បា្រក់បានទទួល:",
+                "fee": "ថ្លៃសេវា:",
+                "balance": "បា្រក់ជំពាក់:"
               }
             }
           }

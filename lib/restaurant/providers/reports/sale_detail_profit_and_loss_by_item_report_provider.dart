@@ -8,32 +8,33 @@ import '../../../providers/app_provider.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../widgets/screens/app_screen.dart';
 import '../../models/option/option_model.dart';
+import '../../models/reports/profit-and-loss-by-item/sale_detail_profit_and_loss_by_item_report_model.dart';
 import '../../models/reports/report_exchange_model.dart';
-import '../../models/reports/sale-detail/sale_detail_data_detail_report_model.dart';
-import '../../models/reports/sale-detail/sale_detail_report_model.dart';
 import '../../services/report_service.dart';
-import '../../utils/report/sale_detail_report_utils.dart';
+import '../../utils/report/sale_detail_profit_and_loss_by_item_report_utils.dart';
 
-class SaleDetailReportProvider extends ChangeNotifier {
+class SaleDetailProfitAndLossByItemReportProvider extends ChangeNotifier {
   final String _prefixFormBuilderInputDecoration =
       'screens.formBuilderInputDecoration';
   late String _branchId;
   String get branchId => _branchId;
   List<OptionModel> _filters = [];
   List<OptionModel> get filters => _filters;
-  late SaleDetailReportModel _saleDetailReportResult;
-  SaleDetailReportModel get saleDetailReportResult => _saleDetailReportResult;
-  late String _groupBy;
-  String get groupBy => _groupBy;
-
+  late SaleDetailProfitAndLossByItemReportModel
+      _sdProfitAndLossByItemReportResult;
+  SaleDetailProfitAndLossByItemReportModel
+      get sdProfitAndLossByItemReportResult =>
+          _sdProfitAndLossByItemReportResult;
   void initData() {
-    _saleDetailReportResult = const SaleDetailReportModel(
-        data: [],
-        qty: 0,
-        discountAmount: 0,
-        amount: 0,
-        totalDoc: ReportExchangeModel(khr: 0, usd: 0, thb: 0));
-    _groupBy = '';
+    _sdProfitAndLossByItemReportResult =
+        const SaleDetailProfitAndLossByItemReportModel(
+            data: [],
+            totalQty: 0,
+            totalCost: 0,
+            totalPrice: 0,
+            totalDiscountAmount: 0,
+            totalProfit: 0,
+            totalProfitDoc: ReportExchangeModel(khr: 0, usd: 0, thb: 0));
   }
 
   Future<List<OptionModel>> initFilters({required BuildContext context}) async {
@@ -45,22 +46,17 @@ class SaleDetailReportProvider extends ChangeNotifier {
         branchId: branchId, allowDepartmentIds: allowDepartmentIds);
     _filters = [
       OptionModel(
-          label: SaleDetailReportFilterType.groupBy.toTitle, value: 'Default'),
+          label:
+              SaleDetailProfitAndLossByItemReportFilterType.categories.toTitle,
+          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
       OptionModel(
-          label: SaleDetailReportFilterType.departments.toTitle,
+          label:
+              SaleDetailProfitAndLossByItemReportFilterType.employees.toTitle,
+          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
+      OptionModel(
+          label:
+              SaleDetailProfitAndLossByItemReportFilterType.departments.toTitle,
           value: [departments[0].label]),
-      OptionModel(
-          label: SaleDetailReportFilterType.employees.toTitle,
-          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
-      OptionModel(
-          label: SaleDetailReportFilterType.categories.toTitle,
-          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
-      OptionModel(
-          label: SaleDetailReportFilterType.groups.toTitle,
-          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
-      OptionModel(
-          label: SaleDetailReportFilterType.products.toTitle,
-          value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
     ];
     return _filters;
   }
@@ -74,21 +70,13 @@ class SaleDetailReportProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  String getInvoiceText(
-      {required SaleDetailDataDetailReportModel saleDetailDataDetail,
-      required BuildContext context}) {
-    String result =
-        '${saleDetailDataDetail.floorName}-${saleDetailDataDetail.tableName}: ${saleDetailDataDetail.refNo}';
-    return result;
-  }
-
   Future<ResponseModel?> submit({required Map<String, dynamic> formDoc}) async {
     ResponseModel? result;
     try {
-      final data = await meteor.call('rest.saleDetailReport', args: [formDoc]);
+      final data = await meteor.call('rest.findProfitAndLoss', args: [formDoc]);
       if (data.isNotEmpty) {
-        _groupBy = formDoc['groupBy'] ?? '';
-        _saleDetailReportResult = SaleDetailReportModel.fromJson(data);
+        _sdProfitAndLossByItemReportResult =
+            SaleDetailProfitAndLossByItemReportModel.fromJson(data);
         result = const ResponseModel(
             message: 'ok', type: AWESOMESNACKBARTYPE.success);
       }

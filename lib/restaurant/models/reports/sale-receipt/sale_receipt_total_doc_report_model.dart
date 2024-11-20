@@ -13,7 +13,7 @@ class SaleReceiptTotalDocReportModel {
   final num remainingAmount;
   final ReportExchangeModel remainingAmountDoc;
 
-  SaleReceiptTotalDocReportModel({
+  const SaleReceiptTotalDocReportModel({
     required this.openAmount,
     required this.openAmountDoc,
     required this.receiveAmount,

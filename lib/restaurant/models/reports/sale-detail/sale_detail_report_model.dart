@@ -11,7 +11,7 @@ class SaleDetailReportModel {
   final num amount;
   final ReportExchangeModel totalDoc;
 
-  SaleDetailReportModel({
+  const SaleDetailReportModel({
     required this.data,
     required this.qty,
     required this.discountAmount,

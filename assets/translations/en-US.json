@@ -392,11 +392,11 @@
                 "receivedSale": "បានបញ្ចប់ និង បង់ប្រាក់"
               },
               "footer": {
-                "subTotal": "Sub Total: ",
-                "discount": "Discount: ",
-                "totalKHR": "Total (៛): ",
-                "totalUSD": "Total ($): ",
-                "totalTHB": "Total (฿): "
+                "subTotal": "Sub Total:",
+                "discount": "Discount:",
+                "totalKHR": "Total (៛):",
+                "totalUSD": "Total ($):",
+                "totalTHB": "Total (฿):"
               }
             }
           },
@@ -435,11 +435,11 @@
                 "amount": "TOTAL"
               },
               "footer": {
-                "qty": "Quantity: ",
-                "discount": "Discount: ",
-                "totalKHR": "Total (៛): ",
-                "totalUSD": "Total ($): ",
-                "totalTHB": "Total (฿): "
+                "qty": "Quantity:",
+                "discount": "Discount:",
+                "totalKHR": "Total (៛):",
+                "totalUSD": "Total ($):",
+                "totalTHB": "Total (฿):"
               }
             }
           },
@@ -449,9 +449,9 @@
             "form": {
               "reportPeriod": "Report period",
               "categories": "Categories",
-              "product": "Product",
-              "department": "Department",
-              "employee": "Employee"
+              "products": "Products",
+              "departments": "Departments",
+              "employees": "Employees"
             },
             "dataTable": {
               "header": {
@@ -517,10 +517,10 @@
                 "balance": "BALANCE"
               },
               "footer": {
-                "openAmount": "Open Amount: ",
-                "receivedAmount": "Received Amount: ",
-                "fee": "Fee: ",
-                "balance": "Balance: "
+                "openAmount": "Open Amount:",
+                "receivedAmount": "Received Amount:",
+                "fee": "Fee:",
+                "balance": "Balance:"
               }
             }
           }

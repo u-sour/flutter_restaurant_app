@@ -13,6 +13,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
   final double? priceFontSize;
   final double currencySymbolFontSize;
   final FontWeight? fontWeight;
+  final TextDecoration? decoration;
   final MainAxisAlignment mainAxisAlignment;
   const InvoiceFormatCurrencyWidget(
       {super.key,
@@ -23,6 +24,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
       this.priceFontSize,
       this.currencySymbolFontSize = 20.0,
       this.fontWeight = FontWeight.bold,
+      this.decoration,
       this.mainAxisAlignment = MainAxisAlignment.start});
 
   @override
@@ -42,6 +44,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
         fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
         color: color ?? theme.colorScheme.onSurface,
         fontWeight: fontWeight,
+        decoration: decoration,
         height: defaultBaseCurrency == 'KHR' ? 0.1 : null);
     return Row(
       mainAxisAlignment: mainAxisAlignment,
@@ -55,10 +58,11 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
               baseCurrency: defaultBaseCurrency,
               decimalNumber: decimalNumber),
           style: theme.textTheme.bodySmall!.copyWith(
-            fontSize: priceFontSize,
-            color: color ?? theme.colorScheme.onSurface,
-            fontWeight: fontWeight,
-          ),
+              fontSize: priceFontSize,
+              color: color ?? theme.colorScheme.onSurface,
+              fontWeight: fontWeight,
+              decoration: decoration,
+              decorationThickness: 2),
           overflow: TextOverflow.ellipsis,
         ),
         // suffix
