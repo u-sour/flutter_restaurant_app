@@ -7,12 +7,14 @@ class ReportTemplateContentTableCellCurrencyWidget extends StatelessWidget {
   final String? baseCurrency;
   final BoxBorder? border;
   final FontWeight? fontWeight;
+  final TextDecoration? decoration;
   const ReportTemplateContentTableCellCurrencyWidget(
       {super.key,
       required this.value,
       this.baseCurrency,
       this.border,
-      this.fontWeight});
+      this.fontWeight,
+      this.decoration});
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +27,7 @@ class ReportTemplateContentTableCellCurrencyWidget extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.end,
         fontWeight: fontWeight,
         currencySymbolFontSize: 17.0,
+        decoration: decoration,
       ),
     );
   }

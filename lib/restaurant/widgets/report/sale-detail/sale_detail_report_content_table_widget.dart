@@ -30,7 +30,6 @@ class SaleDetailReportContentTableWidget extends StatelessWidget {
       if (groupBy.isNotEmpty && saleDetailDataReport[i].groupLabel.isNotEmpty) {
         data['groupLabel'] = saleDetailDataReport[i].groupLabel;
         data['qty'] = saleDetailDataReport[i].qty;
-        // data['discount'] = saleDetailDataReport[i].discount;
         data['amount'] = saleDetailDataReport[i].amount;
       }
       rows.add(SaleDetailDataDetailReportModel.fromJson(data));

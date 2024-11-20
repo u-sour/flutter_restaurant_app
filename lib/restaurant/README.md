@@ -36,8 +36,10 @@ This is a simple support restaurant system app build with **Flutter** (frontend)
     - Print
     - Payment
 - Reports
-  - Sale
+  - Sale & Sale Summary
   - Sale Detail
+  - Sale Detail Profit And Loss By Item
+  - Sale Receipt
 
 ## Condition with user roles and modules
 
