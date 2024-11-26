@@ -60,8 +60,10 @@ class EditSaleDetailFooterActionWidget extends StatelessWidget {
           ),
         ),
       ),
-      enableActions:
-          footerType.name == 'preview' || footerType.name == 'payment',
+      enableActions: footerType.name == 'changeTable' ||
+          footerType.name == 'changeGuest' ||
+          footerType.name == 'preview' ||
+          footerType.name == 'payment',
       enableInsertAndPrintAction: footerType.name == 'payment',
       insertLabel: insertLabel,
       onInsertPressed: onInsertPressed,

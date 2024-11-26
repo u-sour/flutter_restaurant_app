@@ -29,7 +29,6 @@ class SaleDetailDataTableWidget extends StatelessWidget {
       GlobalKey<FormBuilderState>();
   final prefixDataTableHeader = "screens.sale.detail.dataTable.header";
   final prefixDataTableContent = "screens.sale.detail.dataTable.content";
-
   final double actionsWidth = 45.0;
   final double minWidth = 0.0;
   @override
@@ -62,6 +61,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
               value: "returnQty",
               width: 68.0));
     }
+
     return Consumer<SaleProvider>(builder: (context, state, child) {
       return Theme(
         data: theme.copyWith(
@@ -96,16 +96,22 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                     const Center(child: Icon(RestaurantDefaultIcons.actions)))
           ],
           rows: List<DataRow>.generate(state.saleDetails.length, (index) {
+            SaleDetailModel previousRow =
+                readProvider.previousSaleDetails[index];
             SaleDetailModel row = state.saleDetails[index];
+            // Note: qty, discount rate, note មិនអាចកែបាន បើសិន print bill រួច || user role == tablet-orders ហើយ item មិនមែន draft
+            bool disableItemRow = row.checkPrint ||
+                (UserService.userInRole(roles: ['tablet-orders']) &&
+                    (row.draft == null || row.draft == false));
             return DataRow2(
               selected: state.selectedSaleDetails.contains(row),
-              onSelectChanged: row.checkPrint
+              onSelectChanged: disableItemRow
                   ? null
                   : (isSelectedRow) {
                       readProvider.selectRow(isSelectedRow ?? false, row);
                     },
               color: WidgetStateProperty.all(
-                  row.checkPrint ? theme.highlightColor : null),
+                  disableItemRow ? theme.highlightColor : null),
               specificRowHeight: rowHeight,
               cells: [
                 DataCell(Column(
@@ -153,18 +159,33 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                             alignment: PlaceholderAlignment.baseline,
                             baseline: TextBaseline.alphabetic,
                             child: InkWell(
-                                onTap: row.checkPrint
+                                onTap: disableItemRow
                                     ? null
                                     : () => GlobalService.openDialog(
-                                            contentWidget:
-                                                EditSaleDetailDataTableRowWidget(
-                                                    fbEditRowKey: _fbEditRowKey,
-                                                    rowType: SaleDetailDTRowType
-                                                        .price,
-                                                    item: row),
-                                            context: context)
-                                        .then((_) => readProvider
-                                            .updateSaleDetailItem(item: row)),
+                                                contentWidget:
+                                                    EditSaleDetailDataTableRowWidget(
+                                                  fbEditRowKey:
+                                                      SaleDetailDataTableWidget
+                                                          ._fbEditRowKey,
+                                                  rowType:
+                                                      SaleDetailDTRowType.price,
+                                                  item: row,
+                                                  onInsertPressed: () =>
+                                                      readProvider
+                                                          .updateSaleDetailItem(
+                                                              item: row,
+                                                              context: context),
+                                                ),
+                                                context: context)
+                                            .then((_) {
+                                          // Note: reset field value to previous value if user close dialog or press on cancel button
+                                          readProvider.handleItemUpdate(
+                                              onChangedValue:
+                                                  '${previousRow.price}',
+                                              item: row,
+                                              rowType:
+                                                  SaleDetailDTRowType.price);
+                                        }),
                                 child: FormatCurrencyWidget(
                                   value: row.price,
                                   color: AppThemeColors.primary,
@@ -176,18 +197,34 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                           const TextSpan(text: ' | '),
                           WidgetSpan(
                             child: InkWell(
-                              onTap: row.checkPrint
+                              onTap: disableItemRow
                                   ? null
                                   : () => GlobalService.openDialog(
-                                          contentWidget:
-                                              EditSaleDetailDataTableRowWidget(
-                                                  fbEditRowKey: _fbEditRowKey,
-                                                  rowType: SaleDetailDTRowType
-                                                      .discountRate,
-                                                  item: row),
-                                          context: context)
-                                      .then((_) => readProvider
-                                          .updateSaleDetailItem(item: row)),
+                                              contentWidget:
+                                                  EditSaleDetailDataTableRowWidget(
+                                                      fbEditRowKey:
+                                                          SaleDetailDataTableWidget
+                                                              ._fbEditRowKey,
+                                                      rowType:
+                                                          SaleDetailDTRowType
+                                                              .discountRate,
+                                                      item: row,
+                                                      onInsertPressed: () =>
+                                                          readProvider
+                                                              .updateSaleDetailItem(
+                                                                  item: row,
+                                                                  context:
+                                                                      context)),
+                                              context: context)
+                                          .then((_) {
+                                        // Note: reset field value to previous value if user close dialog or press on cancel button
+                                        readProvider.handleItemUpdate(
+                                            onChangedValue:
+                                                '${previousRow.discount}',
+                                            item: row,
+                                            rowType: SaleDetailDTRowType
+                                                .discountRate);
+                                      }),
                               child: RichText(
                                 text: TextSpan(
                                     style: theme.textTheme.bodyMedium,
@@ -209,20 +246,32 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                     ),
                     // Note
                     InkWell(
-                      onTap: row.checkPrint
+                      onTap: disableItemRow
                           ? null
                           : () => GlobalService.openDialog(
-                                      contentWidget:
-                                          EditSaleDetailDataTableRowWidget(
-                                              fbEditRowKey: _fbEditRowKey,
-                                              rowType: SaleDetailDTRowType.note,
-                                              item: row),
-                                      context: context)
-                                  .then((_) {
-                                if (row.note != null) {
-                                  readProvider.updateSaleDetailItemNote(
-                                      id: row.id, note: row.note!);
-                                }
+                                contentWidget: EditSaleDetailDataTableRowWidget(
+                                  fbEditRowKey:
+                                      SaleDetailDataTableWidget._fbEditRowKey,
+                                  rowType: SaleDetailDTRowType.note,
+                                  item: row,
+                                  onInsertPressed: () {
+                                    if (row.note != null) {
+                                      readProvider.updateSaleDetailItemNote(
+                                          id: row.id,
+                                          note: row.note!,
+                                          context: context);
+                                    }
+                                  },
+                                ),
+                                context: context,
+                              ).then((_) {
+                                // Note: reset field value to previous value if user close dialog or press on cancel button
+                                readProvider.handleItemUpdate(
+                                    onChangedValue: previousRow.note != null
+                                        ? previousRow.note!
+                                        : '',
+                                    item: row,
+                                    rowType: SaleDetailDTRowType.note);
                               }),
                       child: Row(
                         children: [
@@ -246,22 +295,36 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                   ],
                 )),
                 // Qty
-                // Note: Item qty មិនអាចកែបានពេល print bill រួច || print ទៅ kitchen រួច || user role == tablet-orders ហើយ item មិនមែន draft || item status != Done
+                // Note: Item qty មិនអាចកែបានពេល print bill រួច || print ទៅ kitchen រួច || user role == tablet-orders ហើយ item មិនមែន draft || item status == Done
                 DataCell(
                     onTap: row.checkPrint ||
-                            row.checkPrintKitchen == true ||
-                            UserService.userInRole(roles: ['tablet-orders']) &&
-                                row.draft != true ||
-                            row.status != 'Done'
+                            (row.checkPrintKitchen != null &&
+                                row.checkPrintKitchen == true) ||
+                            (UserService.userInRole(roles: ['tablet-orders']) &&
+                                (row.draft == null || row.draft == false)) ||
+                            row.status == 'Done'
                         ? null
                         : () => GlobalService.openDialog(
-                                contentWidget: EditSaleDetailDataTableRowWidget(
-                                    fbEditRowKey: _fbEditRowKey,
-                                    rowType: SaleDetailDTRowType.qty,
-                                    item: row),
-                                context: context)
-                            .then((_) =>
-                                readProvider.updateSaleDetailItem(item: row)),
+                                    contentWidget:
+                                        EditSaleDetailDataTableRowWidget(
+                                      fbEditRowKey: SaleDetailDataTableWidget
+                                          ._fbEditRowKey,
+                                      rowType: SaleDetailDTRowType.qty,
+                                      item: row,
+                                      onInsertPressed: () =>
+                                          readProvider.updateSaleDetailItem(
+                                              item: row, context: context),
+                                    ),
+                                    context: context)
+                                .then(
+                              (_) {
+                                // Note: reset field value to previous value if user close dialog or press on cancel button
+                                readProvider.handleItemUpdate(
+                                    onChangedValue: '${previousRow.totalQty}',
+                                    item: row,
+                                    rowType: SaleDetailDTRowType.qty);
+                              },
+                            ),
                     Center(child: Text('${row.totalQty}'))),
                 // Return Qty
                 // Note: បង្ហាញពេលមាន module soup & user role != tablet-orders
@@ -274,15 +337,24 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                   row.checkPrintKitchen == true
                           ? null
                           : () => GlobalService.openDialog(
-                                  contentWidget:
-                                      EditSaleDetailDataTableRowWidget(
-                                          fbEditRowKey: _fbEditRowKey,
-                                          rowType:
-                                              SaleDetailDTRowType.returnQty,
-                                          item: row),
-                                  context: context)
-                              .then((_) =>
-                                  readProvider.updateSaleDetailItem(item: row)),
+                                      contentWidget:
+                                          EditSaleDetailDataTableRowWidget(
+                                        fbEditRowKey: SaleDetailDataTableWidget
+                                            ._fbEditRowKey,
+                                        rowType: SaleDetailDTRowType.returnQty,
+                                        item: row,
+                                        onInsertPressed: () =>
+                                            readProvider.updateSaleDetailItem(
+                                                item: row, context: context),
+                                      ),
+                                      context: context)
+                                  .then((_) {
+                                // Note: reset field value to previous value if user close dialog or press on cancel button
+                                readProvider.handleItemUpdate(
+                                    onChangedValue: '${previousRow.returnQty}',
+                                    item: row,
+                                    rowType: SaleDetailDTRowType.returnQty);
+                              }),
                       Center(
                         child: Text('${row.returnQty}'),
                       )),

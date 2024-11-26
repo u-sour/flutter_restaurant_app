@@ -3,8 +3,8 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
 import '../../../../providers/app_provider.dart';
 import '../../../../widgets/screens/app_screen.dart';
-import '../../../../storages/connection_storage.dart';
 import '../../../models/sale/product-group/sale_product_group_model.dart';
+import '../../../models/sale/product/sale_one_product_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../../models/sale/product/sale_product_result_model.dart';
 
@@ -14,8 +14,6 @@ class SaleProductsProvider extends ChangeNotifier {
   String get branchId => _branchId;
   late String _depId;
   String get depId => _depId;
-  late String _ipAddress;
-  String get ipAddress => _ipAddress;
   late List<SaleProductGroupModel> _productGroup;
   List<SaleProductGroupModel> get productGroup => _productGroup;
   late List<SaleProductModel> _products;
@@ -27,6 +25,8 @@ class SaleProductsProvider extends ChangeNotifier {
   String get categoryId => _categoryId;
   late String _productGroupId;
   String get productGroupId => _productGroupId;
+  late bool _isExtraFoodExist;
+  bool get isExtraFoodExist => _isExtraFoodExist;
   bool _showExtraFood = false;
   bool get showExtraFood => _showExtraFood;
   late int _skip;
@@ -52,6 +52,13 @@ class SaleProductsProvider extends ChangeNotifier {
     _depId = readAppProvider.selectedDepartment!.id;
     _products = [];
     _productGroup = [];
+    // check is extra food exist
+    _isExtraFoodExist = false;
+    final result = await findOneProduct(
+        selector: {'type': 'ExtraFood', 'status': 'Active'});
+    if (result != null) {
+      _isExtraFoodExist = true;
+    }
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
       branchId: _branchId,
       depId: _depId,
@@ -60,7 +67,6 @@ class SaleProductsProvider extends ChangeNotifier {
     );
     _products = saleProductsResult.items;
     _productCount = saleProductsResult.itemCount;
-    _ipAddress = (await ConnectionStorage().getIpAddress())!;
     _categoryId = '';
     _productGroupId = '';
     _skip = skip;
@@ -68,6 +74,20 @@ class SaleProductsProvider extends ChangeNotifier {
     _currentProductIndex = 0;
     _isLoading = false;
     notifyListeners();
+  }
+
+  Future<SaleOneProductModel?> findOneProduct(
+      {Map<String, dynamic> selector = const {}}) async {
+    Map<String, dynamic>? result = {};
+    result = await meteor.call('rest.findOneProduct', args: [
+      {'selector': selector}
+    ]);
+
+    SaleOneProductModel? toModel;
+    if (result != null) {
+      toModel = SaleOneProductModel.fromJson(result);
+    }
+    return toModel;
   }
 
   Future<SaleProductResultModel> fetchSaleProducts(
@@ -185,7 +205,7 @@ class SaleProductsProvider extends ChangeNotifier {
     _showExtraFood = showExtraFood;
     SaleProductResultModel saleProductsResult = await fetchSaleProducts(
         search: _search,
-        activeCategory: categoryId,
+        activeCategory: _categoryId,
         activeGroup: _productGroupId,
         showExtraFood: _showExtraFood,
         invoiceId: invoiceId,

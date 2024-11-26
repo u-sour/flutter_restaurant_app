@@ -34,7 +34,7 @@ class SaleReportProvider extends ChangeNotifier {
   bool get isSummary => _isSummary;
 
   void initData() {
-    _saleReportResult = SaleReportModel(
+    _saleReportResult = const SaleReportModel(
         data: [],
         grandSubTotal: 0,
         grandDiscount: 0,

@@ -207,6 +207,7 @@
           "guest": "Guest",
           "cancelCopy": "Cancel & Copy",
           "chef": "Chef",
+          "printToChef": "Print To Chef",
           "print": "Print",
           "preview": "Preview",
           "payment": "Payment",

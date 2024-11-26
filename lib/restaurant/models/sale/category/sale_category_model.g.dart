@@ -15,6 +15,7 @@ SaleCategoryModel _$SaleCategoryModelFromJson(Map<String, dynamic> json) {
     id: json['_id'] as String,
     name: json['name'] as String,
     level: (json['level'] as num).toInt(),
+    icon: json['icon'] as String?,
     children: (json['children'] as List<dynamic>?)
         ?.map((e) => SaleCategoryModel.fromJson(e as Map<String, dynamic>))
         .toList(),
@@ -34,6 +35,7 @@ Map<String, dynamic> _$SaleCategoryModelToJson(SaleCategoryModel instance) {
     }
   }
 
+  writeNotNull('icon', instance.icon);
   writeNotNull('children', instance.children?.map((e) => e.toJson()).toList());
   return val;
 }

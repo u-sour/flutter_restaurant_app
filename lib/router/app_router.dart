@@ -204,6 +204,7 @@ class AppRouter {
         name: SCREENS.invoice.toName,
         builder: (context, state) {
           Map<String, dynamic> queryRouter = state.uri.queryParameters;
+          final String? tableId = queryRouter['tableId'];
           final String invoiceId = queryRouter['invoiceId'];
           final String? receiptId = queryRouter['receiptId'];
           // Note: for condition navigation app bar on invoice screen
@@ -221,6 +222,7 @@ class AppRouter {
               queryRouter['showEditInvoiceBtn'] != null &&
                   queryRouter['showEditInvoiceBtn']! == 'true';
           return InvoiceScreen(
+            tableId: tableId,
             invoiceId: invoiceId,
             receiptId: receiptId,
             fromReceiptForm: fromReceiptForm,

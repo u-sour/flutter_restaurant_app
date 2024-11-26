@@ -31,8 +31,17 @@ class SaleProductGroupWidget extends StatelessWidget {
                           child: SaleProductGroupItemWidget(
                             productGroup: pg,
                             onPressed: () {
+                              // Note: Check unselect product group
+                              // if productGroupId already selected then unselected
                               readSaleProductsProvider.filter(
-                                  productGroupId: pg.id);
+                                  productGroupId: pg.id !=
+                                          readSaleProductsProvider
+                                              .productGroupId
+                                      ? pg.id
+                                      : '',
+                                  categoryId:
+                                      readSaleProductsProvider.categoryId,
+                                  search: readSaleProductsProvider.search);
                             },
                           ),
                         );

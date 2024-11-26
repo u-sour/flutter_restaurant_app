@@ -77,6 +77,7 @@ class SaleCategoriesProvider extends ChangeNotifier {
         await meteor.call('rest.findCategoriesForSale', args: [
       {'selector': selector, 'depId': depId}
     ]);
+
     List<SaleCategoryModel> toModelList =
         result.map((json) => SaleCategoryModel.fromJson(json)).toList();
     return toModelList;
