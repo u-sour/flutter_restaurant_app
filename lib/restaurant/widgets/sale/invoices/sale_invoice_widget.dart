@@ -1,8 +1,8 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/constants.dart';
 import '../../../../models/select-option/select_option_model.dart';
+import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../format_currency_widget.dart';

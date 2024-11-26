@@ -29,6 +29,7 @@ class _SaleScreenState extends State<SaleScreen> {
   late SaleProvider _readSaleProvider;
   late SaleCategoriesProvider _readSaleCategoriesProvider;
   late SaleProductsProvider _readSaleProductsProvider;
+  final double categoryWidgetWidth = 215.0;
   @override
   void initState() {
     super.initState();
@@ -122,9 +123,9 @@ class _SaleScreenState extends State<SaleScreen> {
               ),
               body: Row(
                 children: [
-                  const SizedBox(
-                      width: 200.0,
-                      child: Padding(
+                  SizedBox(
+                      width: categoryWidgetWidth,
+                      child: const Padding(
                         padding: EdgeInsets.only(
                             top: AppStyleDefaultProperties.p / 1.5,
                             left: AppStyleDefaultProperties.p),
@@ -139,17 +140,17 @@ class _SaleScreenState extends State<SaleScreen> {
                 ],
               ),
             )
-          : const Row(children: [
+          : Row(children: [
               SizedBox(
-                  width: 200.0,
-                  child: Padding(
+                  width: categoryWidgetWidth,
+                  child: const Padding(
                     padding: EdgeInsets.only(
                         top: AppStyleDefaultProperties.p / 1.5,
                         left: AppStyleDefaultProperties.p),
                     child: SaleCategoryWidget(),
                   )),
-              Expanded(child: SaleProductWidget()),
-              Expanded(child: SaleDetailWidget()),
+              const Expanded(child: SaleProductWidget()),
+              const Expanded(child: SaleDetailWidget()),
             ]),
       bottomSheet: Selector<AppProvider, bool>(
           selector: (_, state) => state.connected,
@@ -161,17 +162,17 @@ class _SaleScreenState extends State<SaleScreen> {
 
     Scaffold desktopScaffold = Scaffold(
       appBar: const SaleAppBarWidget(),
-      body: const Row(children: [
+      body: Row(children: [
         SizedBox(
-            width: 200.0,
-            child: Padding(
+            width: categoryWidgetWidth,
+            child: const Padding(
               padding: EdgeInsets.only(
                   top: AppStyleDefaultProperties.p / 1.5,
                   left: AppStyleDefaultProperties.p),
               child: SaleCategoryWidget(),
             )),
-        Expanded(flex: 3, child: SaleProductWidget()),
-        Expanded(flex: 3, child: SaleDetailWidget()),
+        const Expanded(flex: 3, child: SaleProductWidget()),
+        const Expanded(flex: 3, child: SaleDetailWidget()),
       ]),
       bottomSheet: Selector<AppProvider, bool>(
           selector: (_, state) => state.connected,
