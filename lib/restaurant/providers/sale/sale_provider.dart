@@ -11,6 +11,7 @@ import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
+import '../../../storages/connection_storage.dart';
 import '../../../widgets/screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
@@ -41,6 +42,8 @@ import '../../widgets/sale/detail/edit_sale_detail_footer_action_widget.dart';
 import '../../widgets/sale/detail/edit_sale_detail_operation_action_widget.dart';
 
 class SaleProvider extends ChangeNotifier {
+  late String _ipAddress;
+  String get ipAddress => _ipAddress;
   late SubscriptionHandler _saleSubscription;
   SubscriptionHandler get saleSubscription => _saleSubscription;
   late StreamSubscription<Map<String, dynamic>> _saleListener;
@@ -58,6 +61,8 @@ class SaleProvider extends ChangeNotifier {
   late bool _fastSale;
   late bool _isTabletOrder;
   late bool _isDecimalQty;
+  bool? _isSkipTable;
+  bool? get isSkipTable => _isSkipTable;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
 
@@ -71,6 +76,8 @@ class SaleProvider extends ChangeNotifier {
 
   // sale details
   final String _prefixSaleDetailAlert = 'screens.sale.detail.alert';
+  late List<SaleDetailModel> _previousSaleDetails;
+  List<SaleDetailModel> get previousSaleDetails => _previousSaleDetails;
   late List<SaleDetailModel> _saleDetails;
   List<SaleDetailModel> get saleDetails => _saleDetails;
   bool _isSelectedAllRows = false;
@@ -101,6 +108,7 @@ class SaleProvider extends ChangeNotifier {
     _invoiceText = '';
     _sales = [];
     _currentSale = null;
+    _previousSaleDetails = [];
     _saleDetails = [];
     _selectedSaleDetails = [];
     _selectedSaleDetailsForOperation = [];
@@ -114,6 +122,7 @@ class SaleProvider extends ChangeNotifier {
     _depId = readAppProvider.selectedDepartment!.id;
     _employeeId = readAppProvider.currentUser!.id;
     _currentGuest = const SelectOptionModel(label: '', value: null);
+    _ipAddress = (await ConnectionStorage().getIpAddress())!;
     GuestModel generalGuest = await fetchOneGeneralGuest();
     // set current guest
     setCurrentGuest(
@@ -129,6 +138,9 @@ class SaleProvider extends ChangeNotifier {
       _isDecimalQty = SaleService.isModuleActive(
           modules: ['decimal-qty'], overpower: false, context: context);
 
+      // check current user enable 'skip-table' module
+      _isSkipTable = SaleService.isModuleActive(
+          modules: ['skip-table'], overpower: false, context: context);
       // get table Id & fastSale from query router
       _tableId = table;
       _fastSale = fastSale;
@@ -200,6 +212,7 @@ class SaleProvider extends ChangeNotifier {
                     context: context);
               }
             } else {
+              _activeSaleInvoiceId = '';
               _sales = [];
               _currentSale = null;
               _saleDetails = [];
@@ -333,6 +346,7 @@ class SaleProvider extends ChangeNotifier {
       }
 
       // set current sale detail by _activeSaleInvoiceId
+      _previousSaleDetails = await fetchSaleDetails();
       _saleDetails = await fetchSaleDetails();
     }
     notifyListeners();
@@ -361,6 +375,7 @@ class SaleProvider extends ChangeNotifier {
   Future<ResponseModel?> handleItemClick(
       {required SaleAddProductModel item}) async {
     ResponseModel? result;
+
     // if there no current sale, add new sale then add item
     if (_sales.isEmpty && _activeSaleInvoiceId.isEmpty) {
       result = await addNewSale(item: item);
@@ -443,7 +458,6 @@ class SaleProvider extends ChangeNotifier {
       result = await addExtraItem(
           doc: InsertItemInputModel.fromJson(doc),
           selectedSaleDetailFilter: selectedSaleDetailFilter);
-
       // clear all selected items
       selectAllRows(false);
     } else {
@@ -539,7 +553,7 @@ class SaleProvider extends ChangeNotifier {
       num price = num.tryParse(onChangedValue) ?? 0;
       // set a new price
       item.price =
-          _roundNumber.round(value: price, decimalNumber: decimalNumber);
+          _roundNumber.round(value: price, decimalNumber: _decimalNumber);
       // set trigger
       invisibleChange = true;
     }
@@ -1036,10 +1050,13 @@ class SaleProvider extends ChangeNotifier {
 
   // update sale detail item
   Future<ResponseModel?> updateSaleDetailItem(
-      {required SaleDetailModel item}) async {
+      {required SaleDetailModel item, required BuildContext context}) async {
     ResponseModel? result;
     try {
       await updateItemAndExtraItemMethod(item: item);
+      if (context.mounted) {
+        context.pop();
+      }
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
@@ -1051,10 +1068,15 @@ class SaleProvider extends ChangeNotifier {
 
   // update sale detail item note
   Future<ResponseModel?> updateSaleDetailItemNote(
-      {required String id, required String note}) async {
+      {required String id,
+      required String note,
+      required BuildContext context}) async {
     ResponseModel? result;
     try {
       await updateDetailOnNoteMethod(id: id, note: note);
+      if (context.mounted) {
+        context.pop();
+      }
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
@@ -1152,6 +1174,7 @@ class SaleProvider extends ChangeNotifier {
           // go to invoice
           if (context.mounted) {
             context.pushNamed(SCREENS.invoice.toName, queryParameters: {
+              'tableId': _tableId,
               'invoiceId': currentSale!.id,
               'showEditInvoiceBtn': 'true'
             });
@@ -1674,6 +1697,7 @@ class SaleProvider extends ChangeNotifier {
           if (isPrint) {
             // Go invoice
             context.goNamed(SCREENS.invoice.toName, queryParameters: {
+              'tableId': _tableId,
               'invoiceId': saleReceipt.orderDoc.id,
               'receiptId': receiptId,
               'fromReceiptForm': '$fromReceiptForm',
@@ -1681,8 +1705,9 @@ class SaleProvider extends ChangeNotifier {
               'receiptPrint': 'true',
               'isRepaid': '$makeRepaid'
             });
-          } else if (!fromDashboard) {
-            // Back to sale table if fromDashboard == false
+          } else if (!fromDashboard &&
+              (_isSkipTable != null && _isSkipTable == false)) {
+            // Back to sale table if fromDashboard == false and skip table module == false
             context.goNamed(SCREENS.saleTable.toName);
           }
         }

@@ -28,7 +28,7 @@ class SaleReceiptReportProvider extends ChangeNotifier {
       _saleReceiptReportResult;
 
   void initData() {
-    _saleReceiptReportResult = SaleReceiptReportModel(
+    _saleReceiptReportResult = const SaleReceiptReportModel(
       data: [],
       totalDoc: SaleReceiptTotalDocReportModel(
         openAmount: 0,

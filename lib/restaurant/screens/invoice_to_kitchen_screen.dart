@@ -89,7 +89,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
                           context: context,
                         );
                       },
-                      child: Text('screens.printer.btn'.tr()),
+                      child: Text('screens.printer.btn.print'.tr()),
                     ),
                   ),
                 ],

@@ -19,6 +19,7 @@ import '../widgets/invoice/app-bar/invoice_app_bar_widget.dart';
 import '../../widgets/loading_widget.dart';
 
 class InvoiceScreen extends StatefulWidget {
+  final String? tableId;
   final String invoiceId;
   final String? receiptId;
   final bool fromReceiptForm;
@@ -29,6 +30,7 @@ class InvoiceScreen extends StatefulWidget {
   final bool showEditInvoiceBtn;
   const InvoiceScreen({
     super.key,
+    this.tableId,
     required this.invoiceId,
     this.receiptId,
     required this.fromReceiptForm,
@@ -78,6 +80,8 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
     return Scaffold(
       appBar: InvoiceAppBarWidget(
         title: SCREENS.printer.toTitle,
+        tableId: widget.tableId,
+        isSkipTable: readSaleProvider.isSkipTable,
         fromReceiptForm: widget.fromReceiptForm,
         fromDashboard: widget.fromDashboard,
       ),

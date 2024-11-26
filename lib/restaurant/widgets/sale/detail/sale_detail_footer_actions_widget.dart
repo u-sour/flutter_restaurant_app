@@ -4,6 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/select-option/select_option_model.dart';
+import '../../../../models/servers/response_model.dart';
 import '../../../../providers/app_provider.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/alert/alert.dart';
@@ -60,27 +61,28 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                           modules: ['skip-table'], context: context))
                         TextButton.icon(
                             onPressed: () => GlobalService.openDialog(
-                                        contentWidget:
-                                            EditSaleDetailFooterActionWidget(
-                                                fbKey: _fbEditFooterKey,
-                                                footerType: SaleDetailFooterType
-                                                    .changeTable,
-                                                value: readSaleProvider
-                                                    .tableLocation.id),
-                                        context: context)
-                                    .then((_) async {
-                                  if (_fbEditFooterKey.currentState!
-                                      .saveAndValidate()) {
-                                    final String tableId = _fbEditFooterKey
-                                        .currentState!.value['changeTable'];
-                                    // check if new table then update
-                                    if (tableId !=
-                                        readSaleProvider.tableLocation.id) {
-                                      await readSaleProvider.updateSaleTable(
-                                          tableId: tableId, context: context);
+                                contentWidget: EditSaleDetailFooterActionWidget(
+                                  fbKey: _fbEditFooterKey,
+                                  footerType: SaleDetailFooterType.changeTable,
+                                  value: readSaleProvider.tableLocation.id,
+                                  onInsertPressed: () async {
+                                    if (_fbEditFooterKey.currentState!
+                                        .saveAndValidate()) {
+                                      final String tableId = _fbEditFooterKey
+                                          .currentState!.value['changeTable'];
+                                      // check if new table then update
+                                      if (tableId !=
+                                          readSaleProvider.tableLocation.id) {
+                                        await readSaleProvider.updateSaleTable(
+                                            tableId: tableId, context: context);
+                                      }
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
                                     }
-                                  }
-                                }),
+                                  },
+                                ),
+                                context: context),
                             icon:
                                 const Icon(RestaurantDefaultIcons.changeTable),
                             label: const Text(
@@ -120,39 +122,43 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                             context: context),
                         child: TextButton.icon(
                             onPressed: () => GlobalService.openDialog(
-                                        contentWidget:
-                                            EditSaleDetailFooterActionWidget(
-                                                fbKey: _fbEditFooterKey,
-                                                footerType: SaleDetailFooterType
-                                                    .changeGuest,
-                                                value: readSaleProvider
-                                                    .currentGuest),
-                                        context: context)
-                                    .then((_) async {
-                                  if (_fbEditFooterKey.currentState!
-                                      .saveAndValidate()) {
-                                    final String guestId = _fbEditFooterKey
-                                        .currentState!.value['changeGuest'];
-                                    // check if new guest then update
-                                    if (guestId !=
-                                        readSaleProvider.currentGuest.value) {
-                                      await readSaleProvider.updateSaleGuest(
-                                          guestId: guestId);
-                                      // fetch products again
-                                      await readSaleProductsProvider.filter(
-                                        search: readSaleProductsProvider.search,
-                                        categoryId:
-                                            readSaleProductsProvider.categoryId,
-                                        productGroupId: readSaleProductsProvider
-                                            .productGroupId,
-                                        showExtraFood: readSaleProductsProvider
-                                            .showExtraFood,
-                                        invoiceId:
-                                            readSaleProvider.currentSale!.id,
-                                      );
+                                contentWidget: EditSaleDetailFooterActionWidget(
+                                  fbKey: _fbEditFooterKey,
+                                  footerType: SaleDetailFooterType.changeGuest,
+                                  value: readSaleProvider.currentGuest,
+                                  onInsertPressed: () async {
+                                    if (_fbEditFooterKey.currentState!
+                                        .saveAndValidate()) {
+                                      final String guestId = _fbEditFooterKey
+                                          .currentState!.value['changeGuest'];
+                                      // check if new guest then update
+                                      if (guestId !=
+                                          readSaleProvider.currentGuest.value) {
+                                        await readSaleProvider.updateSaleGuest(
+                                            guestId: guestId);
+                                        // fetch products again
+                                        await readSaleProductsProvider.filter(
+                                          search:
+                                              readSaleProductsProvider.search,
+                                          categoryId: readSaleProductsProvider
+                                              .categoryId,
+                                          productGroupId:
+                                              readSaleProductsProvider
+                                                  .productGroupId,
+                                          showExtraFood:
+                                              readSaleProductsProvider
+                                                  .showExtraFood,
+                                          invoiceId:
+                                              readSaleProvider.currentSale!.id,
+                                        );
+                                      }
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
                                     }
-                                  }
-                                }),
+                                  },
+                                ),
+                                context: context),
                             icon: const Icon(
                                 RestaurantDefaultIcons.changeCustomer),
                             label: Selector<SaleProvider, SelectOptionModel>(
@@ -203,26 +209,38 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                             modules: ['chef-monitor'], context: context))
                           Expanded(
                               child: FilledButton(
-                                  onPressed: () {
-                                    final result =
-                                        readSaleProvider.printInvoiceToKitchen(
-                                            context: context);
-                                    if (result != null) {
-                                      late SnackBar snackBar;
-                                      snackBar = Alert.awesomeSnackBar(
-                                          message: result.message,
-                                          type: result.type);
-                                      if (!context.mounted) return;
-                                      ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(snackBar);
-                                    }
-                                  },
-                                  style: FilledButton.styleFrom(
-                                      padding: EdgeInsets.zero,
-                                      shape: const LinearBorder()),
-                                  child: const Icon(
-                                      RestaurantDefaultIcons.printChefItems))),
+                            onPressed: () async {
+                              ResponseModel? result = await readSaleProvider
+                                  .printToKitchen(context: context);
+                              if (context.mounted) {
+                                result = readSaleProvider.printInvoiceToKitchen(
+                                    context: context);
+                              }
+                              if (result != null) {
+                                late SnackBar snackBar;
+                                snackBar = Alert.awesomeSnackBar(
+                                    message: result.message, type: result.type);
+                                if (!context.mounted) return;
+                                ScaffoldMessenger.of(context)
+                                  ..hideCurrentSnackBar()
+                                  ..showSnackBar(snackBar);
+                              }
+                            },
+                            style: FilledButton.styleFrom(
+                                padding: EdgeInsets.zero,
+                                shape: const LinearBorder()),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Icon(
+                                    RestaurantDefaultIcons.printChefItems),
+                                if (!ResponsiveLayout.isMobile(context))
+                                  const Text(
+                                          "$prefixSaleDetailFooterActions.printToChef")
+                                      .tr(),
+                              ],
+                            ),
+                          )),
                         Expanded(
                           child: TextButton(
                             onPressed: () async {
@@ -354,7 +372,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                 ),
                 VerticalDivider(width: 0.0, color: dividerColor),
                 Expanded(
-                    flex: ResponsiveLayout.isMobile(context) ? 4 : 3,
+                    flex: ResponsiveLayout.isMobile(context) ? 4 : 2,
                     child: Padding(
                       padding:
                           const EdgeInsets.all(AppStyleDefaultProperties.p),

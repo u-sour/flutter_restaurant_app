@@ -133,8 +133,8 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                         },
                                         child: SaleProductItemWidget(
                                           product: product,
-                                          ipAddress: _readSaleProductsProvider
-                                              .ipAddress,
+                                          ipAddress:
+                                              _readSaleProvider.ipAddress,
                                           imgHeight: imageHeight,
                                           onTap: () async {
                                             ResponseModel? result =

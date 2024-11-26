@@ -7,7 +7,6 @@ import '../../../models/select-option/select_option_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/notification_provider.dart';
-import '../../utils/debounce.dart';
 import '../../../widgets/loading_widget.dart';
 import 'sale_invoice_content_widget.dart';
 
@@ -16,7 +15,6 @@ class SaleInvoiceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final Debounce debounce = Debounce();
     NotificationProvider readNotificationProvider =
         context.read<NotificationProvider>();
     DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
@@ -55,8 +53,7 @@ class SaleInvoiceWidget extends StatelessWidget {
               SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable))
     ];
 
-    void tabChanged(int index) =>
-        debounce.run(() => readDashboardProvider.filter(tab: index));
+    void tabChanged(int index) => readDashboardProvider.filter(tab: index);
 
     return Selector<DashboardProvider, bool>(
       selector: (context, state) => state.isLoading,

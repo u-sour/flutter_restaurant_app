@@ -73,63 +73,61 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
             return Column(
               children: [
                 // Extra foods
-                Column(
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Selector<SaleProductsProvider, bool>(
-                            selector: (context, state) => state.showExtraFood,
-                            builder: (context, showExtraFood, child) =>
-                                OutlinedButton.icon(
-                              onPressed: () {
-                                // clear search text field & state
-                                _readSaleProductsProvider
-                                    .clearSearchTextFieldAndState();
-                                // clear product group
-                                _readSaleProductsProvider.productGroupFilter(
-                                    isExtraFood: true);
-                                // filter products by selected extra food
-                                final String? invoiceId =
-                                    _readSaleProvider.currentSale?.id;
-                                _readSaleProductsProvider.filter(
-                                    showExtraFood: !showExtraFood,
-                                    invoiceId: invoiceId);
-                              },
-                              style: OutlinedButton.styleFrom(
-                                  side: BorderSide(
-                                      color: theme.colorScheme.primary),
-                                  backgroundColor: showExtraFood
-                                      ? theme.colorScheme.primary
-                                      : null,
-                                  shape: const RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.all(
-                                          Radius.circular(
-                                              AppStyleDefaultProperties.r)))),
-                              icon: Icon(
-                                RestaurantDefaultIcons.extraFoods,
+                if (_readSaleProductsProvider.isExtraFoodExist) ...[
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Selector<SaleProductsProvider, bool>(
+                          selector: (context, state) => state.showExtraFood,
+                          builder: (context, showExtraFood, child) =>
+                              OutlinedButton.icon(
+                            onPressed: () {
+                              // clear search text field & state
+                              _readSaleProductsProvider
+                                  .clearSearchTextFieldAndState();
+                              // clear product group
+                              _readSaleProductsProvider.productGroupFilter(
+                                  isExtraFood: true);
+                              // filter products by selected extra food
+                              final String? invoiceId =
+                                  _readSaleProvider.currentSale?.id;
+                              _readSaleProductsProvider.filter(
+                                  showExtraFood: !showExtraFood,
+                                  invoiceId: invoiceId);
+                            },
+                            style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                    color: theme.colorScheme.primary),
+                                backgroundColor: showExtraFood
+                                    ? theme.colorScheme.primary
+                                    : null,
+                                shape: const RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.all(
+                                        Radius.circular(
+                                            AppStyleDefaultProperties.r)))),
+                            icon: Icon(
+                              RestaurantDefaultIcons.extraFoods,
+                              color: showExtraFood
+                                  ? theme.colorScheme.onPrimary
+                                  : theme.iconTheme.color,
+                            ),
+                            label: Text(
+                              'screens.sale.category.extraFoods',
+                              style: theme.textTheme.bodyLarge?.copyWith(
                                 color: showExtraFood
                                     ? theme.colorScheme.onPrimary
-                                    : theme.iconTheme.color,
+                                    : null,
+                                fontWeight:
+                                    showExtraFood ? FontWeight.bold : null,
                               ),
-                              label: Text(
-                                'screens.sale.category.extraFoods',
-                                style: theme.textTheme.bodyLarge?.copyWith(
-                                  color: showExtraFood
-                                      ? theme.colorScheme.onPrimary
-                                      : null,
-                                  fontWeight:
-                                      showExtraFood ? FontWeight.bold : null,
-                                ),
-                              ).tr(),
-                            ),
+                            ).tr(),
                           ),
                         ),
-                      ],
-                    ),
-                    const Divider(height: AppStyleDefaultProperties.h),
-                  ],
-                ),
+                      ),
+                    ],
+                  ),
+                  const Divider(height: AppStyleDefaultProperties.h),
+                ],
                 // Breadcrumb Categories
                 if (selectedCategories.length > 1)
                   SizedBox(
@@ -184,6 +182,7 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                     itemBuilder: (context, index) {
                       final SaleCategoryModel category = categories[index];
                       return SaleCategoryItemWidget(
+                        ipAddress: _readSaleProvider.ipAddress,
                         category: category,
                         onPressed: () {
                           handleCategorySelected(category);
