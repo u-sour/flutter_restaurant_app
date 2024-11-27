@@ -44,3 +44,7 @@ fvm flutter pub get
 # Build, watch for changes and debug the application
 fvm flutter run
 ```
+
+## More Related
+
+[Preparing an Android/iOS App for Release](APP_RELEASE_README.md)
