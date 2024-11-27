@@ -47,4 +47,6 @@ fvm flutter run
 
 ## More Related
 
+[Preparing an Android/iOS App for Release](APP_RELEASE_README.md)
+
 [Restaurant App](/lib/restaurant/README.md)
