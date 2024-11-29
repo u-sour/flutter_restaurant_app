@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
 import '../../../models/sale/product/sale_product_model.dart';
@@ -51,56 +52,32 @@ class SaleProductItemWidget extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
-          borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
-          child: product.photoUrl != null
-              ? CachedNetworkImage(
-                  imageUrl: getImgSrc(
-                      ipAddress: ipAddress, imgUrl: product.photoUrl!),
-                  errorWidget: (context, url, error) {
-                    return Container(
-                      width: double.infinity,
-                      height: imgHeight,
-                      foregroundDecoration: discountDecoration,
-                      child: Material(
-                        color: theme.highlightColor,
-                        child: InkWell(
-                          onTap: onTap,
-                          child: Column(
-                            children: [
-                              // Price
-                              SaleProductItemPriceWidget(product: product),
-                              // Image
-                              const NoImageWidget()
-                            ],
-                          ),
+            borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
+            child: CachedNetworkImage(
+              imageUrl: getImgSrc(
+                  ipAddress: ipAddress, imgUrl: product.photoUrl ?? ''),
+              placeholder: (context, url) => Container(
+                width: double.infinity,
+                height: imgHeight,
+                foregroundDecoration: discountDecoration,
+                child: Material(
+                  color: theme.highlightColor,
+                  child: InkWell(
+                    onTap: onTap,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        LoadingAnimationWidget.staggeredDotsWave(
+                          color: theme.colorScheme.primary,
+                          size: 48.0,
                         ),
-                      ),
-                    );
-                  },
-                  imageBuilder: (context, imageProvider) => Container(
-                    width: double.infinity,
-                    height: imgHeight,
-                    foregroundDecoration: discountDecoration,
-                    decoration: BoxDecoration(
-                      color: theme.primaryColor,
-                      image: DecorationImage(
-                          fit: BoxFit.cover, image: imageProvider),
-                    ),
-                    child: Material(
-                      color: Colors.transparent,
-                      child: InkWell(
-                        onTap: onTap,
-                        child: Column(
-                          children: [
-                            // Price
-                            SaleProductItemPriceWidget(product: product),
-                          ],
-                        ),
-                      ),
+                      ],
                     ),
                   ),
-                )
-              : Container(
+                ),
+              ),
+              errorWidget: (context, url, error) {
+                return Container(
                   width: double.infinity,
                   height: imgHeight,
                   foregroundDecoration: discountDecoration,
@@ -118,8 +95,32 @@ class SaleProductItemWidget extends StatelessWidget {
                       ),
                     ),
                   ),
+                );
+              },
+              fadeInDuration: const Duration(seconds: 1),
+              imageBuilder: (context, imageProvider) => Container(
+                width: double.infinity,
+                height: imgHeight,
+                foregroundDecoration: discountDecoration,
+                decoration: BoxDecoration(
+                  color: theme.primaryColor,
+                  image:
+                      DecorationImage(fit: BoxFit.cover, image: imageProvider),
                 ),
-        ),
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: onTap,
+                    child: Column(
+                      children: [
+                        // Price
+                        SaleProductItemPriceWidget(product: product),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            )),
         Padding(
           padding:
               const EdgeInsets.symmetric(vertical: AppStyleDefaultProperties.h),

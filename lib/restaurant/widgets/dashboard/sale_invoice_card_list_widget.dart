@@ -1,12 +1,13 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/providers/dashboard/dashboard_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
+import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/company/company_accounting_model.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
+import '../../providers/dashboard/dashboard_provider.dart';
 import '../format_currency_widget.dart';
 
 class SaleInvoiceCardListWidget extends StatelessWidget {
@@ -53,9 +54,13 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
                 Text(
                     '$prefixSaleInvoiceContentCard.table'
                         .tr(namedArgs: {'tableName': data.tableName}),
-                    style: theme.textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis))
+                    style: ResponsiveLayout.isMobile(context)
+                        ? theme.textTheme.titleMedium!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis)
+                        : theme.textTheme.titleLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis))
               ],
             ),
             const SizedBox(height: AppStyleDefaultProperties.h),
@@ -65,15 +70,15 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
                   'invoice': readDashboardProvider.getInvoiceText(
                       invoice: data, context: context)
                 }),
-                style: theme.textTheme.bodyLarge
-                    ?.copyWith(overflow: TextOverflow.ellipsis)),
+                style: theme.textTheme.bodyMedium!
+                    .copyWith(overflow: TextOverflow.ellipsis)),
             Text(
                 '$prefixSaleInvoiceContentCard.date'.tr(namedArgs: {
                   'date':
                       ConvertDateTime.formatTimeStampToString(data.date, true)
                 }),
-                style: theme.textTheme.bodyMedium
-                    ?.copyWith(overflow: TextOverflow.ellipsis)),
+                style: theme.textTheme.bodyMedium!
+                    .copyWith(overflow: TextOverflow.ellipsis)),
             const SizedBox(height: AppStyleDefaultProperties.h),
             FilledButton(
               onPressed: onBtnPressed,

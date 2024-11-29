@@ -27,7 +27,7 @@ class SaleProductGroupWidget extends StatelessWidget {
                         final SaleProductGroupModel pg = productGroup[index];
                         return Padding(
                           padding: const EdgeInsets.only(
-                              left: AppStyleDefaultProperties.p),
+                              right: AppStyleDefaultProperties.p),
                           child: SaleProductGroupItemWidget(
                             productGroup: pg,
                             onPressed: () {
