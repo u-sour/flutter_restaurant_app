@@ -6,6 +6,7 @@ import '../../../../models/select-option/select_option_model.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
+import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/sale/app-bar/sale_app_bar_action_model.dart';
 import '../../../models/sale/sale/sale_model.dart';
 import '../../../providers/sale/sale_provider.dart';
@@ -198,8 +199,11 @@ class SaleAppBarActionWidget extends StatelessWidget {
                       if (data.appBarTitle?.title != null)
                         Text(
                           data.appBarTitle!.title,
-                          style: theme.textTheme.bodyMedium
-                              ?.copyWith(fontWeight: FontWeight.bold),
+                          style: ResponsiveLayout.isMobile(context)
+                              ? theme.textTheme.bodySmall
+                                  ?.copyWith(fontWeight: FontWeight.bold)
+                              : theme.textTheme.bodyMedium
+                                  ?.copyWith(fontWeight: FontWeight.bold),
                         ),
                       if (data.appBarTitle?.date != null)
                         Text(

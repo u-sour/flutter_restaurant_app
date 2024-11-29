@@ -53,6 +53,10 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
             selector: (context, state) => state.currentSale,
             builder: (context, currentSale, child) => currentSale != null
                 ? ButtonBar(
+                    buttonPadding: ResponsiveLayout.isMobile(context)
+                        ? const EdgeInsets.all(
+                            AppStyleDefaultProperties.p / 3.6)
+                        : null,
                     alignment: MainAxisAlignment.spaceBetween,
                     children: [
                       // Change Table
@@ -83,6 +87,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                   },
                                 ),
                                 context: context),
+                            // style:
+                            //     TextButton.styleFrom(padding: EdgeInsets.zero),
                             icon:
                                 const Icon(RestaurantDefaultIcons.changeTable),
                             label: const Text(
@@ -159,6 +165,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                   },
                                 ),
                                 context: context),
+                            // style:
+                            //     TextButton.styleFrom(padding: EdgeInsets.zero),
                             icon: const Icon(
                                 RestaurantDefaultIcons.changeCustomer),
                             label: Selector<SaleProvider, SelectOptionModel>(
@@ -184,6 +192,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                   ..showSnackBar(snackBar);
                               }
                             },
+                            // style: TextButton.styleFrom(
+                            //     padding: const EdgeInsets.all(
+                            //         AppStyleDefaultProperties.p)),
                             icon: const Icon(RestaurantDefaultIcons.cancelCopy),
                             label: const Text(
                                     "$prefixSaleDetailFooterActions.cancelCopy")

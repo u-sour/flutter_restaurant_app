@@ -1,4 +1,5 @@
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
@@ -11,6 +12,7 @@ import '../../../models/sale/product/sale_product_model.dart';
 import '../../../providers/sale/categories/sale_categories_provider.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
 import '../../../providers/sale/sale_provider.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/debounce.dart';
 import '../../../../widgets/empty_data_widget.dart';
 import '../../../../widgets/loading_widget.dart';
@@ -30,7 +32,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
   late SaleProvider _readSaleProvider;
   late SaleCategoriesProvider _readSaleCategoriesProvider;
   late SaleProductsProvider _readSaleProductsProvider;
-  final Debounce _debounce = Debounce();
+  final Debounce _debounce = Debounce(delay: const Duration(milliseconds: 100));
   @override
   void initState() {
     super.initState();
@@ -41,8 +43,9 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
 
     // listen user scrolling to the bottom then load more products
     _productScrollController.addListener(() {
-      if (_productScrollController.offset ==
-          _productScrollController.position.maxScrollExtent) {
+      if (_productScrollController.offset >=
+              _productScrollController.position.maxScrollExtent &&
+          !_productScrollController.position.outOfRange) {
         _debounce.run(() async {
           String categoryId =
               _readSaleCategoriesProvider.selectedCategories.last.id;
@@ -66,13 +69,11 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
     double imageHeight = 150.0;
     // Tablet portrait mode
     if (ResponsiveLayout.isTablet(context)) {
-      crossAxisCount = 3;
       imageHeight = 180.0;
     }
     //Tablet landscape mode
     if (ResponsiveLayout.isTablet(context) &&
         orientation == Orientation.landscape) {
-      crossAxisCount = 3;
       imageHeight = 170.0;
     }
 
@@ -86,6 +87,17 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
       padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
       child: Column(
         children: [
+          if (ResponsiveLayout.isMobile(context)) ...[
+            SizedBox(
+              width: double.infinity,
+              child: FilledButton.icon(
+                  onPressed: () => Scaffold.of(context).openDrawer(),
+                  style: FilledButton.styleFrom(padding: EdgeInsets.zero),
+                  icon: const Icon(RestaurantDefaultIcons.categories),
+                  label: Text('screens.sale.navigation.categories'.tr())),
+            ),
+            const SizedBox(height: AppStyleDefaultProperties.h)
+          ],
           const SaleProductGroupWidget(),
           Expanded(
             child: Selector<
@@ -159,7 +171,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                     }),
                               ),
                               if (data.isLoadMore)
-                                const CircularProgressIndicator()
+                                const CircularProgressIndicator.adaptive()
                             ],
                           );
                   }
