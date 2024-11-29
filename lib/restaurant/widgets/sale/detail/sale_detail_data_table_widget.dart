@@ -29,10 +29,13 @@ class SaleDetailDataTableWidget extends StatelessWidget {
       GlobalKey<FormBuilderState>();
   final prefixDataTableHeader = "screens.sale.detail.dataTable.header";
   final prefixDataTableContent = "screens.sale.detail.dataTable.content";
-  final double actionsWidth = 45.0;
   final double minWidth = 0.0;
   @override
   Widget build(BuildContext context) {
+    final double qtyWidth = ResponsiveLayout.isMobile(context) ? 40.0 : 50;
+    final double returnQtyWidth =
+        ResponsiveLayout.isMobile(context) ? 58.5 : 68;
+    final double actionsWidth = ResponsiveLayout.isMobile(context) ? 30.0 : 45;
     final readProvider = context.read<SaleProvider>();
     final theme = Theme.of(context);
     final double rowHeight = ResponsiveLayout.isMobile(context) ? 160.0 : 120.0;
@@ -42,12 +45,12 @@ class SaleDetailDataTableWidget extends StatelessWidget {
           value: "item",
           alignment: Alignment.centerLeft),
       DataTableColumnModel(
-          label: "$prefixDataTableHeader.qty", value: "qty", width: 50.0),
+          label: "$prefixDataTableHeader.qty", value: "qty", width: qtyWidth),
       DataTableColumnModel(
-          label: "$prefixDataTableHeader.total",
-          value: "total",
-          alignment: Alignment.centerRight,
-          width: 100.0),
+        label: "$prefixDataTableHeader.total",
+        value: "total",
+        alignment: Alignment.centerRight,
+      ),
     ];
     // Note: ReturnQty បង្ហាញពេលមាន module soup & user role != tablet-orders
     bool allowReturnQty =
@@ -59,7 +62,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
           DataTableColumnModel(
               label: "$prefixDataTableHeader.returnQty",
               value: "returnQty",
-              width: 68.0));
+              width: returnQtyWidth));
     }
 
     return Consumer<SaleProvider>(builder: (context, state, child) {
@@ -121,8 +124,11 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                     // Item
                     Text(
                       row.itemName,
-                      style: theme.textTheme.bodyMedium
-                          ?.copyWith(fontWeight: FontWeight.bold),
+                      style: ResponsiveLayout.isMobile(context)
+                          ? theme.textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold)
+                          : theme.textTheme.bodyMedium!
+                              .copyWith(fontWeight: FontWeight.bold),
                     ),
                     // Extra items
                     if (row.extraItemDoc.isNotEmpty)
@@ -153,7 +159,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                     // Price & Discount
                     RichText(
                       text: TextSpan(
-                        style: theme.textTheme.bodyLarge,
+                        style: theme.textTheme.bodyMedium,
                         children: [
                           WidgetSpan(
                             alignment: PlaceholderAlignment.baseline,
@@ -286,6 +292,9 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                               row.note != null && row.note != ''
                                   ? row.note!
                                   : '$prefixDataTableContent.note'.tr(),
+                              style: ResponsiveLayout.isMobile(context)
+                                  ? theme.textTheme.bodySmall
+                                  : null,
                               overflow: TextOverflow.ellipsis,
                             ),
                           )
@@ -381,7 +390,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                           : () => GlobalService.openDialog(
                                 context: context,
                                 contentWidget: ConfirmDialogWidget(
-                                  content: Row(
+                                  content: Wrap(
                                     children: [
                                       Text(row.itemName,
                                           style: theme.textTheme.bodyMedium!
@@ -413,6 +422,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                   },
                                 ),
                               ),
+                      style: IconButton.styleFrom(padding: EdgeInsets.zero),
                       icon: Icon(RestaurantDefaultIcons.remove,
                           color: row.checkPrint
                               ? theme.highlightColor

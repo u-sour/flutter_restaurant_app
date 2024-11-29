@@ -24,12 +24,12 @@ class SaleAppBarWidget extends StatelessWidget implements PreferredSizeWidget {
     Row tablet = Row(
       children: [
         // Navigation
-        const SaleAppBarNavigationWidget(),
+        const SizedBox(width: 150.0, child: SaleAppBarNavigationWidget()),
         // Search
-        const Expanded(flex: 3, child: SaleAppBarSearchWidget()),
+        const Expanded(child: SaleAppBarSearchWidget()),
         // Actions
         if (orientation == Orientation.landscape)
-          const Expanded(flex: 3, child: SaleAppBarActionWidget())
+          const Expanded(child: SaleAppBarActionWidget())
       ],
     );
 
