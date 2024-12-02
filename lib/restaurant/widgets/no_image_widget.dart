@@ -30,13 +30,10 @@ class NoImageWidget extends StatelessWidget {
           children: [
             Icon(icon,
                 color: iconColor ?? theme.iconTheme.color, size: iconSize),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8.0),
-              child: Text(
-                description.tr(),
-                style: descriptionTextStyle ?? theme.textTheme.titleMedium,
-                textAlign: TextAlign.center,
-              ),
+            Text(
+              description.tr(),
+              style: descriptionTextStyle ?? theme.textTheme.bodyLarge,
+              textAlign: TextAlign.center,
             )
           ],
         ),

@@ -1,9 +1,13 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:provider/provider.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
+import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
+import '../../../providers/sale/sale_provider.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../no_image_widget.dart';
 import '../../format_currency_widget.dart';
@@ -13,26 +17,19 @@ class SaleProductItemWidget extends StatelessWidget {
   final double? imgHeight;
   final String ipAddress;
   final VoidCallback? onTap;
-  // final bool selected;
-  // final bool lastSelectedItem;
 
   const SaleProductItemWidget({
     super.key,
     required this.product,
-    // this.product,
     this.imgHeight = 180.0,
     required this.ipAddress,
     this.onTap,
-    // required this.selected,
-    //  required this.lastSelectedItem,
   });
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     double discountBgColorOpacity = 0.8;
-    // double lastSelectedItemOpacity = 1;
-    // double normalSelectedItemOpacity = 0.45;
     // discount
     Decoration? discountDecoration;
     if (product.discount > 0) {
@@ -85,13 +82,19 @@ class SaleProductItemWidget extends StatelessWidget {
                     color: theme.highlightColor,
                     child: InkWell(
                       onTap: onTap,
-                      child: Column(
-                        children: [
-                          // Price
-                          SaleProductItemPriceWidget(product: product),
-                          // Image
-                          const NoImageWidget()
-                        ],
+                      child: Padding(
+                        padding: const EdgeInsets.all(
+                            AppStyleDefaultProperties.p / 1.5),
+                        child: Stack(
+                          children: [
+                            // Price
+                            SaleProductItemPriceWidget(product: product),
+                            // Image
+                            const NoImageWidget(),
+                            // Item Selected
+                            SaleProductItemSelectedWidget(product: product)
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -111,11 +114,17 @@ class SaleProductItemWidget extends StatelessWidget {
                   color: Colors.transparent,
                   child: InkWell(
                     onTap: onTap,
-                    child: Column(
-                      children: [
-                        // Price
-                        SaleProductItemPriceWidget(product: product),
-                      ],
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                          AppStyleDefaultProperties.p / 1.5),
+                      child: Stack(
+                        children: [
+                          // Price
+                          SaleProductItemPriceWidget(product: product),
+                          // Item Selected
+                          SaleProductItemSelectedWidget(product: product)
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -152,6 +161,35 @@ class SaleProductItemWidget extends StatelessWidget {
   }
 }
 
+class SaleProductItemSelectedWidget extends StatelessWidget {
+  final SaleProductModel product;
+  final double selectedItemOpacity = 0.5;
+  final double lastSelectedItemOpacity = 1;
+  const SaleProductItemSelectedWidget({super.key, required this.product});
+
+  @override
+  Widget build(BuildContext context) {
+    return Selector<SaleProvider, List<SaleDetailModel>>(
+        selector: (context, state) => state.saleDetails,
+        builder: (context, saleDetails, child) {
+          bool isSelected = saleDetails.isNotEmpty &&
+              saleDetails.where((sd) => sd.itemId == product.id).isNotEmpty;
+          bool isLastSelectedItem =
+              saleDetails.isNotEmpty && saleDetails.last.itemId == product.id;
+          return isSelected
+              ? Align(
+                  alignment: Alignment.bottomLeft,
+                  child: Icon(RestaurantDefaultIcons.selectedItem,
+                      color: AppThemeColors.primary.withOpacity(
+                          isLastSelectedItem
+                              ? lastSelectedItemOpacity
+                              : selectedItemOpacity)),
+                )
+              : const SizedBox.shrink();
+        });
+  }
+}
+
 class SaleProductItemPriceWidget extends StatelessWidget {
   const SaleProductItemPriceWidget({
     super.key,
@@ -165,31 +203,29 @@ class SaleProductItemPriceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Container(
-              padding: const EdgeInsets.all(5.0),
-              decoration: BoxDecoration(
-                color: AppThemeColors.primary.withOpacity(priceBgColorOpacity),
-                borderRadius: BorderRadius.circular(10.0),
-              ),
-              child: Column(
-                children: [
-                  FormatCurrencyWidget(
-                    value: product.price,
-                    color: product.discountAmount != null
-                        ? theme.colorScheme.onPrimary.withOpacity(.35)
-                        : null,
-                  ),
-                  if (product.discountAmount != null)
-                    FormatCurrencyWidget(value: product.discountAmount!),
-                ],
-              )),
-        ],
-      ),
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+            padding: const EdgeInsets.all(AppStyleDefaultProperties.p / 2.4),
+            decoration: BoxDecoration(
+              color: AppThemeColors.primary.withOpacity(priceBgColorOpacity),
+              borderRadius: BorderRadius.circular(10.0),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                FormatCurrencyWidget(
+                  value: product.price,
+                  color: product.discountAmount != null
+                      ? theme.colorScheme.onPrimary.withOpacity(.35)
+                      : null,
+                ),
+                if (product.discountAmount != null)
+                  FormatCurrencyWidget(value: product.discountAmount!),
+              ],
+            )),
+      ],
     );
   }
 }
