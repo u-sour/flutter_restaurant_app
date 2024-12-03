@@ -10,7 +10,7 @@ import '../restaurant/models/sale/setting/sale_setting_model.dart';
 import '../restaurant/models/user/user_model.dart';
 import '../restaurant/services/user_service.dart';
 import '../restaurant/utils/debounce.dart';
-import '../widgets/screens/app_screen.dart';
+import '../screens/app_screen.dart';
 import '../storages/auth_storage.dart';
 
 // ignore: non_constant_identifier_names

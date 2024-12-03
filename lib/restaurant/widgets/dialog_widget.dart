@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../utils/constants.dart';
 import '../../utils/responsive/responsive_layout.dart';
-import 'icon_with_text_widget.dart';
+import '../../widgets/icon_with_text_widget.dart';
 
 enum DialogType { insert, update }
 

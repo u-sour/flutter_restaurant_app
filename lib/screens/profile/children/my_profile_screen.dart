@@ -5,12 +5,12 @@ import 'package:flutter_template/models/widgets/avatar_initial_widget_model.dart
 import 'package:flutter_template/widgets/avatar_widget.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
-import '../../../../providers/my_profile_provider.dart';
-import '../../../../router/route_utils.dart';
-import '../../../../utils/constants.dart';
-import '../../../../utils/responsive/responsive_layout.dart';
-import '../../../drawer_widget.dart';
-import '../../../toggle_switch_theme_widget.dart';
+import '../../../providers/my_profile_provider.dart';
+import '../../../router/route_utils.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/responsive/responsive_layout.dart';
+import '../../../widgets/drawer_widget.dart';
+import '../../../widgets/toggle_switch_theme_widget.dart';
 
 class MyProfileScreen extends StatelessWidget {
   final String? fullName;

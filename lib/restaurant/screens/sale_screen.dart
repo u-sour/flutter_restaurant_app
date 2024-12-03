@@ -181,10 +181,13 @@ class _SaleScreenState extends State<SaleScreen> {
               : const SizedBox.shrink()),
       resizeToAvoidBottomInset: false,
     );
-    return ResponsiveLayout(
-      mobileScaffold: mobileScaffold,
-      tabletScaffold: tabletScaffold,
-      desktopScaffold: desktopScaffold,
+    return PopScope(
+      canPop: false,
+      child: ResponsiveLayout(
+        mobileScaffold: mobileScaffold,
+        tabletScaffold: tabletScaffold,
+        desktopScaffold: desktopScaffold,
+      ),
     );
   }
 }

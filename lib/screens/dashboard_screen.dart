@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import '../../restaurant/services/user_service.dart';
-import '../../restaurant/widgets/dashboard/feature_widget.dart';
-import '../../restaurant/widgets/dashboard/sale_invoice_widget.dart';
-import '../../restaurant/widgets/department_widget.dart';
-import '../../utils/constants.dart';
-import '../../utils/responsive/responsive_layout.dart';
-import '../app_bar_widget.dart';
-import '../../router/route_utils.dart';
-import '../drawer_widget.dart';
+import '../restaurant/services/user_service.dart';
+import '../restaurant/widgets/dashboard/feature_widget.dart';
+import '../restaurant/widgets/dashboard/sale_invoice_widget.dart';
+import '../restaurant/widgets/department_widget.dart';
+import '../utils/constants.dart';
+import '../utils/responsive/responsive_layout.dart';
+import '../widgets/app_bar_widget.dart';
+import '../router/route_utils.dart';
+import '../widgets/drawer_widget.dart';
 
 class DashboardScreen extends StatelessWidget {
   const DashboardScreen({super.key});

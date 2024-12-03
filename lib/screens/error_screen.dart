@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../router/route_utils.dart';
-import '../app_bar_widget.dart';
+import '../router/route_utils.dart';
+import '../widgets/app_bar_widget.dart';
 
 class ErrorScreen extends StatelessWidget {
   final String? error;

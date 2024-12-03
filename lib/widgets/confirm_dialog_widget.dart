@@ -2,7 +2,6 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../utils/constants.dart';
-import '../utils/constants.dart';
 import 'icon_with_text_widget.dart';
 
 class ConfirmDialogWidget extends StatelessWidget {
@@ -15,7 +14,7 @@ class ConfirmDialogWidget extends StatelessWidget {
   final void Function()? onAgreePressed;
   const ConfirmDialogWidget(
       {super.key,
-      this.titleIcon = RestaurantDefaultIcons.confirmation,
+      this.titleIcon = AppDefaultIcons.confirmation,
       this.title = 'dialog.confirm.title',
       required this.content,
       this.cancelLabel = 'dialog.confirm.actions.cancel',

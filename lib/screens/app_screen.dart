@@ -7,31 +7,31 @@ import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../providers/printer_provider.dart';
-import '../../providers/setting_provider.dart';
-import '../../restaurant/providers/dashboard/dashboard_provider.dart';
-import '../../restaurant/providers/invoice-template/invoice_template_provider.dart';
-import '../../restaurant/providers/invoice/invoice_provider.dart';
-import '../../restaurant/providers/report-template/report_template_provider.dart';
-import '../../restaurant/providers/reports/sale_detail_profit_and_loss_by_item_report_provider.dart';
-import '../../restaurant/providers/reports/sale_detail_report_provider.dart';
-import '../../restaurant/providers/reports/sale_receipt_report_provider.dart';
-import '../../restaurant/providers/reports/sale_report_provider.dart';
-import '../../restaurant/providers/sale-table/sale_table_provider.dart';
-import '../../restaurant/providers/sale/categories/sale_categories_provider.dart';
-import '../../restaurant/providers/sale/notification_provider.dart';
-import '../../restaurant/providers/sale/products/sale_products_provider.dart';
-import '../../restaurant/providers/sale/sale_provider.dart';
-import '../../router/app_router.dart';
-import '../../providers/app_provider.dart';
-import '../../providers/auth_provider.dart';
-import '../../providers/login_form_provider.dart';
-import '../../providers/my_profile_provider.dart';
-import '../../providers/route_provider.dart';
-import '../../providers/theme_provider.dart';
-import '../../storages/connection_storage.dart';
-import '../../utils/responsive/responsive_layout.dart';
-import '../../utils/theme/theme.dart';
+import '../providers/printer_provider.dart';
+import '../providers/setting_provider.dart';
+import '../restaurant/providers/dashboard/dashboard_provider.dart';
+import '../restaurant/providers/invoice-template/invoice_template_provider.dart';
+import '../restaurant/providers/invoice/invoice_provider.dart';
+import '../restaurant/providers/report-template/report_template_provider.dart';
+import '../restaurant/providers/reports/sale_detail_profit_and_loss_by_item_report_provider.dart';
+import '../restaurant/providers/reports/sale_detail_report_provider.dart';
+import '../restaurant/providers/reports/sale_receipt_report_provider.dart';
+import '../restaurant/providers/reports/sale_report_provider.dart';
+import '../restaurant/providers/sale-table/sale_table_provider.dart';
+import '../restaurant/providers/sale/categories/sale_categories_provider.dart';
+import '../restaurant/providers/sale/notification_provider.dart';
+import '../restaurant/providers/sale/products/sale_products_provider.dart';
+import '../restaurant/providers/sale/sale_provider.dart';
+import '../router/app_router.dart';
+import '../providers/app_provider.dart';
+import '../providers/auth_provider.dart';
+import '../providers/login_form_provider.dart';
+import '../providers/my_profile_provider.dart';
+import '../providers/route_provider.dart';
+import '../providers/theme_provider.dart';
+import '../storages/connection_storage.dart';
+import '../utils/responsive/responsive_layout.dart';
+import '../utils/theme/theme.dart';
 
 MeteorClient meteor = MeteorClient.connect(url: '');
 
@@ -111,6 +111,7 @@ class _AppScreenState extends State<AppScreen> {
       meteor = MeteorClient.connect(url: 'http://$ipAddress');
     }
     await appProvider.onAppStart();
+    await themeProvider.initState();
   }
 
   @override

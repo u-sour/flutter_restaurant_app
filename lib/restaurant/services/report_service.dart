@@ -1,6 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import '../../models/select-option/select_option_model.dart';
-import '../../widgets/screens/app_screen.dart';
+import '../../screens/app_screen.dart';
 
 class ReportService {
   ReportService._();
