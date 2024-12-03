@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
-import '../../../widgets/screens/app_screen.dart';
+import '../../../screens/app_screen.dart';
 import '../../models/invoice-template/invoice_template_model.dart';
 
 class InvoiceTemplateProvider extends ChangeNotifier {

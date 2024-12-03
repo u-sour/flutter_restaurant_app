@@ -6,7 +6,7 @@ import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
-import '../../../widgets/screens/app_screen.dart';
+import '../../../screens/app_screen.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../models/notification/new_notification_model.dart';
 import '../../models/notification/notification_data_model.dart';

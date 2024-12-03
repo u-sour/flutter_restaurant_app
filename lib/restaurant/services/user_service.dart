@@ -1,4 +1,4 @@
-import '../../widgets/screens/app_screen.dart';
+import '../../screens/app_screen.dart';
 
 class UserService {
   UserService._();

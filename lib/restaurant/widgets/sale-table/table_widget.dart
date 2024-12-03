@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import '../../../widgets/icon_with_text_widget.dart';
 import '../../utils/constants.dart';
-import '../icon_with_text_widget.dart';
 
 class TableWidget extends StatelessWidget {
   final int currentGuestCountFromSale;

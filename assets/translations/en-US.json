@@ -620,7 +620,7 @@
       }
     },
     "printer": {
-      "title": "Print Preview",
+      "title": "Printer",
       "dialog": {
         "title": "Printing",
         "Processing": "Processing: {progress}%"
@@ -660,6 +660,9 @@
     },
     "confirm": {
       "title": "Confirmation",
+      "exitApp": {
+        "description": "Are you sure you want to exit?"
+      },
       "remove": {
         "description": " will immediately remove. Continue?"
       },

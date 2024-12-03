@@ -6,11 +6,11 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/constants.dart';
 import '../../../../widgets/custom-form-builder/form_builder_custom_touch_spin.dart';
+import '../../../../widgets/icon_with_text_widget.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../icon_with_text_widget.dart';
 
 class EditSaleDetailOperationsDataTableRowWidget extends StatelessWidget {
   final GlobalKey<FormBuilderState> fbEditRowKey;

@@ -6,7 +6,7 @@ import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
-import '../../../widgets/screens/app_screen.dart';
+import '../../../screens/app_screen.dart';
 import '../../models/option/option_model.dart';
 import '../../models/reports/profit-and-loss-by-item/sale_detail_profit_and_loss_by_item_report_model.dart';
 import '../../models/reports/report_exchange_model.dart';

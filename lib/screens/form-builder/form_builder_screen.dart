@@ -1,12 +1,12 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import '../../../models/widgets/screen_list_tile_widget_model.dart';
-import '../../../router/route_utils.dart';
-import '../../../utils/responsive/responsive_layout.dart';
-import '../../app_bar_widget.dart';
-import '../../drawer_widget.dart';
-import '../../screen_list_tile_widget.dart';
+import '../../models/widgets/screen_list_tile_widget_model.dart';
+import '../../router/route_utils.dart';
+import '../../utils/responsive/responsive_layout.dart';
+import '../../widgets/app_bar_widget.dart';
+import '../../widgets/drawer_widget.dart';
+import '../../widgets/screen_list_tile_widget.dart';
 
 class FormBuilderScreen extends StatelessWidget {
   const FormBuilderScreen({super.key});

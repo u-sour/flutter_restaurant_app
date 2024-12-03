@@ -2,16 +2,16 @@ import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/services/global_service.dart';
 import 'package:provider/provider.dart';
-import '../../providers/app_provider.dart';
-import '../../providers/login_form_provider.dart';
-import '../../utils/constants.dart';
-import '../../utils/responsive/responsive_layout.dart';
-import '../connection/setup_ip_address_form_widget.dart';
-import '../language/toggle_language_widget.dart';
-import '../login/login_brand_widget.dart';
-import '../login/login_form_widget.dart';
-import '../no_internet_connection_widget.dart';
-import '../toggle_switch_theme_widget.dart';
+import '../providers/app_provider.dart';
+import '../providers/login_form_provider.dart';
+import '../utils/constants.dart';
+import '../utils/responsive/responsive_layout.dart';
+import '../widgets/connection/setup_ip_address_form_widget.dart';
+import '../widgets/language/toggle_language_widget.dart';
+import '../widgets/login/login_brand_widget.dart';
+import '../widgets/login/login_form_widget.dart';
+import '../widgets/no_internet_connection_widget.dart';
+import '../widgets/toggle_switch_theme_widget.dart';
 
 class LogInScreen extends StatefulWidget {
   const LogInScreen({super.key});

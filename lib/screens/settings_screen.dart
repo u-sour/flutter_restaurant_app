@@ -2,19 +2,20 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../models/select-option/select_option_model.dart';
-import '../../models/widgets/screen_list_tile_widget_model.dart';
-import '../../providers/setting_provider.dart';
-import '../../router/route_utils.dart';
-import '../../providers/theme_provider.dart';
-import '../../services/global_service.dart';
-import '../../utils/constants.dart';
-import '../../utils/responsive/responsive_layout.dart';
-import '../app_bar_widget.dart';
-import '../connection/setup_ip_address_form_widget.dart';
-import '../drawer_widget.dart';
-import '../screen_list_tile_widget.dart';
-import '../settings/change_printer_font_size_form_widget.dart';
+import '../models/select-option/select_option_model.dart';
+import '../models/widgets/screen_list_tile_widget_model.dart';
+import '../providers/setting_provider.dart';
+import '../router/route_utils.dart';
+import '../providers/theme_provider.dart';
+import '../services/global_service.dart';
+import '../storages/theme_storage.dart';
+import '../utils/constants.dart';
+import '../utils/responsive/responsive_layout.dart';
+import '../widgets/app_bar_widget.dart';
+import '../widgets/connection/setup_ip_address_form_widget.dart';
+import '../widgets/drawer_widget.dart';
+import '../widgets/screen_list_tile_widget.dart';
+import '../widgets/settings/change_printer_font_size_form_widget.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -52,6 +53,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               final ThemeMode themeMode = value;
               readThemeProvider.switchTheme(themeMode);
+              // set into local storage
+              ThemeStorage().setTheme(themeMode: themeMode);
               context.pop();
             },
           );

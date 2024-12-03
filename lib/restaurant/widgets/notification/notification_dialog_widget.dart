@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../utils/constants.dart';
+import '../../../widgets/icon_with_text_widget.dart';
 import '../../providers/sale/notification_provider.dart';
 import '../../services/user_service.dart';
 import '../../utils/notification/notification_utils.dart';
-import '../icon_with_text_widget.dart';
 
 class NotificationDialogWidget extends StatelessWidget {
   final IconData titleIcon;

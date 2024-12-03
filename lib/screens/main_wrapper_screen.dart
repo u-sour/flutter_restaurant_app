@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import '../../providers/app_provider.dart';
-import '../../utils/responsive/responsive_layout.dart';
-import '../bottom_nav_bar_widget.dart';
-import '../drawer_widget.dart';
-import '../no_internet_connection_widget.dart';
+import '../providers/app_provider.dart';
+import '../utils/responsive/responsive_layout.dart';
+import '../widgets/bottom_nav_bar_widget.dart';
+import '../widgets/drawer_widget.dart';
+import '../widgets/no_internet_connection_widget.dart';
 
 class MainWrapperScreen extends StatelessWidget {
   // route-view

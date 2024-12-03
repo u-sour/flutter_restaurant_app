@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../connection/connection_form_widget.dart';
-import '../language/toggle_language_widget.dart';
-import '../toggle_switch_theme_widget.dart';
+import '../widgets/connection/connection_form_widget.dart';
+import '../widgets/language/toggle_language_widget.dart';
+import '../widgets/toggle_switch_theme_widget.dart';
 
 class ConnectionScreen extends StatelessWidget {
   const ConnectionScreen({super.key});

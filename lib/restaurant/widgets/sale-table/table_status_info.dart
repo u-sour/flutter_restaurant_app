@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
+import '../../../widgets/icon_with_text_widget.dart';
 import '../../utils/constants.dart';
-import '../icon_with_text_widget.dart';
 
 class TableStatusInfo extends StatelessWidget {
   const TableStatusInfo({super.key});
