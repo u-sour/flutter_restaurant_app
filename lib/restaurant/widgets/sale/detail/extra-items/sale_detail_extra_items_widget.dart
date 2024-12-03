@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../../../utils/constants.dart';
+import '../../../../../widgets/icon_with_text_widget.dart';
 import '../../../../models/sale/detail/sale_detail_extra_item_model.dart';
 import '../../../../utils/constants.dart';
-import '../../../icon_with_text_widget.dart';
 import 'sale_detail_extra_items_child_widget.dart';
 
 class SaleDetailExtraItemsWidget extends StatelessWidget {

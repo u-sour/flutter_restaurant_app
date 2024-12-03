@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../utils/constants.dart';
+import '../../../../widgets/icon_with_text_widget.dart';
 import '../../../models/sale/sale/sale_model.dart';
 import '../../../models/sale/table-location/table_location_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
-import '../../icon_with_text_widget.dart';
 import 'sale_invoice_item_widget.dart';
 
 class SaleInvoiceWidget extends StatelessWidget {

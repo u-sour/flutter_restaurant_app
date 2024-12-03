@@ -6,7 +6,7 @@ import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
-import '../../../widgets/screens/app_screen.dart';
+import '../../../screens/app_screen.dart';
 import '../../models/option/option_model.dart';
 import '../../models/reports/report_exchange_model.dart';
 import '../../models/reports/sale/sale_data_detail_report_model.dart';

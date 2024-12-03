@@ -2,9 +2,9 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../utils/constants.dart';
+import '../../widgets/icon_with_text_widget.dart';
 import '../providers/report-template/report_template_provider.dart';
 import '../utils/constants.dart';
-import '../widgets/icon_with_text_widget.dart';
 import '../widgets/report_template/report_template_toolbar_widget.dart';
 
 class ReportTemplateScreen extends StatelessWidget {

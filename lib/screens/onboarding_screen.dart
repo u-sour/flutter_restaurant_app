@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../../router/route_utils.dart';
-import '../../providers/app_provider.dart';
-import '../app_bar_widget.dart';
+import '../router/route_utils.dart';
+import '../providers/app_provider.dart';
+import '../widgets/app_bar_widget.dart';
 
 class OnBoardingScreen extends StatelessWidget {
   const OnBoardingScreen({super.key});

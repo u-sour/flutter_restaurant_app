@@ -1,5 +1,7 @@
 import 'dart:convert';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../restaurant/models/user/user_model.dart';
@@ -10,26 +12,28 @@ import '../restaurant/screens/reports/sale_report_screen.dart';
 import '../restaurant/screens/reports/sale_detail_report_screen.dart';
 import '../restaurant/screens/reports/sale_receipt_report_screen.dart';
 import '../restaurant/screens/reports/sale_detail_profit_and_loss_by_item_report_screen.dart';
+import '../services/global_service.dart';
+import '../widgets/confirm_dialog_widget.dart';
 import 'route_utils.dart';
 import '../restaurant/screens/sale_table_screen.dart';
-import '../widgets/screens/connection_screen.dart';
+import '../screens/connection_screen.dart';
 import '../storages/connection_storage.dart';
 import '../providers/app_provider.dart';
-import '../widgets/screens/error_screen.dart';
-import '../widgets/screens/main_wrapper_screen.dart';
-import '../widgets/screens/dashboard_screen.dart';
+import '../screens/error_screen.dart';
+import '../screens/main_wrapper_screen.dart';
+import '../screens/dashboard_screen.dart';
 import '../restaurant/screens/sale_screen.dart';
 // import '../screens/form-builder/form_builder_screen.dart';
 // import '../screens/form-builder/children/form_builder_default_screen.dart';
 // import '../screens/form-builder/children/form_builder_validation_screen.dart';
-import '../widgets/screens/profile/profile_screen.dart';
-import '../widgets/screens/profile/children/my_profile_screen.dart';
-import '../widgets/screens/settings_screen.dart';
-import '../widgets/screens/printer/printer_screen.dart';
+import '../screens/profile/profile_screen.dart';
+import '../screens/profile/children/my_profile_screen.dart';
+import '../screens/settings_screen.dart';
+import '../screens/printer/printer_screen.dart';
 import '../widgets/printer/invoice.dart';
-import '../widgets/screens/login_screen.dart';
-import '../widgets/screens/onboarding_screen.dart';
-import '../widgets/screens/splash_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/onboarding_screen.dart';
+import '../screens/splash_screen.dart';
 
 class AppRouter {
   late final AppProvider appProvider;
@@ -58,7 +62,24 @@ class AppRouter {
       // Main Wrapper Route
       StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            return MainWrapperScreen(navigationShell: navigationShell);
+            return PopScope(
+                canPop: false,
+                onPopInvoked: (didPop) {
+                  GlobalService.openDialog(
+                    context: context,
+                    contentWidget: ConfirmDialogWidget(
+                      content: Text('dialog.confirm.exitApp.description'.tr()),
+                      onAgreePressed: () {
+                        context.pop();
+                        SystemNavigator.pop();
+                      },
+                      onCancelPressed: () {
+                        context.pop();
+                      },
+                    ),
+                  );
+                },
+                child: MainWrapperScreen(navigationShell: navigationShell));
           },
           branches: <StatefulShellBranch>[
             // Dashboard

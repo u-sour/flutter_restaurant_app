@@ -2,9 +2,9 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
+import '../../../widgets/icon_with_text_widget.dart';
 import '../../models/notification/notification_data_model.dart';
 import '../../utils/constants.dart';
-import '../icon_with_text_widget.dart';
 
 class NotificationContentListWidget extends StatelessWidget {
   final NotificationDataModel notification;

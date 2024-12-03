@@ -1,11 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
-import '../../../../utils/constants.dart';
-import '../../../../utils/responsive/responsive_layout.dart';
-import '../../../app_bar_widget.dart';
-import '../../../drawer_widget.dart';
-import '../../../../router/route_utils.dart';
+import '../../../utils/constants.dart';
+import '../../../utils/responsive/responsive_layout.dart';
+import '../../../widgets/app_bar_widget.dart';
+import '../../../widgets/drawer_widget.dart';
+import '../../../router/route_utils.dart';
 
 class FormBuilderDefaultScreen extends StatelessWidget {
   FormBuilderDefaultScreen({super.key});

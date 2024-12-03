@@ -3,9 +3,9 @@ import 'package:go_router/go_router.dart';
 import '../../../../models/select-option/select_option_model.dart';
 import '../../../../router/route_utils.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
+import '../../../../widgets/icon_with_text_widget.dart';
 import '../../../services/sale_service.dart';
 import '../../../utils/constants.dart';
-import '../../icon_with_text_widget.dart';
 
 class SaleAppBarNavigationWidget extends StatelessWidget {
   const SaleAppBarNavigationWidget({super.key});

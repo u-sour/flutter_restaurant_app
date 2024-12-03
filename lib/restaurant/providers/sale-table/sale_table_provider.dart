@@ -7,7 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
-import '../../../widgets/screens/app_screen.dart';
+import '../../../screens/app_screen.dart';
 import '../../models/sale-table/floor_model.dart';
 import '../../models/sale-table/table_model.dart';
 import '../../models/sale/sale/sale_model.dart';
