@@ -154,7 +154,24 @@
       "title": "LOG OUT"
     }
   },
-
+  "dialog": {
+    "actions": {
+      "cancel": "Cancel",
+      "insert": "Save",
+      "insertAndPrint": "Save & Print",
+      "update": "Update"
+    },
+    "confirm": {
+      "title": "Confirmation",
+      "exitApp": {
+        "description": "Are you sure you want to exit?"
+      },
+      "remove": {
+        "description": " will immediately remove. Continue?"
+      },
+      "actions": { "cancel": "Cancel", "agree": "Okay" }
+    }
+  },
   "alert": {
     "success": {
       "title": "Success",

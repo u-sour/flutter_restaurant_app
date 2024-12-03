@@ -112,6 +112,8 @@ class AppStyleDefaultProperties {
 
 class AppDefaultIcons {
   AppDefaultIcons._();
+  // confirmation
+  static const IconData confirmation = Icons.quiz_rounded;
   // Data
   static const IconData loading = Icons.on_device_training;
   static const IconData emptyData = Icons.storage;

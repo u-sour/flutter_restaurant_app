@@ -67,8 +67,9 @@ class _AppScreenState extends State<AppScreen> {
       meteor = MeteorClient.connect(url: 'http://$ipAddress');
     }
     await appProvider.onAppStart();
+    await themeProvider.initState();
   }
-  
+
   @override
   void dispose() {
     authSubscription.cancel();

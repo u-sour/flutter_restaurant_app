@@ -1,5 +1,9 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:go_router/go_router.dart';
+import '../services/global_service.dart';
+import '../widgets/confirm_dialog_widget.dart';
 import 'route_utils.dart';
 import '../screens/connection_screen.dart';
 import '../storages/connection_storage.dart';
@@ -44,7 +48,24 @@ class AppRouter {
       // Main Wrapper Route
       StatefulShellRoute.indexedStack(
           builder: (context, state, navigationShell) {
-            return MainWrapperScreen(navigationShell: navigationShell);
+            return PopScope(
+                canPop: false,
+                onPopInvoked: (didPop) {
+                  GlobalService.openDialog(
+                    context: context,
+                    contentWidget: ConfirmDialogWidget(
+                      content: Text('dialog.confirm.exitApp.description'.tr()),
+                      onAgreePressed: () {
+                        context.pop();
+                        SystemNavigator.pop();
+                      },
+                      onCancelPressed: () {
+                        context.pop();
+                      },
+                    ),
+                  );
+                },
+                child: MainWrapperScreen(navigationShell: navigationShell));
           },
           branches: <StatefulShellBranch>[
             // Dashboard
