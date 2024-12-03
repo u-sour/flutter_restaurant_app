@@ -8,6 +8,7 @@ import '../providers/setting_provider.dart';
 import '../router/route_utils.dart';
 import '../providers/theme_provider.dart';
 import '../services/global_service.dart';
+import '../storages/theme_storage.dart';
 import '../utils/constants.dart';
 import '../utils/responsive/responsive_layout.dart';
 import '../widgets/app_bar_widget.dart';
@@ -52,6 +53,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
             onChanged: (value) {
               final ThemeMode themeMode = value;
               readThemeProvider.switchTheme(themeMode);
+              // set into local storage
+              ThemeStorage().setTheme(themeMode: themeMode);
               context.pop();
             },
           );

@@ -150,6 +150,24 @@
       "title": "ចាកចេញ"
     }
   },
+  "dialog": {
+    "actions": {
+      "cancel": "បោះបង់",
+      "insert": "រក្សាទុក",
+      "insertAndPrint": "រក្សាទុក & បោះពុម្ព",
+      "update": "កែប្រែ"
+    },
+    "confirm": {
+      "title": "ការបញ្ជាក់",
+      "exitApp": {
+        "description": "តើអ្នកប្រាកដថាចង់ចាកចេញទេ?"
+      },
+      "remove": {
+        "description": " នឹងដកចេញភ្លាមៗ។ បន្ត?"
+      },
+      "actions": { "cancel": "បោះបង់", "agree": "យល់ព្រម" }
+    }
+  },
   "alert": {
     "success": {
       "title": "ជោគជ័យ",
