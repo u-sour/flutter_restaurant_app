@@ -4,6 +4,7 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
+import '../../../models/sale/add-product/sale_add_product_model.dart';
 import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../../providers/sale/sale_provider.dart';
@@ -169,21 +170,32 @@ class SaleProductItemSelectedWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Selector<SaleProvider, List<SaleDetailModel>>(
-        selector: (context, state) => state.saleDetails,
-        builder: (context, saleDetails, child) {
-          bool isSelected = saleDetails.isNotEmpty &&
-              saleDetails.where((sd) => sd.itemId == product.id).isNotEmpty;
-          bool isLastSelectedItem =
-              saleDetails.isNotEmpty && saleDetails.last.itemId == product.id;
+    return Selector<
+            SaleProvider,
+            ({
+              List<SaleDetailModel> saleDetails,
+              SaleAddProductModel? lastItemAdded
+            })>(
+        selector: (context, state) => (
+              saleDetails: state.saleDetails,
+              lastItemAdded: state.lastItemAdded
+            ),
+        builder: (context, data, child) {
+          bool isSelected = data.saleDetails.isNotEmpty &&
+              data.saleDetails
+                  .where((sd) => sd.itemId == product.id)
+                  .isNotEmpty;
+          bool isLastSelectedItem = data.lastItemAdded != null &&
+              data.lastItemAdded!.id == product.id;
           return isSelected
               ? Align(
                   alignment: Alignment.bottomLeft,
-                  child: Icon(RestaurantDefaultIcons.selectedItem,
-                      color: AppThemeColors.primary.withOpacity(
-                          isLastSelectedItem
-                              ? lastSelectedItemOpacity
-                              : selectedItemOpacity)),
+                  child: Icon(
+                    RestaurantDefaultIcons.selectedItem,
+                    color: AppThemeColors.primary.withOpacity(isLastSelectedItem
+                        ? lastSelectedItemOpacity
+                        : selectedItemOpacity),
+                  ),
                 )
               : const SizedBox.shrink();
         });

@@ -1,4 +1,3 @@
-import 'package:dynamic_tabbar/dynamic_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/restaurant/utils/map_index.dart';
@@ -26,10 +25,8 @@ class SaleTableScreen extends StatefulWidget {
 class _SaleTableScreenState extends State<SaleTableScreen> {
   late AppProvider _readAppProvider;
   late SaleTableProvider _readSaleTableProvider;
-  bool isScrollable = true;
-  bool showNextIcon = true;
-  bool showBackIcon = true;
   final _prefixSaleTableEmptyData = 'screens.saleTable.emptyData.description';
+
   @override
   void initState() {
     super.initState();
@@ -69,7 +66,9 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
           child: Column(
             children: [
               const Padding(
-                padding: EdgeInsets.all(AppStyleDefaultProperties.p),
+                padding: EdgeInsets.only(
+                    top: AppStyleDefaultProperties.p,
+                    right: AppStyleDefaultProperties.p),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [DepartmentWidget()],
@@ -81,56 +80,79 @@ class _SaleTableScreenState extends State<SaleTableScreen> {
                     ({
                       bool isLoading,
                       List<FloorModel> floors,
-                      List<TableModel> tables,
-                      bool isFiltering
                     })>(
                   selector: (context, state) => (
                     isLoading: state.isLoading,
                     floors: state.floors,
-                    tables: state.tables,
-                    isFiltering: state.isFiltering
                   ),
                   builder: (context, data, child) {
+                    final bool isScrollable =
+                        data.floors.isNotEmpty && data.floors.length > 2
+                            ? true
+                            : false;
                     if (data.isLoading) {
                       return const LoadingWidget();
                     } else {
                       return data.floors.isNotEmpty
-                          ? DynamicTabBarWidget(
-                              dynamicTabs: data.floors.mapIndexed((e, i) {
-                                return TabData(
-                                  index: i,
-                                  title: Tab(
-                                    child: Text(
-                                        e.id == 'All'
-                                            ? context.tr(e.name)
-                                            : e.name,
-                                        style: theme.textTheme.bodyLarge),
-                                  ),
-                                  content: data.isFiltering
-                                      ? const LoadingWidget()
-                                      : data.tables.isEmpty
-                                          ? EmptyDataWidget(
-                                              description:
-                                                  '$_prefixSaleTableEmptyData.table')
-                                          : SaleTableWidget(
-                                              tables: data.tables),
-                                );
-                              }).toList(),
-                              isScrollable: isScrollable,
-                              onTabControllerUpdated: (controller) {
-                                // run when user swipe
+                          ? DefaultTabController(
+                              length: data.floors.length,
+                              child: Builder(builder: (context) {
+                                final TabController controller =
+                                    DefaultTabController.of(context);
                                 controller.addListener(() {
-                                  final String floorId =
-                                      data.floors[controller.index].id;
-                                  setActiveFloor(floorId: floorId);
+                                  if (!controller.indexIsChanging) {
+                                    setActiveFloor(
+                                        floorId:
+                                            data.floors[controller.index].id);
+                                  }
                                 });
-                              },
-                              onTabChanged: (index) {
-                                final String floorId = data.floors[index!].id;
-                                setActiveFloor(floorId: floorId);
-                              },
-                              showBackIcon: showBackIcon,
-                              showNextIcon: showNextIcon,
+                                return Column(
+                                  crossAxisAlignment:
+                                      CrossAxisAlignment.stretch,
+                                  children: <Widget>[
+                                    TabBar(
+                                      isScrollable: isScrollable,
+                                      labelStyle: theme.textTheme.bodyLarge,
+                                      tabs: data.floors.mapIndexed((e, i) {
+                                        return Tab(
+                                          text: e.id == 'All'
+                                              ? e.name.tr()
+                                              : e.name,
+                                        );
+                                      }).toList(),
+                                    ),
+                                    Expanded(
+                                      child: TabBarView(
+                                        children:
+                                            data.floors.mapIndexed((e, i) {
+                                          return Selector<
+                                                  SaleTableProvider,
+                                                  ({
+                                                    List<TableModel> tables,
+                                                    bool isFiltering
+                                                  })>(
+                                              selector: (context, state) => (
+                                                    tables: state.tables,
+                                                    isFiltering:
+                                                        state.isFiltering
+                                                  ),
+                                              builder: (context, data, child) {
+                                                return data.isFiltering
+                                                    ? const LoadingWidget()
+                                                    : data.tables.isEmpty
+                                                        ? EmptyDataWidget(
+                                                            description:
+                                                                '$_prefixSaleTableEmptyData.table')
+                                                        : SaleTableWidget(
+                                                            tables:
+                                                                data.tables);
+                                              });
+                                        }).toList(),
+                                      ),
+                                    ),
+                                  ],
+                                );
+                              }),
                             )
                           : EmptyDataWidget(
                               description: '$_prefixSaleTableEmptyData.floor');
