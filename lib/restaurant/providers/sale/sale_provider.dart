@@ -97,6 +97,10 @@ class SaleProvider extends ChangeNotifier {
   late String _tableLocationText;
   late String _invoiceText;
 
+  // last item added
+  SaleAddProductModel? _lastItemAdded;
+  SaleAddProductModel? get lastItemAdded => _lastItemAdded;
+
   Future<void> initData(
       {String? invoiceId,
       required String table,
@@ -112,6 +116,7 @@ class SaleProvider extends ChangeNotifier {
     _saleDetails = [];
     _selectedSaleDetails = [];
     _selectedSaleDetailsForOperation = [];
+    _lastItemAdded = null;
     _printableItems = [];
     _baseCurrency = readAppProvider.companyAccounting.baseCurrency;
     _decimalNumber = readAppProvider.companyAccounting.decimalNumber;
@@ -388,6 +393,11 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
+  void setLastItemAdded({required SaleAddProductModel item}) {
+    _lastItemAdded = item;
+    notifyListeners();
+  }
+
   // handle add item (product) 3 types = catalog == 'Set', extra food & normal
   Future<ResponseModel?> handleItemAdd(
       {required SaleAddProductModel item, required String invoiceId}) async {
@@ -481,6 +491,7 @@ class SaleProvider extends ChangeNotifier {
       // Add normal item or item type catalog == "Combo"
       result = await addItem(doc: InsertItemInputModel.fromJson(doc));
     }
+    setLastItemAdded(item: item);
     return result;
   }
 

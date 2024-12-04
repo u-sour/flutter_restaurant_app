@@ -1,10 +1,10 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/models/servers/response_model.dart';
 import 'package:flutter_template/utils/alert/awesome_snack_bar_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
@@ -38,7 +38,7 @@ class SaleTableProvider with ChangeNotifier {
     notifyListeners();
     _activeFloor = floorId;
     _tables = await fetchTables(
-        floorId: floorId,
+        floorId: _activeFloor,
         branchId: branchId,
         depId: depId,
         displayTableAllDepartment: displayTableAllDepartment);

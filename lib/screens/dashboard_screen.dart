@@ -26,7 +26,6 @@ class DashboardScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 DepartmentWidget(),
-                SizedBox(height: AppStyleDefaultProperties.h),
               ],
             ),
             // Note: Table transaction លក់ បង្ហាញពេល user role == show-dashboard
