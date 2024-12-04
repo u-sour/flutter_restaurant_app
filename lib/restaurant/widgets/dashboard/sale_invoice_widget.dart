@@ -1,10 +1,10 @@
-import 'package:dynamic_tabbar/dynamic_tabbar.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_template/restaurant/utils/map_index.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../providers/app_provider.dart';
+import '../../../utils/responsive/responsive_layout.dart';
 import '../../providers/dashboard/dashboard_provider.dart';
 import '../../providers/sale/notification_provider.dart';
 import '../../../widgets/loading_widget.dart';
@@ -28,9 +28,6 @@ class SaleInvoiceWidget extends StatelessWidget {
       readDashboardProvider.initData(branchId: branchId, depId: depId);
     });
     const String prefixSaleInvoiceTab = 'screens.dashboard.saleInvoiceTabs';
-    bool isScrollable = true;
-    bool showNextIcon = true;
-    bool showBackIcon = true;
 
     const List<SelectOptionModel> tabs = [
       SelectOptionModel(
@@ -53,35 +50,45 @@ class SaleInvoiceWidget extends StatelessWidget {
               SaleInvoiceContentWidget(type: SaleInvoiceContentType.dataTable))
     ];
 
+    final bool isScrollable =
+        ResponsiveLayout.isMobile(context) && tabs.length > 2 ? true : false;
+
     void tabChanged(int index) => readDashboardProvider.filter(tab: index);
 
     return Selector<DashboardProvider, bool>(
       selector: (context, state) => state.isLoading,
       builder: (context, isLoading, child) => isLoading
           ? const LoadingWidget()
-          : DynamicTabBarWidget(
-              physicsTabBarView: const NeverScrollableScrollPhysics(),
-              dynamicTabs: tabs.mapIndexed((tab, index) {
-                return TabData(
-                    index: index,
-                    title: Tab(
-                        child: Text(tab.label, style: theme.textTheme.bodyLarge)
-                            .tr()),
-                    content: tab.value);
-              }).toList(),
-              isScrollable: isScrollable,
-              padding: EdgeInsets.zero,
-              onTabControllerUpdated: (controller) {
-                // run when user swipe
+          : DefaultTabController(
+              length: tabs.length,
+              child: Builder(builder: (context) {
+                final TabController controller =
+                    DefaultTabController.of(context);
                 controller.addListener(() {
-                  tabChanged(controller.index);
+                  if (!controller.indexIsChanging) {
+                    tabChanged(controller.index);
+                  }
                 });
-              },
-              onTabChanged: (index) {
-                tabChanged(index!);
-              },
-              showBackIcon: showBackIcon,
-              showNextIcon: showNextIcon,
+                return Column(
+                  children: <Widget>[
+                    TabBar(
+                      isScrollable: isScrollable,
+                      labelStyle: theme.textTheme.bodyLarge,
+                      tabs: tabs.mapIndexed((tab, index) {
+                        return Tab(text: tab.label.tr());
+                      }).toList(),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        physics: const NeverScrollableScrollPhysics(),
+                        children: tabs.mapIndexed((tab, index) {
+                          return tab.value as Widget;
+                        }).toList(),
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ),
     );
   }

@@ -8,7 +8,24 @@ When you're ready to prepare a release version of your app there are some import
 
 ### How to change app name
 
-you can use package like [flutter_app_name](https://pub.dev/packages/flutter_app_name) or [rename_app](https://pub.dev/packages/rename_app)
+you can use package like [flutter_app_name](https://pub.dev/packages/flutter_app_name) or [rename_app](https://pub.dev/packages/rename_app) or manual.
+
+**Android**
+
+Open `AndroidManifest.xml` (located at `android/app/src/main`)
+
+```
+<application android:label="App Name" ...> // Your app name here
+```
+
+**iOS**
+
+Open `info.plist` (located at `ios/Runner`)
+
+```
+<key>CFBundleDisplayName</key>
+<string>App Name</string> // Your app name here
+```
 
 ### How to change package name
 
