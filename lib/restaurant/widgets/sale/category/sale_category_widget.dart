@@ -96,31 +96,39 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                   invoiceId: invoiceId);
                             },
                             style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                    color: theme.colorScheme.primary),
-                                backgroundColor: showExtraFood
-                                    ? theme.colorScheme.primary
-                                    : null,
-                                shape: const RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.all(
-                                        Radius.circular(
-                                            AppStyleDefaultProperties.r)))),
-                            icon: Icon(
-                              RestaurantDefaultIcons.extraFoods,
-                              color: showExtraFood
-                                  ? theme.colorScheme.onPrimary
-                                  : theme.iconTheme.color,
-                            ),
-                            label: Text(
-                              'screens.sale.category.extraFoods',
-                              style: theme.textTheme.bodyLarge?.copyWith(
-                                color: showExtraFood
-                                    ? theme.colorScheme.onPrimary
-                                    : null,
-                                fontWeight:
-                                    showExtraFood ? FontWeight.bold : null,
+                              side:
+                                  BorderSide(color: theme.colorScheme.primary),
+                              backgroundColor: showExtraFood
+                                  ? theme.colorScheme.primary
+                                  : null,
+                              shape: const RoundedRectangleBorder(
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(AppStyleDefaultProperties.r),
+                                ),
                               ),
-                            ).tr(),
+                            ),
+                            label: Row(
+                              children: [
+                                Icon(
+                                  RestaurantDefaultIcons.extraFoods,
+                                  color: showExtraFood
+                                      ? theme.colorScheme.onPrimary
+                                      : theme.iconTheme.color,
+                                ),
+                                const SizedBox(
+                                    width: AppStyleDefaultProperties.w / 2),
+                                Text(
+                                  'screens.sale.category.extraFoods',
+                                  style: theme.textTheme.bodyLarge?.copyWith(
+                                    color: showExtraFood
+                                        ? theme.colorScheme.onPrimary
+                                        : null,
+                                    fontWeight:
+                                        showExtraFood ? FontWeight.bold : null,
+                                  ),
+                                ).tr(),
+                              ],
+                            ),
                           ),
                         ),
                       ),

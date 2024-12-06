@@ -52,12 +52,8 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
           Selector<SaleProvider, SaleModel?>(
             selector: (context, state) => state.currentSale,
             builder: (context, currentSale, child) => currentSale != null
-                ? ButtonBar(
-                    buttonPadding: ResponsiveLayout.isMobile(context)
-                        ? const EdgeInsets.all(
-                            AppStyleDefaultProperties.p / 3.6)
-                        : null,
-                    alignment: MainAxisAlignment.spaceBetween,
+                ? OverflowBar(
+                    alignment: MainAxisAlignment.spaceAround,
                     children: [
                       // Change Table
                       // Note: បង្ហាញពេល module skip-table មិន active
