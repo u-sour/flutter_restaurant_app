@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
 import '../../../../utils/constants.dart';
@@ -50,69 +49,20 @@ class SaleProductItemWidget extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
-            borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
-            child: CachedNetworkImage(
-              imageUrl: getImgSrc(
-                  ipAddress: ipAddress, imgUrl: product.photoUrl ?? ''),
-              placeholder: (context, url) => Container(
+          borderRadius: BorderRadius.circular(AppStyleDefaultProperties.r),
+          child: CachedNetworkImage(
+            width: imgHeight,
+            height: imgHeight,
+            imageUrl:
+                getImgSrc(ipAddress: ipAddress, imgUrl: product.photoUrl ?? ''),
+            maxHeightDiskCache: imgHeight?.toInt(), // resize image
+            placeholder: (context, url) {
+              return Container(
                 width: double.infinity,
                 height: imgHeight,
                 foregroundDecoration: discountDecoration,
                 child: Material(
                   color: theme.highlightColor,
-                  child: InkWell(
-                    onTap: onTap,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        LoadingAnimationWidget.staggeredDotsWave(
-                          color: theme.colorScheme.primary,
-                          size: 48.0,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-              errorWidget: (context, url, error) {
-                return Container(
-                  width: double.infinity,
-                  height: imgHeight,
-                  foregroundDecoration: discountDecoration,
-                  child: Material(
-                    color: theme.highlightColor,
-                    child: InkWell(
-                      onTap: onTap,
-                      child: Padding(
-                        padding: const EdgeInsets.all(
-                            AppStyleDefaultProperties.p / 1.5),
-                        child: Stack(
-                          children: [
-                            // Price
-                            SaleProductItemPriceWidget(product: product),
-                            // Image
-                            const NoImageWidget(),
-                            // Item Selected
-                            SaleProductItemSelectedWidget(product: product)
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
-                );
-              },
-              fadeInDuration: const Duration(seconds: 1),
-              imageBuilder: (context, imageProvider) => Container(
-                width: double.infinity,
-                height: imgHeight,
-                foregroundDecoration: discountDecoration,
-                decoration: BoxDecoration(
-                  color: theme.primaryColor,
-                  image:
-                      DecorationImage(fit: BoxFit.cover, image: imageProvider),
-                ),
-                child: Material(
-                  color: Colors.transparent,
                   child: InkWell(
                     onTap: onTap,
                     child: Padding(
@@ -122,6 +72,8 @@ class SaleProductItemWidget extends StatelessWidget {
                         children: [
                           // Price
                           SaleProductItemPriceWidget(product: product),
+                          // Image
+                          const NoImageWidget(),
                           // Item Selected
                           SaleProductItemSelectedWidget(product: product)
                         ],
@@ -129,8 +81,64 @@ class SaleProductItemWidget extends StatelessWidget {
                     ),
                   ),
                 ),
+              );
+            },
+            errorWidget: (context, url, error) {
+              return Container(
+                width: double.infinity,
+                height: imgHeight,
+                foregroundDecoration: discountDecoration,
+                child: Material(
+                  color: theme.highlightColor,
+                  child: InkWell(
+                    onTap: onTap,
+                    child: Padding(
+                      padding: const EdgeInsets.all(
+                          AppStyleDefaultProperties.p / 1.5),
+                      child: Stack(
+                        children: [
+                          // Price
+                          SaleProductItemPriceWidget(product: product),
+                          // Image
+                          const NoImageWidget(),
+                          // Item Selected
+                          SaleProductItemSelectedWidget(product: product)
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            },
+            imageBuilder: (context, imageProvider) => Container(
+              width: double.infinity,
+              height: imgHeight,
+              foregroundDecoration: discountDecoration,
+              decoration: BoxDecoration(
+                color: theme.primaryColor,
+                image: DecorationImage(fit: BoxFit.cover, image: imageProvider),
               ),
-            )),
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onTap,
+                  child: Padding(
+                    padding:
+                        const EdgeInsets.all(AppStyleDefaultProperties.p / 1.5),
+                    child: Stack(
+                      children: [
+                        // Price
+                        SaleProductItemPriceWidget(product: product),
+                        // Item Selected
+                        SaleProductItemSelectedWidget(product: product)
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ),
         Padding(
           padding:
               const EdgeInsets.symmetric(vertical: AppStyleDefaultProperties.h),
