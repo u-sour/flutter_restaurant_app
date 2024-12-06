@@ -34,7 +34,7 @@ import '../../models/sale/table-location/table_location_model.dart';
 import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/constants.dart';
-import '../../utils/debounce.dart';
+// import '../../utils/debounce.dart';
 import '../../utils/round_number.dart';
 import '../../utils/sale/sale_utils.dart';
 import '../../widgets/sale/detail/confirm-dialog-content/cancel_sale_cdc_widget.dart';
@@ -173,7 +173,7 @@ class SaleProvider extends ChangeNotifier {
   }
 
   void subscribeSales({String? invoiceId, required BuildContext context}) {
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    // final debounce = Debounce(delay: const Duration(milliseconds: 800));
     Map<String, dynamic> selector = {
       'branchId': _branchId,
       'tableId': _tableId,
@@ -197,37 +197,37 @@ class SaleProvider extends ChangeNotifier {
       onReady: () {
         _isLoading = true;
         notifyListeners();
-        _saleListener = meteor.collection('rest_sales').listen((event) {
+        _saleListener = meteor.collection('rest_sales').listen((event) async {
           //  call method only 1 time when sale data updated
-          debounce.run(() async {
-            _sales = await fetchSales(
-                branchId: _branchId,
-                tableId: _tableId,
-                depId: _depId,
-                isTabletOrder: _isTabletOrder);
-            if (_sales.isNotEmpty) {
-              // get current sale with sale detail
-              // if _activeSaleInvoiceId empty set the first sale to _currentSale by id
-              // else set _currentSale by _activeSaleInvoiceId
-              if (context.mounted) {
-                await getCurrentSaleWithSaleDetail(
-                    invoiceId: invoiceId == null
-                        ? _sales.first.id
-                        : _activeSaleInvoiceId,
-                    context: context);
-              }
-            } else {
-              _activeSaleInvoiceId = '';
-              _sales = [];
-              _currentSale = null;
-              _saleDetails = [];
-              // set sale action app bar title
-              _saleActionAppBarTitle =
-                  SaleAppBarActionModel(title: _tableLocationText);
+          // debounce.run(() async {
+          _sales = await fetchSales(
+              branchId: _branchId,
+              tableId: _tableId,
+              depId: _depId,
+              isTabletOrder: _isTabletOrder);
+          if (_sales.isNotEmpty) {
+            // get current sale with sale detail
+            // if _activeSaleInvoiceId empty set the first sale to _currentSale by id
+            // else set _currentSale by _activeSaleInvoiceId
+            if (context.mounted) {
+              await getCurrentSaleWithSaleDetail(
+                  invoiceId: invoiceId == null
+                      ? _sales.first.id
+                      : _activeSaleInvoiceId,
+                  context: context);
             }
-            _isLoading = false;
-            notifyListeners();
-          });
+          } else {
+            _activeSaleInvoiceId = '';
+            _sales = [];
+            _currentSale = null;
+            _saleDetails = [];
+            // set sale action app bar title
+            _saleActionAppBarTitle =
+                SaleAppBarActionModel(title: _tableLocationText);
+          }
+          _isLoading = false;
+          notifyListeners();
+          // });
         });
       },
     );

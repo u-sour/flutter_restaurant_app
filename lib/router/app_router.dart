@@ -64,7 +64,7 @@ class AppRouter {
           builder: (context, state, navigationShell) {
             return PopScope(
                 canPop: false,
-                onPopInvoked: (didPop) {
+                onPopInvokedWithResult: (didPop, result) {
                   GlobalService.openDialog(
                     context: context,
                     contentWidget: ConfirmDialogWidget(
@@ -308,11 +308,11 @@ class AppRouter {
       } else if (isInitialized && !isConnected && ipAddress == null) {
         return connectionLocation;
         // If not onboard and not going to onboard redirect to OnBoarding
-      } else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
-        return onboardLocation;
+        // } else if (isInitialized && !isOnboarded && !isGoingToOnboard) {
+        //   return onboardLocation;
         // If not logedin and not going to login redirect to Login
       } else if (isInitialized &&
-          isOnboarded &&
+          // isOnboarded &&
           !isLogedIn &&
           !isGoingToLogin) {
         return loginLocation;

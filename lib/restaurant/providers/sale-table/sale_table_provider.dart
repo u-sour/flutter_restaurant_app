@@ -35,8 +35,9 @@ class SaleTableProvider with ChangeNotifier {
       required String depId,
       required bool? displayTableAllDepartment}) async {
     _isFiltering = true;
-    notifyListeners();
     _activeFloor = floorId;
+    _tables = [];
+    notifyListeners();
     _tables = await fetchTables(
         floorId: _activeFloor,
         branchId: branchId,
@@ -47,7 +48,7 @@ class SaleTableProvider with ChangeNotifier {
   }
 
   void subscribeSales({required BuildContext context}) {
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
     _activeFloor = 'All';
     _floors = [];
     _tables = [];

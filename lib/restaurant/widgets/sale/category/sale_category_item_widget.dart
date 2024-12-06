@@ -18,32 +18,37 @@ class SaleCategoryItemWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final ThemeData theme = Theme.of(context);
+    const double iconSize = 24.0;
     return OutlinedButton.icon(
-        onPressed: onPressed,
-        style: OutlinedButton.styleFrom(
-            side: const BorderSide(color: AppThemeColors.primary),
-            shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.all(
-                    Radius.circular(AppStyleDefaultProperties.r)))),
-        label: Wrap(
-          children: [
-            if (category.icon != null) ...[
-              SvgPicture.network(
-                getImgSrc(ipAddress: ipAddress, imgUrl: category.icon!),
-                height: 24.0,
-                colorFilter:
-                    ColorFilter.mode(theme.iconTheme.color!, BlendMode.srcIn),
-                placeholderBuilder: (context) =>
-                    const CircularProgressIndicator(),
-              ),
-              const SizedBox(width: AppStyleDefaultProperties.w / 2)
-            ],
-            Text(
-              category.name,
-              style: theme.textTheme.bodyLarge,
-              overflow: TextOverflow.ellipsis,
-            )
-          ],
-        ));
+      onPressed: onPressed,
+      style: OutlinedButton.styleFrom(
+          side: const BorderSide(color: AppThemeColors.primary),
+          shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.all(
+                  Radius.circular(AppStyleDefaultProperties.r)))),
+      label: Row(
+        children: [
+          SizedBox(
+            width: iconSize,
+            height: iconSize,
+            child: category.icon != null
+                ? SvgPicture.network(
+                    getImgSrc(ipAddress: ipAddress, imgUrl: category.icon!),
+                    colorFilter: ColorFilter.mode(
+                        theme.iconTheme.color!, BlendMode.srcIn),
+                    placeholderBuilder: (context) =>
+                        const CircularProgressIndicator(),
+                  )
+                : null,
+          ),
+          const SizedBox(width: AppStyleDefaultProperties.w / 2),
+          Text(
+            category.name,
+            style: theme.textTheme.bodyLarge,
+            overflow: TextOverflow.ellipsis,
+          )
+        ],
+      ),
+    );
   }
 }

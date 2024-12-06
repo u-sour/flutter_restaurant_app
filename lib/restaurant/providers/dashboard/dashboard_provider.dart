@@ -73,9 +73,9 @@ class DashboardProvider extends ChangeNotifier {
   Future<void> filter(
       {int tab = 0, String filterText = '', int? page, int? pageSize}) async {
     _isFiltering = true;
-    notifyListeners();
     _selectedTab = tab;
     _filterText = filterText;
+    notifyListeners();
     _saleInvoice = await fetchSaleForDataTable(
         tab: _selectedTab,
         filter: _filterText,
