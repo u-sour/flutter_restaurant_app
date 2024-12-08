@@ -21,30 +21,34 @@ class ReportTemplateScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ReportTemplateProvider>().initData();
-    return Padding(
-      padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-      child: Column(
-        children: [
-          // Form
-          ExpansionTile(
+    ReportTemplateProvider readReportTemplateProvider =
+        context.read<ReportTemplateProvider>();
+    readReportTemplateProvider.initData();
+    return Column(
+      children: [
+        // Form
+        Padding(
+          padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
+          child: ExpansionTile(
             initiallyExpanded: true,
             maintainState: true,
             title: const IconWithTextWidget(
                 icon: RestaurantDefaultIcons.reportForm,
                 text: 'screens.reports.customer.children.expansionFormTitle'),
             tilePadding: EdgeInsets.zero,
-            childrenPadding:
-                const EdgeInsets.only(top: AppStyleDefaultProperties.p / 2),
             shape: const Border(),
+            controller: readReportTemplateProvider.expansionTileController,
             children: <Widget>[form],
           ),
-          // Toolbar
-          const Divider(),
-          toolBar!,
-          // Report template layouts
-          const Divider(),
-          Expanded(
+        ),
+        // Toolbar
+        const Divider(height: 0.0),
+        toolBar!,
+        // Report template layouts
+        const Divider(height: 0.0),
+        Expanded(
+          child: Padding(
+            padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
             child: DynamicHeightGridView(
               itemCount: reportTemplateLayouts.length,
               crossAxisCount: 1,
@@ -58,8 +62,8 @@ class ReportTemplateScreen extends StatelessWidget {
               },
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
