@@ -72,6 +72,8 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
             ResponseModel? result =
                 await readSaleReportProvider.submit(formDoc: formDoc);
             readReportTemplateProvider.setIsFiltering(isFiltering: false);
+            // close form
+            readReportTemplateProvider.expansionTileController.collapse();
             if (result != null) {
               // show alert
               if (result.type == AWESOMESNACKBARTYPE.failure) {
