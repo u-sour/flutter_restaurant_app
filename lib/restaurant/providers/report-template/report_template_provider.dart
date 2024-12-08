@@ -5,6 +5,8 @@ import '../../models/option/option_model.dart';
 import '../../utils/constants.dart';
 
 class ReportTemplateProvider extends ChangeNotifier {
+  final ExpansionTileController expansionTileController =
+      ExpansionTileController();
   final String _prefixRTLayouts = 'screens.reportTemplate.layouts';
   String get prefixRTLayouts => _prefixRTLayouts;
   final String _prefixRTActions = 'screens.reportTemplate.actions';
