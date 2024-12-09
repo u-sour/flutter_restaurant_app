@@ -27,19 +27,18 @@ class ReportTemplateScreen extends StatelessWidget {
     return Column(
       children: [
         // Form
-        Padding(
-          padding: const EdgeInsets.all(AppStyleDefaultProperties.p),
-          child: ExpansionTile(
-            initiallyExpanded: true,
-            maintainState: true,
-            title: const IconWithTextWidget(
-                icon: RestaurantDefaultIcons.reportForm,
-                text: 'screens.reports.customer.children.expansionFormTitle'),
-            tilePadding: EdgeInsets.zero,
-            shape: const Border(),
-            controller: readReportTemplateProvider.expansionTileController,
-            children: <Widget>[form],
-          ),
+        ExpansionTile(
+          initiallyExpanded: true,
+          maintainState: true,
+          title: const IconWithTextWidget(
+              icon: RestaurantDefaultIcons.reportForm,
+              text: 'screens.reports.customer.children.expansionFormTitle'),
+          tilePadding: const EdgeInsets.symmetric(
+              horizontal: AppStyleDefaultProperties.p),
+          childrenPadding: const EdgeInsets.all(AppStyleDefaultProperties.p),
+          shape: const Border(),
+          controller: readReportTemplateProvider.expansionTileController,
+          children: <Widget>[form],
         ),
         // Toolbar
         const Divider(height: 0.0),

@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
@@ -16,12 +17,14 @@ class InvoiceToKitchenScreen extends StatefulWidget {
   final String floorName;
   final String tableName;
   final List<String> saleDetailIds;
+  final bool autoCloseAfterPrinted;
   const InvoiceToKitchenScreen({
     super.key,
     required this.invoiceId,
     required this.floorName,
     required this.tableName,
     required this.saleDetailIds,
+    this.autoCloseAfterPrinted = false,
   });
 
   @override
@@ -44,6 +47,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
         title: Text(SCREENS.printer.toTitle.tr()),
@@ -87,9 +91,15 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
                         GlobalService.openDialog(
                           contentWidget: const PrintingProgressWidget(),
                           context: context,
-                        );
+                        ).then((_) {
+                          if (context.mounted && widget.autoCloseAfterPrinted) {
+                            context.pop();
+                          }
+                        });
                       },
-                      child: Text('screens.printer.btn.print'.tr()),
+                      child: Text('screens.printer.btn.print'.tr(),
+                          style: theme.textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],

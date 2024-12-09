@@ -83,7 +83,7 @@ class DialogWidget extends StatelessWidget {
                             backgroundColor: WidgetStateProperty.all(
                                 AppThemeColors.failure)),
                         child: Text(cancelLabel.tr(),
-                            style: theme.textTheme.bodyMedium!.copyWith(
+                            style: theme.textTheme.bodySmall!.copyWith(
                                 color: theme.colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -99,7 +99,7 @@ class DialogWidget extends StatelessWidget {
                           type.name == 'insert'
                               ? insertLabel.tr()
                               : updateLabel.tr(),
-                          style: theme.textTheme.bodyMedium!.copyWith(
+                          style: theme.textTheme.bodySmall!.copyWith(
                               color: theme.colorScheme.onPrimary,
                               fontWeight: FontWeight.bold)),
                     ),
@@ -113,7 +113,7 @@ class DialogWidget extends StatelessWidget {
                             backgroundColor:
                                 WidgetStateProperty.all(AppThemeColors.info)),
                         child: Text(insertAndPrintLabel.tr(),
-                            style: theme.textTheme.bodyMedium!.copyWith(
+                            style: theme.textTheme.bodySmall!.copyWith(
                                 color: theme.colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold)),
                       ),
@@ -134,7 +134,7 @@ class DialogWidget extends StatelessWidget {
                             backgroundColor: WidgetStateProperty.all(
                                 AppThemeColors.failure)),
                         child: Text(cancelLabel.tr(),
-                            style: theme.textTheme.bodyMedium!.copyWith(
+                            style: theme.textTheme.bodySmall!.copyWith(
                                 color: theme.colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold)),
                       ),

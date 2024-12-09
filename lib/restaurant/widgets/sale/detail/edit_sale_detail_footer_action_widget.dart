@@ -200,6 +200,54 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                     final ExchangeModel exchange = saleReceipt.exchangeDoc;
                     final List<SelectOptionModel> paymentMethodOptions =
                         snapshot.data ?? [];
+                    final List<Widget> informationWidgets = [
+                      RichText(
+                          text: TextSpan(
+                              text: '${"$prefixSaleReceipt.invoice".tr()}: ',
+                              children: [
+                            TextSpan(
+                                text: readProvider.getInvoiceText(
+                                    sale: saleReceipt.orderDoc,
+                                    context: context),
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
+                          ])),
+                      RichText(
+                          text: TextSpan(
+                              text: '${"$prefixSaleReceipt.date".tr()}: ',
+                              children: [
+                            TextSpan(
+                                text: ConvertDateTime.formatTimeStampToString(
+                                    saleReceipt.orderDoc.date, true),
+                                style: const TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                ))
+                          ])),
+                      RichText(
+                          text: TextSpan(
+                              text: '${"$prefixSaleReceipt.customer".tr()}: ',
+                              children: [
+                            TextSpan(
+                                text: saleReceipt.orderDoc.guestName,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold))
+                          ])),
+                      RichText(
+                          text: TextSpan(
+                              text:
+                                  '${"$prefixSaleReceipt.exchangeRate".tr()}: ',
+                              children: [
+                            TextSpan(
+                                text: '${exchange.khr}៛  = ${exchange.usd}\$',
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold)),
+                            if (isAllowedTHB)
+                              TextSpan(
+                                  text: ' = ${exchange.thb}฿',
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold))
+                          ])),
+                    ];
                     return ListView(
                       shrinkWrap: true,
                       children: [
@@ -207,71 +255,19 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                         Card(
                           color: AppThemeColors.primary,
                           elevation: 0.0,
-                          child: GridView(
-                            primary: false,
-                            gridDelegate:
-                                SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount:
-                                  ResponsiveLayout.isMobile(context) ? 1 : 2,
-                              mainAxisExtent: AppStyleDefaultProperties.h * 2.2,
-                            ),
-                            shrinkWrap: true,
+                          child: Padding(
                             padding: const EdgeInsets.all(
                                 AppStyleDefaultProperties.p),
-                            children: [
-                              RichText(
-                                  text: TextSpan(
-                                      text:
-                                          '${"$prefixSaleReceipt.invoice".tr()}: ',
-                                      children: [
-                                    TextSpan(
-                                        text: readProvider.getInvoiceText(
-                                            sale: saleReceipt.orderDoc,
-                                            context: context),
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold))
-                                  ])),
-                              RichText(
-                                  text: TextSpan(
-                                      text:
-                                          '${"$prefixSaleReceipt.date".tr()}: ',
-                                      children: [
-                                    TextSpan(
-                                        text: ConvertDateTime
-                                            .formatTimeStampToString(
-                                                saleReceipt.orderDoc.date,
-                                                true),
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                        ))
-                                  ])),
-                              RichText(
-                                  text: TextSpan(
-                                      text:
-                                          '${"$prefixSaleReceipt.customer".tr()}: ',
-                                      children: [
-                                    TextSpan(
-                                        text: saleReceipt.orderDoc.guestName,
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold))
-                                  ])),
-                              RichText(
-                                  text: TextSpan(
-                                      text:
-                                          '${"$prefixSaleReceipt.exchangeRate".tr()}: ',
-                                      children: [
-                                    TextSpan(
-                                        text:
-                                            '${exchange.khr}៛  = ${exchange.usd}\$',
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    if (isAllowedTHB)
-                                      TextSpan(
-                                          text: ' = ${exchange.thb}฿',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold))
-                                  ])),
-                            ],
+                            child: DynamicHeightGridView(
+                              builder: (context, index) {
+                                return informationWidgets[index];
+                              },
+                              itemCount: informationWidgets.length,
+                              crossAxisCount:
+                                  ResponsiveLayout.isMobile(context) ? 1 : 2,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                            ),
                           ),
                         ),
                         const SizedBox(height: AppStyleDefaultProperties.h),
