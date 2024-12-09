@@ -42,10 +42,12 @@ class SaleCategoryItemWidget extends StatelessWidget {
                 : null,
           ),
           const SizedBox(width: AppStyleDefaultProperties.w / 2),
-          Text(
-            category.name,
-            style: theme.textTheme.bodyLarge,
-            overflow: TextOverflow.ellipsis,
+          Expanded(
+            child: Text(
+              category.name,
+              style: theme.textTheme.bodyLarge,
+              overflow: TextOverflow.ellipsis,
+            ),
           )
         ],
       ),

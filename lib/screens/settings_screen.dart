@@ -72,9 +72,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
               items: supportedLanguages,
               onChanged: (value) async {
                 final Locale language = value;
-                await context
-                    .setLocale(language)
-                    .then((value) => context.pop());
+                await context.setLocale(language).then((_) {
+                  if (context.mounted) {
+                    context.pop();
+                  }
+                });
               });
         },
       ),
