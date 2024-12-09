@@ -1,6 +1,7 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
@@ -28,6 +29,7 @@ class InvoiceScreen extends StatefulWidget {
   final bool isTotal;
   final bool isRepaid;
   final bool showEditInvoiceBtn;
+  final bool autoCloseAfterPrinted;
   const InvoiceScreen({
     super.key,
     this.tableId,
@@ -39,6 +41,7 @@ class InvoiceScreen extends StatefulWidget {
     required this.isTotal,
     required this.isRepaid,
     required this.showEditInvoiceBtn,
+    this.autoCloseAfterPrinted = false,
   });
 
   @override
@@ -77,6 +80,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
       appBar: InvoiceAppBarWidget(
         title: SCREENS.printer.toTitle,
@@ -155,7 +159,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                                         ..showSnackBar(snackBar);
                                     }
                                   },
-                                  child: Text('$prefixPrinterBtn.edit'.tr()),
+                                  child: Text('$prefixPrinterBtn.edit'.tr(),
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(
+                                              fontWeight: FontWeight.bold)),
                                 ),
                               )
                             : const SizedBox.shrink();
@@ -167,9 +174,35 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         GlobalService.openDialog(
                           contentWidget: const PrintingProgressWidget(),
                           context: context,
-                        );
+                        ).then((_) {
+                          if (context.mounted && widget.autoCloseAfterPrinted) {
+                            if (widget.fromReceiptForm &&
+                                !widget.fromDashboard &&
+                                (readSaleProvider.isSkipTable != null &&
+                                    readSaleProvider.isSkipTable == true) &&
+                                widget.tableId != null) {
+                              context.goNamed(SCREENS.sale.toName,
+                                  queryParameters: {
+                                    'table': widget.tableId,
+                                    'fastSale': 'false'
+                                  });
+                            } else if (widget.fromReceiptForm &&
+                                !widget.fromDashboard &&
+                                (readSaleProvider.isSkipTable != null &&
+                                    readSaleProvider.isSkipTable == false)) {
+                              context.goNamed(SCREENS.saleTable.toName);
+                            } else if (widget.fromReceiptForm &&
+                                widget.fromDashboard) {
+                              context.goNamed(SCREENS.dashboard.toName);
+                            } else {
+                              context.pop();
+                            }
+                          }
+                        });
                       },
-                      child: Text('$prefixPrinterBtn.print'.tr()),
+                      child: Text('$prefixPrinterBtn.print'.tr(),
+                          style: theme.textTheme.bodySmall!
+                              .copyWith(fontWeight: FontWeight.bold)),
                     ),
                   ),
                 ],

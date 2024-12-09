@@ -147,8 +147,11 @@ class DashboardProvider extends ChangeNotifier {
     //  status : Partial & Close
     if (_selectedTab == 2 || _selectedTab == 3) {
       // go to invoice
-      context.pushNamed(SCREENS.invoice.toName,
-          queryParameters: {'invoiceId': saleInvoice.id, 'isTotal': 'true'});
+      context.pushNamed(SCREENS.invoice.toName, queryParameters: {
+        'invoiceId': saleInvoice.id,
+        'isTotal': 'true',
+        'autoCloseAfterPrinted': 'true'
+      });
     } else {
       //  status : Canceled
       AppProvider readAppProvider = context.read<AppProvider>();
@@ -167,6 +170,7 @@ class DashboardProvider extends ChangeNotifier {
                   // go to invoice
                   context.pushNamed(SCREENS.invoice.toName, queryParameters: {
                     'invoiceId': saleInvoice.id,
+                    'autoCloseAfterPrinted': 'true'
                   });
                 }
               }),

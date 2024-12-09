@@ -1166,7 +1166,8 @@ class SaleProvider extends ChangeNotifier {
         'floorName': _tableLocation.floor,
         'tableName': _tableLocation.table,
         'saleDetailIds':
-            jsonEncode(_selectedSaleDetails.map((sd) => sd.id).toList())
+            jsonEncode(_selectedSaleDetails.map((sd) => sd.id).toList()),
+        'autoCloseAfterPrinted': 'true'
       });
     } else {
       result = ResponseModel(
@@ -1187,7 +1188,8 @@ class SaleProvider extends ChangeNotifier {
             context.pushNamed(SCREENS.invoice.toName, queryParameters: {
               'tableId': _tableId,
               'invoiceId': currentSale!.id,
-              'showEditInvoiceBtn': 'true'
+              'showEditInvoiceBtn': 'true',
+              'autoCloseAfterPrinted': 'true'
             });
           }
         }
@@ -1714,7 +1716,8 @@ class SaleProvider extends ChangeNotifier {
               'fromReceiptForm': '$fromReceiptForm',
               'fromDashboard': '$fromDashboard',
               'receiptPrint': 'true',
-              'isRepaid': '$makeRepaid'
+              'isRepaid': '$makeRepaid',
+              'autoCloseAfterPrinted': 'true'
             });
           } else if (!fromDashboard &&
               (_isSkipTable != null && _isSkipTable == false)) {

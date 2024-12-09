@@ -213,11 +213,15 @@ class AppRouter {
             final String tempSaleDetailIds = queryRouter['saleDetailIds'];
             // convert saleDetailIds json to array
             final List<dynamic> saleDetailIds = jsonDecode(tempSaleDetailIds);
+            final bool autoCloseAfterPrinted =
+                queryRouter['autoCloseAfterPrinted'] != null &&
+                    queryRouter['autoCloseAfterPrinted']! == 'true';
             return InvoiceToKitchenScreen(
               invoiceId: invoiceId,
               floorName: floorName,
               tableName: tableName,
               saleDetailIds: List<String>.from(saleDetailIds),
+              autoCloseAfterPrinted: autoCloseAfterPrinted,
             );
           }),
       GoRoute(
@@ -242,6 +246,9 @@ class AppRouter {
           final bool showEditInvoiceBtn =
               queryRouter['showEditInvoiceBtn'] != null &&
                   queryRouter['showEditInvoiceBtn']! == 'true';
+          final bool autoCloseAfterPrinted =
+              queryRouter['autoCloseAfterPrinted'] != null &&
+                  queryRouter['autoCloseAfterPrinted']! == 'true';
           return InvoiceScreen(
             tableId: tableId,
             invoiceId: invoiceId,
@@ -252,6 +259,7 @@ class AppRouter {
             isTotal: isTotal,
             isRepaid: isRepaid,
             showEditInvoiceBtn: showEditInvoiceBtn,
+            autoCloseAfterPrinted: autoCloseAfterPrinted,
           );
         },
       ),
