@@ -154,9 +154,9 @@ class SaleProvider extends ChangeNotifier {
         _activeSaleInvoiceId = invoiceId;
       }
       // check insert a new sale if fast sale
-      if (_fastSale) {
-        addNewSale();
-      }
+      // if (_fastSale) {
+      //   addNewSale();
+      // }
 
       // get & set table location
       _tableLocation = await fetchTableLocation(tableId: _tableId);
@@ -1134,11 +1134,7 @@ class SaleProvider extends ChangeNotifier {
     ResponseModel? result;
     if (_printableItems.isNotEmpty) {
       try {
-        if (_currentSale != null &&
-            SaleService.isModuleActive(
-                modules: ['chef-monitor'],
-                overpower: false,
-                context: context)) {
+        if (_currentSale != null) {
           await updateOnPrintToKitchenMethod(saleId: _currentSale!.id);
           result = const ResponseModel(
               message: 'screens.sale.detail.alert.success.printToKitchen',
