@@ -211,71 +211,71 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         // Print invoice to kitchen
+                        Expanded(
+                            child: FilledButton(
+                          onPressed: () async {
+                            ResponseModel? result = await readSaleProvider
+                                .printToKitchen(context: context);
+                            if (context.mounted) {
+                              result = readSaleProvider.printInvoiceToKitchen(
+                                  context: context);
+                            }
+                            if (result != null) {
+                              late SnackBar snackBar;
+                              snackBar = Alert.awesomeSnackBar(
+                                  message: result.message, type: result.type);
+                              if (!context.mounted) return;
+                              ScaffoldMessenger.of(context)
+                                ..hideCurrentSnackBar()
+                                ..showSnackBar(snackBar);
+                            }
+                          },
+                          style: FilledButton.styleFrom(
+                              padding: EdgeInsets.zero,
+                              shape: const LinearBorder()),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(RestaurantDefaultIcons.printChefItems),
+                              if (!ResponsiveLayout.isMobile(context))
+                                const Text(
+                                        "$prefixSaleDetailFooterActions.printToChef")
+                                    .tr(),
+                            ],
+                          ),
+                        )),
                         // Note: បង្ហាញពេល module == chef-monitor
                         if (SaleService.isModuleActive(
                             modules: ['chef-monitor'], context: context))
                           Expanded(
-                              child: FilledButton(
-                            onPressed: () async {
-                              ResponseModel? result = await readSaleProvider
-                                  .printToKitchen(context: context);
-                              if (context.mounted) {
-                                result = readSaleProvider.printInvoiceToKitchen(
-                                    context: context);
-                              }
-                              if (result != null) {
-                                late SnackBar snackBar;
-                                snackBar = Alert.awesomeSnackBar(
-                                    message: result.message, type: result.type);
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(snackBar);
-                              }
-                            },
-                            style: FilledButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: const LinearBorder()),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(
-                                    RestaurantDefaultIcons.printChefItems),
-                                if (!ResponsiveLayout.isMobile(context))
-                                  const Text(
-                                          "$prefixSaleDetailFooterActions.printToChef")
-                                      .tr(),
-                              ],
-                            ),
-                          )),
-                        Expanded(
-                          child: TextButton(
-                            onPressed: () async {
-                              final result = await readSaleProvider
-                                  .printToKitchen(context: context);
-                              if (result != null) {
-                                late SnackBar snackBar;
-                                snackBar = Alert.awesomeSnackBar(
-                                    message: result.message, type: result.type);
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(snackBar);
-                              }
-                            },
-                            style: btnStyleNormalShape,
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Icon(RestaurantDefaultIcons.chef),
-                                if (!ResponsiveLayout.isMobile(context))
-                                  const Text(
-                                          "$prefixSaleDetailFooterActions.chef")
-                                      .tr(),
-                              ],
+                            child: TextButton(
+                              onPressed: () async {
+                                final result = await readSaleProvider
+                                    .printToKitchen(context: context);
+                                if (result != null) {
+                                  late SnackBar snackBar;
+                                  snackBar = Alert.awesomeSnackBar(
+                                      message: result.message,
+                                      type: result.type);
+                                  if (!context.mounted) return;
+                                  ScaffoldMessenger.of(context)
+                                    ..hideCurrentSnackBar()
+                                    ..showSnackBar(snackBar);
+                                }
+                              },
+                              style: btnStyleNormalShape,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(RestaurantDefaultIcons.chef),
+                                  if (!ResponsiveLayout.isMobile(context))
+                                    const Text(
+                                            "$prefixSaleDetailFooterActions.chef")
+                                        .tr(),
+                                ],
+                              ),
                             ),
                           ),
-                        ),
                       ],
                     ),
                   ),
