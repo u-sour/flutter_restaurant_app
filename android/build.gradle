@@ -3,14 +3,42 @@ allprojects {
         google()
         mavenCentral()
     }
+    // Note: fix warning: [options] source value 8 is obsolete and will be removed in a future release
+    tasks.withType(JavaCompile) {
+        options.compilerArgs << '-Xlint:-options' 
+    }
 }
 
-rootProject.buildDir = '../build'
+rootProject.buildDir = "../build"
 subprojects {
     project.buildDir = "${rootProject.buildDir}/${project.name}"
 }
+// Note: fix problem build failed with flutter_barcode_scanner package
 subprojects {
-    project.evaluationDependsOn(':app')
+    afterEvaluate { project ->
+        if (project.hasProperty('android')) {
+            project.android {
+                if (namespace == null) {
+                    namespace project.group
+                }
+            }
+        }
+    }
+}
+subprojects {
+    afterEvaluate { project ->
+        if (project.plugins.hasPlugin("com.android.application") ||
+                project.plugins.hasPlugin("com.android.library")) {
+            project.android {
+                compileSdkVersion 34
+                buildToolsVersion "34.0.0"
+            }
+        }
+    }
+}
+////////////////////////////////////////////////////////////////////////
+subprojects {
+    project.evaluationDependsOn(":app")
 }
 
 tasks.register("clean", Delete) {
