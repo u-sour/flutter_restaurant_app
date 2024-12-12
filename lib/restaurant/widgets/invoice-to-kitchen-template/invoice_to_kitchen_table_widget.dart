@@ -1,3 +1,4 @@
+import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import '../../../models/select-option/select_option_model.dart';
@@ -25,16 +26,19 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
       return textAlign;
     }
 
+    List<int> dashed = [5, 2];
+
     return Container(
       width: width,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
+      decoration: DottedDecoration(color: baseColor, dash: dashed),
       child: DataTable(
         dataRowMaxHeight: double.infinity,
         columnSpacing: 0.0,
         horizontalMargin: 0.0,
         headingRowColor:
             WidgetStateColor.resolveWith((states) => theme.highlightColor),
-        border: TableBorder.all(),
+        // border: TableBorder.all(),
         columns: List<DataColumn>.generate(fields.length, (int i) {
           return DataColumn(
             label: Expanded(
@@ -42,7 +46,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: AppStyleDefaultProperties.p / 4),
                 child: Text(fields[i].label.tr(),
-                    style: theme.textTheme.bodySmall!.copyWith(
+                    style: theme.textTheme.bodyMedium!.copyWith(
                         color: baseColor, fontWeight: FontWeight.bold),
                     textAlign: textAlign(fields[i].value),
                     softWrap: true),
@@ -67,7 +71,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                           // Item Name
                           Text(
                             row[fields[i].value],
-                            style: theme.textTheme.bodySmall!.copyWith(
+                            style: theme.textTheme.bodyMedium!.copyWith(
                                 color: baseColor, fontWeight: FontWeight.bold),
                             textAlign: textAlign(fields[i].value),
                           ),
@@ -76,7 +80,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                             for (int i = 0; i < row['extraItemDoc'].length; i++)
                               Text(
                                 '-${row['extraItemDoc'][i]['itemName']}',
-                                style: theme.textTheme.bodySmall!.copyWith(
+                                style: theme.textTheme.bodyMedium!.copyWith(
                                   color: baseColor,
                                 ),
                                 softWrap: true,
@@ -88,7 +92,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                       width: double.infinity,
                       child: Text(
                         '${row[fields[i].value]}',
-                        style: theme.textTheme.bodySmall!.copyWith(
+                        style: theme.textTheme.bodyMedium!.copyWith(
                             color: baseColor, fontWeight: FontWeight.bold),
                         textAlign: textAlign(fields[i].value),
                       ),

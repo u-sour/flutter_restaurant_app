@@ -1,5 +1,5 @@
-import 'package:flutter_template/restaurant/models/department/department_model.dart';
 import 'package:json_annotation/json_annotation.dart';
+import '../department/department_model.dart';
 part 'table_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
@@ -18,6 +18,8 @@ class TableModel {
   @JsonKey(disallowNullValue: true)
   int? currentGuestCount;
   @JsonKey(disallowNullValue: true)
+  int? currentInvoiceCount;
+  @JsonKey(disallowNullValue: true)
   String? status;
 
   TableModel({
@@ -32,6 +34,7 @@ class TableModel {
     required this.location,
     required this.order,
     this.currentGuestCount,
+    this.currentInvoiceCount,
     this.status,
   });
 
@@ -41,6 +44,10 @@ class TableModel {
 
   set setCurrentGuestCount(int value) {
     currentGuestCount = value;
+  }
+
+  set setCurrentInvoiceCount(int value) {
+    currentInvoiceCount = value;
   }
 
   set setStatus(String value) {

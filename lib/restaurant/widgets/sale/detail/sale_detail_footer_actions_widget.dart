@@ -215,11 +215,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                             child: FilledButton(
                           onPressed: () async {
                             ResponseModel? result = await readSaleProvider
-                                .printToKitchen(context: context);
-                            if (context.mounted) {
-                              result = readSaleProvider.printInvoiceToKitchen(
-                                  context: context);
-                            }
+                                .printInvoiceToKitchen(context: context);
                             if (result != null) {
                               late SnackBar snackBar;
                               snackBar = Alert.awesomeSnackBar(

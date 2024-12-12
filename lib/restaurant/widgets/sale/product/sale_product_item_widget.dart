@@ -8,7 +8,6 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../../providers/sale/sale_provider.dart';
 import '../../../utils/constants.dart';
-import '../../../utils/sale/sale_utils.dart';
 import '../../no_image_widget.dart';
 import '../../format_currency_widget.dart';
 
@@ -53,8 +52,7 @@ class SaleProductItemWidget extends StatelessWidget {
           child: CachedNetworkImage(
             width: imgHeight,
             height: imgHeight,
-            imageUrl:
-                getImgSrc(ipAddress: ipAddress, imgUrl: product.photoUrl ?? ''),
+            imageUrl: product.photoUrl ?? '',
             maxHeightDiskCache: imgHeight?.toInt(), // resize image
             placeholder: (context, url) {
               return Container(

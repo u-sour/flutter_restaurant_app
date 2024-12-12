@@ -1,13 +1,13 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/utils/alert/awesome_snack_bar_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
+import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../models/sale-table/floor_model.dart';
 import '../../models/sale-table/table_model.dart';
 import '../../models/sale/sale/sale_model.dart';
@@ -119,22 +119,12 @@ class SaleTableProvider with ChangeNotifier {
       {required String branchId,
       required String depId,
       required bool? displayTableAllDepartment}) async {
-    Map<String, dynamic> selector = {'status': 'Active', 'branchId': branchId};
-    if (displayTableAllDepartment != null && !displayTableAllDepartment) {
-      selector['depId'] = depId;
-    } else {
-      selector['\$and'] = [
-        {
-          'depId': {'\$exists': true}
-        },
-        {
-          'depId': {'\$ne': null}
-        }
-      ];
+    Map<String, dynamic> selector = {'branchId': branchId, 'depId': depId};
+    if (displayTableAllDepartment != null) {
+      selector['displayTableAllDepartment'] = displayTableAllDepartment;
     }
-    final List<dynamic> result = await meteor.call('rest.findFloors', args: [
-      {'selector': selector}
-    ]);
+    final List<dynamic> result =
+        await meteor.call('rest.findFloorContainActiveTable', args: [selector]);
     List<FloorModel> toModelList = [
       const FloorModel(
           id: 'All',
@@ -172,11 +162,13 @@ class SaleTableProvider with ChangeNotifier {
     // filter sale and get currentGuestCount and status for table
     for (int i = 0; i < tempTables.length; i++) {
       final TableModel tempTable = tempTables[i];
-      // table currentGuestCount
+      // filter sales By Table
       final salesByTable =
           sales.where((sale) => sale.tableId == tempTable.id).toList();
-      tempTable.setCurrentGuestCount =
-          salesByTable.fold(0, (sum, sale) => sum + sale.numOfGuest);
+      // table current invoice count
+      tempTable.setCurrentInvoiceCount = salesByTable.length;
+      // table current guest count
+      // tempTable.setCurrentInvoiceCount = salesByTable.fold(0, (sum, sale) => sum + sale.numOfGuest);
       // table status
       if (sales.any((sale) =>
           sale.tableId == tempTable.id &&

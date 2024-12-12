@@ -14,6 +14,7 @@ import '../../widgets/loading_widget.dart';
 
 class InvoiceToKitchenScreen extends StatefulWidget {
   final String invoiceId;
+  final String orderNum;
   final String floorName;
   final String tableName;
   final List<String> saleDetailIds;
@@ -21,6 +22,7 @@ class InvoiceToKitchenScreen extends StatefulWidget {
   const InvoiceToKitchenScreen({
     super.key,
     required this.invoiceId,
+    required this.orderNum,
     required this.floorName,
     required this.tableName,
     required this.saleDetailIds,
@@ -72,6 +74,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
                               snapshot.data!;
                           return InvoiceToKitchenTemplateWidget(
                             invoiceId: widget.invoiceId,
+                            orderNum: widget.orderNum,
                             floorName: widget.floorName,
                             tableName: widget.tableName,
                             saleDetail: saleDetail,
