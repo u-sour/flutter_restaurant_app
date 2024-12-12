@@ -8,6 +8,7 @@ part of 'table_schema_model.dart';
 
 TableSchemaModel _$TableSchemaModelFromJson(Map<String, dynamic> json) =>
     TableSchemaModel(
+      borderMode: json['borderMode'] as String,
       showThSubLabel: json['showThSubLabel'] as bool,
       thStyle: ThStyleModel.fromJson(json['thStyle'] as Map<String, dynamic>),
       tdStyle: TdStyleModel.fromJson(json['tdStyle'] as Map<String, dynamic>),
@@ -18,6 +19,7 @@ TableSchemaModel _$TableSchemaModelFromJson(Map<String, dynamic> json) =>
 
 Map<String, dynamic> _$TableSchemaModelToJson(TableSchemaModel instance) =>
     <String, dynamic>{
+      'borderMode': instance.borderMode,
       'showThSubLabel': instance.showThSubLabel,
       'thStyle': instance.thStyle.toJson(),
       'tdStyle': instance.tdStyle.toJson(),

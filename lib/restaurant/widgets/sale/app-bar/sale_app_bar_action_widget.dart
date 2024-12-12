@@ -25,11 +25,11 @@ class SaleAppBarActionWidget extends StatelessWidget {
     SaleProvider readSaleProvider = context.read<SaleProvider>();
     const double btnSize = 48.0;
     final List<SelectOptionModel> operations = [
-      SelectOptionModel(
-        icon: SaleDetailOperationType.customerCount.toIcon,
-        label: SaleDetailOperationType.customerCount.toTitle,
-        value: SaleDetailOperationType.customerCount.name,
-      )
+      // SelectOptionModel(
+      //   icon: SaleDetailOperationType.customerCount.toIcon,
+      //   label: SaleDetailOperationType.customerCount.toTitle,
+      //   value: SaleDetailOperationType.customerCount.name,
+      // )
     ];
     // Note: Merge, Transfer, Split & Cancel បង្ហាញពេល user role != tablet-orders
     if (!UserService.userInRole(roles: ['tablet-orders'])) {

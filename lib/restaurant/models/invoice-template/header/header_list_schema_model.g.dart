@@ -28,7 +28,7 @@ HeaderListSchemaModel _$HeaderListSchemaModelFromJson(
     value: json['value'] as String?,
     position: json['position'] as String?,
     imageId: json['imageId'] as String?,
-    field: json['field'] as String,
+    field: json['field'] as String?,
     imageUrl: json['imageUrl'] as String?,
     isVisible: json['isVisible'] as bool?,
     wrapperStyle: json['wrapperStyle'] == null

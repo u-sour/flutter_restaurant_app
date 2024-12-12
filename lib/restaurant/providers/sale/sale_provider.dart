@@ -40,6 +40,7 @@ import '../../utils/sale/sale_utils.dart';
 import '../../widgets/sale/detail/confirm-dialog-content/cancel_sale_cdc_widget.dart';
 import '../../widgets/sale/detail/edit_sale_detail_footer_action_widget.dart';
 import '../../widgets/sale/detail/edit_sale_detail_operation_action_widget.dart';
+import '../dashboard/dashboard_provider.dart';
 
 class SaleProvider extends ChangeNotifier {
   late String _ipAddress;
@@ -154,9 +155,9 @@ class SaleProvider extends ChangeNotifier {
         _activeSaleInvoiceId = invoiceId;
       }
       // check insert a new sale if fast sale
-      // if (_fastSale) {
-      //   addNewSale();
-      // }
+      if (_fastSale) {
+        addNewSale();
+      }
 
       // get & set table location
       _tableLocation = await fetchTableLocation(tableId: _tableId);
@@ -226,6 +227,7 @@ class SaleProvider extends ChangeNotifier {
                 SaleAppBarActionModel(title: _tableLocationText);
           }
           _isLoading = false;
+          print('_activeSaleInvoiceId ::: $_activeSaleInvoiceId');
           notifyListeners();
           // });
         });
@@ -845,17 +847,41 @@ class SaleProvider extends ChangeNotifier {
   }
 
   // Enter sale
-  void handleEnterSale(
+  Future<void> handleEnterSale(
       {required BuildContext context,
       String? tableId,
-      required String invoiceId,
-      bool fastSale = false}) {
+      String? invoiceId,
+      bool fastSale = false}) async {
     Map<String, dynamic> query = {
-      'table': tableId ?? _tableId,
+      'table': tableId,
       'id': invoiceId,
       'fastSale': '$fastSale'
     };
-    context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
+    if (fastSale) {
+      final String depId = context.read<AppProvider>().selectedDepartment!.id;
+      Map<String, dynamic> selector = {'depId': depId};
+      try {
+        final String freeTableId =
+            await meteor.call('rest.findFreeTable', args: [selector]);
+        if (freeTableId.isNotEmpty) {
+          query['table'] = freeTableId;
+          query['fastSale'] = 'false';
+        } else {
+          if (context.mounted) {
+            Map<String, dynamic> randomTable = await context
+                .read<DashboardProvider>()
+                .fetchOneTable(branchId: _branchId);
+            query['table'] = randomTable['_id'];
+            query['fastSale'] = 'true';
+          }
+        }
+      } catch (e) {
+        rethrow;
+      }
+    }
+    if (context.mounted) {
+      context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
+    }
   }
 
   void selectAllRows(bool isSelectedAllRows) {
@@ -1154,17 +1180,75 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
-  ResponseModel? printInvoiceToKitchen({required BuildContext context}) {
+  Future<ResponseModel?> printInvoiceToKitchen(
+      {required BuildContext context}) async {
     ResponseModel? result;
     if (_selectedSaleDetails.isNotEmpty) {
-      context.pushNamed(SCREENS.invoiceToKitchen.toName, queryParameters: {
-        'invoiceId': currentSale!.id,
-        'floorName': _tableLocation.floor,
-        'tableName': _tableLocation.table,
-        'saleDetailIds':
-            jsonEncode(_selectedSaleDetails.map((sd) => sd.id).toList()),
-        'autoCloseAfterPrinted': 'true'
-      });
+      // find items already printed to kitchen
+      String printedItemsToKitchen = "";
+      for (int i = 0; i < _selectedSaleDetails.length; i++) {
+        if (_selectedSaleDetails[i].checkPrintKitchen != null &&
+            _selectedSaleDetails[i].checkPrintKitchen == true) {
+          printedItemsToKitchen += i + 1 == _selectedSaleDetails.length
+              ? _selectedSaleDetails[i].itemName
+              : '${_selectedSaleDetails[i].itemName}, ';
+        }
+      }
+      String orderNum = "";
+      if (SaleService.isModuleActive(
+          modules: ['order-number'], overpower: false, context: context)) {
+        orderNum = currentSale!.orderNum;
+      }
+      if (printedItemsToKitchen.isNotEmpty) {
+        const String prefixPrintedItemsToKitchen =
+            'screens.sale.detail.dialog.confirm.printedItemsToKitchen';
+        await GlobalService.openDialog(
+            contentWidget: ConfirmDialogWidget(
+              content: RichText(
+                  text: TextSpan(
+                      text: printedItemsToKitchen,
+                      style: Theme.of(context)
+                          .textTheme
+                          .bodyMedium!
+                          .copyWith(fontWeight: FontWeight.bold),
+                      children: [
+                    TextSpan(
+                      text: prefixPrintedItemsToKitchen.tr(),
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    )
+                  ])),
+              onAgreePressed: () async {
+                result = await printToKitchen(context: context);
+                if (context.mounted) {
+                  context.pop();
+                  context.pushNamed(SCREENS.invoiceToKitchen.toName,
+                      queryParameters: {
+                        'invoiceId': currentSale!.id,
+                        'orderNum': orderNum,
+                        'floorName': _tableLocation.floor,
+                        'tableName': _tableLocation.table,
+                        'saleDetailIds': jsonEncode(
+                            _selectedSaleDetails.map((sd) => sd.id).toList()),
+                        'autoCloseAfterPrinted': 'true'
+                      });
+                }
+              },
+            ),
+            context: context);
+      } else {
+        result = await printToKitchen(context: context);
+        if (context.mounted) {
+          context.pushNamed(SCREENS.invoiceToKitchen.toName, queryParameters: {
+            'invoiceId': currentSale!.id,
+            'orderNum': orderNum,
+            'floorName': _tableLocation.floor,
+            'tableName': _tableLocation.table,
+            'saleDetailIds':
+                jsonEncode(_selectedSaleDetails.map((sd) => sd.id).toList()),
+            'autoCloseAfterPrinted': 'true'
+          });
+        }
+      }
     } else {
       result = ResponseModel(
           message: '$_prefixSaleDetailAlert.info.noSelectedItemsToPrint',
@@ -1181,9 +1265,11 @@ class SaleProvider extends ChangeNotifier {
           await updateOnPrintMethod(saleId: _currentSale!.id);
           // go to invoice
           if (context.mounted) {
+            print('_tableId $_tableId');
+            print('currentSale!.id : ${_currentSale!.id}');
             context.pushNamed(SCREENS.invoice.toName, queryParameters: {
               'tableId': _tableId,
-              'invoiceId': currentSale!.id,
+              'invoiceId': _currentSale!.id,
               'showEditInvoiceBtn': 'true',
               'autoCloseAfterPrinted': 'true'
             });
@@ -1429,7 +1515,9 @@ class SaleProvider extends ChangeNotifier {
                             type: AWESOMESNACKBARTYPE.success);
                         // go to sale
                         handleEnterSale(
-                            context: context, invoiceId: newInvoiceId);
+                            context: context,
+                            tableId: _tableId,
+                            invoiceId: newInvoiceId);
                       }
                     } else {
                       await cancelSaleMethod(saleId: currentSaleId);
@@ -1452,7 +1540,9 @@ class SaleProvider extends ChangeNotifier {
                           type: AWESOMESNACKBARTYPE.success);
                       // go to sale
                       handleEnterSale(
-                          context: context, invoiceId: newInvoiceId);
+                          context: context,
+                          tableId: _tableId,
+                          invoiceId: newInvoiceId);
                     }
                   } else {
                     await cancelSaleMethod(saleId: currentSaleId);

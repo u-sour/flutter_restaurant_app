@@ -32,7 +32,12 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
               horizontalMargin: 0.0,
               headingRowColor: WidgetStateColor.resolveWith(
                   (states) => theme.highlightColor),
-              border: TableBorder.all(),
+              border: tableSchema.borderMode == "Full"
+                  ? TableBorder.all()
+                  : const TableBorder(
+                      top: BorderSide(),
+                      horizontalInside: BorderSide(),
+                      bottom: BorderSide()),
               // loop tables to get List<DataColumn>
               // Note: loop only table field isVisible == true
               columns: List<DataColumn>.generate(tables.length, (int i) {
