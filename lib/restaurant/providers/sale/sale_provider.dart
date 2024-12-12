@@ -227,7 +227,6 @@ class SaleProvider extends ChangeNotifier {
                 SaleAppBarActionModel(title: _tableLocationText);
           }
           _isLoading = false;
-          print('_activeSaleInvoiceId ::: $_activeSaleInvoiceId');
           notifyListeners();
           // });
         });
@@ -852,11 +851,13 @@ class SaleProvider extends ChangeNotifier {
       String? tableId,
       String? invoiceId,
       bool fastSale = false}) async {
-    Map<String, dynamic> query = {
-      'table': tableId,
-      'id': invoiceId,
-      'fastSale': '$fastSale'
-    };
+    Map<String, dynamic> query = {'fastSale': '$fastSale'};
+    if (tableId != null) {
+      query['table'] = tableId;
+    }
+    if (invoiceId != null) {
+      query['id'] = invoiceId;
+    }
     if (fastSale) {
       final String depId = context.read<AppProvider>().selectedDepartment!.id;
       Map<String, dynamic> selector = {'depId': depId};
@@ -1265,8 +1266,6 @@ class SaleProvider extends ChangeNotifier {
           await updateOnPrintMethod(saleId: _currentSale!.id);
           // go to invoice
           if (context.mounted) {
-            print('_tableId $_tableId');
-            print('currentSale!.id : ${_currentSale!.id}');
             context.pushNamed(SCREENS.invoice.toName, queryParameters: {
               'tableId': _tableId,
               'invoiceId': _currentSale!.id,

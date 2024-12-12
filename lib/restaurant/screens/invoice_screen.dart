@@ -106,7 +106,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                     ]),
                     builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
                       if (snapshot.hasError) {
-                        print(snapshot.error);
                         return Text('${snapshot.error}');
                       } else if (snapshot.hasData) {
                         final String ipAddress = readInvoiceProvider.ipAddress;
