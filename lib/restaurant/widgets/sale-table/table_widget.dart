@@ -3,14 +3,16 @@ import '../../../widgets/icon_with_text_widget.dart';
 import '../../utils/constants.dart';
 
 class TableWidget extends StatelessWidget {
-  final int currentGuestCountFromSale;
+  // final int currentGuestCountFromSale;
+  final int currentInvoiceCount;
   final int maxChair;
   final String name;
   final String status;
   final Function()? onTap;
   const TableWidget(
       {super.key,
-      required this.currentGuestCountFromSale,
+      // required this.currentGuestCountFromSale,
+      required this.currentInvoiceCount,
       required this.maxChair,
       required this.name,
       required this.status,
@@ -51,8 +53,8 @@ class TableWidget extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             IconWithTextWidget(
-                                icon: RestaurantDefaultIcons.customer,
-                                dynamicText: '$currentGuestCountFromSale'),
+                                icon: RestaurantDefaultIcons.invoice,
+                                dynamicText: '$currentInvoiceCount'),
                             IconWithTextWidget(
                                 icon: RestaurantDefaultIcons.chair,
                                 dynamicText: '$maxChair'),

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/router/route_utils.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
-import '../../../providers/app_provider.dart';
+import '../../../router/route_utils.dart';
 import '../../../utils/constants.dart';
-import '../../providers/dashboard/dashboard_provider.dart';
+import '../../providers/sale/sale_provider.dart';
 import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/constants.dart';
@@ -25,7 +24,7 @@ class FeatureWidget extends StatelessWidget {
       features.add(SelectOptionModel(
           icon: RestaurantDefaultIcons.newSale,
           label: "screens.dashboard.features.newSale",
-          value: SCREENS.saleTable.toName,
+          value: () => context.goNamed(SCREENS.saleTable.toName),
           extra: AppThemeColors.primary));
     }
     // Button Fast Sale បង្ហាញពេល user role == insert-invoice
@@ -33,7 +32,9 @@ class FeatureWidget extends StatelessWidget {
       features.add(SelectOptionModel(
           icon: RestaurantDefaultIcons.fastSale,
           label: "screens.dashboard.features.fastSale",
-          value: SCREENS.sale.toName,
+          value: () => context
+              .read<SaleProvider>()
+              .handleEnterSale(fastSale: true, context: context),
           extra: AppThemeColors.failure));
     }
     return features.isNotEmpty
@@ -51,19 +52,7 @@ class FeatureWidget extends StatelessWidget {
                   return FeatureItemWidget(
                     label: feature.label,
                     icon: feature.icon!,
-                    onPressed: () async {
-                      final String branchId =
-                          context.read<AppProvider>().selectedBranch!.id;
-                      Map<String, dynamic> table = await context
-                          .read<DashboardProvider>()
-                          .fetchOneTable(branchId: branchId);
-                      if (table.isNotEmpty && context.mounted) {
-                        context.goNamed(feature.value, queryParameters: {
-                          'table': table['_id'],
-                          'fastSale': 'true'
-                        });
-                      }
-                    },
+                    onPressed: feature.value,
                     bgColor: feature.extra,
                   );
                 }),

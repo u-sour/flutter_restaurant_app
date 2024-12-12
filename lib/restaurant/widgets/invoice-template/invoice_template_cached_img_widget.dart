@@ -1,6 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import '../../utils/sale/sale_utils.dart';
 
 class InvoiceTemplateCachedImgWidget extends StatelessWidget {
   final String ipAddress;
@@ -25,9 +24,10 @@ class InvoiceTemplateCachedImgWidget extends StatelessWidget {
     return Container(
       margin: margin,
       child: CachedNetworkImage(
-        imageUrl: getImgSrc(ipAddress: ipAddress, imgUrl: imgUrl),
-        height: width,
-        width: height,
+        imageUrl: imgUrl,
+        height: height,
+        width: width,
+        maxHeightDiskCache: height.toInt(),
         errorWidget: (context, url, error) {
           return Text('$error');
         },

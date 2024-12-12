@@ -208,6 +208,7 @@ class AppRouter {
           builder: (context, state) {
             Map<String, dynamic> queryRouter = state.uri.queryParameters;
             final String invoiceId = queryRouter['invoiceId'];
+            final String orderNum = queryRouter['orderNum'];
             final String floorName = queryRouter['floorName'];
             final String tableName = queryRouter['tableName'];
             final String tempSaleDetailIds = queryRouter['saleDetailIds'];
@@ -218,6 +219,7 @@ class AppRouter {
                     queryRouter['autoCloseAfterPrinted']! == 'true';
             return InvoiceToKitchenScreen(
               invoiceId: invoiceId,
+              orderNum: orderNum,
               floorName: floorName,
               tableName: tableName,
               saleDetailIds: List<String>.from(saleDetailIds),

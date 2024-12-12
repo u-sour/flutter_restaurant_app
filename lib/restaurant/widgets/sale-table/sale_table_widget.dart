@@ -49,7 +49,8 @@ class SaleTableWidget extends StatelessWidget {
                 final table = tables[index];
                 return TableWidget(
                   key: UniqueKey(),
-                  currentGuestCountFromSale: table.currentGuestCount ?? 0,
+                  // currentGuestCountFromSale: table.currentGuestCount ?? 0,
+                  currentInvoiceCount: table.currentInvoiceCount ?? 0,
                   maxChair: table.numOfGuest,
                   name: table.label,
                   status: table.status ?? '',

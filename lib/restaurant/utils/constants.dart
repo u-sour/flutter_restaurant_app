@@ -44,6 +44,7 @@ class RestaurantDefaultIcons {
   static const IconData table = Icons.table_restaurant;
   static const IconData tableStatus = Icons.fiber_manual_record;
   static const IconData chair = Icons.chair_alt;
+  static const IconData invoice = Icons.receipt;
   static const IconData customer = Icons.groups;
   // sale
   static const IconData back = Icons.arrow_back_ios_new;

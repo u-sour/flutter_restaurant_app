@@ -40,7 +40,7 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                       value: headers[i].valueStyle.borderRadius!),
                 ),
               // Type: Header
-              if (headers[i].isVisible != null && headers[i].isVisible == true)
+              if (headers[i].isVisible != false)
                 RichText(
                   // Label
                   text: TextSpan(

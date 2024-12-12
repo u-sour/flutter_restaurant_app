@@ -6,12 +6,14 @@ part 'table_schema_model.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class TableSchemaModel {
+  final String borderMode;
   final bool showThSubLabel;
   final ThStyleModel thStyle;
   final TdStyleModel tdStyle;
   final List<TableListSchemaModel> list;
 
   const TableSchemaModel({
+    required this.borderMode,
     required this.showThSubLabel,
     required this.thStyle,
     required this.tdStyle,

@@ -94,7 +94,7 @@ class NotificationProvider extends ChangeNotifier {
   }
 
   void subscribeNotifications() {
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
     Map<String, dynamic> selector = {'branchId': _branchId};
     Map<String, dynamic> option = {
       'sort': {'date': -1},
@@ -258,6 +258,9 @@ class NotificationProvider extends ChangeNotifier {
       required List<String> depIds,
       required String branchId,
       required String userId}) async {
+    if (notificationType.isEmpty) {
+      return const NotificationModel(data: [], type: 'type');
+    }
     Map<String, dynamic> selector = {
       'type': notificationType,
       'allowTypes': allowNotificationTypes,

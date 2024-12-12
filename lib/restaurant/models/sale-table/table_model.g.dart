@@ -9,7 +9,12 @@ part of 'table_model.dart';
 TableModel _$TableModelFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    disallowNullValues: const ['_id', 'currentGuestCount', 'status'],
+    disallowNullValues: const [
+      '_id',
+      'currentGuestCount',
+      'currentInvoiceCount',
+      'status'
+    ],
   );
   return TableModel(
     id: json['_id'] as String,
@@ -24,6 +29,7 @@ TableModel _$TableModelFromJson(Map<String, dynamic> json) {
     location: json['location'] as String,
     order: json['order'] as String,
     currentGuestCount: (json['currentGuestCount'] as num?)?.toInt(),
+    currentInvoiceCount: (json['currentInvoiceCount'] as num?)?.toInt(),
     status: json['status'] as String?,
   );
 }
@@ -49,6 +55,7 @@ Map<String, dynamic> _$TableModelToJson(TableModel instance) {
   }
 
   writeNotNull('currentGuestCount', instance.currentGuestCount);
+  writeNotNull('currentInvoiceCount', instance.currentInvoiceCount);
   writeNotNull('status', instance.status);
   return val;
 }

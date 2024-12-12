@@ -17,7 +17,7 @@ class HeaderListSchemaModel {
   final String? position;
   @JsonKey(disallowNullValue: true)
   final String? imageId;
-  final String field;
+  final String? field;
   final String? imageUrl;
   @JsonKey(disallowNullValue: true)
   final bool? isVisible;
@@ -35,7 +35,7 @@ class HeaderListSchemaModel {
     this.value,
     this.position,
     this.imageId,
-    required this.field,
+    this.field,
     this.imageUrl,
     this.isVisible,
     this.wrapperStyle,

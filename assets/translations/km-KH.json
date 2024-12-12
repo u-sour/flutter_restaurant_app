@@ -233,6 +233,7 @@
             "submit": "បញ្ជូន"
           },
           "confirm": {
+            "printedItemsToKitchen": " ធ្លាប់បានព្រីនរួចហើយ។ តើអ្នកចង់ព្រីនម្ដងទៀត?",
             "cancelSale": {
               "start": "វិក្កយបត្រ ",
               "end": " នឹងត្រូវបោះបង់ភ្លាមៗ។ បន្ត?",
@@ -283,6 +284,7 @@
       "invoice": {
         "info": {
           "invoice": "វិក្កយបត្រ : ",
+          "orderNumber": "លេខកម្មង់ ",
           "customer": "អតិថិជន : ",
           "tableLocation": "ទីតាំង : ",
           "user": "អ្នកប្រើបា្រស់ : ",
