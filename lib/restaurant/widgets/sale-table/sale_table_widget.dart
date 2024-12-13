@@ -52,7 +52,8 @@ class SaleTableWidget extends StatelessWidget {
                   // currentGuestCountFromSale: table.currentGuestCount ?? 0,
                   currentInvoiceCount: table.currentInvoiceCount ?? 0,
                   maxChair: table.numOfGuest,
-                  name: table.label,
+                  floor: table.floorName,
+                  name: table.name,
                   status: table.status ?? '',
                   onTap: () async {
                     final result = saleTableProvider.enterSale(

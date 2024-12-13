@@ -46,7 +46,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: AppStyleDefaultProperties.p / 4),
                 child: Text(fields[i].label.tr(),
-                    style: theme.textTheme.bodyMedium!.copyWith(
+                    style: theme.textTheme.bodyLarge!.copyWith(
                         color: baseColor, fontWeight: FontWeight.bold),
                     textAlign: textAlign(fields[i].value),
                     softWrap: true),
@@ -71,7 +71,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                           // Item Name
                           Text(
                             row[fields[i].value],
-                            style: theme.textTheme.bodyMedium!.copyWith(
+                            style: theme.textTheme.bodyLarge!.copyWith(
                                 color: baseColor, fontWeight: FontWeight.bold),
                             textAlign: textAlign(fields[i].value),
                           ),
@@ -80,7 +80,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                             for (int i = 0; i < row['extraItemDoc'].length; i++)
                               Text(
                                 '-${row['extraItemDoc'][i]['itemName']}',
-                                style: theme.textTheme.bodyMedium!.copyWith(
+                                style: theme.textTheme.bodyLarge!.copyWith(
                                   color: baseColor,
                                 ),
                                 softWrap: true,
@@ -92,7 +92,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                       width: double.infinity,
                       child: Text(
                         '${row[fields[i].value]}',
-                        style: theme.textTheme.bodyMedium!.copyWith(
+                        style: theme.textTheme.bodyLarge!.copyWith(
                             color: baseColor, fontWeight: FontWeight.bold),
                         textAlign: textAlign(fields[i].value),
                       ),

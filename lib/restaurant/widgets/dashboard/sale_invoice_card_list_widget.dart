@@ -52,8 +52,9 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Text(
-                    '$prefixSaleInvoiceContentCard.table'
-                        .tr(namedArgs: {'tableName': data.tableName}),
+                    // '$prefixSaleInvoiceContentCard.table'
+                    //     .tr(namedArgs: {'tableName': data.tableName}),
+                    data.tableName,
                     style: ResponsiveLayout.isMobile(context)
                         ? theme.textTheme.titleMedium!.copyWith(
                             fontWeight: FontWeight.bold,
