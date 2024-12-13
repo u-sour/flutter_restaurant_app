@@ -8,6 +8,6 @@ class InvoiceToKitchenFooterWidget extends StatelessWidget {
     final theme = Theme.of(context);
     const Color baseColor = Colors.black;
     return Text('Powered by Rabbit Technology',
-        style: theme.textTheme.bodySmall!.copyWith(color: baseColor));
+        style: theme.textTheme.bodyMedium!.copyWith(color: baseColor));
   }
 }
