@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import '../../../utils/convert_date_time.dart';
 
 class InvoiceToKitchenHeaderWidget extends StatelessWidget {
   final String tableLocation;
@@ -14,40 +15,40 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
     const Color baseColor = Colors.black;
     return Column(
       children: [
-        // Row(
-        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        //   children: [
-        //     RichText(
-        //       text: TextSpan(
-        //           text: '$prefixInvoiceHeader.date'.tr(),
-        //           style: theme.textTheme.bodyMedium!
-        //               .copyWith(color: baseColor, fontWeight: FontWeight.bold),
-        //           children: [
-        //             TextSpan(
-        //                 text: ConvertDateTime.formatTimeStampToString(
-        //                     DateTime.now(), true))
-        //           ]),
-        //     ),
-        //     RichText(
-        //       text: TextSpan(
-        //           text: '$prefixInvoiceHeader.tableLocation'.tr(),
-        //           style: theme.textTheme.bodyMedium!
-        //               .copyWith(color: baseColor, fontWeight: FontWeight.bold),
-        //           children: [
-        //             TextSpan(text: tableLocation),
-        //           ]),
-        //     )
-        //   ],
-        // ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            RichText(
+              text: TextSpan(
+                  // text: '$prefixInvoiceHeader.date'.tr(),
+                  style: theme.textTheme.bodyLarge!
+                      .copyWith(color: baseColor, fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(
+                        text: ConvertDateTime.formatTimeStampToString(
+                            DateTime.now(), true))
+                  ]),
+            ),
+            RichText(
+              text: TextSpan(
+                  // text: '$prefixInvoiceHeader.tableLocation'.tr(),
+                  style: theme.textTheme.bodyLarge!
+                      .copyWith(color: baseColor, fontWeight: FontWeight.bold),
+                  children: [
+                    TextSpan(text: tableLocation),
+                  ]),
+            )
+          ],
+        ),
         if (orderNum.isNotEmpty)
           RichText(
             text: TextSpan(
                 text: '$prefixInvoiceHeader.orderNumber'.tr(),
-                style: theme.textTheme.bodyMedium!.copyWith(color: baseColor),
+                style: theme.textTheme.bodyLarge!.copyWith(color: baseColor),
                 children: [
                   TextSpan(
                       text: orderNum,
-                      style: theme.textTheme.bodyMedium!.copyWith(
+                      style: theme.textTheme.bodyLarge!.copyWith(
                           color: baseColor, fontWeight: FontWeight.bold))
                 ]),
           ),

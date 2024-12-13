@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_template/restaurant/providers/sale-table/sale_table_provider.dart';
+import 'package:provider/provider.dart';
 import '../../../widgets/icon_with_text_widget.dart';
 import '../../utils/constants.dart';
 
@@ -6,6 +8,7 @@ class TableWidget extends StatelessWidget {
   // final int currentGuestCountFromSale;
   final int currentInvoiceCount;
   final int maxChair;
+  final String floor;
   final String name;
   final String status;
   final Function()? onTap;
@@ -14,12 +17,14 @@ class TableWidget extends StatelessWidget {
       // required this.currentGuestCountFromSale,
       required this.currentInvoiceCount,
       required this.maxChair,
+      required this.floor,
       required this.name,
       required this.status,
       this.onTap});
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     late Color tableColorByStatus;
     if (status == 'closed') {
       tableColorByStatus = RestaurantTableStatusColors.closed;
@@ -67,11 +72,19 @@ class TableWidget extends StatelessWidget {
             // Content
             Expanded(
               flex: 2,
-              child: Center(
-                child: Text(name,
-                    style: const TextStyle(
-                        fontWeight: FontWeight.w600,
-                        overflow: TextOverflow.ellipsis)),
+              child: Selector<SaleTableProvider, String>(
+                selector: (context, state) => state.activeFloor,
+                builder: (context, activeFloor, child) => Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    if (activeFloor == 'All')
+                      Text(floor, style: theme.textTheme.bodyLarge),
+                    Text(name,
+                        style: theme.textTheme.bodyLarge!.copyWith(
+                            fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis)),
+                  ],
+                ),
               ),
             ),
           ],
