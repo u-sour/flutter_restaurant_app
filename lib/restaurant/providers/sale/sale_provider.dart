@@ -1294,38 +1294,44 @@ class SaleProvider extends ChangeNotifier {
         GlobalKey<FormBuilderState>();
     ResponseModel? result;
     if (_sales.isNotEmpty && _saleDetails.isNotEmpty) {
-      try {
-        await GlobalService.openDialog(
-            contentWidget: EditSaleDetailOperationActionWidget(
-              fbKey: fbMergeSaleKey,
-              operationType: SaleDetailOperationType.merge,
-              onInsertPressed: () async {
-                if (fbMergeSaleKey.currentState!.saveAndValidate()) {
-                  final String saleId =
-                      fbMergeSaleKey.currentState!.value['saleId'];
-                  final Map<String, dynamic> data =
-                      await mergeSaleMethod(saleId: saleId);
-                  if (data.isNotEmpty && context.mounted) {
-                    result = ResponseModel(
-                        message: '$_prefixSaleDetailAlert.success.merge',
-                        type: AWESOMESNACKBARTYPE.success,
-                        data: data);
-                    handleEnterSale(
-                        context: context,
-                        tableId: data['tableId'],
-                        invoiceId: data['_id']);
-                    // close modal
-                    context.pop();
+      if (_selectedSaleDetails.isNotEmpty) {
+        try {
+          await GlobalService.openDialog(
+              contentWidget: EditSaleDetailOperationActionWidget(
+                fbKey: fbMergeSaleKey,
+                operationType: SaleDetailOperationType.merge,
+                onInsertPressed: () async {
+                  if (fbMergeSaleKey.currentState!.saveAndValidate()) {
+                    final String saleId =
+                        fbMergeSaleKey.currentState!.value['saleId'];
+                    final Map<String, dynamic> data =
+                        await mergeSaleMethod(saleId: saleId);
+                    if (data.isNotEmpty && context.mounted) {
+                      result = ResponseModel(
+                          message: '$_prefixSaleDetailAlert.success.merge',
+                          type: AWESOMESNACKBARTYPE.success,
+                          data: data);
+                      handleEnterSale(
+                          context: context,
+                          tableId: data['tableId'],
+                          invoiceId: data['_id']);
+                      // close modal
+                      context.pop();
+                    }
                   }
-                }
-              },
-            ),
-            context: context);
-      } catch (e) {
-        if (e is MeteorError) {
-          result = ResponseModel(
-              message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+                },
+              ),
+              context: context);
+        } catch (e) {
+          if (e is MeteorError) {
+            result = ResponseModel(
+                message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+          }
         }
+      } else {
+        result = ResponseModel(
+            message: '$_prefixSaleDetailAlert.info.noSelectedItemsMerge',
+            type: AWESOMESNACKBARTYPE.info);
       }
     } else {
       result = ResponseModel(
