@@ -273,6 +273,7 @@
           },
           "info": {
             "noItemsMerge": "No items to merge.",
+            "noSelectedItemsMerge": "No selected items to merge.",
             "noSelectedItemsTransfer": "No selected items to transfer.",
             "noSelectedItemsSplit": "No selected items to split.",
             "printBeforeCancel": "Can not cancel before print.",
