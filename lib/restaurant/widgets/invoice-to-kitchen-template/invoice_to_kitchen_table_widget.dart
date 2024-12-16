@@ -79,12 +79,18 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                           if (row['extraItemDoc'].isNotEmpty)
                             for (int i = 0; i < row['extraItemDoc'].length; i++)
                               Text(
-                                '-${row['extraItemDoc'][i]['itemName']}',
+                                '\t-${row['extraItemDoc'][i]['itemName']}',
                                 style: theme.textTheme.bodyLarge!.copyWith(
                                   color: baseColor,
                                 ),
                                 softWrap: true,
                               ),
+                          // Note
+                          if (row['note'].isNotEmpty)
+                            SizedBox(
+                              width: 100.0,
+                              child: Text('\t${row['note']}'),
+                            )
                         ],
                       ),
                     )
