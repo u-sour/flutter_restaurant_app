@@ -377,10 +377,11 @@ packages:
   flutter_bluetooth_printer:
     dependency: "direct main"
     description:
-      name: flutter_bluetooth_printer
-      sha256: aa1a290722ab261154e06689444fd89e7361f7fa72ef87fe88ebf0f4413af620
-      url: "https://pub.dev"
-    source: hosted
+      path: "packages/flutter_bluetooth_printer"
+      ref: add-cut-paper
+      resolved-ref: "89b597085fb5920ca3add8e95abede9d12e5be3f"
+      url: "https://github.com/u-sour/flutter_bluetooth_printer_plugin.git"
+    source: git
     version: "2.17.1"
   flutter_bluetooth_printer_macos:
     dependency: transitive
