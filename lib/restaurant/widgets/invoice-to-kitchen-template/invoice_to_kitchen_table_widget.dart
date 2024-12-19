@@ -86,7 +86,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                                 softWrap: true,
                               ),
                           // Note
-                          if (row['note'].isNotEmpty)
+                          if (row['note'] != null)
                             SizedBox(
                               width: 100.0,
                               child: Text('\t${row['note']}'),

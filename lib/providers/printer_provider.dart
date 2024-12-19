@@ -17,7 +17,6 @@ class PrinterProvider extends ChangeNotifier {
   Future<ResponseModel> btPrinterPrinting({int addFeeds = 5}) async {
     final PrinterStorage printerStorage = PrinterStorage();
     final BluetoothDevice btPrinter = await printerStorage.getBTPrinter();
-    final String printerPaperSize = await printerStorage.getPrinterPaperSize();
     ResponseModel result = ResponseModel(
         status: 201,
         message: '$_alertPrefix.success.message',
@@ -25,16 +24,6 @@ class PrinterProvider extends ChangeNotifier {
 
     //check bluetooth printer address exist or not
     if (btPrinter.address.isNotEmpty) {
-      //check & set printer paper size
-      late PaperSize paperSize;
-      switch (printerPaperSize) {
-        case '80mm':
-          paperSize = PaperSize.mm80;
-          break;
-        default:
-          paperSize = PaperSize.mm58;
-      }
-      controller.paperSize = paperSize;
       // start printing
       final printed = await controller.print(
         address: btPrinter.address,
