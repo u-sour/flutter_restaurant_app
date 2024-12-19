@@ -1801,7 +1801,7 @@ class SaleProvider extends ChangeNotifier {
           if (isPrint) {
             // Go invoice
             context.goNamed(SCREENS.invoice.toName, queryParameters: {
-              'tableId': _tableId,
+              'tableId': saleReceipt.orderDoc.tableId,
               'invoiceId': saleReceipt.orderDoc.id,
               'receiptId': receiptId,
               'fromReceiptForm': '$fromReceiptForm',

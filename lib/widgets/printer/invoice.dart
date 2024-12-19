@@ -46,12 +46,12 @@ class Invoice extends StatelessWidget {
           ),
           Text(
             '# Street 153 រ៉ាប៊ីតតិចណូឡូជី, Battambang, Cambodia',
-            style: theme.textTheme.headlineSmall!.copyWith(fontSize: 16.0),
+            style: theme.textTheme.headlineSmall,
             textAlign: TextAlign.center,
           ),
           Text(
             'លេខទូរស័ព្ទ ៖ 070 550 880',
-            style: theme.textTheme.headlineSmall!.copyWith(fontSize: 16.0),
+            style: theme.textTheme.headlineSmall,
           ),
           const Divider(
             color: Colors.black,
@@ -64,9 +64,8 @@ class Invoice extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  headerData[i].keys.first.toUpperCase(),
-                ),
+                Text(headerData[i].keys.first.toUpperCase(),
+                    style: theme.textTheme.bodyMedium),
                 Text(
                   headerData[i].entries.single.value.toString(),
                   style: theme.textTheme.bodyMedium!
@@ -107,21 +106,25 @@ class Invoice extends StatelessWidget {
                         DataCell(
                           Text(
                             dataTableBody[i]['item'],
+                            style: theme.textTheme.bodyLarge,
                           ),
                         ),
                         DataCell(
                           Text(
                             dataTableBody[i]['qty'].toString(),
+                            style: theme.textTheme.bodyLarge,
                           ),
                         ),
                         DataCell(
                           Text(
                             dataTableBody[i]['price'].toString(),
+                            style: theme.textTheme.bodyLarge,
                           ),
                         ),
                         DataCell(
                           Text(
                             '${dataTableBody[i]['price'] * dataTableBody[i]['qty']}',
+                            style: theme.textTheme.bodyLarge,
                           ),
                         ),
                       ],
@@ -161,7 +164,7 @@ class Invoice extends StatelessWidget {
                 textAlign: TextAlign.end,
                 text: TextSpan(
                     text: 'សរុបទាំងអស់ : ',
-                    style: theme.textTheme.bodyMedium,
+                    style: theme.textTheme.bodyLarge,
                     children: [
                       TextSpan(
                           text: '$total \$', style: theme.textTheme.titleLarge),
@@ -170,7 +173,10 @@ class Invoice extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 10.0),
-          const Text('សូមអរគុណជួបគ្នាម្តងទៀត...')
+          Text(
+            'សូមអរគុណជួបគ្នាម្តងទៀត...',
+            style: theme.textTheme.bodyLarge,
+          )
         ],
       ),
     );

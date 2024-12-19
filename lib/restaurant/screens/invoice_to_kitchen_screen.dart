@@ -3,9 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
 import '../../services/global_service.dart';
+import '../../storages/printer_storage.dart';
 import '../../widgets/printer/printing_progress_widget.dart';
 import '../models/sale/detail/sale_detail_model.dart';
 import '../providers/invoice/invoice_provider.dart';
@@ -61,7 +63,20 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
           Expanded(
               child: Receipt(
                   backgroundColor: Colors.grey.shade200,
-                  onInitialized: (controller) {
+                  onInitialized: (controller) async {
+                    // Check & set printer paper size
+                    final PrinterStorage printerStorage = PrinterStorage();
+                    final String printerPaperSize =
+                        await printerStorage.getPrinterPaperSize();
+                    late PaperSize paperSize;
+                    switch (printerPaperSize) {
+                      case '80mm':
+                        paperSize = PaperSize.mm80;
+                        break;
+                      default:
+                        paperSize = PaperSize.mm58;
+                    }
+                    controller.paperSize = paperSize;
                     readPrinterProvider.controller = controller;
                   },
                   builder: (context) => FutureBuilder(
@@ -91,8 +106,15 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
+                        // Get copies sale setting from backend
+                        AppProvider readAppProvider =
+                            context.read<AppProvider>();
+                        int copyForChef =
+                            readAppProvider.saleSetting.invoice.copyForChef ??
+                                1;
                         GlobalService.openDialog(
-                          contentWidget: const PrintingProgressWidget(),
+                          contentWidget:
+                              PrintingProgressWidget(copies: copyForChef),
                           context: context,
                         ).then((_) {
                           if (context.mounted && widget.autoCloseAfterPrinted) {

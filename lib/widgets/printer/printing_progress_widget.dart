@@ -1,11 +1,14 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import '../../models/servers/response_model.dart';
 import '../../providers/printer_provider.dart';
 import '../../utils/alert/alert.dart';
 
 class PrintingProgressWidget extends StatefulWidget {
-  const PrintingProgressWidget({super.key});
+  final int copies;
+  const PrintingProgressWidget({super.key, this.copies = 1});
 
   @override
   State<PrintingProgressWidget> createState() => _PrintingProgressWidgetState();
@@ -24,9 +27,12 @@ class _PrintingProgressWidgetState extends State<PrintingProgressWidget> {
 
   _asyncMethods() async {
     late SnackBar snackBar;
-    final result = await readPrinterProvider.btPrinterPrinting();
+    late ResponseModel result;
+    for (int i = 0; i < widget.copies; i++) {
+      result = await readPrinterProvider.btPrinterPrinting();
+    }
     if (!mounted) return;
-    Navigator.of(context).pop();
+    context.pop();
     snackBar =
         Alert.awesomeSnackBar(message: result.message, type: result.type);
     ScaffoldMessenger.of(context)
