@@ -7,6 +7,7 @@ import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
 import '../../services/global_service.dart';
+import '../../storages/printer_storage.dart';
 import '../../utils/alert/alert.dart';
 import '../../widgets/printer/printing_progress_widget.dart';
 import '../models/invoice-template/invoice_template_model.dart';
@@ -95,7 +96,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
           Expanded(
             child: Receipt(
                 backgroundColor: Colors.grey.shade200,
-                onInitialized: (controller) {
+                onInitialized: (controller) async {
+                  // Check & set printer paper size
+                  final PrinterStorage printerStorage = PrinterStorage();
+                  final String printerPaperSize =
+                      await printerStorage.getPrinterPaperSize();
+                  late PaperSize paperSize;
+                  switch (printerPaperSize) {
+                    case '80mm':
+                      paperSize = PaperSize.mm80;
+                      break;
+                    default:
+                      paperSize = PaperSize.mm58;
+                  }
+                  controller.paperSize = paperSize;
                   readPrinterProvider.controller = controller;
                 },
                 builder: (context) => FutureBuilder(
@@ -170,9 +184,21 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                   // Print
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-                        GlobalService.openDialog(
-                          contentWidget: const PrintingProgressWidget(),
+                      onPressed: () async {
+                        // Get copies sale setting from backend and check invoice print from sale receipt form or normal
+                        AppProvider readAppProvider =
+                            context.read<AppProvider>();
+                        int copyForBill =
+                            readAppProvider.saleSetting.invoice.copyForBill ??
+                                1;
+                        int copyForPayment = readAppProvider
+                                .saleSetting.invoice.copyForPayment ??
+                            1;
+                        await GlobalService.openDialog(
+                          contentWidget: PrintingProgressWidget(
+                              copies: widget.fromReceiptForm
+                                  ? copyForPayment
+                                  : copyForBill),
                           context: context,
                         ).then((_) {
                           if (context.mounted && widget.autoCloseAfterPrinted) {
