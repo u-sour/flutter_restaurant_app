@@ -1,7 +1,10 @@
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
+import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/sale/detail/sale_detail_model.dart';
 
@@ -12,6 +15,8 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     List<SelectOptionModel> fields = [
@@ -21,7 +26,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
     TextAlign textAlign(String filedName) {
       TextAlign textAlign = TextAlign.start;
       if (filedName == 'qty') {
-        textAlign = TextAlign.center;
+        textAlign = TextAlign.end;
       }
       return textAlign;
     }
@@ -46,8 +51,11 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                 padding: const EdgeInsets.only(
                     left: AppStyleDefaultProperties.p / 4),
                 child: Text(fields[i].label.tr(),
-                    style: theme.textTheme.bodyLarge!.copyWith(
-                        color: baseColor, fontWeight: FontWeight.bold),
+                    style: paperSize == PaperSize.mm80
+                        ? theme.textTheme.headlineSmall!.copyWith(
+                            color: baseColor, fontWeight: FontWeight.bold)
+                        : theme.textTheme.bodyLarge!.copyWith(
+                            color: baseColor, fontWeight: FontWeight.bold),
                     textAlign: textAlign(fields[i].value),
                     softWrap: true),
               ),
@@ -71,36 +79,60 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                           // Item Name
                           Text(
                             row[fields[i].value],
-                            style: theme.textTheme.bodyLarge!.copyWith(
-                                color: baseColor, fontWeight: FontWeight.bold),
+                            style: paperSize == PaperSize.mm80
+                                ? theme.textTheme.headlineSmall!.copyWith(
+                                    color: baseColor,
+                                    fontWeight: FontWeight.bold)
+                                : theme.textTheme.bodyLarge!.copyWith(
+                                    color: baseColor,
+                                    fontWeight: FontWeight.bold),
                             textAlign: textAlign(fields[i].value),
                           ),
                           // Extra Items
                           if (row['extraItemDoc'].isNotEmpty)
                             for (int i = 0; i < row['extraItemDoc'].length; i++)
                               Text(
-                                '\t-${row['extraItemDoc'][i]['itemName']}',
-                                style: theme.textTheme.bodyLarge!.copyWith(
-                                  color: baseColor,
-                                ),
+                                '\t•${row['extraItemDoc'][i]['itemName']}',
+                                style: paperSize == PaperSize.mm80
+                                    ? theme.textTheme.headlineSmall!
+                                        .copyWith(color: baseColor)
+                                    : theme.textTheme.bodyLarge!.copyWith(
+                                        color: baseColor,
+                                      ),
                                 softWrap: true,
                               ),
                           // Note
                           if (row['note'] != null)
                             SizedBox(
                               width: 100.0,
-                              child: Text('\t${row['note']}'),
+                              child: Text(
+                                '\t[${row['note']}]',
+                                style: paperSize == PaperSize.mm80
+                                    ? theme.textTheme.headlineSmall!
+                                        .copyWith(color: baseColor)
+                                    : theme.textTheme.bodyLarge!.copyWith(
+                                        color: baseColor,
+                                      ),
+                              ),
                             )
                         ],
                       ),
                     )
                   : SizedBox(
                       width: double.infinity,
-                      child: Text(
-                        '${row[fields[i].value]}',
-                        style: theme.textTheme.bodyLarge!.copyWith(
-                            color: baseColor, fontWeight: FontWeight.bold),
-                        textAlign: textAlign(fields[i].value),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: AppStyleDefaultProperties.p),
+                        child: Text(
+                          '${row[fields[i].value]}',
+                          style: paperSize == PaperSize.mm80
+                              ? theme.textTheme.headlineSmall!.copyWith(
+                                  color: baseColor, fontWeight: FontWeight.bold)
+                              : theme.textTheme.bodyLarge!.copyWith(
+                                  color: baseColor,
+                                  fontWeight: FontWeight.bold),
+                          textAlign: textAlign(fields[i].value),
+                        ),
                       ),
                     ),
             );

@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/printer_provider.dart';
+import '../../../utils/constants.dart';
 import '../../models/invoice-template/header/header_list_schema_model.dart';
 import '../../models/invoice-template/header/header_schema_model.dart';
 import '../../models/sale/invoice/print/sale_invoice_for_print_model.dart';
@@ -19,6 +23,8 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     List<HeaderListSchemaModel> headers = headerSchema.list;
     return Column(
@@ -47,7 +53,11 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                       text: headers[i].label,
                       style: theme.textTheme.bodySmall!.copyWith(
                           color: baseColor,
-                          fontSize: headers[i].labelStyle?.fontSize,
+                          fontSize: paperSize == PaperSize.mm80 &&
+                                  headers[i].labelStyle != null
+                              ? headers[i].labelStyle!.fontSize! +
+                                  AppStyleDefaultProperties.iefs
+                              : headers[i].labelStyle?.fontSize,
                           fontWeight: headers[i].labelStyle?.fontWeight !=
                                       null &&
                                   headers[i].labelStyle?.fontWeight == 'bold'
@@ -67,7 +77,11 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                                   : headers[i].value ?? '',
                               style: theme.textTheme.bodySmall!.copyWith(
                                   color: baseColor,
-                                  fontSize: headers[i].valueStyle.fontSize,
+                                  fontSize: paperSize == PaperSize.mm80 &&
+                                          headers[i].valueStyle.fontSize != null
+                                      ? headers[i].valueStyle.fontSize! +
+                                          AppStyleDefaultProperties.iefs
+                                      : headers[i].valueStyle.fontSize,
                                   fontWeight: headers[i]
                                                   .valueStyle
                                                   .fontWeight !=
