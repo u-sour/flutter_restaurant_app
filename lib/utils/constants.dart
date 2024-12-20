@@ -120,6 +120,9 @@ class AppStyleDefaultProperties {
 
   /// w stand for width
   static const double w = 12.0;
+
+  /// iefs stand for invoice extra font size
+  static const double iefs = 6.5;
 }
 
 class AppDefaultIcons {

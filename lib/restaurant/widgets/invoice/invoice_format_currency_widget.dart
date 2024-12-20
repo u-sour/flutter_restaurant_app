@@ -41,11 +41,14 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
         decimalNumber:
             defaultBaseCurrency == 'KHR' ? -decimalNumber : decimalNumber);
     TextStyle currencySymbolStyle = theme.textTheme.bodySmall!.copyWith(
-        fontSize: defaultBaseCurrency == 'KHR' ? currencySymbolFontSize : null,
-        color: color ?? theme.colorScheme.onSurface,
-        fontWeight: fontWeight,
-        decoration: decoration,
-        height: defaultBaseCurrency == 'KHR' ? 0.1 : null);
+      fontSize: defaultBaseCurrency == 'KHR'
+          ? currencySymbolFontSize
+          : currencySymbolFontSize - 2,
+      color: color ?? theme.colorScheme.onSurface,
+      fontWeight: fontWeight,
+      decoration: decoration,
+      // height: defaultBaseCurrency == 'KHR' ? 0.1 : null,
+    );
     return Row(
       mainAxisAlignment: mainAxisAlignment,
       textBaseline: TextBaseline.alphabetic,

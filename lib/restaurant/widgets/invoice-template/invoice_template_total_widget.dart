@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/total/total_list_schema_model.dart';
 import '../../models/invoice-template/total/total_schema_model.dart';
@@ -36,6 +39,8 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     List<TotalListSchemaModel> totals = totalSchema.list;
     return Column(
@@ -66,7 +71,11 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
                       '${totals[i].label}:',
                       style: theme.textTheme.bodySmall!.copyWith(
                         color: baseColor,
-                        fontSize: totals[i].labelStyle.fontSize,
+                        fontSize: paperSize == PaperSize.mm80 &&
+                                totals[i].labelStyle.fontSize != null
+                            ? totals[i].labelStyle.fontSize! +
+                                AppStyleDefaultProperties.iefs
+                            : totals[i].labelStyle.fontSize,
                         fontWeight: totals[i].labelStyle.fontWeight != null &&
                                 totals[i].labelStyle.fontWeight == 'bold'
                             ? FontWeight.bold
@@ -115,10 +124,22 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
                                         baseCurrency:
                                             totalSchema.displayCurrencies[j],
                                         color: baseColor,
-                                        priceFontSize:
-                                            totals[i].valueStyle.fontSize,
-                                        currencySymbolFontSize:
-                                            totals[i].valueStyle.fontSize! + 4,
+                                        priceFontSize: paperSize ==
+                                                    PaperSize.mm80 &&
+                                                totals[i].valueStyle.fontSize !=
+                                                    null
+                                            ? totals[i].valueStyle.fontSize! +
+                                                AppStyleDefaultProperties.iefs
+                                            : totals[i].valueStyle.fontSize,
+                                        currencySymbolFontSize: paperSize ==
+                                                    PaperSize.mm80 &&
+                                                totals[i].valueStyle.fontSize !=
+                                                    null
+                                            ? totals[i].valueStyle.fontSize! +
+                                                2 +
+                                                AppStyleDefaultProperties.iefs
+                                            : totals[i].valueStyle.fontSize! +
+                                                2,
                                         fontWeight:
                                             totals[i].valueStyle.fontWeight !=
                                                         null &&
@@ -135,8 +156,20 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
                                             style: theme.textTheme.bodySmall!
                                                 .copyWith(
                                               color: baseColor,
-                                              fontSize:
-                                                  totals[i].valueStyle.fontSize,
+                                              fontSize: paperSize ==
+                                                          PaperSize.mm80 &&
+                                                      totals[i]
+                                                              .valueStyle
+                                                              .fontSize !=
+                                                          null
+                                                  ? totals[i]
+                                                          .valueStyle
+                                                          .fontSize! +
+                                                      AppStyleDefaultProperties
+                                                          .iefs
+                                                  : totals[i]
+                                                      .valueStyle
+                                                      .fontSize,
                                               fontWeight: totals[i]
                                                               .valueStyle
                                                               .fontWeight !=
@@ -158,9 +191,18 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
                                               .toJson()[totals[i].field] ??
                                           0,
                                   color: baseColor,
-                                  priceFontSize: totals[i].valueStyle.fontSize,
-                                  currencySymbolFontSize:
-                                      totals[i].valueStyle.fontSize! + 4,
+                                  priceFontSize: paperSize == PaperSize.mm80 &&
+                                          totals[i].valueStyle.fontSize != null
+                                      ? totals[i].valueStyle.fontSize! +
+                                          AppStyleDefaultProperties.iefs
+                                      : totals[i].valueStyle.fontSize,
+                                  currencySymbolFontSize: paperSize ==
+                                              PaperSize.mm80 &&
+                                          totals[i].valueStyle.fontSize != null
+                                      ? totals[i].valueStyle.fontSize! +
+                                          2 +
+                                          AppStyleDefaultProperties.iefs
+                                      : totals[i].valueStyle.fontSize! + 2,
                                   fontWeight:
                                       totals[i].valueStyle.fontWeight != null &&
                                               totals[i].valueStyle.fontWeight ==
