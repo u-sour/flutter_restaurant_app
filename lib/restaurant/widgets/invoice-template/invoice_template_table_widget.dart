@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/printer_provider.dart';
+import '../../../utils/constants.dart';
 import '../../models/invoice-template/table/table_list_schema_model.dart';
 import '../../models/invoice-template/table/table_schema_model.dart';
 import '../../models/sale/invoice/print/sale_detail_for_print_model.dart';
@@ -16,6 +20,8 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     // filter table list
@@ -64,7 +70,11 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                               : tables[i].label,
                           style: theme.textTheme.bodySmall!.copyWith(
                               color: baseColor,
-                              fontSize: tableSchema.thStyle.fontSize,
+                              fontSize: paperSize == PaperSize.mm80 &&
+                                      tableSchema.thStyle.fontSize != null
+                                  ? tableSchema.thStyle.fontSize! +
+                                      AppStyleDefaultProperties.iefs
+                                  : tableSchema.thStyle.fontSize,
                               fontWeight: FontWeight.bold),
                           textAlign: thTextAlign,
                           softWrap: true),
@@ -105,8 +115,16 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                       Text(row[tables[i].field],
                                           style: theme.textTheme.bodySmall!
                                               .copyWith(
-                                            fontSize:
-                                                tableSchema.tdStyle.fontSize,
+                                            fontSize: paperSize ==
+                                                        PaperSize.mm80 &&
+                                                    tableSchema
+                                                            .tdStyle.fontSize !=
+                                                        null
+                                                ? tableSchema
+                                                        .tdStyle.fontSize! +
+                                                    AppStyleDefaultProperties
+                                                        .iefs
+                                                : tableSchema.tdStyle.fontSize,
                                             fontWeight:
                                                 tables[i].tdStyle.fontWeight !=
                                                             null &&
@@ -138,9 +156,19 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                               style: theme.textTheme.bodySmall!
                                                   .copyWith(
                                                 color: baseColor,
-                                                fontSize: tables[i]
-                                                    .subItemStyle
-                                                    ?.fontSize,
+                                                fontSize: paperSize ==
+                                                            PaperSize.mm80 &&
+                                                        tables[i]
+                                                                .subItemStyle !=
+                                                            null
+                                                    ? tables[i]
+                                                            .subItemStyle!
+                                                            .fontSize! +
+                                                        AppStyleDefaultProperties
+                                                            .iefs
+                                                    : tables[i]
+                                                        .subItemStyle
+                                                        ?.fontSize,
                                                 fontWeight: tables[i]
                                                                 .tdStyle
                                                                 .fontWeight !=
@@ -176,9 +204,19 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                               style: theme.textTheme.bodySmall!
                                                   .copyWith(
                                                 color: baseColor,
-                                                fontSize: tables[i]
-                                                    .subItemStyle
-                                                    ?.fontSize,
+                                                fontSize: paperSize ==
+                                                            PaperSize.mm80 &&
+                                                        tables[i]
+                                                                .subItemStyle !=
+                                                            null
+                                                    ? tables[i]
+                                                            .subItemStyle!
+                                                            .fontSize! +
+                                                        AppStyleDefaultProperties
+                                                            .iefs
+                                                    : tables[i]
+                                                        .subItemStyle
+                                                        ?.fontSize,
                                                 fontWeight: tables[i]
                                                                 .tdStyle
                                                                 .fontWeight !=
@@ -203,10 +241,21 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                   ? InvoiceFormatCurrencyWidget(
                                       value: row[tables[i].field],
                                       color: baseColor,
-                                      priceFontSize:
-                                          tableSchema.tdStyle.fontSize,
-                                      currencySymbolFontSize:
-                                          tableSchema.tdStyle.fontSize! + 2,
+                                      priceFontSize: paperSize ==
+                                                  PaperSize.mm80 &&
+                                              tableSchema.tdStyle.fontSize !=
+                                                  null
+                                          ? tableSchema.tdStyle.fontSize! +
+                                              AppStyleDefaultProperties.iefs
+                                          : tableSchema.tdStyle.fontSize,
+                                      currencySymbolFontSize: paperSize ==
+                                                  PaperSize.mm80 &&
+                                              tableSchema.tdStyle.fontSize !=
+                                                  null
+                                          ? tableSchema.tdStyle.fontSize! +
+                                              2 +
+                                              AppStyleDefaultProperties.iefs
+                                          : tableSchema.tdStyle.fontSize! + 2,
                                       fontWeight:
                                           tables[i].tdStyle.fontWeight == 'bold'
                                               ? FontWeight.bold
@@ -221,7 +270,12 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                       style:
                                           theme.textTheme.bodySmall!.copyWith(
                                         color: baseColor,
-                                        fontSize: tableSchema.tdStyle.fontSize,
+                                        fontSize: paperSize == PaperSize.mm80 &&
+                                                tableSchema.tdStyle.fontSize !=
+                                                    null
+                                            ? tableSchema.tdStyle.fontSize! +
+                                                AppStyleDefaultProperties.iefs
+                                            : tableSchema.tdStyle.fontSize,
                                         fontWeight:
                                             tables[i].tdStyle.fontWeight ==
                                                     'bold'

@@ -1,5 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import 'package:provider/provider.dart';
+import '../../../providers/printer_provider.dart';
 import '../../../utils/convert_date_time.dart';
 
 class InvoiceToKitchenHeaderWidget extends StatelessWidget {
@@ -12,6 +15,8 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     return Column(
       children: [
@@ -21,8 +26,11 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
             RichText(
               text: TextSpan(
                   // text: '$prefixInvoiceHeader.date'.tr(),
-                  style: theme.textTheme.bodyLarge!
-                      .copyWith(color: baseColor, fontWeight: FontWeight.bold),
+                  style: paperSize == PaperSize.mm80
+                      ? theme.textTheme.headlineMedium!.copyWith(
+                          color: baseColor, fontWeight: FontWeight.bold)
+                      : theme.textTheme.bodyLarge!.copyWith(
+                          color: baseColor, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(
                         text: ConvertDateTime.formatTimeStampToString(
@@ -32,8 +40,11 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
             RichText(
               text: TextSpan(
                   // text: '$prefixInvoiceHeader.tableLocation'.tr(),
-                  style: theme.textTheme.bodyLarge!
-                      .copyWith(color: baseColor, fontWeight: FontWeight.bold),
+                  style: paperSize == PaperSize.mm80
+                      ? theme.textTheme.headlineMedium!.copyWith(
+                          color: baseColor, fontWeight: FontWeight.bold)
+                      : theme.textTheme.bodyLarge!.copyWith(
+                          color: baseColor, fontWeight: FontWeight.bold),
                   children: [
                     TextSpan(text: tableLocation),
                   ]),
@@ -44,12 +55,17 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
           RichText(
             text: TextSpan(
                 text: '$prefixInvoiceHeader.orderNumber'.tr(),
-                style: theme.textTheme.bodyLarge!.copyWith(color: baseColor),
+                style: paperSize == PaperSize.mm80
+                    ? theme.textTheme.headlineMedium!.copyWith(color: baseColor)
+                    : theme.textTheme.bodyLarge!.copyWith(color: baseColor),
                 children: [
                   TextSpan(
                       text: orderNum,
-                      style: theme.textTheme.bodyLarge!.copyWith(
-                          color: baseColor, fontWeight: FontWeight.bold))
+                      style: paperSize == PaperSize.mm80
+                          ? theme.textTheme.headlineMedium!
+                              .copyWith(color: baseColor)
+                          : theme.textTheme.bodyLarge!.copyWith(
+                              color: baseColor, fontWeight: FontWeight.bold))
                 ]),
           ),
       ],

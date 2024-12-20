@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
 import 'package:provider/provider.dart';
+import '../../../providers/printer_provider.dart';
+import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../models/exchange/exchange_model.dart';
 import '../../models/invoice-template/description/description_left_right_schema_model.dart';
@@ -34,6 +37,8 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
+    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     SaleProvider readSaleProvider = context.read<SaleProvider>();
     // covert data to json and set new fields customerName, timeIn, timeOut & exchangeRate
@@ -62,7 +67,11 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
                   description.label,
                   style: theme.textTheme.bodySmall!.copyWith(
                       color: baseColor,
-                      fontSize: labelStyle.fontSize,
+                      fontSize: paperSize == PaperSize.mm80 &&
+                              labelStyle.fontSize != null
+                          ? labelStyle.fontSize! +
+                              AppStyleDefaultProperties.iefs
+                          : labelStyle.fontSize,
                       fontWeight: labelStyle.fontWeight != null &&
                               labelStyle.fontWeight == 'bold'
                           ? FontWeight.bold
@@ -74,7 +83,11 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
                     description.subLabel,
                     style: theme.textTheme.bodySmall!.copyWith(
                         color: baseColor,
-                        fontSize: subLabelStyle.fontSize,
+                        fontSize: paperSize == PaperSize.mm80 &&
+                                subLabelStyle.fontSize != null
+                            ? subLabelStyle.fontSize! +
+                                AppStyleDefaultProperties.iefs
+                            : subLabelStyle.fontSize,
                         fontWeight: subLabelStyle.fontWeight != null &&
                                 subLabelStyle.fontWeight == 'bold'
                             ? FontWeight.bold
@@ -91,7 +104,11 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
                   softWrap: true,
                   style: theme.textTheme.bodySmall!.copyWith(
                       color: baseColor,
-                      fontSize: valueStyle.fontSize,
+                      fontSize: paperSize == PaperSize.mm80 &&
+                              valueStyle.fontSize != null
+                          ? valueStyle.fontSize! +
+                              AppStyleDefaultProperties.iefs
+                          : valueStyle.fontSize,
                       fontWeight: valueStyle.fontWeight != null &&
                               valueStyle.fontWeight == 'bold'
                           ? FontWeight.bold
