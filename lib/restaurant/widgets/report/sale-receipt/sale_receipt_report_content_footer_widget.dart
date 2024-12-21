@@ -61,13 +61,17 @@ class SaleReceiptReportContentFooterWidget extends StatelessWidget {
                         style: style,
                       ),
                       InvoiceFormatCurrencyWidget(
-                          baseCurrency: 'USD', value: footers[i].value.usd),
+                          currencySymbolFontSize: 14.0,
+                          baseCurrency: 'USD',
+                          value: footers[i].value.usd),
                       Text(
                         ' = ',
                         style: style,
                       ),
                       InvoiceFormatCurrencyWidget(
-                          baseCurrency: "THB", value: footers[i].value.thb)
+                          currencySymbolFontSize: 14.0,
+                          baseCurrency: "THB",
+                          value: footers[i].value.thb)
                     ],
                   ),
                 )

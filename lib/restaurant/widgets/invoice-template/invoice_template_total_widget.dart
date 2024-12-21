@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/total/total_list_schema_model.dart';
 import '../../models/invoice-template/total/total_schema_model.dart';
@@ -9,12 +7,14 @@ import '../../models/sale/invoice/print/sale_invoice_content_model.dart';
 import '../invoice/invoice_format_currency_widget.dart';
 
 class InvoiceTemplateTotalWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final TotalSchemaModel totalSchema;
   final SaleInvoiceContentModel saleInvoiceContent;
   final bool isPaid;
   final bool isRepaid;
   const InvoiceTemplateTotalWidget({
     super.key,
+    required this.paperSize,
     required this.totalSchema,
     required this.saleInvoiceContent,
     required this.isPaid,
@@ -39,8 +39,6 @@ class InvoiceTemplateTotalWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     List<TotalListSchemaModel> totals = totalSchema.list;
     return Column(

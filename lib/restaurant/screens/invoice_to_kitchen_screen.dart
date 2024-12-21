@@ -39,6 +39,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
   late PrinterProvider readPrinterProvider;
   late InvoiceProvider readInvoiceProvider;
   late Future<List<SaleDetailModel>> saleDetail;
+  late PaperSize paperSize;
 
   @override
   void initState() {
@@ -47,6 +48,20 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
     readInvoiceProvider = context.read<InvoiceProvider>();
     saleDetail = readInvoiceProvider.fetchOrderListByIds(
         invoiceId: widget.invoiceId, saleDetailIds: widget.saleDetailIds);
+    _asyncMethod();
+  }
+
+  Future<void> _asyncMethod() async {
+    // Check & set printer paper size
+    final PrinterStorage printerStorage = PrinterStorage();
+    final String printerPaperSize = await printerStorage.getPrinterPaperSize();
+    switch (printerPaperSize) {
+      case '80mm':
+        paperSize = PaperSize.mm80;
+        break;
+      default:
+        paperSize = PaperSize.mm58;
+    }
   }
 
   @override
@@ -64,18 +79,6 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
               child: Receipt(
                   backgroundColor: Colors.grey.shade200,
                   onInitialized: (controller) async {
-                    // Check & set printer paper size
-                    final PrinterStorage printerStorage = PrinterStorage();
-                    final String printerPaperSize =
-                        await printerStorage.getPrinterPaperSize();
-                    late PaperSize paperSize;
-                    switch (printerPaperSize) {
-                      case '80mm':
-                        paperSize = PaperSize.mm80;
-                        break;
-                      default:
-                        paperSize = PaperSize.mm58;
-                    }
                     controller.paperSize = paperSize;
                     readPrinterProvider.controller = controller;
                   },
@@ -88,6 +91,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
                           final List<SaleDetailModel> saleDetail =
                               snapshot.data!;
                           return InvoiceToKitchenTemplateWidget(
+                            paperSize: paperSize,
                             invoiceId: widget.invoiceId,
                             orderNum: widget.orderNum,
                             floorName: widget.floorName,

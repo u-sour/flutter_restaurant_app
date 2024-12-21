@@ -2,21 +2,22 @@ import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
-import 'package:provider/provider.dart';
 import '../../../models/select-option/select_option_model.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/sale/detail/sale_detail_model.dart';
 
 class InvoiceToKitchenTableWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final List<SaleDetailModel> saleDetail;
-  const InvoiceToKitchenTableWidget({super.key, required this.saleDetail});
+  const InvoiceToKitchenTableWidget({
+    super.key,
+    required this.paperSize,
+    required this.saleDetail,
+  });
   final String prefixDataTable = 'screens.sale.invoice.dataTable.header';
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     List<SelectOptionModel> fields = [

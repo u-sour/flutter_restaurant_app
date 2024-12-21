@@ -57,6 +57,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   late Future<InvoiceTemplateModel> invoiceTemplate;
   late Future<SaleInvoiceContentModel> saleInvoiceContent;
   final String prefixPrinterBtn = 'screens.printer.btn';
+  late PaperSize paperSize;
 
   @override
   void initState() {
@@ -77,6 +78,20 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         isTotal: widget.isTotal,
         isRepaid: widget.isRepaid,
         context: context);
+    _asyncMethod();
+  }
+
+  Future<void> _asyncMethod() async {
+    // Check & set printer paper size
+    final PrinterStorage printerStorage = PrinterStorage();
+    final String printerPaperSize = await printerStorage.getPrinterPaperSize();
+    switch (printerPaperSize) {
+      case '80mm':
+        paperSize = PaperSize.mm80;
+        break;
+      default:
+        paperSize = PaperSize.mm58;
+    }
   }
 
   @override
@@ -97,18 +112,6 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
             child: Receipt(
                 backgroundColor: Colors.grey.shade200,
                 onInitialized: (controller) async {
-                  // Check & set printer paper size
-                  final PrinterStorage printerStorage = PrinterStorage();
-                  final String printerPaperSize =
-                      await printerStorage.getPrinterPaperSize();
-                  late PaperSize paperSize;
-                  switch (printerPaperSize) {
-                    case '80mm':
-                      paperSize = PaperSize.mm80;
-                      break;
-                    default:
-                      paperSize = PaperSize.mm58;
-                  }
                   controller.paperSize = paperSize;
                   readPrinterProvider.controller = controller;
                 },
@@ -127,6 +130,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                         final SaleInvoiceContentModel saleInvoiceContent =
                             snapshot.data![1];
                         return InvoiceTemplateWidget(
+                          paperSize: paperSize,
                           ipAddress: ipAddress,
                           receiptPrint: widget.receiptPrint,
                           isRepaid: widget.isRepaid,

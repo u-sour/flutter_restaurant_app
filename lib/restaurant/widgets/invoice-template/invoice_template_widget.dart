@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
 import '../../models/invoice-template/description/description_left_right_schema_model.dart';
 import '../../models/invoice-template/invoice_paper_model.dart';
 import '../../models/invoice-template/invoice_template_model.dart';
@@ -13,6 +14,7 @@ import 'invoice_template_table_widget.dart';
 import 'invoice_template_total_widget.dart';
 
 class InvoiceTemplateWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final String ipAddress;
   final String? receiptId;
   final bool receiptPrint;
@@ -22,6 +24,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
 
   const InvoiceTemplateWidget({
     super.key,
+    required this.paperSize,
     required this.ipAddress,
     this.receiptId,
     required this.receiptPrint,
@@ -42,6 +45,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
       children: [
         // Header
         InvoiceTemplateHeaderWidget(
+          paperSize: paperSize,
           ipAddress: ipAddress,
           headerSchema: invoicePaper.headerSchema,
           sale: saleInvoiceContent.saleDoc,
@@ -59,6 +63,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
                 children: [
                   for (int i = 0; i < descriptionLeft.length; i++)
                     InvoiceTemplateDescriptionWidget(
+                      paperSize: paperSize,
                       showSubLabel: invoicePaper.descriptionSchema.showSubLabel,
                       description: descriptionLeft[i],
                       labelStyle: invoicePaper.descriptionSchema.labelStyle,
@@ -80,6 +85,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
                 children: [
                   for (int i = 0; i < descriptionRight.length; i++)
                     InvoiceTemplateDescriptionWidget(
+                      paperSize: paperSize,
                       showSubLabel: invoicePaper.descriptionSchema.showSubLabel,
                       description: descriptionRight[i],
                       labelStyle: invoicePaper.descriptionSchema.labelStyle,
@@ -98,11 +104,13 @@ class InvoiceTemplateWidget extends StatelessWidget {
         ),
         // Table
         InvoiceTemplateTableWidget(
+          paperSize: paperSize,
           tableSchema: invoicePaper.tableSchema,
           saleDetails: saleInvoiceContent.orderList,
         ),
         // Total
         InvoiceTemplateTotalWidget(
+          paperSize: paperSize,
           totalSchema: invoicePaper.totalSchema,
           saleInvoiceContent: saleInvoiceContent,
           isPaid: saleInvoiceContent.receiptDoc != null ? true : false,
@@ -110,6 +118,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
         ),
         // Signature
         InvoiceTemplateSignatureWidget(
+            paperSize: paperSize,
             signatureSchema: invoicePaper.signatureSchema),
         // QrCode
         InvoiceTemplateQrCodeWidget(
@@ -118,9 +127,9 @@ class InvoiceTemplateWidget extends StatelessWidget {
         ),
         // Footer
         InvoiceTemplateFooterWidget(
-            footerSchema: invoicePaper.footerTextSchema),
+            paperSize: paperSize, footerSchema: invoicePaper.footerTextSchema),
         // Copyright
-        const InvoiceTemplateCopyRightWidget()
+        InvoiceTemplateCopyRightWidget(paperSize: paperSize)
       ],
     );
   }

@@ -47,7 +47,7 @@ class InvoiceFormatCurrencyWidget extends StatelessWidget {
       color: color ?? theme.colorScheme.onSurface,
       fontWeight: fontWeight,
       decoration: decoration,
-      // height: defaultBaseCurrency == 'KHR' ? 0.1 : null,
+      height: defaultBaseCurrency == 'KHR' ? 0.5 : null,
     );
     return Row(
       mainAxisAlignment: mainAxisAlignment,
