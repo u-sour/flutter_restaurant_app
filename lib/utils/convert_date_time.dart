@@ -1,8 +1,8 @@
 import 'package:easy_localization/easy_localization.dart';
 
 class ConvertDateTime {
-  static String formatTimeStampToString(DateTime dateTime, bool enableTime) {
-    String formatStyle = 'dd/MM/yyyy';
+  static String formatTimeStampToString(DateTime dateTime, bool enableTime,
+      {String formatStyle = 'dd/MM/yyyy'}) {
     if (enableTime) formatStyle = 'dd/MM/yyyy hh:mm:ss a';
     return DateFormat(formatStyle).format(dateTime);
   }
