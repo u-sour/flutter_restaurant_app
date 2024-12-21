@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/table/table_list_schema_model.dart';
 import '../../models/invoice-template/table/table_schema_model.dart';
@@ -9,10 +7,12 @@ import '../../models/sale/invoice/print/sale_detail_for_print_model.dart';
 import '../invoice/invoice_format_currency_widget.dart';
 
 class InvoiceTemplateTableWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final TableSchemaModel tableSchema;
   final List<SaleDetailForPrintModel> saleDetails;
   const InvoiceTemplateTableWidget({
     super.key,
+    required this.paperSize,
     required this.tableSchema,
     required this.saleDetails,
   });
@@ -20,8 +20,6 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     // filter table list

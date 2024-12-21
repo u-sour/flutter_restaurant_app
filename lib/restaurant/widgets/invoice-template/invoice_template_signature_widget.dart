@@ -1,22 +1,19 @@
 import 'package:dotted_decoration/dotted_decoration.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/signature/signature_list_schema_model.dart';
 import '../../models/invoice-template/signature/signature_schema_model.dart';
 
 class InvoiceTemplateSignatureWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final SignatureSchemaModel signatureSchema;
   const InvoiceTemplateSignatureWidget(
-      {super.key, required this.signatureSchema});
+      {super.key, required this.paperSize, required this.signatureSchema});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     final List<SignatureListSchemaModel> signatures = signatureSchema.list;
     List<int> dotted = [1, 1];

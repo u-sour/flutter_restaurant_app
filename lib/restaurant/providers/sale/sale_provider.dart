@@ -1163,9 +1163,13 @@ class SaleProvider extends ChangeNotifier {
       try {
         if (_currentSale != null) {
           await updateOnPrintToKitchenMethod(saleId: _currentSale!.id);
-          result = const ResponseModel(
-              message: 'screens.sale.detail.alert.success.printToKitchen',
-              type: AWESOMESNACKBARTYPE.success);
+          if (context.mounted &&
+              SaleService.isModuleActive(
+                  modules: ['chef-monitor'], context: context)) {
+            result = const ResponseModel(
+                message: 'screens.sale.detail.alert.success.printToKitchen',
+                type: AWESOMESNACKBARTYPE.success);
+          }
         }
       } catch (e) {
         if (e is MeteorError) {
@@ -1219,7 +1223,10 @@ class SaleProvider extends ChangeNotifier {
                     )
                   ])),
               onAgreePressed: () async {
+                // SaleService.isModuleActive(
+                //             modules: ['chef-monitor'], context: context){
                 result = await printToKitchen(context: context);
+                // }
                 if (context.mounted) {
                   context.pop();
                   context.pushNamed(SCREENS.invoiceToKitchen.toName,

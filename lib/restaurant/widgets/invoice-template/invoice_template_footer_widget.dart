@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
-import 'package:provider/provider.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/footer/footer_text_list_schema_model.dart';
 import '../../models/invoice-template/footer/footer_text_schema_model.dart';
 
 class InvoiceTemplateFooterWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final FooterTextSchemaModel footerSchema;
-  const InvoiceTemplateFooterWidget({super.key, required this.footerSchema});
+  const InvoiceTemplateFooterWidget(
+      {super.key, required this.paperSize, required this.footerSchema});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     List<FooterTextListSchemaModel> footers = footerSchema.list;
-
     return Column(
       children: [
         for (int i = 0; i < footers.length; i++)

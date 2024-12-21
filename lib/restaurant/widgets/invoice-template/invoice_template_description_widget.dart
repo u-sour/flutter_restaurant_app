@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
 import 'package:provider/provider.dart';
-import '../../../providers/printer_provider.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../models/exchange/exchange_model.dart';
@@ -12,6 +11,7 @@ import '../../models/sale/invoice/print/sale_invoice_for_print_model.dart';
 import '../../providers/sale/sale_provider.dart';
 
 class InvoiceTemplateDescriptionWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final bool showSubLabel;
   final DescriptionLeftRightSchemaModel description;
   final LabelStyleModel labelStyle;
@@ -23,6 +23,7 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
   final bool receiptPrint;
   const InvoiceTemplateDescriptionWidget({
     super.key,
+    required this.paperSize,
     required this.showSubLabel,
     required this.description,
     required this.labelStyle,
@@ -37,8 +38,6 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final PrinterProvider readPrinterProvider = context.read<PrinterProvider>();
-    final PaperSize paperSize = readPrinterProvider.controller.paperSize;
     const Color baseColor = Colors.black;
     SaleProvider readSaleProvider = context.read<SaleProvider>();
     // covert data to json and set new fields customerName, timeIn, timeOut & exchangeRate
