@@ -34,7 +34,8 @@ class InvoiceToKitchenHeaderWidget extends StatelessWidget {
                   children: [
                     TextSpan(
                         text: ConvertDateTime.formatTimeStampToString(
-                            DateTime.now(), true))
+                            DateTime.now(), false,
+                            formatStyle: 'dd/MM/yyyy hh:mm a'))
                   ]),
             ),
             RichText(

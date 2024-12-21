@@ -44,10 +44,12 @@ class InvoiceTemplateDescriptionWidget extends StatelessWidget {
     // covert data to json and set new fields customerName, timeIn, timeOut & exchangeRate
     Map<String, dynamic> saleDoc = sale.toJson();
     saleDoc['customerName'] = saleDoc['guestName'];
-    saleDoc['timeIn'] =
-        ConvertDateTime.formatTimeStampToString(saleDoc['date'], true);
-    saleDoc['timeOut'] =
-        ConvertDateTime.formatTimeStampToString(DateTime.now(), true);
+    saleDoc['timeIn'] = ConvertDateTime.formatTimeStampToString(
+        saleDoc['date'], false,
+        formatStyle: 'dd/MM/yyyy hh:mm a');
+    saleDoc['timeOut'] = ConvertDateTime.formatTimeStampToString(
+        DateTime.now(), false,
+        formatStyle: 'dd/MM/yyyy hh:mm a');
     saleDoc['paymentBy'] = paymentBy;
     List<String> allowedCurrencies =
         readSaleProvider.getAllowedCurrencies(context: context);
