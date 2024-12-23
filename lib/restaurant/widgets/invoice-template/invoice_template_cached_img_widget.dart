@@ -21,28 +21,25 @@ class InvoiceTemplateCachedImgWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: margin,
-      child: CachedNetworkImage(
-        imageUrl: imgUrl,
-        height: height,
-        width: width,
-        maxHeightDiskCache: height.toInt(),
-        errorWidget: (context, url, error) {
-          return Text('$error');
-        },
-        imageBuilder: (context, imageProvider) {
-          return Container(
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(borderRadius ?? 0.0),
-              image: DecorationImage(
-                fit: BoxFit.cover,
-                image: imageProvider,
-              ),
+    return CachedNetworkImage(
+      imageUrl: imgUrl,
+      maxHeightDiskCache: height.toInt(),
+      errorWidget: (context, url, error) {
+        return Text('$error');
+      },
+      imageBuilder: (context, imageProvider) {
+        return Container(
+          margin: margin,
+          height: height,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(borderRadius ?? 0.0),
+            image: DecorationImage(
+              fit: BoxFit.fitHeight,
+              image: imageProvider,
             ),
-          );
-        },
-      ),
+          ),
+        );
+      },
     );
   }
 }

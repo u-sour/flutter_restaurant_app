@@ -66,6 +66,8 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                         children: [
                           // Value
                           WidgetSpan(
+                            alignment: PlaceholderAlignment.baseline,
+                            baseline: TextBaseline.alphabetic,
                             child: Container(
                               margin: EdgeInsets.only(
                                   left:
