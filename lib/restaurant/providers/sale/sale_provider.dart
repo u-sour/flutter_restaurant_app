@@ -1054,7 +1054,7 @@ class SaleProvider extends ChangeNotifier {
       );
       await updateSaleMethod(doc: doc);
       if (context.mounted) {
-        handleEnterSale(
+        await handleEnterSale(
             context: context, tableId: tableId, invoiceId: _currentSale!.id);
       }
       notifyListeners();
@@ -1313,17 +1313,19 @@ class SaleProvider extends ChangeNotifier {
                         fbMergeSaleKey.currentState!.value['saleId'];
                     final Map<String, dynamic> data =
                         await mergeSaleMethod(saleId: saleId);
-                    if (data.isNotEmpty && context.mounted) {
+                    if (data.isNotEmpty) {
                       result = ResponseModel(
                           message: '$_prefixSaleDetailAlert.success.merge',
                           type: AWESOMESNACKBARTYPE.success,
                           data: data);
-                      handleEnterSale(
-                          context: context,
-                          tableId: data['tableId'],
-                          invoiceId: data['_id']);
-                      // close modal
-                      context.pop();
+                      if (context.mounted) {
+                        // close modal
+                        context.pop();
+                        await handleEnterSale(
+                            context: context,
+                            tableId: data['tableId'],
+                            invoiceId: data['_id']);
+                      }
                     }
                   }
                 },
@@ -1370,16 +1372,18 @@ class SaleProvider extends ChangeNotifier {
                     saleId: saleId,
                     selectedSaleDetailsForOperation:
                         _selectedSaleDetailsForOperation);
-                if (data.isNotEmpty && context.mounted) {
+                if (data.isNotEmpty) {
                   result = ResponseModel(
                       message: '$_prefixSaleDetailAlert.success.transfer',
                       type: AWESOMESNACKBARTYPE.success);
-                  handleEnterSale(
-                      context: context,
-                      tableId: data['tableId'],
-                      invoiceId: data['_id']);
-                  // close modal
-                  context.pop();
+                  if (context.mounted) {
+                    // close modal
+                    context.pop();
+                    await handleEnterSale(
+                        context: context,
+                        tableId: data['tableId'],
+                        invoiceId: data['_id']);
+                  }
                 }
               }
             },
@@ -1415,16 +1419,18 @@ class SaleProvider extends ChangeNotifier {
                       tableId: tableId,
                       selectedSaleDetailsForOperation:
                           _selectedSaleDetailsForOperation);
-                  if (newInvoiceId.isNotEmpty && context.mounted) {
+                  if (newInvoiceId.isNotEmpty) {
                     result = ResponseModel(
                         message: '$_prefixSaleDetailAlert.success.split',
                         type: AWESOMESNACKBARTYPE.success);
-                    handleEnterSale(
-                        context: context,
-                        tableId: tableId,
-                        invoiceId: newInvoiceId);
-                    // close modal
-                    context.pop();
+                    if (context.mounted) {
+                      // close modal
+                      context.pop();
+                      await handleEnterSale(
+                          context: context,
+                          tableId: tableId,
+                          invoiceId: newInvoiceId);
+                    }
                   }
                 } catch (e) {
                   if (e is MeteorError) {
@@ -1462,14 +1468,15 @@ class SaleProvider extends ChangeNotifier {
                     fbCustomerCountKey.currentState!.value['numOfGuest']);
                 final String data =
                     await updateSaleCustomerCountMethod(numOfGuest: numOfGuest);
-                if (data.isNotEmpty && context.mounted) {
+                if (data.isNotEmpty) {
                   result = ResponseModel(
                       message: '$_prefixSaleDetailAlert.success.customerCount',
                       type: AWESOMESNACKBARTYPE.success,
                       data: data);
-
-                  // close modal
-                  context.pop();
+                  if (context.mounted) {
+                    // close modal
+                    context.pop();
+                  }
                 }
               }
             },
@@ -1526,7 +1533,7 @@ class SaleProvider extends ChangeNotifier {
                                 '$_prefixSaleDetailAlert.success.cancelAndCopy',
                             type: AWESOMESNACKBARTYPE.success);
                         // go to sale
-                        handleEnterSale(
+                        await handleEnterSale(
                             context: context,
                             tableId: _tableId,
                             invoiceId: newInvoiceId);
@@ -1551,7 +1558,7 @@ class SaleProvider extends ChangeNotifier {
                               '$_prefixSaleDetailAlert.success.cancelAndCopy',
                           type: AWESOMESNACKBARTYPE.success);
                       // go to sale
-                      handleEnterSale(
+                      await handleEnterSale(
                           context: context,
                           tableId: _tableId,
                           invoiceId: newInvoiceId);
