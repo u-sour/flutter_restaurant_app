@@ -76,6 +76,16 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
             } else if (snapshot.hasData) {
               final List<SelectOptionModel> departmentOptions =
                   snapshot.data?[0] ?? [];
+              List<SelectOptionModel> initDepartment = [
+                departmentOptions.first
+              ];
+              if (readAppProvider.selectedDepartment != null) {
+                initDepartment = [
+                  SelectOptionModel(
+                      label: readAppProvider.selectedDepartment!.name,
+                      value: readAppProvider.selectedDepartment!.id)
+                ];
+              }
               final List<SelectOptionModel> categoryOptions =
                   snapshot.data?[1] ?? [];
               final List<SelectOptionModel> employeeOptions =
@@ -112,7 +122,7 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
-                        initialValue: [departmentOptions.first],
+                        initialValue: initDepartment,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),

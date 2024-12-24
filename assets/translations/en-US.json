@@ -382,8 +382,8 @@
                 "customer": "CUSTOMER",
                 "status": "STATUS",
                 "subTotal": "SUB TOTAL",
-                "discountRate": "DISCOUNT RATE",
-                "discountAmount": "DISCOUNT AMOUNT",
+                "discountRate": "DIS. RATE",
+                "discountAmount": "DIS. AMOUNT",
                 "total": "TOTAL"
               },
               "summaryHeader": {
@@ -435,8 +435,8 @@
                 "department": "DEPARTMENT",
                 "employee": "EMPLOYEE",
                 "price": "PRICE",
-                "qty": "QUANTITY",
-                "discount": "DISCOUNT",
+                "qty": "QTY",
+                "discount": "DIS.",
                 "amount": "TOTAL"
               },
               "footer": {

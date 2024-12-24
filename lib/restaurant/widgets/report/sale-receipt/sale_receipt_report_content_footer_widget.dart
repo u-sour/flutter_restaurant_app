@@ -48,7 +48,7 @@ class SaleReceiptReportContentFooterWidget extends StatelessWidget {
                 )),
                 const SizedBox(width: AppStyleDefaultProperties.w),
                 SizedBox(
-                  width: 200.0,
+                  width: 245.0,
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [

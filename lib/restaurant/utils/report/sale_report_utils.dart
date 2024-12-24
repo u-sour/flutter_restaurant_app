@@ -81,8 +81,10 @@ extension SaleReportDTRowTypeExtension on SaleReportDTRowType {
     switch (this) {
       case SaleReportDTRowType.no:
         return 48.0;
-      case SaleReportDTRowType.date:
+      case SaleReportDTRowType.location:
         return 165.0;
+      case SaleReportDTRowType.date:
+        return 180.0;
       default:
         return 125.0;
     }

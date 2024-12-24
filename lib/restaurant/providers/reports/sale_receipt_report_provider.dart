@@ -59,7 +59,11 @@ class SaleReceiptReportProvider extends ChangeNotifier {
           value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
       OptionModel(
           label: SaleReceiptReportFilterType.departments.toTitle,
-          value: [departments[0].label]),
+          value: [
+            readAppProvider.selectedDepartment != null
+                ? readAppProvider.selectedDepartment!.name
+                : departments[0].label
+          ]),
       OptionModel(
           label: SaleReceiptReportFilterType.paymentBy.toTitle,
           value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
