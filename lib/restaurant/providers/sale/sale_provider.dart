@@ -852,8 +852,6 @@ class SaleProvider extends ChangeNotifier {
       String? tableId,
       String? invoiceId,
       bool fastSale = false}) async {
-    AppProvider readAppProvider = context.read<AppProvider>();
-
     Map<String, dynamic> query = {'fastSale': '$fastSale'};
     if (tableId != null) {
       query['table'] = tableId;
@@ -861,20 +859,10 @@ class SaleProvider extends ChangeNotifier {
     if (invoiceId != null) {
       query['id'] = invoiceId;
     }
-    if (!readAppProvider.isExchangeRateExist ||
-        !readAppProvider.isProductExist ||
-        readAppProvider.departments.isEmpty) {
-      const ResponseModel result = ResponseModel(
-          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
-          type: AWESOMESNACKBARTYPE.info);
-      final SnackBar snackBar =
-          Alert.awesomeSnackBar(message: result.message, type: result.type);
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
-    } else {
-      if (fastSale) {
+    final bool isDataEnoughToEnterSale =
+        await SaleService.isDataEnoughToEnterSale(context: context);
+    if (isDataEnoughToEnterSale) {
+      if (fastSale && context.mounted) {
         final String depId = context.read<AppProvider>().selectedDepartment!.id;
         Map<String, dynamic> selector = {'depId': depId};
         try {
@@ -899,6 +887,16 @@ class SaleProvider extends ChangeNotifier {
       if (context.mounted) {
         context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
       }
+    } else {
+      const ResponseModel result = ResponseModel(
+          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: AWESOMESNACKBARTYPE.info);
+      final SnackBar snackBar =
+          Alert.awesomeSnackBar(message: result.message, type: result.type);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
     }
   }
 

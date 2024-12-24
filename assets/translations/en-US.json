@@ -262,7 +262,7 @@
           "total": "Total : "
         },
         "alert": {
-          "dataNotEnoughToEnterSale": "Data not enough, make sure data [department,exchange rate,product] exists.",
+          "dataNotEnoughToEnterSale": "Sorry, data not enough to enter sale.",
           "success": {
             "merge": "Merge invoice success.",
             "transfer": "Transfer items success.",
