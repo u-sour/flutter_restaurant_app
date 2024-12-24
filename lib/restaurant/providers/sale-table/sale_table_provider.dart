@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_template/restaurant/services/sale_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/servers/response_model.dart';
@@ -189,32 +190,34 @@ class SaleTableProvider with ChangeNotifier {
     return toModelList;
   }
 
-  ResponseModel? enterSale(
-      {required TableModel table, required BuildContext context}) {
-    AppProvider readAppProvider = context.read<AppProvider>();
+  Future<ResponseModel?> enterSale(
+      {required TableModel table, required BuildContext context}) async {
     // Note: user អាចចូល `form លក់` ពេល:
     // data គ្រប់គ្រាន់ ដូចជា `exchange rate, product, department`
     // បើ user role == `insert-invoice`
     // user role == `cashier` || `tablet-orders` អាចចូលបានបើ `table status == 'busy' || 'close'` នៅក្នុងតុនឹង
     ResponseModel? result;
+    final bool isDataEnoughToEnterSale =
+        await SaleService.isDataEnoughToEnterSale(context: context);
     bool allowEnterSale =
         UserService.userInRole(roles: ['cashier', 'tablet-orders']) &&
                 table.status == 'closed' ||
             table.status == 'busy';
-    if (!readAppProvider.isExchangeRateExist ||
-        !readAppProvider.isProductExist ||
-        readAppProvider.departments.isEmpty) {
-      result = const ResponseModel(
-          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
-          type: AWESOMESNACKBARTYPE.info);
-    } else {
+
+    if (isDataEnoughToEnterSale) {
       if (UserService.userInRole(roles: ['insert-invoice']) || allowEnterSale) {
-        context.goNamed(SCREENS.sale.toName,
-            queryParameters: {'table': table.id, 'fastSale': 'false'});
+        if (context.mounted) {
+          context.goNamed(SCREENS.sale.toName,
+              queryParameters: {'table': table.id, 'fastSale': 'false'});
+        }
       } else {
         result = const ResponseModel(
             message: 'permissionDenied', type: AWESOMESNACKBARTYPE.info);
       }
+    } else {
+      result = const ResponseModel(
+          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: AWESOMESNACKBARTYPE.info);
     }
     return result;
   }

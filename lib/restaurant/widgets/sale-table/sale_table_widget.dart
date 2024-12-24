@@ -56,7 +56,7 @@ class SaleTableWidget extends StatelessWidget {
                   name: table.name,
                   status: table.status ?? '',
                   onTap: () async {
-                    final result = saleTableProvider.enterSale(
+                    final result = await saleTableProvider.enterSale(
                         table: table, context: context);
                     if (result != null) {
                       final SnackBar snackBar = Alert.awesomeSnackBar(
