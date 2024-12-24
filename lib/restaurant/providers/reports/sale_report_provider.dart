@@ -67,9 +67,11 @@ class SaleReportProvider extends ChangeNotifier {
       OptionModel(
           label: SaleReportFilterType.employees.toTitle,
           value: ['$_prefixFormBuilderInputDecoration.selectAll'.tr()]),
-      OptionModel(
-          label: SaleReportFilterType.departments.toTitle,
-          value: [departments[0].label]),
+      OptionModel(label: SaleReportFilterType.departments.toTitle, value: [
+        readAppProvider.selectedDepartment != null
+            ? readAppProvider.selectedDepartment!.name
+            : departments[0].label
+      ]),
       OptionModel(label: SaleReportFilterType.status.toTitle, value: [
         ReportService.statusOptions[1].label,
         ReportService.statusOptions[2].label

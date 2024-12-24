@@ -82,11 +82,15 @@ extension SaleReceiptReportDTRowTypeExtension on SaleReceiptReportDTRowType {
       case SaleReceiptReportDTRowType.no:
         return 48.0;
       case SaleReceiptReportDTRowType.date:
-        return 165.0;
+        return 180.0;
       case SaleReceiptReportDTRowType.status:
-        return 65.0;
+        return 80.0;
       case SaleReceiptReportDTRowType.paymentBy:
-        return 100.0;
+        return 125.0;
+      case SaleReceiptReportDTRowType.openAmount:
+        return 145.0;
+      case SaleReceiptReportDTRowType.receiveAmount:
+        return 180.0;
       default:
         return 125.0;
     }

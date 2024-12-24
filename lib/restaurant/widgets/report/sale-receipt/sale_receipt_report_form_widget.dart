@@ -87,6 +87,16 @@ class _SaleReceiptReportFormWidgetState
                   snapshot.data?[1] ?? [];
               final List<SelectOptionModel> departmentOptions =
                   snapshot.data?[2] ?? [];
+              List<SelectOptionModel> initDepartment = [
+                departmentOptions.first
+              ];
+              if (readAppProvider.selectedDepartment != null) {
+                initDepartment = [
+                  SelectOptionModel(
+                      label: readAppProvider.selectedDepartment!.name,
+                      value: readAppProvider.selectedDepartment!.id)
+                ];
+              }
               final List<SelectOptionModel> paymentByOptions =
                   snapshot.data?[3] ?? [];
               return DynamicHeightGridView(
@@ -157,7 +167,7 @@ class _SaleReceiptReportFormWidgetState
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
-                        initialValue: [departmentOptions.first],
+                        initialValue: initDepartment,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),

@@ -90,6 +90,16 @@ class _SaleDetailReportFormWidgetState
                   snapshot.data?[2] ?? [];
               final List<SelectOptionModel> departmentOptions =
                   snapshot.data?[3] ?? [];
+              List<SelectOptionModel> initDepartment = [
+                departmentOptions.first
+              ];
+              if (readAppProvider.selectedDepartment != null) {
+                initDepartment = [
+                  SelectOptionModel(
+                      label: readAppProvider.selectedDepartment!.name,
+                      value: readAppProvider.selectedDepartment!.id)
+                ];
+              }
               return DynamicHeightGridView(
                 itemCount: 8,
                 crossAxisCount: ResponsiveLayout.isMobile(context) ? 1 : 2,
@@ -198,7 +208,7 @@ class _SaleDetailReportFormWidgetState
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
-                        initialValue: [departmentOptions.first],
+                        initialValue: initDepartment,
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: FormBuilderValidators.compose([
                           FormBuilderValidators.required(),
