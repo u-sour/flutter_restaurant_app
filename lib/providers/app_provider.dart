@@ -55,18 +55,6 @@ class AppProvider extends ChangeNotifier {
   DepartmentModel? _selectedDepartment;
   DepartmentModel? get selectedDepartment => _selectedDepartment;
 
-  // Exchange rate Subscription
-  late SubscriptionHandler? _subExchangeRateHandler;
-  SubscriptionHandler? get subExchangeRateHandler => _subExchangeRateHandler;
-  bool _isExchangeRateExist = false;
-  bool get isExchangeRateExist => _isExchangeRateExist;
-
-  // Product Subscription
-  late SubscriptionHandler? _subProductHandler;
-  SubscriptionHandler? get subProductHandler => _subProductHandler;
-  bool _isProductExist = false;
-  bool get isProductExist => _isProductExist;
-
   late final SharedPreferences sharedPreferences;
   // final StreamController<bool> _loginStateChange =
   //     StreamController<bool>.broadcast();
@@ -125,7 +113,6 @@ class AppProvider extends ChangeNotifier {
             startSubscribeBranch(currentUser!);
             startSubscribeSaleSettings();
             startSubscribeDepartment();
-            startSubscribeExchangeRate();
             notifyListeners();
           }
         });
@@ -172,25 +159,29 @@ class AppProvider extends ChangeNotifier {
   void startSubscribeModule() {
     // Keep listening to sale setting collection from server
     final debounce = Debounce(delay: const Duration(milliseconds: 500));
-    _subSaleSettingsHandler = meteor.subscribe('app.module', onReady: () {
+    _subSaleSettingsHandler =
+        meteor.subscribe('app.module', args: [], onReady: () {
       meteor.collection('app_modules').listen((result) {
         //  call method only 1 time when module data updated
         debounce.run(() {
-          getAllowModules();
+          //   getAllowModules();
+          _allowModules =
+              result.values.toList().map((e) => e['name'].toString()).toList();
+          notifyListeners();
         });
       });
     });
   }
 
-  void getAllowModules() async {
-    Map<String, dynamic> selector = {'active': true};
-    List<dynamic> result = await meteor.call('app.findModules', args: [
-      {'selector': selector}
-    ]);
-    // loop and get only field name
-    _allowModules = result.map((e) => e['name'].toString()).toList();
-    notifyListeners();
-  }
+  // void getAllowModules() async {
+  //   Map<String, dynamic> selector = {'active': true};
+  //   List<dynamic> result = await meteor.call('app.findModules', args: [
+  //     {'selector': selector}
+  //   ]);
+  //   // loop and get only field name
+  //   _allowModules = result.map((e) => e['name'].toString()).toList();
+  //   notifyListeners();
+  // }
 
   void startSubscribeSaleSettings() {
     // Keep listening to sale setting collection from server
@@ -277,8 +268,11 @@ class AppProvider extends ChangeNotifier {
   void getDepartment(
       {required UserModel currentUser, required String branchId}) async {
     Map<String, dynamic> selector = {};
-    // check current user is role 'super'
-    if (UserService.userInRole(roles: 'super', overpower: false)) {
+    Map<String, dynamic> options = {
+      'sort': {'createdAt': 1}
+    };
+    // check current user is role 'super' & 'admin'
+    if (UserService.userInRole(roles: ['super', 'admin'])) {
       selector['branchId'] = branchId;
     } else {
       List<dynamic> depIds = currentUser.profile.depIds;
@@ -286,7 +280,7 @@ class AppProvider extends ChangeNotifier {
       selector['_id'] = {'\$in': depIds};
     }
     List<dynamic> result = await meteor.call('rest.findDepartments', args: [
-      {'selector': selector}
+      {'selector': selector, 'options': options}
     ]);
     List<DepartmentModel> toListModel =
         result.map((d) => DepartmentModel.fromJson(d)).toList();
@@ -294,57 +288,13 @@ class AppProvider extends ChangeNotifier {
     _departments = toListModel;
     if (_departments.isNotEmpty) {
       // set selected department
-      _selectedDepartment = _departments.last;
+      _selectedDepartment = _departments.first;
     }
     notifyListeners();
   }
 
   void setDepartment({required DepartmentModel department}) {
     _selectedDepartment = department;
-    _subDepartmentHandler!.stop();
-    startSubscribeProduct(branchId: _selectedBranch!.id, depId: department.id);
     notifyListeners();
-  }
-
-  void startSubscribeExchangeRate() {
-    // Keep listening to exchange collection from server
-    final debounce = Debounce(delay: const Duration(milliseconds: 500));
-    Map<String, dynamic> selector = {};
-    Map<String, dynamic> options = {'limit': 1};
-    // subscribe department
-    _subDepartmentHandler = meteor
-        .subscribe('app.exchanges', args: [selector, options], onReady: () {
-      meteor.collection('exchanges').listen((result) {
-        //  run only 1 time when exchange rate data updated
-        debounce.run(() {
-          result.isNotEmpty
-              ? _isExchangeRateExist = true
-              : _isExchangeRateExist = false;
-          notifyListeners();
-        });
-      });
-    });
-  }
-
-  void startSubscribeProduct(
-      {required String branchId, required String depId}) {
-    // Keep listening to product collection from server
-    Map<String, dynamic> selector = {
-      'branchId': branchId,
-      'departments.depId': depId,
-      'type': {
-        '\$in': ['Product', 'Dish', 'Catalog', 'Service']
-      },
-      'status': 'Active',
-    };
-    Map<String, dynamic> options = {'limit': 1};
-    // subscribe department
-    _subDepartmentHandler = meteor
-        .subscribe('rest.product', args: [selector, options], onReady: () {
-      meteor.collection('rest_products').listen((result) {
-        result.isNotEmpty ? _isProductExist = true : _isProductExist = false;
-        notifyListeners();
-      });
-    });
   }
 }

@@ -16,7 +16,7 @@ UserProfileModel _$UserProfileModelFromJson(Map<String, dynamic> json) =>
       roles: (json['roles'] as List<dynamic>).map((e) => e as String).toList(),
       depIds:
           (json['depIds'] as List<dynamic>).map((e) => e as String).toList(),
-      profilePic: json['profilePic'] as String,
+      profilePic: json['profilePic'] as String?,
       status: json['status'] as String,
     );
 

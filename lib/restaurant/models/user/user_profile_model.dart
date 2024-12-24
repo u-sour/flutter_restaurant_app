@@ -8,7 +8,7 @@ class UserProfileModel {
   final String roleGroup;
   final List<String> roles;
   final List<String> depIds;
-  final String profilePic;
+  final String? profilePic;
   final String status;
 
   const UserProfileModel({
@@ -17,7 +17,7 @@ class UserProfileModel {
     required this.roleGroup,
     required this.roles,
     required this.depIds,
-    required this.profilePic,
+    this.profilePic,
     required this.status,
   });
 
