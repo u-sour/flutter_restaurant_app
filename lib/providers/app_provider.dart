@@ -50,13 +50,22 @@ class AppProvider extends ChangeNotifier {
   // Department Subscription
   late SubscriptionHandler? _subDepartmentHandler;
   SubscriptionHandler? get subDepartmentHandler => _subDepartmentHandler;
-  late StreamSubscription<Map<String, dynamic>> _departmentListener;
-  StreamSubscription<Map<String, dynamic>> get departmentListener =>
-      _departmentListener;
   List<DepartmentModel> _departments = [];
   List<DepartmentModel> get departments => _departments;
   DepartmentModel? _selectedDepartment;
   DepartmentModel? get selectedDepartment => _selectedDepartment;
+
+  // Exchange rate Subscription
+  late SubscriptionHandler? _subExchangeRateHandler;
+  SubscriptionHandler? get subExchangeRateHandler => _subExchangeRateHandler;
+  bool _isExchangeRateExist = false;
+  bool get isExchangeRateExist => _isExchangeRateExist;
+
+  // Product Subscription
+  late SubscriptionHandler? _subProductHandler;
+  SubscriptionHandler? get subProductHandler => _subProductHandler;
+  bool _isProductExist = false;
+  bool get isProductExist => _isProductExist;
 
   late final SharedPreferences sharedPreferences;
   // final StreamController<bool> _loginStateChange =
@@ -97,7 +106,7 @@ class AppProvider extends ChangeNotifier {
     _onboarding = sharedPreferences.getBool(ONBOARD_KEY) ?? false;
     // This is just to demonstrate the splash screen is working.
     // In real-life applications, it is not recommended to interrupt the user experience by doing such things.
-    await Future.delayed(const Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 1));
     _initialized = true;
     notifyListeners();
   }
@@ -116,6 +125,7 @@ class AppProvider extends ChangeNotifier {
             startSubscribeBranch(currentUser!);
             startSubscribeSaleSettings();
             startSubscribeDepartment();
+            startSubscribeExchangeRate();
             notifyListeners();
           }
         });
@@ -161,7 +171,7 @@ class AppProvider extends ChangeNotifier {
 
   void startSubscribeModule() {
     // Keep listening to sale setting collection from server
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
     _subSaleSettingsHandler = meteor.subscribe('app.module', onReady: () {
       meteor.collection('app_modules').listen((result) {
         //  call method only 1 time when module data updated
@@ -184,7 +194,7 @@ class AppProvider extends ChangeNotifier {
 
   void startSubscribeSaleSettings() {
     // Keep listening to sale setting collection from server
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
     _subSaleSettingsHandler = meteor.subscribe('saleSetting', onReady: () {
       meteor.collection('rest_saleSettings').listen((result) {
         if (result.isNotEmpty && _selectedBranch != null) {
@@ -247,7 +257,7 @@ class AppProvider extends ChangeNotifier {
 
   void startSubscribeDepartment() {
     // Keep listening to branch collection from server
-    final debounce = Debounce(delay: const Duration(milliseconds: 800));
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
     // subscribe department
     _subDepartmentHandler = meteor.subscribe('rest.department', onReady: () {
       meteor.collection('rest_departments').listen((result) {
@@ -284,13 +294,57 @@ class AppProvider extends ChangeNotifier {
     _departments = toListModel;
     if (_departments.isNotEmpty) {
       // set selected department
-      _selectedDepartment = _departments.first;
+      _selectedDepartment = _departments.last;
     }
     notifyListeners();
   }
 
   void setDepartment({required DepartmentModel department}) {
     _selectedDepartment = department;
+    _subDepartmentHandler!.stop();
+    startSubscribeProduct(branchId: _selectedBranch!.id, depId: department.id);
     notifyListeners();
+  }
+
+  void startSubscribeExchangeRate() {
+    // Keep listening to exchange collection from server
+    final debounce = Debounce(delay: const Duration(milliseconds: 500));
+    Map<String, dynamic> selector = {};
+    Map<String, dynamic> options = {'limit': 1};
+    // subscribe department
+    _subDepartmentHandler = meteor
+        .subscribe('app.exchanges', args: [selector, options], onReady: () {
+      meteor.collection('exchanges').listen((result) {
+        //  run only 1 time when exchange rate data updated
+        debounce.run(() {
+          result.isNotEmpty
+              ? _isExchangeRateExist = true
+              : _isExchangeRateExist = false;
+          notifyListeners();
+        });
+      });
+    });
+  }
+
+  void startSubscribeProduct(
+      {required String branchId, required String depId}) {
+    // Keep listening to product collection from server
+    Map<String, dynamic> selector = {
+      'branchId': branchId,
+      'departments.depId': depId,
+      'type': {
+        '\$in': ['Product', 'Dish', 'Catalog', 'Service']
+      },
+      'status': 'Active',
+    };
+    Map<String, dynamic> options = {'limit': 1};
+    // subscribe department
+    _subDepartmentHandler = meteor
+        .subscribe('rest.product', args: [selector, options], onReady: () {
+      meteor.collection('rest_products').listen((result) {
+        result.isNotEmpty ? _isProductExist = true : _isProductExist = false;
+        notifyListeners();
+      });
+    });
   }
 }

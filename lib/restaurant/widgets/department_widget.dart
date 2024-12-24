@@ -13,8 +13,8 @@ class DepartmentWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final AppProvider readAppProvider = context.read<AppProvider>();
-    bool isDepartmentModule = SaleService.isModuleActive(
-        modules: ['department'], overpower: false, context: context);
+    bool isDepartmentModule =
+        SaleService.isModuleActive(modules: ['department'], context: context);
     return isDepartmentModule
         ? Selector<AppProvider, List<DepartmentModel>>(
             selector: (context, state) => state.departments,
