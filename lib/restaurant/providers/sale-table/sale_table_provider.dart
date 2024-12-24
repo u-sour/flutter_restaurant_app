@@ -191,7 +191,9 @@ class SaleTableProvider with ChangeNotifier {
 
   ResponseModel? enterSale(
       {required TableModel table, required BuildContext context}) {
+    AppProvider readAppProvider = context.read<AppProvider>();
     // Note: user អាចចូល `form លក់` ពេល:
+    // data គ្រប់គ្រាន់ ដូចជា `exchange rate, product, department`
     // បើ user role == `insert-invoice`
     // user role == `cashier` || `tablet-orders` អាចចូលបានបើ `table status == 'busy' || 'close'` នៅក្នុងតុនឹង
     ResponseModel? result;
@@ -199,12 +201,20 @@ class SaleTableProvider with ChangeNotifier {
         UserService.userInRole(roles: ['cashier', 'tablet-orders']) &&
                 table.status == 'closed' ||
             table.status == 'busy';
-    if (UserService.userInRole(roles: ['insert-invoice']) || allowEnterSale) {
-      context.goNamed(SCREENS.sale.toName,
-          queryParameters: {'table': table.id, 'fastSale': 'false'});
-    } else {
+    if (!readAppProvider.isExchangeRateExist ||
+        !readAppProvider.isProductExist ||
+        readAppProvider.departments.isEmpty) {
       result = const ResponseModel(
-          message: 'permissionDenied', type: AWESOMESNACKBARTYPE.info);
+          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: AWESOMESNACKBARTYPE.info);
+    } else {
+      if (UserService.userInRole(roles: ['insert-invoice']) || allowEnterSale) {
+        context.goNamed(SCREENS.sale.toName,
+            queryParameters: {'table': table.id, 'fastSale': 'false'});
+      } else {
+        result = const ResponseModel(
+            message: 'permissionDenied', type: AWESOMESNACKBARTYPE.info);
+      }
     }
     return result;
   }

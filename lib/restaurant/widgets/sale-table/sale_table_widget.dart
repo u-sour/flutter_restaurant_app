@@ -59,8 +59,7 @@ class SaleTableWidget extends StatelessWidget {
                     final result = saleTableProvider.enterSale(
                         table: table, context: context);
                     if (result != null) {
-                      late SnackBar snackBar;
-                      snackBar = Alert.awesomeSnackBar(
+                      final SnackBar snackBar = Alert.awesomeSnackBar(
                           message: result.message, type: result.type);
                       if (!context.mounted) return;
                       ScaffoldMessenger.of(context)
