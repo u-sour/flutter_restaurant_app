@@ -14,6 +14,7 @@ import '../../../router/route_utils.dart';
 import '../../../storages/connection_storage.dart';
 import '../../../screens/app_screen.dart';
 import '../../../services/global_service.dart';
+import '../../../utils/alert/alert.dart';
 import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../../widgets/confirm_dialog_widget.dart';
@@ -851,6 +852,8 @@ class SaleProvider extends ChangeNotifier {
       String? tableId,
       String? invoiceId,
       bool fastSale = false}) async {
+    AppProvider readAppProvider = context.read<AppProvider>();
+
     Map<String, dynamic> query = {'fastSale': '$fastSale'};
     if (tableId != null) {
       query['table'] = tableId;
@@ -858,30 +861,44 @@ class SaleProvider extends ChangeNotifier {
     if (invoiceId != null) {
       query['id'] = invoiceId;
     }
-    if (fastSale) {
-      final String depId = context.read<AppProvider>().selectedDepartment!.id;
-      Map<String, dynamic> selector = {'depId': depId};
-      try {
-        final String freeTableId =
-            await meteor.call('rest.findFreeTable', args: [selector]);
-        if (freeTableId.isNotEmpty) {
-          query['table'] = freeTableId;
-          query['fastSale'] = 'false';
-        } else {
-          if (context.mounted) {
-            Map<String, dynamic> randomTable = await context
-                .read<DashboardProvider>()
-                .fetchOneTable(branchId: _branchId);
-            query['table'] = randomTable['_id'];
-            query['fastSale'] = 'true';
+    if (!readAppProvider.isExchangeRateExist ||
+        !readAppProvider.isProductExist ||
+        readAppProvider.departments.isEmpty) {
+      const ResponseModel result = ResponseModel(
+          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: AWESOMESNACKBARTYPE.info);
+      final SnackBar snackBar =
+          Alert.awesomeSnackBar(message: result.message, type: result.type);
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context)
+        ..hideCurrentSnackBar()
+        ..showSnackBar(snackBar);
+    } else {
+      if (fastSale) {
+        final String depId = context.read<AppProvider>().selectedDepartment!.id;
+        Map<String, dynamic> selector = {'depId': depId};
+        try {
+          final String freeTableId =
+              await meteor.call('rest.findFreeTable', args: [selector]);
+          if (freeTableId.isNotEmpty) {
+            query['table'] = freeTableId;
+            query['fastSale'] = 'false';
+          } else {
+            if (context.mounted) {
+              Map<String, dynamic> randomTable = await context
+                  .read<DashboardProvider>()
+                  .fetchOneTable(branchId: _branchId);
+              query['table'] = randomTable['_id'];
+              query['fastSale'] = 'true';
+            }
           }
+        } catch (e) {
+          rethrow;
         }
-      } catch (e) {
-        rethrow;
       }
-    }
-    if (context.mounted) {
-      context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
+      if (context.mounted) {
+        context.replaceNamed(SCREENS.sale.toName, queryParameters: query);
+      }
     }
   }
 
