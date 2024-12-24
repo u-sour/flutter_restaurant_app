@@ -56,7 +56,11 @@ class SaleDetailProfitAndLossByItemReportProvider extends ChangeNotifier {
       OptionModel(
           label:
               SaleDetailProfitAndLossByItemReportFilterType.departments.toTitle,
-          value: [departments[0].label]),
+          value: [
+            readAppProvider.selectedDepartment != null
+                ? readAppProvider.selectedDepartment!.name
+                : departments[0].label
+          ]),
     ];
     return _filters;
   }

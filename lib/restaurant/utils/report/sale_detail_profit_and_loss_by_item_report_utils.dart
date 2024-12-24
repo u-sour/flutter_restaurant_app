@@ -74,7 +74,7 @@ extension SaleDetailProfitAndLossByItemReportDTRowTypeExtension
       case SaleDetailProfitAndLossByItemReportDTRowType.itemName:
         return 200.0;
       case SaleDetailProfitAndLossByItemReportDTRowType.date:
-        return 165.0;
+        return 180.0;
       case SaleDetailProfitAndLossByItemReportDTRowType.totalQty:
         return 80.0;
       default:

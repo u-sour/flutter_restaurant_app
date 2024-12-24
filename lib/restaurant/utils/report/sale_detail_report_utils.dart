@@ -77,8 +77,10 @@ extension SaleDetailReportDTRowTypeExtension on SaleDetailReportDTRowType {
         return 48.0;
       case SaleDetailReportDTRowType.itemName:
         return 200.0;
+      case SaleDetailReportDTRowType.invoice:
+        return 200.0;
       case SaleDetailReportDTRowType.date:
-        return 165.0;
+        return 180.0;
       case SaleDetailReportDTRowType.qty:
       case SaleDetailReportDTRowType.discountRate:
         return 80.0;
