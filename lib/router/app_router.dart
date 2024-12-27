@@ -193,7 +193,6 @@ class AppRouter {
             final String? invoiceId = queryRouter['id'];
             final String table = queryRouter['table'];
             final bool fastSale = queryRouter['fastSale']! == 'true';
-
             return SaleScreen(
               // Note: same route and refresh that route
               key: UniqueKey(),

@@ -67,6 +67,8 @@ class SaleProvider extends ChangeNotifier {
   bool? get isSkipTable => _isSkipTable;
   bool _isLoading = false;
   bool get isLoading => _isLoading;
+  bool _isSaleDetailLoading = false;
+  bool get isSaleDetailLoading => _isSaleDetailLoading;
 
   // sales
   late String _activeSaleInvoiceId;
@@ -351,10 +353,10 @@ class SaleProvider extends ChangeNotifier {
               ConvertDateTime.formatTimeStampToString(_currentSale!.date, true),
         );
       }
-
+      _isSaleDetailLoading = true;
       // set current sale detail by _activeSaleInvoiceId
-      _previousSaleDetails = await fetchSaleDetails();
       _saleDetails = await fetchSaleDetails();
+      _isSaleDetailLoading = false;
     }
     notifyListeners();
   }
