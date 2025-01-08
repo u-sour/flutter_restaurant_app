@@ -34,30 +34,22 @@ SaleInvoiceActionModel _$SaleInvoiceActionModelFromJson(
 }
 
 Map<String, dynamic> _$SaleInvoiceActionModelToJson(
-    SaleInvoiceActionModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('_id', instance.id);
-  val['date'] = DateModelConverter.convertDateTimeForModel(instance.date);
-  val['type'] = instance.type;
-  val['status'] = instance.status;
-  val['statusDate'] = instance.statusDate.toJson();
-  val['discountRate'] = instance.discountRate;
-  val['discountValue'] = instance.discountValue;
-  val['total'] = instance.total;
-  val['totalReceived'] = instance.totalReceived;
-  val['tableId'] = instance.tableId;
-  val['depId'] = instance.depId;
-  val['employeeId'] = instance.employeeId;
-  val['guestId'] = instance.guestId;
-  val['numOfGuest'] = instance.numOfGuest;
-  val['billed'] = instance.billed;
-  val['branchId'] = instance.branchId;
-  return val;
-}
+        SaleInvoiceActionModel instance) =>
+    <String, dynamic>{
+      if (instance.id case final value?) '_id': value,
+      'date': DateModelConverter.convertDateTimeForModel(instance.date),
+      'type': instance.type,
+      'status': instance.status,
+      'statusDate': instance.statusDate.toJson(),
+      'discountRate': instance.discountRate,
+      'discountValue': instance.discountValue,
+      'total': instance.total,
+      'totalReceived': instance.totalReceived,
+      'tableId': instance.tableId,
+      'depId': instance.depId,
+      'employeeId': instance.employeeId,
+      'guestId': instance.guestId,
+      'numOfGuest': instance.numOfGuest,
+      'billed': instance.billed,
+      'branchId': instance.branchId,
+    };

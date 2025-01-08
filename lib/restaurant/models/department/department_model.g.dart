@@ -37,27 +37,20 @@ DepartmentModel _$DepartmentModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$DepartmentModelToJson(DepartmentModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'branchId': instance.branchId,
-    'name': instance.name,
-    'isolateInvoice': instance.isolateInvoice,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('printerForBill', instance.printerForBill);
-  writeNotNull('printerForPayment', instance.printerForPayment);
-  val['telephone'] = instance.telephone;
-  val['createdAt'] =
-      DateModelConverter.convertDateTimeForModel(instance.createdAt);
-  writeNotNull('updatedAt',
-      DateModelConverter.convertDateTimeOptionalForModel(instance.updatedAt));
-  writeNotNull('updatedBy', instance.updatedBy);
-  return val;
-}
+Map<String, dynamic> _$DepartmentModelToJson(DepartmentModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'branchId': instance.branchId,
+      'name': instance.name,
+      'isolateInvoice': instance.isolateInvoice,
+      if (instance.printerForBill case final value?) 'printerForBill': value,
+      if (instance.printerForPayment case final value?)
+        'printerForPayment': value,
+      'telephone': instance.telephone,
+      'createdAt':
+          DateModelConverter.convertDateTimeForModel(instance.createdAt),
+      if (DateModelConverter.convertDateTimeOptionalForModel(instance.updatedAt)
+          case final value?)
+        'updatedAt': value,
+      if (instance.updatedBy case final value?) 'updatedBy': value,
+    };

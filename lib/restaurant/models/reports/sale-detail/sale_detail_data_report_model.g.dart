@@ -30,24 +30,16 @@ SaleDetailDataReportModel _$SaleDetailDataReportModelFromJson(
 }
 
 Map<String, dynamic> _$SaleDetailDataReportModelToJson(
-    SaleDetailDataReportModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('_id', instance.id);
-  val['date'] = DateModelConverter.convertDateTimeForModel(instance.date);
-  val['employeeName'] = instance.employeeName;
-  val['itemName'] = instance.itemName;
-  val['qty'] = instance.qty;
-  val['price'] = instance.price;
-  val['amount'] = instance.amount;
-  val['discountAmount'] = instance.discountAmount;
-  val['details'] = instance.details.map((e) => e.toJson()).toList();
-  val['groupLabel'] = instance.groupLabel;
-  return val;
-}
+        SaleDetailDataReportModel instance) =>
+    <String, dynamic>{
+      if (instance.id case final value?) '_id': value,
+      'date': DateModelConverter.convertDateTimeForModel(instance.date),
+      'employeeName': instance.employeeName,
+      'itemName': instance.itemName,
+      'qty': instance.qty,
+      'price': instance.price,
+      'amount': instance.amount,
+      'discountAmount': instance.discountAmount,
+      'details': instance.details.map((e) => e.toJson()).toList(),
+      'groupLabel': instance.groupLabel,
+    };

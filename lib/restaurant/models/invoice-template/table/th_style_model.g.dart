@@ -30,21 +30,13 @@ ThStyleModel _$ThStyleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ThStyleModelToJson(ThStyleModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('font-size', instance.fontSize);
-  writeNotNull('padding-top', instance.paddingTop);
-  writeNotNull('padding-bottom', instance.paddingBottom);
-  writeNotNull('padding-left', instance.paddingLeft);
-  writeNotNull('padding-right', instance.paddingRight);
-  writeNotNull('line-height', instance.lineHeight);
-  writeNotNull('width', instance.width);
-  return val;
-}
+Map<String, dynamic> _$ThStyleModelToJson(ThStyleModel instance) =>
+    <String, dynamic>{
+      if (instance.fontSize case final value?) 'font-size': value,
+      if (instance.paddingTop case final value?) 'padding-top': value,
+      if (instance.paddingBottom case final value?) 'padding-bottom': value,
+      if (instance.paddingLeft case final value?) 'padding-left': value,
+      if (instance.paddingRight case final value?) 'padding-right': value,
+      if (instance.lineHeight case final value?) 'line-height': value,
+      if (instance.width case final value?) 'width': value,
+    };

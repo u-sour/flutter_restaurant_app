@@ -1715,6 +1715,51 @@ class SaleProvider extends ChangeNotifier {
     return result;
   }
 
+  // request payment
+  Future<ResponseModel?> requestPayment({required BuildContext context}) async {
+    ResponseModel? result;
+    if (_currentSale != null && _saleDetails.isNotEmpty) {
+      await GlobalService.openDialog(
+          contentWidget: ConfirmDialogWidget(
+            content: Text(
+                'screens.sale.detail.dialog.confirm.requestPayment.description'
+                    .tr()),
+            onAgreePressed: () async {
+              try {
+                await updateSaleDraftToNormalMethod(saleId: currentSale!.id);
+                // update sale
+                final Map<String, dynamic> doc = {
+                  '_id': currentSale!.id,
+                  'requestPayment': true
+                };
+                await updateSaleMethod(doc: doc);
+                // insert notification
+                await upsertNotificationsMethods(
+                    type: 'RP',
+                    saleId: currentSale!.id,
+                    branchId: currentSale!.branchId,
+                    depId: currentSale!.depId);
+                // Back to sale table
+                if (context.mounted) {
+                  context.goNamed(SCREENS.saleTable.toName);
+                }
+              } catch (e) {
+                if (e is MeteorError) {
+                  result = ResponseModel(
+                      message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+                }
+              }
+            },
+          ),
+          context: context);
+    } else {
+      result = ResponseModel(
+          message: '$_prefixSaleDetailAlert.info.saleEmpty',
+          type: AWESOMESNACKBARTYPE.info);
+    }
+    return result;
+  }
+
   // payment
   Future<ResponseModel?> payment({
     required BuildContext context,
@@ -2228,21 +2273,22 @@ class SaleProvider extends ChangeNotifier {
   }
 
   Future<dynamic> updateSaleDraftToNormalMethod(
-      {required String saleId, required List<String> printItemIds}) {
-    Map<String, dynamic> selector = {
-      'invoiceId': saleId,
-      'printItemIds': printItemIds
-    };
+      {required String saleId, List<String>? printItemIds}) {
+    Map<String, dynamic> selector = {'invoiceId': saleId};
+    if (printItemIds != null) {
+      selector['printItemIds'] = printItemIds;
+    }
     return meteor.call('rest.updateSaleDraftToNormal', args: [selector]);
   }
 
   Future<dynamic> upsertNotificationsMethods({
+    String type = 'IO',
     required String saleId,
     required String branchId,
     required String depId,
   }) {
     Map<String, dynamic> doc = {
-      'type': 'IO',
+      'type': type,
       'refId': saleId,
       'date': DateTime.now(),
       'branchId': branchId,

@@ -48,40 +48,31 @@ SaleDetailModel _$SaleDetailModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SaleDetailModelToJson(SaleDetailModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'invoiceId': instance.invoiceId,
-    'itemId': instance.itemId,
-    'itemName': instance.itemName,
-    'catalogType': instance.catalogType,
-    'showCategory': instance.showCategory,
-    'category': instance.category,
-    'group': instance.group,
-    'qty': instance.qty,
-    'returnQty': instance.returnQty,
-    'totalQty': instance.totalQty,
-    'price': instance.price,
-    'status': instance.status,
-    'discount': instance.discount,
-    'amount': instance.amount,
-    'checkPrint': instance.checkPrint,
-    'note': instance.note,
-    'checkPrintKitchen': instance.checkPrintKitchen,
-    'child': instance.child,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('draft', instance.draft);
-  val['createdAt'] =
-      DateModelConverter.convertDateTimeForModel(instance.createdAt);
-  val['branchId'] = instance.branchId;
-  val['extraItemDoc'] = instance.extraItemDoc.map((e) => e.toJson()).toList();
-  val['comboDoc'] = instance.comboDoc.map((e) => e.toJson()).toList();
-  return val;
-}
+Map<String, dynamic> _$SaleDetailModelToJson(SaleDetailModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'invoiceId': instance.invoiceId,
+      'itemId': instance.itemId,
+      'itemName': instance.itemName,
+      'catalogType': instance.catalogType,
+      'showCategory': instance.showCategory,
+      'category': instance.category,
+      'group': instance.group,
+      'qty': instance.qty,
+      'returnQty': instance.returnQty,
+      'totalQty': instance.totalQty,
+      'price': instance.price,
+      'status': instance.status,
+      'discount': instance.discount,
+      'amount': instance.amount,
+      'checkPrint': instance.checkPrint,
+      'note': instance.note,
+      'checkPrintKitchen': instance.checkPrintKitchen,
+      'child': instance.child,
+      if (instance.draft case final value?) 'draft': value,
+      'createdAt':
+          DateModelConverter.convertDateTimeForModel(instance.createdAt),
+      'branchId': instance.branchId,
+      'extraItemDoc': instance.extraItemDoc.map((e) => e.toJson()).toList(),
+      'comboDoc': instance.comboDoc.map((e) => e.toJson()).toList(),
+    };

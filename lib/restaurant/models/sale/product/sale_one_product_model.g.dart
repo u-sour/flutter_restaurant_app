@@ -42,39 +42,32 @@ SaleOneProductModel _$SaleOneProductModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SaleOneProductModelToJson(SaleOneProductModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'name': instance.name,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('code', instance.code);
-  val['categoryIds'] = instance.categoryIds;
-  writeNotNull('category', instance.category);
-  writeNotNull('groupId', instance.groupId);
-  writeNotNull('group', instance.group);
-  val['status'] = instance.status;
-  val['cost'] = instance.cost;
-  val['markupPer'] = instance.markupPer;
-  val['markupVal'] = instance.markupVal;
-  val['price'] = instance.price;
-  val['type'] = instance.type;
-  writeNotNull('photo', instance.photo);
-  writeNotNull('photoUrl', instance.photoUrl);
-  writeNotNull('catalogType', instance.catalogType);
-  writeNotNull('addOwnItem', instance.addOwnItem);
-  writeNotNull('products', instance.products?.map((e) => e.toJson()).toList());
-  writeNotNull('barcode', instance.barcode);
-  writeNotNull('showCategory', instance.showCategory);
-  writeNotNull('favorite', instance.favorite);
-  val['branchId'] = instance.branchId;
-  val['createdAt'] =
-      DateModelConverter.convertDateTimeForModel(instance.createdAt);
-  return val;
-}
+Map<String, dynamic> _$SaleOneProductModelToJson(
+        SaleOneProductModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      if (instance.code case final value?) 'code': value,
+      'categoryIds': instance.categoryIds,
+      if (instance.category case final value?) 'category': value,
+      if (instance.groupId case final value?) 'groupId': value,
+      if (instance.group case final value?) 'group': value,
+      'status': instance.status,
+      'cost': instance.cost,
+      'markupPer': instance.markupPer,
+      'markupVal': instance.markupVal,
+      'price': instance.price,
+      'type': instance.type,
+      if (instance.photo case final value?) 'photo': value,
+      if (instance.photoUrl case final value?) 'photoUrl': value,
+      if (instance.catalogType case final value?) 'catalogType': value,
+      if (instance.addOwnItem case final value?) 'addOwnItem': value,
+      if (instance.products?.map((e) => e.toJson()).toList() case final value?)
+        'products': value,
+      if (instance.barcode case final value?) 'barcode': value,
+      if (instance.showCategory case final value?) 'showCategory': value,
+      if (instance.favorite case final value?) 'favorite': value,
+      'branchId': instance.branchId,
+      'createdAt':
+          DateModelConverter.convertDateTimeForModel(instance.createdAt),
+    };
