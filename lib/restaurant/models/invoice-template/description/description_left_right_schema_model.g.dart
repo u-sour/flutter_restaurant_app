@@ -27,25 +27,16 @@ DescriptionLeftRightSchemaModel _$DescriptionLeftRightSchemaModelFromJson(
 }
 
 Map<String, dynamic> _$DescriptionLeftRightSchemaModelToJson(
-    DescriptionLeftRightSchemaModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'type': instance.type,
-    'groupId': instance.groupId,
-    'label': instance.label,
-    'subLabel': instance.subLabel,
-    'value': instance.value,
-    'key': instance.key,
-    'field': instance.field,
-    'visible': instance.visible,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('showOnReceipt', instance.showOnReceipt);
-  return val;
-}
+        DescriptionLeftRightSchemaModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'type': instance.type,
+      'groupId': instance.groupId,
+      'label': instance.label,
+      'subLabel': instance.subLabel,
+      'value': instance.value,
+      'key': instance.key,
+      'field': instance.field,
+      'visible': instance.visible,
+      if (instance.showOnReceipt case final value?) 'showOnReceipt': value,
+    };

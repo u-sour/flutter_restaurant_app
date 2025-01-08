@@ -34,28 +34,21 @@ TableModel _$TableModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$TableModelToJson(TableModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'name': instance.name,
-    'floorId': instance.floorId,
-    'floorName': instance.floorName,
-    'numOfGuest': instance.numOfGuest,
-    'branchId': instance.branchId,
-    'department': instance.department.toJson(),
-    'label': instance.label,
-    'location': instance.location,
-    'order': instance.order,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('currentGuestCount', instance.currentGuestCount);
-  writeNotNull('currentInvoiceCount', instance.currentInvoiceCount);
-  writeNotNull('status', instance.status);
-  return val;
-}
+Map<String, dynamic> _$TableModelToJson(TableModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'floorId': instance.floorId,
+      'floorName': instance.floorName,
+      'numOfGuest': instance.numOfGuest,
+      'branchId': instance.branchId,
+      'department': instance.department.toJson(),
+      'label': instance.label,
+      'location': instance.location,
+      'order': instance.order,
+      if (instance.currentGuestCount case final value?)
+        'currentGuestCount': value,
+      if (instance.currentInvoiceCount case final value?)
+        'currentInvoiceCount': value,
+      if (instance.status case final value?) 'status': value,
+    };

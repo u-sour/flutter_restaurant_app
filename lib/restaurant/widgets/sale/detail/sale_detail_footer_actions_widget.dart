@@ -347,8 +347,14 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                     onPressed: () async {
-                      final result =
-                          await readSaleProvider.payment(context: context);
+                      ResponseModel? result;
+                      if (UserService.userInRole(roles: ['request-payment'])) {
+                        result = await readSaleProvider.requestPayment(
+                            context: context);
+                      } else {
+                        result =
+                            await readSaleProvider.payment(context: context);
+                      }
                       if (result != null) {
                         late SnackBar snackBar;
                         snackBar = Alert.awesomeSnackBar(

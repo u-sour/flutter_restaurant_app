@@ -17,16 +17,8 @@ WrapperStyleModel _$WrapperStyleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$WrapperStyleModelToJson(WrapperStyleModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('padding-top', instance.paddingTop);
-  writeNotNull('border-top-style', instance.borderTopStyle);
-  return val;
-}
+Map<String, dynamic> _$WrapperStyleModelToJson(WrapperStyleModel instance) =>
+    <String, dynamic>{
+      if (instance.paddingTop case final value?) 'padding-top': value,
+      if (instance.borderTopStyle case final value?) 'border-top-style': value,
+    };

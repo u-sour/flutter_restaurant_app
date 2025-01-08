@@ -20,19 +20,11 @@ InsertGuestModel _$InsertGuestModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$InsertGuestModelToJson(InsertGuestModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('_id', instance.id);
-  val['name'] = instance.name;
-  writeNotNull('telephone', instance.telephone);
-  writeNotNull('address', instance.address);
-  val['branchId'] = instance.branchId;
-  return val;
-}
+Map<String, dynamic> _$InsertGuestModelToJson(InsertGuestModel instance) =>
+    <String, dynamic>{
+      if (instance.id case final value?) '_id': value,
+      'name': instance.name,
+      if (instance.telephone case final value?) 'telephone': value,
+      if (instance.address case final value?) 'address': value,
+      'branchId': instance.branchId,
+    };

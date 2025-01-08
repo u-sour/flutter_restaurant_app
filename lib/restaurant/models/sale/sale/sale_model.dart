@@ -30,7 +30,6 @@ class SaleModel {
   final String? refId;
   final String refNo;
   final String orderNum;
-  @JsonKey(disallowNullValue: true)
   final bool? requestPayment;
   @JsonKey(
       fromJson: DateModelConverter.convertDateTimeForModel,

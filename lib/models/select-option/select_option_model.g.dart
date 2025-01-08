@@ -20,19 +20,12 @@ SelectOptionModel _$SelectOptionModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SelectOptionModelToJson(SelectOptionModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull(
-      'icon', IconModelConverter.convertIconOptionalForModel(instance.icon));
-  val['label'] = instance.label;
-  val['value'] = instance.value;
-  writeNotNull('extra', instance.extra);
-  return val;
-}
+Map<String, dynamic> _$SelectOptionModelToJson(SelectOptionModel instance) =>
+    <String, dynamic>{
+      if (IconModelConverter.convertIconOptionalForModel(instance.icon)
+          case final value?)
+        'icon': value,
+      'label': instance.label,
+      'value': instance.value,
+      if (instance.extra case final value?) 'extra': value,
+    };

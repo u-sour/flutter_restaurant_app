@@ -22,20 +22,12 @@ SaleCategoryModel _$SaleCategoryModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SaleCategoryModelToJson(SaleCategoryModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'name': instance.name,
-    'level': instance.level,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('icon', instance.icon);
-  writeNotNull('children', instance.children?.map((e) => e.toJson()).toList());
-  return val;
-}
+Map<String, dynamic> _$SaleCategoryModelToJson(SaleCategoryModel instance) =>
+    <String, dynamic>{
+      '_id': instance.id,
+      'name': instance.name,
+      'level': instance.level,
+      if (instance.icon case final value?) 'icon': value,
+      if (instance.children?.map((e) => e.toJson()).toList() case final value?)
+        'children': value,
+    };

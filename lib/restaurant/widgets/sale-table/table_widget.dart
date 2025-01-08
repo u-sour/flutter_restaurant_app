@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/providers/sale-table/sale_table_provider.dart';
 import 'package:provider/provider.dart';
 import '../../../widgets/icon_with_text_widget.dart';
+import '../../providers/sale-table/sale_table_provider.dart';
 import '../../utils/constants.dart';
 
 class TableWidget extends StatelessWidget {
