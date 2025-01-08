@@ -44,29 +44,21 @@ HeaderListSchemaModel _$HeaderListSchemaModelFromJson(
 }
 
 Map<String, dynamic> _$HeaderListSchemaModelToJson(
-    HeaderListSchemaModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'index': instance.index,
-    'type': instance.type,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('value', instance.value);
-  val['groupId'] = instance.groupId;
-  writeNotNull('label', instance.label);
-  writeNotNull('position', instance.position);
-  writeNotNull('imageId', instance.imageId);
-  val['field'] = instance.field;
-  val['imageUrl'] = instance.imageUrl;
-  writeNotNull('isVisible', instance.isVisible);
-  writeNotNull('wrapperStyle', instance.wrapperStyle?.toJson());
-  val['labelStyle'] = instance.labelStyle?.toJson();
-  val['valueStyle'] = instance.valueStyle.toJson();
-  return val;
-}
+        HeaderListSchemaModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'index': instance.index,
+      'type': instance.type,
+      if (instance.value case final value?) 'value': value,
+      'groupId': instance.groupId,
+      if (instance.label case final value?) 'label': value,
+      if (instance.position case final value?) 'position': value,
+      if (instance.imageId case final value?) 'imageId': value,
+      'field': instance.field,
+      'imageUrl': instance.imageUrl,
+      if (instance.isVisible case final value?) 'isVisible': value,
+      if (instance.wrapperStyle?.toJson() case final value?)
+        'wrapperStyle': value,
+      'labelStyle': instance.labelStyle?.toJson(),
+      'valueStyle': instance.valueStyle.toJson(),
+    };

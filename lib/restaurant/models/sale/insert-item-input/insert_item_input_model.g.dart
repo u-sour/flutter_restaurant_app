@@ -27,26 +27,17 @@ InsertItemInputModel _$InsertItemInputModelFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$InsertItemInputModelToJson(
-    InsertItemInputModel instance) {
-  final val = <String, dynamic>{
-    'itemId': instance.itemId,
-    'itemName': instance.itemName,
-    'qty': instance.qty,
-    'price': instance.price,
-    'discount': instance.discount,
-    'amount': instance.amount,
-    'status': instance.status,
-    'invoiceId': instance.invoiceId,
-    'checkPrint': instance.checkPrint,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('draft', instance.draft);
-  val['branchId'] = instance.branchId;
-  return val;
-}
+        InsertItemInputModel instance) =>
+    <String, dynamic>{
+      'itemId': instance.itemId,
+      'itemName': instance.itemName,
+      'qty': instance.qty,
+      'price': instance.price,
+      'discount': instance.discount,
+      'amount': instance.amount,
+      'status': instance.status,
+      'invoiceId': instance.invoiceId,
+      'checkPrint': instance.checkPrint,
+      if (instance.draft case final value?) 'draft': value,
+      'branchId': instance.branchId,
+    };

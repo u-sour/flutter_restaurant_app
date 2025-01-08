@@ -30,25 +30,16 @@ TotalListSchemaModel _$TotalListSchemaModelFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TotalListSchemaModelToJson(
-    TotalListSchemaModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'index': instance.index,
-    'groupId': instance.groupId,
-    'key': instance.key,
-    'label': instance.label,
-    'field': instance.field,
-    'isVisible': instance.isVisible,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('invoiceType', instance.invoiceType);
-  val['labelStyle'] = instance.labelStyle.toJson();
-  val['valueStyle'] = instance.valueStyle.toJson();
-  return val;
-}
+        TotalListSchemaModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'index': instance.index,
+      'groupId': instance.groupId,
+      'key': instance.key,
+      'label': instance.label,
+      'field': instance.field,
+      'isVisible': instance.isVisible,
+      if (instance.invoiceType case final value?) 'invoiceType': value,
+      'labelStyle': instance.labelStyle.toJson(),
+      'valueStyle': instance.valueStyle.toJson(),
+    };

@@ -16,15 +16,8 @@ ContainerStyleModel _$ContainerStyleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ContainerStyleModelToJson(ContainerStyleModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('top', instance.marginTop);
-  return val;
-}
+Map<String, dynamic> _$ContainerStyleModelToJson(
+        ContainerStyleModel instance) =>
+    <String, dynamic>{
+      if (instance.marginTop case final value?) 'top': value,
+    };

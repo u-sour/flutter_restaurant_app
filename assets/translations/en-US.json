@@ -250,6 +250,9 @@
             },
             "submitOrders": {
               "description": "New orders will add to this invoice. Continue?"
+            },
+            "requestPayment": {
+              "description": "Request a payment for this invoice. Continue?"
             }
           }
         },

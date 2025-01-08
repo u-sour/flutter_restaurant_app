@@ -30,27 +30,19 @@ TableListSchemaModel _$TableListSchemaModelFromJson(Map<String, dynamic> json) {
 }
 
 Map<String, dynamic> _$TableListSchemaModelToJson(
-    TableListSchemaModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'position': instance.position,
-    'groupId': instance.groupId,
-    'key': instance.key,
-    'label': instance.label,
-    'subLabel': instance.subLabel,
-    'field': instance.field,
-    'isVisible': instance.isVisible,
-    'alignClass': instance.alignClass,
-    'thStyle': instance.thStyle.toJson(),
-    'tdStyle': instance.tdStyle.toJson(),
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('subItemStyle', instance.subItemStyle?.toJson());
-  return val;
-}
+        TableListSchemaModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'position': instance.position,
+      'groupId': instance.groupId,
+      'key': instance.key,
+      'label': instance.label,
+      'subLabel': instance.subLabel,
+      'field': instance.field,
+      'isVisible': instance.isVisible,
+      'alignClass': instance.alignClass,
+      'thStyle': instance.thStyle.toJson(),
+      'tdStyle': instance.tdStyle.toJson(),
+      if (instance.subItemStyle?.toJson() case final value?)
+        'subItemStyle': value,
+    };

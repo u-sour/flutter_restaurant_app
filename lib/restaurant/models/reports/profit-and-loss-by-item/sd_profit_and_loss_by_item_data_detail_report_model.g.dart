@@ -34,31 +34,23 @@ SDProfitAndLossByItemDataDetailReportModel
         );
 
 Map<String, dynamic> _$SDProfitAndLossByItemDataDetailReportModelToJson(
-    SDProfitAndLossByItemDataDetailReportModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('depName', instance.depName);
-  val['categoryNames'] = instance.categoryNames;
-  val['itemName'] = instance.itemName;
-  writeNotNull(
-      'itemTranDate',
-      DateModelConverter.convertDateTimeOptionalForModel(
-          instance.itemTranDate));
-  val['items'] = instance.items.map((e) => e.toJson()).toList();
-  val['totalQty'] = instance.totalQty;
-  val['totalCost'] = instance.totalCost;
-  val['totalCostAmount'] = instance.totalCostAmount;
-  val['totalPrice'] = instance.totalPrice;
-  val['totalPriceAmount'] = instance.totalPriceAmount;
-  val['totalDiscountAmount'] = instance.totalDiscountAmount;
-  val['totalPriceBeforeDiscount'] = instance.totalPriceBeforeDiscount;
-  val['totalProfit'] = instance.totalProfit;
-  writeNotNull('rowType', instance.rowType);
-  return val;
-}
+        SDProfitAndLossByItemDataDetailReportModel instance) =>
+    <String, dynamic>{
+      if (instance.depName case final value?) 'depName': value,
+      'categoryNames': instance.categoryNames,
+      'itemName': instance.itemName,
+      if (DateModelConverter.convertDateTimeOptionalForModel(
+              instance.itemTranDate)
+          case final value?)
+        'itemTranDate': value,
+      'items': instance.items.map((e) => e.toJson()).toList(),
+      'totalQty': instance.totalQty,
+      'totalCost': instance.totalCost,
+      'totalCostAmount': instance.totalCostAmount,
+      'totalPrice': instance.totalPrice,
+      'totalPriceAmount': instance.totalPriceAmount,
+      'totalDiscountAmount': instance.totalDiscountAmount,
+      'totalPriceBeforeDiscount': instance.totalPriceBeforeDiscount,
+      'totalProfit': instance.totalProfit,
+      if (instance.rowType case final value?) 'rowType': value,
+    };

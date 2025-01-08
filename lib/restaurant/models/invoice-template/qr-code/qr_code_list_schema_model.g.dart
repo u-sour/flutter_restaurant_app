@@ -25,23 +25,14 @@ QrCodeListSchemaModel _$QrCodeListSchemaModelFromJson(
 }
 
 Map<String, dynamic> _$QrCodeListSchemaModelToJson(
-    QrCodeListSchemaModel instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'index': instance.index,
-    'imageId': instance.imageId,
-    'bankName': instance.bankName,
-    'accountName': instance.accountName,
-    'accountNumber': instance.accountNumber,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('imageUrl', instance.imageUrl);
-  writeNotNull('invalidImage', instance.invalidImage);
-  return val;
-}
+        QrCodeListSchemaModel instance) =>
+    <String, dynamic>{
+      'id': instance.id,
+      'index': instance.index,
+      'imageId': instance.imageId,
+      'bankName': instance.bankName,
+      'accountName': instance.accountName,
+      'accountNumber': instance.accountNumber,
+      if (instance.imageUrl case final value?) 'imageUrl': value,
+      if (instance.invalidImage case final value?) 'invalidImage': value,
+    };

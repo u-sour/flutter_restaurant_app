@@ -28,20 +28,12 @@ ValueStyleModel _$ValueStyleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$ValueStyleModelToJson(ValueStyleModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('font-size', instance.fontSize);
-  writeNotNull('font-weight', instance.fontWeight);
-  writeNotNull('margin-top', instance.marginTop);
-  writeNotNull('margin-bottom', instance.marginBottom);
-  writeNotNull('width', instance.width);
-  writeNotNull('border-radius', instance.borderRadius);
-  return val;
-}
+Map<String, dynamic> _$ValueStyleModelToJson(ValueStyleModel instance) =>
+    <String, dynamic>{
+      if (instance.fontSize case final value?) 'font-size': value,
+      if (instance.fontWeight case final value?) 'font-weight': value,
+      if (instance.marginTop case final value?) 'margin-top': value,
+      if (instance.marginBottom case final value?) 'margin-bottom': value,
+      if (instance.width case final value?) 'width': value,
+      if (instance.borderRadius case final value?) 'border-radius': value,
+    };

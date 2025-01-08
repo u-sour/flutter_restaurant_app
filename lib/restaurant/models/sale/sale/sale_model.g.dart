@@ -9,7 +9,7 @@ part of 'sale_model.dart';
 SaleModel _$SaleModelFromJson(Map<String, dynamic> json) {
   $checkKeys(
     json,
-    disallowNullValues: const ['_id', 'requestPayment'],
+    disallowNullValues: const ['_id'],
   );
   return SaleModel(
     id: json['_id'] as String,
@@ -44,43 +44,33 @@ SaleModel _$SaleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$SaleModelToJson(SaleModel instance) {
-  final val = <String, dynamic>{
-    '_id': instance.id,
-    'date': DateModelConverter.convertDateTimeForModel(instance.date),
-    'type': instance.type,
-    'status': instance.status,
-    'statusDate': instance.statusDate.toJson(),
-    'discountRate': instance.discountRate,
-    'discountValue': instance.discountValue,
-    'total': instance.total,
-    'totalReceived': instance.totalReceived,
-    'tableId': instance.tableId,
-    'depId': instance.depId,
-    'employeeId': instance.employeeId,
-    'employeeName': instance.employeeName,
-    'guestId': instance.guestId,
-    'guestName': instance.guestName,
-    'numOfGuest': instance.numOfGuest,
-    'billed': instance.billed,
-    'branchId': instance.branchId,
-    'refId': instance.refId,
-    'refNo': instance.refNo,
-    'orderNum': instance.orderNum,
-  };
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('requestPayment', instance.requestPayment);
-  val['createdAt'] =
-      DateModelConverter.convertDateTimeForModel(instance.createdAt);
-  val['createdBy'] = instance.createdBy;
-  val['updatedAt'] =
-      DateModelConverter.convertDateTimeOptionalForModel(instance.updatedAt);
-  val['updatedBy'] = instance.updatedBy;
-  return val;
-}
+Map<String, dynamic> _$SaleModelToJson(SaleModel instance) => <String, dynamic>{
+      '_id': instance.id,
+      'date': DateModelConverter.convertDateTimeForModel(instance.date),
+      'type': instance.type,
+      'status': instance.status,
+      'statusDate': instance.statusDate.toJson(),
+      'discountRate': instance.discountRate,
+      'discountValue': instance.discountValue,
+      'total': instance.total,
+      'totalReceived': instance.totalReceived,
+      'tableId': instance.tableId,
+      'depId': instance.depId,
+      'employeeId': instance.employeeId,
+      'employeeName': instance.employeeName,
+      'guestId': instance.guestId,
+      'guestName': instance.guestName,
+      'numOfGuest': instance.numOfGuest,
+      'billed': instance.billed,
+      'branchId': instance.branchId,
+      'refId': instance.refId,
+      'refNo': instance.refNo,
+      'orderNum': instance.orderNum,
+      'requestPayment': instance.requestPayment,
+      'createdAt':
+          DateModelConverter.convertDateTimeForModel(instance.createdAt),
+      'createdBy': instance.createdBy,
+      'updatedAt': DateModelConverter.convertDateTimeOptionalForModel(
+          instance.updatedAt),
+      'updatedBy': instance.updatedBy,
+    };

@@ -34,23 +34,15 @@ LabelStyleModel _$LabelStyleModelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$LabelStyleModelToJson(LabelStyleModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('font-size', instance.fontSize);
-  writeNotNull('font-weight', instance.fontWeight);
-  writeNotNull('line-height', instance.lineHeight);
-  writeNotNull('justify-content', instance.justifyContent);
-  writeNotNull('text-align', instance.textAlign);
-  writeNotNull('margin-right', instance.marginRight);
-  writeNotNull('padding-top', instance.paddingTop);
-  writeNotNull('padding-right', instance.paddingRight);
-  writeNotNull('padding-bottom', instance.paddingBottom);
-  return val;
-}
+Map<String, dynamic> _$LabelStyleModelToJson(LabelStyleModel instance) =>
+    <String, dynamic>{
+      if (instance.fontSize case final value?) 'font-size': value,
+      if (instance.fontWeight case final value?) 'font-weight': value,
+      if (instance.lineHeight case final value?) 'line-height': value,
+      if (instance.justifyContent case final value?) 'justify-content': value,
+      if (instance.textAlign case final value?) 'text-align': value,
+      if (instance.marginRight case final value?) 'margin-right': value,
+      if (instance.paddingTop case final value?) 'padding-top': value,
+      if (instance.paddingRight case final value?) 'padding-right': value,
+      if (instance.paddingBottom case final value?) 'padding-bottom': value,
+    };

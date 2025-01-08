@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/services/sale_service.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../models/servers/response_model.dart';
@@ -12,6 +11,7 @@ import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../models/sale-table/floor_model.dart';
 import '../../models/sale-table/table_model.dart';
 import '../../models/sale/sale/sale_model.dart';
+import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/debounce.dart';
 
@@ -173,8 +173,7 @@ class SaleTableProvider with ChangeNotifier {
       // table status
       if (sales.any((sale) =>
           sale.tableId == tempTable.id &&
-          sale.requestPayment != null &&
-          sale.requestPayment == true)) {
+          (sale.requestPayment != null && sale.requestPayment == true))) {
         tempTable.setStatus = 'closed';
       } else if (sales
           .where((sale) => sale.tableId == tempTable.id && sale.billed > 0)
@@ -202,7 +201,8 @@ class SaleTableProvider with ChangeNotifier {
     bool allowEnterSale =
         UserService.userInRole(roles: ['cashier', 'tablet-orders']) &&
                 table.status == 'closed' ||
-            table.status == 'busy';
+            table.status == 'busy' ||
+            table.status == 'isPrintBill';
 
     if (isDataEnoughToEnterSale) {
       if (UserService.userInRole(roles: ['insert-invoice']) || allowEnterSale) {

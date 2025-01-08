@@ -29,19 +29,13 @@ SaleSummaryReportModel _$SaleSummaryReportModelFromJson(
     );
 
 Map<String, dynamic> _$SaleSummaryReportModelToJson(
-    SaleSummaryReportModel instance) {
-  final val = <String, dynamic>{};
-
-  void writeNotNull(String key, dynamic value) {
-    if (value != null) {
-      val[key] = value;
-    }
-  }
-
-  writeNotNull('depName', instance.depName);
-  writeNotNull('totalSale', instance.totalSale?.toJson());
-  writeNotNull('openSale', instance.openSale?.toJson());
-  writeNotNull('partialSale', instance.partialSale?.toJson());
-  writeNotNull('receivedSale', instance.receivedSale?.toJson());
-  return val;
-}
+        SaleSummaryReportModel instance) =>
+    <String, dynamic>{
+      if (instance.depName case final value?) 'depName': value,
+      if (instance.totalSale?.toJson() case final value?) 'totalSale': value,
+      if (instance.openSale?.toJson() case final value?) 'openSale': value,
+      if (instance.partialSale?.toJson() case final value?)
+        'partialSale': value,
+      if (instance.receivedSale?.toJson() case final value?)
+        'receivedSale': value,
+    };
