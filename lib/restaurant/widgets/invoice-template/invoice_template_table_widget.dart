@@ -20,7 +20,6 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     // filter table list
     // Note: isVisible == true
@@ -28,7 +27,7 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
         tableSchema.list.where((t) => t.isVisible).toList();
     return tables.isNotEmpty
         ? Container(
-            width: width,
+            width: double.infinity,
             margin: const EdgeInsets.symmetric(vertical: 8.0),
             child: DataTable(
               dataRowMaxHeight: double.infinity,

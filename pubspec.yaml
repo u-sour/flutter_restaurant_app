@@ -56,7 +56,7 @@ dependencies:
   flutter_bluetooth_printer:
     git:
       url: https://github.com/u-sour/flutter_bluetooth_printer_plugin.git
-      ref: add-cut-paper
+      ref: add-more-printer-services
       path: packages/flutter_bluetooth_printer
   flutter_barcode_scanner: ^2.0.0
   cached_network_image: ^3.4.1
