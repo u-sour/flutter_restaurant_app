@@ -215,9 +215,9 @@ class SaleProvider extends ChangeNotifier {
             // else set _currentSale by _activeSaleInvoiceId
             if (context.mounted) {
               await getCurrentSaleWithSaleDetail(
-                  invoiceId: invoiceId == null
-                      ? _sales.first.id
-                      : _activeSaleInvoiceId,
+                  invoiceId: _activeSaleInvoiceId.isNotEmpty
+                      ? _activeSaleInvoiceId
+                      : _sales.first.id,
                   context: context);
             }
           } else {
