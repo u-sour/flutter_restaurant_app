@@ -383,8 +383,8 @@ packages:
     dependency: "direct main"
     description:
       path: "packages/flutter_bluetooth_printer"
-      ref: add-cut-paper
-      resolved-ref: "89b597085fb5920ca3add8e95abede9d12e5be3f"
+      ref: add-more-printer-services
+      resolved-ref: "93d76d91a685e4664355f3ac41c61005a42e1307"
       url: "https://github.com/u-sour/flutter_bluetooth_printer_plugin.git"
     source: git
     version: "2.17.1"
