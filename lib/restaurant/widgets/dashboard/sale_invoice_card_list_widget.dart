@@ -28,7 +28,7 @@ class SaleInvoiceCardListWidget extends StatelessWidget {
     final ThemeData theme = Theme.of(context);
     const String prefixSaleInvoiceContentCard =
         "screens.dashboard.saleInvoiceContent.card";
-    Color cardColor = AppThemeColors.primary;
+    Color cardColor = AppThemeColors.success;
     if (data.requestPayment != null) {
       cardColor = AppThemeColors.failure;
     }

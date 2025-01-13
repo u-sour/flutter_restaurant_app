@@ -65,6 +65,9 @@ class ConfirmDialogWidget extends StatelessWidget {
             Expanded(
               child: FilledButton(
                 onPressed: onAgreePressed,
+                style: theme.filledButtonTheme.style!.copyWith(
+                    backgroundColor:
+                        WidgetStateProperty.all(AppThemeColors.success)),
                 child: Text(agreeLabel.tr(),
                     style: theme.textTheme.bodyMedium!.copyWith(
                         color: theme.colorScheme.onPrimary,

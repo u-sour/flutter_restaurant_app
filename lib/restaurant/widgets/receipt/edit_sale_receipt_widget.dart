@@ -228,13 +228,13 @@ class _EditSaleReceiptWidgetState extends State<EditSaleReceiptWidget> {
                       padding: const EdgeInsetsDirectional.all(
                           AppStyleDefaultProperties.p),
                       decoration: BoxDecoration(
-                          border: Border.all(color: AppThemeColors.primary),
+                          border: Border.all(color: AppThemeColors.success),
                           borderRadius: BorderRadius.circular(
                               AppStyleDefaultProperties.r)),
                       child: FormatCurrencyWidget(
                         value: widget.saleReceipt.openAmount,
                         enableRoundNumber: false,
-                        color: AppThemeColors.primary,
+                        color: AppThemeColors.success,
                         priceFontSize: theme.textTheme.headlineLarge!.fontSize,
                         currencySymbolFontSize:
                             theme.textTheme.headlineLarge!.fontSize! + 6,
