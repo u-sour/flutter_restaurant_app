@@ -147,7 +147,7 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
                     UserService.userInRole(roles: ['cashier']))
                   SfDataGridSwipeActionButton(
                     icon: RestaurantDefaultIcons.payment,
-                    bgColor: AppThemeColors.primary,
+                    bgColor: AppThemeColors.success,
                     onPressed: () async {
                       final result = await readSaleProvider.payment(
                           context: context,

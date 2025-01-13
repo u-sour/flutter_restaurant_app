@@ -95,6 +95,9 @@ class DialogWidget extends StatelessWidget {
                       onPressed: type.name == 'insert'
                           ? onInsertPressed
                           : onUpdatePressed,
+                      style: theme.filledButtonTheme.style!.copyWith(
+                          backgroundColor:
+                              WidgetStateProperty.all(AppThemeColors.success)),
                       child: Text(
                           type.name == 'insert'
                               ? insertLabel.tr()

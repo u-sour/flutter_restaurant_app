@@ -2,19 +2,8 @@ import 'package:flutter/material.dart';
 import '../../utils/constants.dart';
 
 class RestaurantTableStatusColors {
-  static const MaterialColor open = AppThemeColors.primary;
-  static const MaterialColor isPrintBill = MaterialColor(0xFFf97316, {
-    50: Color.fromRGBO(249, 115, 22, .1),
-    100: Color.fromRGBO(249, 115, 22, .2),
-    200: Color.fromRGBO(249, 115, 22, .3),
-    300: Color.fromRGBO(249, 115, 22, .4),
-    400: Color.fromRGBO(249, 115, 22, .5),
-    500: Color.fromRGBO(249, 115, 22, .6),
-    600: Color.fromRGBO(249, 115, 22, .7),
-    700: Color.fromRGBO(249, 115, 22, .8),
-    800: Color.fromRGBO(249, 115, 22, .9),
-    900: Color.fromRGBO(249, 115, 22, 1)
-  });
+  static const MaterialColor open = AppThemeColors.success;
+  static const MaterialColor isPrintBill = AppThemeColors.primary;
   static const MaterialColor closed = AppThemeColors.failure;
   static const MaterialColor busy = AppThemeColors.warning;
 }

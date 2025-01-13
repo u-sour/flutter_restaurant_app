@@ -253,7 +253,7 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                       children: [
                         // Receipt Information
                         Card(
-                          color: AppThemeColors.primary,
+                          color: AppThemeColors.success,
                           elevation: 0.0,
                           child: Padding(
                             padding: const EdgeInsets.all(
@@ -365,7 +365,7 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                                       baseCurrency: allowedCurrency,
                                       prefixCurrencySymbol: true,
                                       value: open,
-                                      color: AppThemeColors.primary),
+                                      color: AppThemeColors.success),
                                 ),
                                 const SizedBox(
                                     height: AppStyleDefaultProperties.h),
@@ -452,7 +452,7 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                                                     prefixCurrencySymbol: true,
                                                     value: fee,
                                                     color:
-                                                        AppThemeColors.primary),
+                                                        AppThemeColors.success),
                                               ),
                                               const SizedBox(
                                                   height:
@@ -490,7 +490,7 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                                             baseCurrency: allowedCurrency,
                                             prefixCurrencySymbol: true,
                                             value: return_,
-                                            color: AppThemeColors.primary),
+                                            color: AppThemeColors.success),
                                       );
                                     }),
                               ],

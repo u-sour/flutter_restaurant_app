@@ -25,7 +25,7 @@ class FeatureWidget extends StatelessWidget {
           icon: RestaurantDefaultIcons.newSale,
           label: "screens.dashboard.features.newSale",
           value: () => context.goNamed(SCREENS.saleTable.toName),
-          extra: AppThemeColors.primary));
+          extra: AppThemeColors.success));
     }
     // Button Fast Sale បង្ហាញពេល user role == insert-invoice
     if (UserService.userInRole(roles: ['insert-invoice'])) {

@@ -24,17 +24,17 @@ class AppNavigation {
 
 class AppThemeColors {
   AppThemeColors._();
-  static const MaterialColor primary = MaterialColor(0xFF14a76c, {
-    50: Color.fromRGBO(20, 167, 108, .1),
-    100: Color.fromRGBO(20, 167, 108, .2),
-    200: Color.fromRGBO(20, 167, 108, .3),
-    300: Color.fromRGBO(20, 167, 108, .4),
-    400: Color.fromRGBO(20, 167, 108, .5),
-    500: Color.fromRGBO(20, 167, 108, .6),
-    600: Color.fromRGBO(20, 167, 108, .7),
-    700: Color.fromRGBO(20, 167, 108, .8),
-    800: Color.fromRGBO(20, 167, 108, .9),
-    900: Color.fromRGBO(20, 167, 108, 1)
+  static const MaterialColor primary = MaterialColor(0xFFFD644F, {
+    50: Color.fromRGBO(253, 100, 79, .1),
+    100: Color.fromRGBO(253, 100, 79, .2),
+    200: Color.fromRGBO(253, 100, 79, .3),
+    300: Color.fromRGBO(253, 100, 79, .4),
+    400: Color.fromRGBO(253, 100, 79, .5),
+    500: Color.fromRGBO(253, 100, 79, .6),
+    600: Color.fromRGBO(253, 100, 79, .7),
+    700: Color.fromRGBO(253, 100, 79, .8),
+    800: Color.fromRGBO(253, 100, 79, .9),
+    900: Color.fromRGBO(253, 100, 79, 1)
   });
 
   static const MaterialColor secondary = MaterialColor(0xFF303952, {
@@ -50,56 +50,56 @@ class AppThemeColors {
     900: Color.fromRGBO(48, 57, 82, 1)
   });
 
-  static const MaterialColor success = MaterialColor(0xFF2a9d8f, {
-    50: Color.fromRGBO(42, 157, 143, .1),
-    100: Color.fromRGBO(42, 157, 143, .2),
-    200: Color.fromRGBO(42, 157, 143, .3),
-    300: Color.fromRGBO(42, 157, 143, .4),
-    400: Color.fromRGBO(42, 157, 143, .5),
-    500: Color.fromRGBO(42, 157, 143, .6),
-    600: Color.fromRGBO(42, 157, 143, .7),
-    700: Color.fromRGBO(42, 157, 143, .8),
-    800: Color.fromRGBO(42, 157, 143, .9),
-    900: Color.fromRGBO(42, 157, 143, 1)
+  static const MaterialColor success = MaterialColor(0xFF00b783, {
+    50: Color.fromRGBO(0, 183, 131, .1),
+    100: Color.fromRGBO(0, 183, 131, .2),
+    200: Color.fromRGBO(0, 183, 131, .3),
+    300: Color.fromRGBO(0, 183, 131, .4),
+    400: Color.fromRGBO(0, 183, 131, .5),
+    500: Color.fromRGBO(0, 183, 131, .6),
+    600: Color.fromRGBO(0, 183, 131, .7),
+    700: Color.fromRGBO(0, 183, 131, .8),
+    800: Color.fromRGBO(0, 183, 131, .9),
+    900: Color.fromRGBO(0, 183, 131, 1)
   });
 
-  static const MaterialColor failure = MaterialColor(0xFFef476f, {
-    50: Color.fromRGBO(239, 71, 111, .1),
-    100: Color.fromRGBO(239, 71, 111, .2),
-    200: Color.fromRGBO(239, 71, 111, .3),
-    300: Color.fromRGBO(239, 71, 111, .4),
-    400: Color.fromRGBO(239, 71, 111, .5),
-    500: Color.fromRGBO(239, 71, 111, .6),
-    600: Color.fromRGBO(239, 71, 111, .7),
-    700: Color.fromRGBO(239, 71, 111, .8),
-    800: Color.fromRGBO(239, 71, 111, .9),
-    900: Color.fromRGBO(239, 71, 111, 1)
+  static const MaterialColor failure = MaterialColor(0xFFF52F7B, {
+    50: Color.fromRGBO(245, 47, 123, .1),
+    100: Color.fromRGBO(245, 47, 123, .2),
+    200: Color.fromRGBO(245, 47, 123, .3),
+    300: Color.fromRGBO(245, 47, 123, .4),
+    400: Color.fromRGBO(245, 47, 123, .5),
+    500: Color.fromRGBO(245, 47, 123, .6),
+    600: Color.fromRGBO(245, 47, 123, .7),
+    700: Color.fromRGBO(245, 47, 123, .8),
+    800: Color.fromRGBO(245, 47, 123, .9),
+    900: Color.fromRGBO(245, 47, 123, 1)
   });
 
-  static const MaterialColor warning = MaterialColor(0xFFfca311, {
-    50: Color.fromRGBO(252, 163, 17, .1),
-    100: Color.fromRGBO(252, 163, 17, .2),
-    200: Color.fromRGBO(252, 163, 17, .3),
-    300: Color.fromRGBO(252, 163, 17, .4),
-    400: Color.fromRGBO(252, 163, 17, .5),
-    500: Color.fromRGBO(252, 163, 17, .6),
-    600: Color.fromRGBO(252, 163, 17, .7),
-    700: Color.fromRGBO(252, 163, 17, .8),
-    800: Color.fromRGBO(252, 163, 17, .9),
-    900: Color.fromRGBO(252, 163, 17, 1)
+  static const MaterialColor warning = MaterialColor(0xFFFFC43D, {
+    50: Color.fromRGBO(255, 196, 61, .1),
+    100: Color.fromRGBO(255, 196, 61, .2),
+    200: Color.fromRGBO(255, 196, 61, .3),
+    300: Color.fromRGBO(255, 196, 61, .4),
+    400: Color.fromRGBO(255, 196, 61, .5),
+    500: Color.fromRGBO(255, 196, 61, .6),
+    600: Color.fromRGBO(255, 196, 61, .7),
+    700: Color.fromRGBO(255, 196, 61, .8),
+    800: Color.fromRGBO(255, 196, 61, .9),
+    900: Color.fromRGBO(255, 196, 61, 1)
   });
 
-  static const MaterialColor info = MaterialColor(0xFF5aa9e6, {
-    50: Color.fromRGBO(90, 169, 230, .1),
-    100: Color.fromRGBO(90, 169, 230, .2),
-    200: Color.fromRGBO(90, 169, 230, .3),
-    300: Color.fromRGBO(90, 169, 230, .4),
-    400: Color.fromRGBO(90, 169, 230, .5),
-    500: Color.fromRGBO(90, 169, 230, .6),
-    600: Color.fromRGBO(90, 169, 230, .7),
-    700: Color.fromRGBO(90, 169, 230, .8),
-    800: Color.fromRGBO(90, 169, 230, .9),
-    900: Color.fromRGBO(90, 169, 230, 1)
+  static const MaterialColor info = MaterialColor(0xFF009bff, {
+    50: Color.fromRGBO(0, 155, 255, .1),
+    100: Color.fromRGBO(0, 155, 255, .2),
+    200: Color.fromRGBO(0, 155, 255, .3),
+    300: Color.fromRGBO(0, 155, 255, .4),
+    400: Color.fromRGBO(0, 155, 255, .5),
+    500: Color.fromRGBO(0, 155, 255, .6),
+    600: Color.fromRGBO(0, 155, 255, .7),
+    700: Color.fromRGBO(0, 155, 255, .8),
+    800: Color.fromRGBO(0, 155, 255, .9),
+    900: Color.fromRGBO(0, 155, 255, 1)
   });
 }
 
