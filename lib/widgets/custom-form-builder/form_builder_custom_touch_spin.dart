@@ -70,12 +70,14 @@ class _FormBuilderCustomTouchSpinState
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         FilledButton(
           style: FilledButton.styleFrom(
             elevation: 0.0,
+            backgroundColor: theme.unselectedWidgetColor,
             padding: const EdgeInsets.all(AppStyleDefaultProperties.p + 4.0),
           ),
           onPressed: widget.enableButton
@@ -118,6 +120,7 @@ class _FormBuilderCustomTouchSpinState
         FilledButton(
           style: FilledButton.styleFrom(
             elevation: 0.0,
+            backgroundColor: theme.unselectedWidgetColor,
             padding: const EdgeInsets.all(AppStyleDefaultProperties.p + 4.0),
           ),
           onPressed: widget.enableButton

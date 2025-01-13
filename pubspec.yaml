@@ -86,6 +86,20 @@ dev_dependencies:
   flutter_lints: ^4.0.0
   build_runner: ^2.4.10
   json_serializable: ^6.8.0
+#   flutter_launcher_icons: ^0.14.2
+
+# flutter_launcher_icons:
+#   image_path: "assets/app-icons/icon.png"
+#   android: true
+#   adaptive_icon_background: "assets/app-icons/bg.png"
+#   adaptive_icon_foreground: "assets/app-icons/icon.png"
+#   min_sdk_android: 21 # android min sdk min:16, default 21
+#   ios: true
+#   remove_alpha_ios: true
+#   desaturate_tinted_to_grayscale_ios: true
+#   image_path_ios_dark_transparent: "assets/app-icons/icon.png"
+#   image_path_ios_tinted_grayscale: "assets/app-icons/gray-icon.png"
+#   background_color_ios: "#FD644F"
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
