@@ -2,6 +2,11 @@ import 'package:flutter/material.dart';
 import '../models/select-option/select_option_model.dart';
 import '../router/route_utils.dart';
 
+class AppInfo {
+  AppInfo._();
+  static const String version = '1.0.0';
+}
+
 class AppNavigation {
   AppNavigation._();
 
