@@ -2,9 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import '../../screens/app_screen.dart';
-import '../../services/global_service.dart';
 import '../../utils/constants.dart';
-import 'setup_ip_address_form_widget.dart';
 
 class ConnectionFormWidget extends StatelessWidget {
   const ConnectionFormWidget({super.key});
@@ -17,19 +15,20 @@ class ConnectionFormWidget extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Material(
-              color: Colors.transparent,
-              child: IconButton(
-                splashRadius: 35.0,
-                icon: const Icon(AppDefaultIcons.noConnection),
-                // splashColor: CommonColors.secondary.withOpacity(0.1),
-                onPressed: () => GlobalService.openDialog(
-                    contentWidget: const SetupIpAddressFormWidget(),
-                    context: context),
-                iconSize: 72.0,
-                // color: CommonColors.secondary,
-              ),
-            ),
+            // Material(
+            //   color: Colors.transparent,
+            //   child: IconButton(
+            //     splashRadius: 35.0,
+            //     icon: const Icon(AppDefaultIcons.noConnection),
+            //     // splashColor: CommonColors.secondary.withOpacity(0.1),
+            //     onPressed: () => GlobalService.openDialog(
+            //         contentWidget: const SetupIpAddressFormWidget(),
+            //         context: context),
+            //     iconSize: 72.0,
+            //     // color: CommonColors.secondary,
+            //   ),
+            // ),
+            const Icon(AppDefaultIcons.noConnection, size: 72.0),
             const SizedBox(height: AppStyleDefaultProperties.h),
             LoadingAnimationWidget.staggeredDotsWave(
               color: theme.iconTheme.color!,

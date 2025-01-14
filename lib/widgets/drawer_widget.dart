@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -13,7 +14,7 @@ import 'drawer_list_tile_widget.dart';
 
 class DrawerWidget extends StatelessWidget {
   const DrawerWidget({super.key});
-
+  final String _version = 'appInfo.version';
   @override
   Widget build(BuildContext context) {
     final List<SCREENS> screens = AppNavigation.drawer
@@ -63,6 +64,10 @@ class DrawerWidget extends StatelessWidget {
             icon: logoutScreen.toIcon,
             title: logoutScreen.toTitle,
             onTap: () => context.read<AuthProvider>().logOut()),
+        ListTile(
+          title: Text(
+              context.tr(_version, namedArgs: {'version': AppInfo.version})),
+        )
       ],
     ));
   }

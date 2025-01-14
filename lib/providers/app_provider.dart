@@ -91,7 +91,7 @@ class AppProvider extends ChangeNotifier {
 
   //methods
   Future<void> onAppInit() async {
-    _onboarding = sharedPreferences.getBool(ONBOARD_KEY) ?? false;
+    // _onboarding = sharedPreferences.getBool(ONBOARD_KEY) ?? false;
     // This is just to demonstrate the splash screen is working.
     // In real-life applications, it is not recommended to interrupt the user experience by doing such things.
     await Future.delayed(const Duration(seconds: 1));

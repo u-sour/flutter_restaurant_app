@@ -1,4 +1,7 @@
 {
+  "appInfo": {
+    "version": "ជំនាន់: {version}"
+  },
   "screens": {
     "connection": {
       "title": "សូមអភ័យទោស កម្មវិធីមិនអាចភ្ជាប់ទៅម៉ាស៊ីនមេបានទេ។",

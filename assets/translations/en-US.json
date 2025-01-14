@@ -1,4 +1,7 @@
 {
+  "appInfo": {
+    "version": "Version: {version}"
+  },
   "screens": {
     "connection": {
       "title": "Sorry, the application couldn't connect to the server.",

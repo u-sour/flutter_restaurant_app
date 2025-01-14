@@ -1,8 +1,7 @@
+import 'package:animate_do/animate_do.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../widgets/app_bar_widget.dart';
 import '../providers/app_provider.dart';
-import '../router/route_utils.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -28,14 +27,28 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBarWidget(title: SCREENS.splash.toTitle),
-      body: const Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            CircularProgressIndicator(),
-            Text("Splash Screen"),
-          ],
+      body: FadeIn(
+        child: Container(
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/app-icons/bg.png"),
+              fit: BoxFit.cover,
+            ),
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              ElasticIn(
+                child: const Image(
+                  width: 256.0,
+                  height: 256.0,
+                  image: AssetImage('assets/app-icons/icon.png'),
+                  // fit: BoxFit.fill,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
