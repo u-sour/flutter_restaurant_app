@@ -6,11 +6,13 @@ import '../../../utils/sale/sale_utils.dart';
 
 class SaleCategoryItemWidget extends StatelessWidget {
   final String ipAddress;
+  final bool isCategorySelected;
   final SaleCategoryModel category;
   final void Function()? onPressed;
   const SaleCategoryItemWidget({
     super.key,
     required this.ipAddress,
+    required this.isCategorySelected,
     required this.category,
     this.onPressed,
   });
@@ -22,7 +24,9 @@ class SaleCategoryItemWidget extends StatelessWidget {
     return OutlinedButton.icon(
       onPressed: onPressed,
       style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: AppThemeColors.primary),
+          backgroundColor:
+              isCategorySelected ? theme.colorScheme.primary : null,
+          side: BorderSide(color: theme.colorScheme.primary),
           shape: const RoundedRectangleBorder(
               borderRadius: BorderRadius.all(
                   Radius.circular(AppStyleDefaultProperties.r)))),
@@ -35,7 +39,10 @@ class SaleCategoryItemWidget extends StatelessWidget {
                 ? SvgPicture.network(
                     getImgSrc(ipAddress: ipAddress, imgUrl: category.icon!),
                     colorFilter: ColorFilter.mode(
-                        theme.iconTheme.color!, BlendMode.srcIn),
+                        isCategorySelected
+                            ? theme.colorScheme.onPrimary
+                            : theme.iconTheme.color!,
+                        BlendMode.srcIn),
                     placeholderBuilder: (context) =>
                         const CircularProgressIndicator(),
                   )
@@ -45,7 +52,9 @@ class SaleCategoryItemWidget extends StatelessWidget {
           Expanded(
             child: Text(
               category.name,
-              style: theme.textTheme.bodyLarge,
+              style: theme.textTheme.bodyLarge!.copyWith(
+                  color:
+                      isCategorySelected ? theme.colorScheme.onPrimary : null),
               overflow: TextOverflow.ellipsis,
             ),
           )

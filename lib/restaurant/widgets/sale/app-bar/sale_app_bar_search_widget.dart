@@ -40,7 +40,7 @@ class SaleAppBarSearchWidget extends StatelessWidget {
                 debounce.run(() {
                   String categoryId = context
                       .read<SaleCategoriesProvider>()
-                      .selectedCategories
+                      .selectedBreadcrumbCategories
                       .last
                       .id;
                   String productGroupId =

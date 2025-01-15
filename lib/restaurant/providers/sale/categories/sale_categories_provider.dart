@@ -6,40 +6,54 @@ import '../../../models/sale/category/sale_category_model.dart';
 
 class SaleCategoriesProvider extends ChangeNotifier {
   late List<SaleCategoryModel> _categories;
-  late List<SaleCategoryModel> _selectedCategories;
+  late List<SaleCategoryModel> _selectedBreadcrumbCategories;
+  late String _selectedCategoryId;
 
   //getter
   List<SaleCategoryModel> get categories => _categories;
-  List<SaleCategoryModel> get selectedCategories => _selectedCategories;
+  List<SaleCategoryModel> get selectedBreadcrumbCategories =>
+      _selectedBreadcrumbCategories;
+  String get selectedCategoryId => _selectedCategoryId;
 
   Future<void> setSelectedCategory(
       {required SaleCategoryModel category,
       required String branchId,
       required String depId}) async {
-    _categories = await fetchSaleCategories(
+    final List<SaleCategoryModel> categories = await fetchSaleCategories(
         branchId: branchId,
         depId: depId,
         parentId: category.id == '' ? null : category.id,
         level: category.id == '' ? 0 : null);
-    _selectedCategories.add(SaleCategoryModel(
-      id: category.id,
-      name: category.name,
-      level: category.level,
-    ));
+    if (categories.isNotEmpty) {
+      _categories = categories;
+      _selectedBreadcrumbCategories.add(SaleCategoryModel(
+        id: category.id,
+        name: category.name,
+        level: category.level,
+      ));
+    }
+    _selectedCategoryId = category.id;
     notifyListeners();
   }
 
-  void clearSelectedCategory({required int index}) {
-    _selectedCategories.removeRange(index, _selectedCategories.length);
+  void clearSelectedBreadcrumbCategories({required int index}) {
+    _selectedBreadcrumbCategories.removeRange(
+        index, _selectedBreadcrumbCategories.length);
+    notifyListeners();
+  }
+
+  void clearSelectedCategoryId() {
+    _selectedCategoryId = '';
     notifyListeners();
   }
 
   Future<void> initData({required BuildContext context}) async {
     AppProvider readAppProvider = context.read<AppProvider>();
     _categories = [];
-    _selectedCategories = [
+    _selectedBreadcrumbCategories = [
       const SaleCategoryModel(id: '', name: 'All', level: 0)
     ];
+    _selectedCategoryId = '';
     String branchId = readAppProvider.selectedBranch!.id;
     String depId = readAppProvider.selectedDepartment!.id;
     _categories =

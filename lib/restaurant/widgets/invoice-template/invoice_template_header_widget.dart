@@ -36,6 +36,7 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                 // Type : Logo
                 if (headers[i].type == 'logo' && headers[i].imageUrl != null)
                   InvoiceTemplateCachedImgWidget(
+                    isQrcode: false,
                     ipAddress: ipAddress,
                     imgUrl: headers[i].imageUrl!,
                     width: headers[i].valueStyle.width ?? 0.0,

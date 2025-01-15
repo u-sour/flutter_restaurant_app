@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class InvoiceTemplateCachedImgWidget extends StatelessWidget {
+  final bool isQrcode;
   final String ipAddress;
   final String imgUrl;
   final double width;
@@ -11,6 +12,7 @@ class InvoiceTemplateCachedImgWidget extends StatelessWidget {
 
   const InvoiceTemplateCachedImgWidget({
     super.key,
+    this.isQrcode = true,
     required this.ipAddress,
     required this.imgUrl,
     required this.width,
@@ -30,11 +32,11 @@ class InvoiceTemplateCachedImgWidget extends StatelessWidget {
       imageBuilder: (context, imageProvider) {
         return Container(
           margin: margin,
-          height: height,
+          height: isQrcode ? height * 2 : height,
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(borderRadius ?? 0.0),
             image: DecorationImage(
-              fit: BoxFit.fitHeight,
+              fit: BoxFit.contain,
               image: imageProvider,
             ),
           ),
