@@ -41,95 +41,107 @@ class InvoiceTemplateWidget extends StatelessWidget {
         invoicePaper.descriptionSchema.left;
     List<DescriptionLeftRightSchemaModel> descriptionRight =
         invoicePaper.descriptionSchema.right;
-    return Column(
+    return Stack(
       children: [
-        // Header
-        InvoiceTemplateHeaderWidget(
-          paperSize: paperSize,
-          ipAddress: ipAddress,
-          headerSchema: invoicePaper.headerSchema,
-          sale: saleInvoiceContent.saleDoc,
-        ),
-        const Divider(color: baseColor),
-        // Description
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
+        Column(
           children: [
-            // Description Left
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (int i = 0; i < descriptionLeft.length; i++)
-                    InvoiceTemplateDescriptionWidget(
-                      paperSize: paperSize,
-                      showSubLabel: invoicePaper.descriptionSchema.showSubLabel,
-                      description: descriptionLeft[i],
-                      labelStyle: invoicePaper.descriptionSchema.labelStyle,
-                      subLabelStyle:
-                          invoicePaper.descriptionSchema.subLabelStyle,
-                      valueStyle: invoicePaper.descriptionSchema.valueStyle,
-                      sale: saleInvoiceContent.saleDoc,
-                      paymentBy: saleInvoiceContent.receiptDoc?.paymentBy ?? '',
-                      exchange: saleInvoiceContent.exchangeDoc,
-                      receiptPrint: receiptPrint,
-                    ),
-                ],
-              ),
+            // Header
+            InvoiceTemplateHeaderWidget(
+              paperSize: paperSize,
+              ipAddress: ipAddress,
+              headerSchema: invoicePaper.headerSchema,
+              sale: saleInvoiceContent.saleDoc,
             ),
-            // Description Right
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  for (int i = 0; i < descriptionRight.length; i++)
-                    InvoiceTemplateDescriptionWidget(
-                      paperSize: paperSize,
-                      showSubLabel: invoicePaper.descriptionSchema.showSubLabel,
-                      description: descriptionRight[i],
-                      labelStyle: invoicePaper.descriptionSchema.labelStyle,
-                      subLabelStyle:
-                          invoicePaper.descriptionSchema.subLabelStyle,
-                      valueStyle: invoicePaper.descriptionSchema.valueStyle,
-                      sale: saleInvoiceContent.saleDoc,
-                      paymentBy: saleInvoiceContent.receiptDoc?.paymentBy ?? '',
-                      exchange: saleInvoiceContent.exchangeDoc,
-                      receiptPrint: receiptPrint,
-                    ),
-                ],
-              ),
+            const Divider(color: baseColor),
+            // Description
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Description Left
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (int i = 0; i < descriptionLeft.length; i++)
+                        InvoiceTemplateDescriptionWidget(
+                          paperSize: paperSize,
+                          showSubLabel:
+                              invoicePaper.descriptionSchema.showSubLabel,
+                          description: descriptionLeft[i],
+                          labelStyle: invoicePaper.descriptionSchema.labelStyle,
+                          subLabelStyle:
+                              invoicePaper.descriptionSchema.subLabelStyle,
+                          valueStyle: invoicePaper.descriptionSchema.valueStyle,
+                          sale: saleInvoiceContent.saleDoc,
+                          paymentBy:
+                              saleInvoiceContent.receiptDoc?.paymentBy ?? '',
+                          exchange: saleInvoiceContent.exchangeDoc,
+                          receiptPrint: receiptPrint,
+                        ),
+                    ],
+                  ),
+                ),
+                // Description Right
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      for (int i = 0; i < descriptionRight.length; i++)
+                        InvoiceTemplateDescriptionWidget(
+                          paperSize: paperSize,
+                          showSubLabel:
+                              invoicePaper.descriptionSchema.showSubLabel,
+                          description: descriptionRight[i],
+                          labelStyle: invoicePaper.descriptionSchema.labelStyle,
+                          subLabelStyle:
+                              invoicePaper.descriptionSchema.subLabelStyle,
+                          valueStyle: invoicePaper.descriptionSchema.valueStyle,
+                          sale: saleInvoiceContent.saleDoc,
+                          paymentBy:
+                              saleInvoiceContent.receiptDoc?.paymentBy ?? '',
+                          exchange: saleInvoiceContent.exchangeDoc,
+                          receiptPrint: receiptPrint,
+                        ),
+                    ],
+                  ),
+                ),
+              ],
             ),
+            // Table
+            InvoiceTemplateTableWidget(
+              paperSize: paperSize,
+              tableSchema: invoicePaper.tableSchema,
+              saleDetails: saleInvoiceContent.orderList,
+            ),
+            // Total
+            InvoiceTemplateTotalWidget(
+              paperSize: paperSize,
+              totalSchema: invoicePaper.totalSchema,
+              saleInvoiceContent: saleInvoiceContent,
+              isPaid: saleInvoiceContent.receiptDoc != null ? true : false,
+              isRepaid: isRepaid,
+            ),
+            // Signature
+            InvoiceTemplateSignatureWidget(
+                paperSize: paperSize,
+                signatureSchema: invoicePaper.signatureSchema),
+            // QrCode
+            InvoiceTemplateQrCodeWidget(
+              ipAddress: ipAddress,
+              qrCodeSchema: invoicePaper.qrCodeSchema,
+            ),
+            // Footer
+            InvoiceTemplateFooterWidget(
+                paperSize: paperSize,
+                footerSchema: invoicePaper.footerTextSchema),
+            // Copyright
+            InvoiceTemplateCopyRightWidget(paperSize: paperSize)
           ],
         ),
-        // Table
-        InvoiceTemplateTableWidget(
-          paperSize: paperSize,
-          tableSchema: invoicePaper.tableSchema,
-          saleDetails: saleInvoiceContent.orderList,
-        ),
-        // Total
-        InvoiceTemplateTotalWidget(
-          paperSize: paperSize,
-          totalSchema: invoicePaper.totalSchema,
-          saleInvoiceContent: saleInvoiceContent,
-          isPaid: saleInvoiceContent.receiptDoc != null ? true : false,
-          isRepaid: isRepaid,
-        ),
-        // Signature
-        InvoiceTemplateSignatureWidget(
-            paperSize: paperSize,
-            signatureSchema: invoicePaper.signatureSchema),
-        // QrCode
-        InvoiceTemplateQrCodeWidget(
-          ipAddress: ipAddress,
-          qrCodeSchema: invoicePaper.qrCodeSchema,
-        ),
-        // Footer
-        InvoiceTemplateFooterWidget(
-            paperSize: paperSize, footerSchema: invoicePaper.footerTextSchema),
-        // Copyright
-        InvoiceTemplateCopyRightWidget(paperSize: paperSize)
+        if (saleInvoiceContent.saleDoc.status == 'Cancel')
+          Positioned.fill(
+              child: Image.asset('assets/images/invoice/canceled.png')),
       ],
     );
   }

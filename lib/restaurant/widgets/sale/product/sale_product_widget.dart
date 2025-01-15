@@ -48,7 +48,7 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
           !_productScrollController.position.outOfRange) {
         _debounce.run(() async {
           String categoryId =
-              _readSaleCategoriesProvider.selectedCategories.last.id;
+              _readSaleCategoriesProvider.selectedBreadcrumbCategories.last.id;
           await _readSaleProductsProvider.loadMore(categoryId: categoryId);
         });
       }
