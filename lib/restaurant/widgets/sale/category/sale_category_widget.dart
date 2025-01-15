@@ -60,16 +60,19 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
               SaleCategoriesProvider,
               ({
                 List<SaleCategoryModel> categories,
-                List<SaleCategoryModel> selectedCategories,
+                List<SaleCategoryModel> selectedBreadcrumbCategories,
+                String selectedCategoryId
               })>(
           selector: (context, state) => (
                 categories: state.categories,
-                selectedCategories: state.selectedCategories
+                selectedBreadcrumbCategories:
+                    state.selectedBreadcrumbCategories,
+                selectedCategoryId: state.selectedCategoryId
               ),
           builder: (context, data, child) {
             final List<SaleCategoryModel> categories = data.categories;
-            final List<SaleCategoryModel> selectedCategories =
-                data.selectedCategories;
+            final List<SaleCategoryModel> selectedBreadcrumbCategories =
+                data.selectedBreadcrumbCategories;
             return Column(
               children: [
                 // Extra foods
@@ -85,6 +88,9 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                               // clear search text field & state
                               _readSaleProductsProvider
                                   .clearSearchTextFieldAndState();
+                              // clear selected category
+                              _readSaleCategoriesProvider
+                                  .clearSelectedCategoryId();
                               // clear product group
                               _readSaleProductsProvider.productGroupFilter(
                                   isExtraFood: true);
@@ -137,19 +143,20 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                   const Divider(height: AppStyleDefaultProperties.h),
                 ],
                 // Breadcrumb Categories
-                if (selectedCategories.length > 1)
+                if (selectedBreadcrumbCategories.length > 1) ...[
                   SizedBox(
                     height: 48.0,
                     child: ScrollablePositionedList.builder(
                         scrollDirection: Axis.horizontal,
                         itemScrollController: _breadcrumbScrollController,
                         shrinkWrap: true,
-                        itemCount: selectedCategories.length,
+                        itemCount: selectedBreadcrumbCategories.length,
                         itemBuilder: (BuildContext context, int index) {
                           final SaleCategoryModel category =
-                              selectedCategories[index];
-                          bool isCategorySelected =
-                              selectedCategories.last.id == category.id
+                              selectedBreadcrumbCategories[index];
+                          bool isBreadcrumbCategorySelected =
+                              selectedBreadcrumbCategories.last.id ==
+                                      category.id
                                   ? true
                                   : false;
                           return Row(
@@ -158,7 +165,8 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                 onPressed: () {
                                   // clear selected category
                                   _readSaleCategoriesProvider
-                                      .clearSelectedCategory(index: index);
+                                      .clearSelectedBreadcrumbCategories(
+                                          index: index);
                                   handleCategorySelected(category);
                                   // auto scroll to index
                                   _breadcrumbScrollController.scrollTo(
@@ -170,37 +178,42 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
                                 style: TextButton.styleFrom(
                                     textStyle: theme.textTheme.bodyMedium!
                                         .copyWith(
-                                            fontWeight: isCategorySelected
-                                                ? FontWeight.bold
-                                                : null)),
+                                            fontWeight:
+                                                isBreadcrumbCategorySelected
+                                                    ? FontWeight.bold
+                                                    : null)),
                                 child: Text(category.name),
                               ),
-                              if (selectedCategories.length != index + 1)
+                              if (selectedBreadcrumbCategories.length !=
+                                  index + 1)
                                 const Icon(RestaurantDefaultIcons.next)
                             ],
                           );
                         }),
                   ),
-                if (selectedCategories.length > 1)
                   const Divider(height: AppStyleDefaultProperties.h),
+                ],
                 // Categories
                 Expanded(
                   child: ListView.builder(
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       final SaleCategoryModel category = categories[index];
+                      bool isCategorySelected =
+                          data.selectedCategoryId == category.id ? true : false;
                       return SaleCategoryItemWidget(
                         ipAddress: _readSaleProvider.ipAddress,
+                        isCategorySelected: isCategorySelected,
                         category: category,
                         onPressed: () {
                           handleCategorySelected(category);
                           // auto scroll to last index
                           if (_breadcrumbScrollController.isAttached &&
-                              selectedCategories.length > 1) {
+                              selectedBreadcrumbCategories.length > 1) {
                             _breadcrumbScrollController.scrollTo(
-                                index: selectedCategories.length,
-                                alignment:
-                                    -selectedCategories.length.toDouble(),
+                                index: selectedBreadcrumbCategories.length,
+                                alignment: -selectedBreadcrumbCategories.length
+                                    .toDouble(),
                                 duration: const Duration(milliseconds: 500),
                                 curve: Curves.easeInOut);
                           }

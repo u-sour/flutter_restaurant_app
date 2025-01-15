@@ -115,6 +115,7 @@ flutter:
     - assets/translations/
     - assets/images/languages/
     - assets/images/login/
+    - assets/images/invoice/
     - assets/app-icons/
   #   - images/a_dot_ham.jpeg
 
