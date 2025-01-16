@@ -7,12 +7,14 @@ class ProductModel {
   final int qty;
   final num cost;
   final num amount;
+  final bool? draft;
 
   const ProductModel({
     required this.productId,
     required this.qty,
     required this.cost,
     required this.amount,
+    this.draft,
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) =>

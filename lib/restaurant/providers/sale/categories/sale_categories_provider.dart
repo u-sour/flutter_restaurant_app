@@ -32,7 +32,10 @@ class SaleCategoriesProvider extends ChangeNotifier {
         level: category.level,
       ));
     }
-    _selectedCategoryId = category.id;
+    _selectedCategoryId =
+        _selectedCategoryId.isEmpty || _selectedCategoryId != category.id
+            ? category.id
+            : '';
     notifyListeners();
   }
 

@@ -97,149 +97,156 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    return Scaffold(
-      appBar: InvoiceAppBarWidget(
-        title: SCREENS.printer.toTitle,
-        tableId: widget.tableId,
-        isSkipTable: readSaleProvider.isSkipTable,
-        fromReceiptForm: widget.fromReceiptForm,
-        fromDashboard: widget.fromDashboard,
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          Expanded(
-            child: Receipt(
-                backgroundColor: Colors.grey.shade200,
-                onInitialized: (controller) async {
-                  controller.paperSize = paperSize;
-                  readPrinterProvider.controller = controller;
-                },
-                builder: (context) => FutureBuilder(
-                    future: Future.wait([
-                      invoiceTemplate,
-                      saleInvoiceContent,
-                      // exchange, saleDetails
-                    ]),
-                    builder: (context, AsyncSnapshot<List<dynamic>> snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      } else if (snapshot.hasData) {
-                        final String ipAddress = readInvoiceProvider.ipAddress;
-                        final InvoiceTemplateModel template = snapshot.data![0];
-                        final SaleInvoiceContentModel saleInvoiceContent =
-                            snapshot.data![1];
-                        return InvoiceTemplateWidget(
-                          paperSize: paperSize,
-                          ipAddress: ipAddress,
-                          receiptPrint: widget.receiptPrint,
-                          isRepaid: widget.isRepaid,
-                          receiptId: widget.receiptId,
-                          template: template,
-                          saleInvoiceContent: saleInvoiceContent,
-                        );
-                      } else {
-                        return const LoadingWidget();
-                      }
-                    })),
-          ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  // Edit invoice (cancel & copy)
-                  // Note: enable when sale setting allow to edit Invoice 'active'
-                  Selector<AppProvider, SaleSettingModel>(
-                      selector: (context, state) => state.saleSetting,
-                      builder: (context, saleSetting, child) {
-                        return saleSetting.sale.editableInvoice != false &&
-                                widget.showEditInvoiceBtn
-                            ? Expanded(
-                                child: ElevatedButton(
-                                  onPressed: () async {
-                                    final result =
-                                        await readSaleProvider.cancelSale(
-                                            context: context,
-                                            copy: true,
-                                            editableInvoice: saleSetting
-                                                    .sale.editableInvoice !=
-                                                false,
-                                            invoiceId: widget.invoiceId);
-                                    if (result != null) {
-                                      late SnackBar snackBar;
-                                      snackBar = Alert.awesomeSnackBar(
-                                          message: result.message,
-                                          type: result.type);
-                                      if (!context.mounted) return;
-                                      ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(snackBar);
-                                    }
-                                  },
-                                  child: Text('$prefixPrinterBtn.edit'.tr(),
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(
-                                              fontWeight: FontWeight.bold)),
-                                ),
-                              )
-                            : const SizedBox.shrink();
-                      }),
-                  // Print
-                  Expanded(
-                    child: ElevatedButton(
-                      onPressed: () async {
-                        // Get copies sale setting from backend and check invoice print from sale receipt form or normal
-                        AppProvider readAppProvider =
-                            context.read<AppProvider>();
-                        int copyForBill =
-                            readAppProvider.saleSetting.invoice.copyForBill ??
-                                1;
-                        int copyForPayment = readAppProvider
-                                .saleSetting.invoice.copyForPayment ??
-                            1;
-                        await GlobalService.openDialog(
-                          contentWidget: PrintingProgressWidget(
-                              copies: widget.fromReceiptForm
-                                  ? copyForPayment
-                                  : copyForBill),
-                          context: context,
-                        ).then((_) {
-                          if (context.mounted && widget.autoCloseAfterPrinted) {
-                            if (widget.fromReceiptForm &&
-                                !widget.fromDashboard &&
-                                (readSaleProvider.isSkipTable != null &&
-                                    readSaleProvider.isSkipTable == true) &&
-                                widget.tableId != null) {
-                              context.goNamed(SCREENS.sale.toName,
-                                  queryParameters: {
-                                    'table': widget.tableId,
-                                    'fastSale': 'false'
-                                  });
-                            } else if (widget.fromReceiptForm &&
-                                !widget.fromDashboard &&
-                                (readSaleProvider.isSkipTable != null &&
-                                    readSaleProvider.isSkipTable == false)) {
-                              context.goNamed(SCREENS.saleTable.toName);
-                            } else if (widget.fromReceiptForm &&
-                                widget.fromDashboard) {
-                              context.goNamed(SCREENS.dashboard.toName);
-                            } else {
-                              context.pop();
+    return PopScope(
+      canPop: false,
+      child: Scaffold(
+        appBar: InvoiceAppBarWidget(
+          title: SCREENS.printer.toTitle,
+          tableId: widget.tableId,
+          isSkipTable: readSaleProvider.isSkipTable,
+          fromReceiptForm: widget.fromReceiptForm,
+          fromDashboard: widget.fromDashboard,
+        ),
+        body: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Expanded(
+              child: Receipt(
+                  backgroundColor: Colors.grey.shade200,
+                  onInitialized: (controller) async {
+                    controller.paperSize = paperSize;
+                    readPrinterProvider.controller = controller;
+                  },
+                  builder: (context) => FutureBuilder(
+                      future: Future.wait([
+                        invoiceTemplate,
+                        saleInvoiceContent,
+                        // exchange, saleDetails
+                      ]),
+                      builder:
+                          (context, AsyncSnapshot<List<dynamic>> snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        } else if (snapshot.hasData) {
+                          final String ipAddress =
+                              readInvoiceProvider.ipAddress;
+                          final InvoiceTemplateModel template =
+                              snapshot.data![0];
+                          final SaleInvoiceContentModel saleInvoiceContent =
+                              snapshot.data![1];
+                          return InvoiceTemplateWidget(
+                            paperSize: paperSize,
+                            ipAddress: ipAddress,
+                            receiptPrint: widget.receiptPrint,
+                            isRepaid: widget.isRepaid,
+                            receiptId: widget.receiptId,
+                            template: template,
+                            saleInvoiceContent: saleInvoiceContent,
+                          );
+                        } else {
+                          return const LoadingWidget();
+                        }
+                      })),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    // Edit invoice (cancel & copy)
+                    // Note: enable when sale setting allow to edit Invoice 'active'
+                    Selector<AppProvider, SaleSettingModel>(
+                        selector: (context, state) => state.saleSetting,
+                        builder: (context, saleSetting, child) {
+                          return saleSetting.sale.editableInvoice != false &&
+                                  widget.showEditInvoiceBtn
+                              ? Expanded(
+                                  child: ElevatedButton(
+                                    onPressed: () async {
+                                      final result =
+                                          await readSaleProvider.cancelSale(
+                                              context: context,
+                                              copy: true,
+                                              editableInvoice: saleSetting
+                                                      .sale.editableInvoice !=
+                                                  false,
+                                              invoiceId: widget.invoiceId);
+                                      if (result != null) {
+                                        late SnackBar snackBar;
+                                        snackBar = Alert.awesomeSnackBar(
+                                            message: result.message,
+                                            type: result.type);
+                                        if (!context.mounted) return;
+                                        ScaffoldMessenger.of(context)
+                                          ..hideCurrentSnackBar()
+                                          ..showSnackBar(snackBar);
+                                      }
+                                    },
+                                    child: Text('$prefixPrinterBtn.edit'.tr(),
+                                        style: theme.textTheme.bodySmall!
+                                            .copyWith(
+                                                fontWeight: FontWeight.bold)),
+                                  ),
+                                )
+                              : const SizedBox.shrink();
+                        }),
+                    // Print
+                    Expanded(
+                      child: ElevatedButton(
+                        onPressed: () async {
+                          // Get copies sale setting from backend and check invoice print from sale receipt form or normal
+                          AppProvider readAppProvider =
+                              context.read<AppProvider>();
+                          int copyForBill =
+                              readAppProvider.saleSetting.invoice.copyForBill ??
+                                  1;
+                          int copyForPayment = readAppProvider
+                                  .saleSetting.invoice.copyForPayment ??
+                              1;
+                          await GlobalService.openDialog(
+                            contentWidget: PrintingProgressWidget(
+                                copies: widget.fromReceiptForm
+                                    ? copyForPayment
+                                    : copyForBill),
+                            context: context,
+                          ).then((_) {
+                            if (context.mounted &&
+                                widget.autoCloseAfterPrinted) {
+                              if (widget.fromReceiptForm &&
+                                  !widget.fromDashboard &&
+                                  (readSaleProvider.isSkipTable != null &&
+                                      readSaleProvider.isSkipTable == true) &&
+                                  widget.tableId != null) {
+                                context.goNamed(SCREENS.sale.toName,
+                                    queryParameters: {
+                                      'table': widget.tableId,
+                                      'fastSale': 'false'
+                                    });
+                              } else if (widget.fromReceiptForm &&
+                                  !widget.fromDashboard &&
+                                  (readSaleProvider.isSkipTable != null &&
+                                      readSaleProvider.isSkipTable == false)) {
+                                context.goNamed(SCREENS.saleTable.toName);
+                              } else if (widget.fromReceiptForm &&
+                                  widget.fromDashboard) {
+                                context.goNamed(SCREENS.dashboard.toName);
+                              } else {
+                                context.pop();
+                              }
                             }
-                          }
-                        });
-                      },
-                      child: Text('$prefixPrinterBtn.print'.tr(),
-                          style: theme.textTheme.bodySmall!
-                              .copyWith(fontWeight: FontWeight.bold)),
+                          });
+                        },
+                        child: Text('$prefixPrinterBtn.print'.tr(),
+                            style: theme.textTheme.bodySmall!
+                                .copyWith(fontWeight: FontWeight.bold)),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

@@ -12,7 +12,7 @@ class CancelSaleDescriptionCdcWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     SaleProvider readSaleProvider = context.read<SaleProvider>();
     final theme = Theme.of(context);
-    return Row(
+    return Wrap(
       children: [
         Text(
           '$_prefixSaleDetailDialog.cancelSale.start'.tr(),

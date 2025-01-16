@@ -55,7 +55,8 @@ class InvoiceTemplateHeaderWidget extends StatelessWidget {
                         style: theme.textTheme.bodySmall!.copyWith(
                             color: baseColor,
                             fontSize: paperSize == PaperSize.mm80 &&
-                                    headers[i].labelStyle != null
+                                    (headers[i].labelStyle != null &&
+                                        headers[i].labelStyle!.fontSize != null)
                                 ? headers[i].labelStyle!.fontSize! +
                                     AppStyleDefaultProperties.iefs
                                 : headers[i].labelStyle?.fontSize,
