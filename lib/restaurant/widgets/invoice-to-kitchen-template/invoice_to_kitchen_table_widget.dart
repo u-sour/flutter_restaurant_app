@@ -18,7 +18,6 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final double width = MediaQuery.sizeOf(context).width;
     const Color baseColor = Colors.black;
     List<SelectOptionModel> fields = [
       SelectOptionModel(label: '$prefixDataTable.item', value: 'itemName'),
@@ -35,7 +34,7 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
     List<int> dashed = [5, 2];
 
     return Container(
-      width: width,
+      width: double.infinity,
       margin: const EdgeInsets.symmetric(vertical: 8.0),
       decoration: DottedDecoration(color: baseColor, dash: dashed),
       child: DataTable(
@@ -89,6 +88,17 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                             textAlign: textAlign(fields[i].value),
                           ),
+                          // Catalog
+                          if (row['comboDoc'].isNotEmpty)
+                            for (int i = 0; i < row['comboDoc'].length; i++)
+                              Text(
+                                '-${row['comboDoc'][i]['itemName']} x${row['comboDoc'][i]['qty']}',
+                                style: theme.textTheme.bodyLarge!.copyWith(
+                                  color: baseColor,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                                softWrap: true,
+                              ),
                           // Extra Items
                           if (row['extraItemDoc'].isNotEmpty)
                             for (int i = 0; i < row['extraItemDoc'].length; i++)

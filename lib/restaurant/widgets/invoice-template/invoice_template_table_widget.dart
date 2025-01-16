@@ -139,11 +139,11 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                             i++)
                                           Padding(
                                             padding: EdgeInsets.only(
-                                              left: tables[i]
+                                              left: tables[0]
                                                       .subItemStyle
                                                       ?.paddingLeft ??
                                                   0.0,
-                                              bottom: tables[i]
+                                              bottom: tables[0]
                                                       .subItemStyle
                                                       ?.paddingBottom ??
                                                   0.0,
@@ -155,15 +155,15 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                                 color: baseColor,
                                                 fontSize: paperSize ==
                                                             PaperSize.mm80 &&
-                                                        tables[i]
+                                                        tables[0]
                                                                 .subItemStyle !=
                                                             null
-                                                    ? tables[i]
+                                                    ? tables[0]
                                                             .subItemStyle!
                                                             .fontSize! +
                                                         AppStyleDefaultProperties
                                                             .iefs
-                                                    : tables[i]
+                                                    : tables[0]
                                                         .subItemStyle
                                                         ?.fontSize,
                                                 fontWeight: tables[i]

@@ -25,6 +25,7 @@ import '../../models/sale/detail/sale_detail_extra_item_model.dart';
 import '../../models/sale/detail/sale_detail_model.dart';
 import '../../models/sale/guest/guest_model.dart';
 import '../../models/sale/guest/insert_guest_model.dart';
+import '../../models/sale/insert-item-input/insert_item_input_catalog_type_set_model.dart';
 import '../../models/sale/insert-item-input/insert_item_input_model.dart';
 import '../../models/sale/invoice/sale_invoice_action_model.dart';
 import '../../models/sale/invoice/sale_invoice_status_date_model.dart';
@@ -413,12 +414,12 @@ class SaleProvider extends ChangeNotifier {
       Map<String, dynamic> doc = {
         'invoiceId': invoiceId,
         'status': 'New',
-        'product': products,
+        'products': products,
         'branchId': _branchId
       };
 
       // Merge main item to products
-      if (item.addOwnItem != null) {
+      if (item.addOwnItem == true) {
         // Main item
         List<Map<String, dynamic>> mainItem = [
           {
@@ -442,7 +443,8 @@ class SaleProvider extends ChangeNotifier {
       }
 
       // Add item list
-      result = await addItemList(doc: InsertItemInputModel.fromJson(doc));
+      result = await addItemList(
+          doc: InsertItemInputCatalogTypeSetModel.fromJson(doc));
     } else if (item.type == 'ExtraFood' && _selectedSaleDetails.isNotEmpty) {
       // Filter by checkPrintKitchen == null or checkPrintKitchen == false
       List<SaleDetailModel> selectedSaleDetailFilter = _selectedSaleDetails
@@ -501,7 +503,7 @@ class SaleProvider extends ChangeNotifier {
 
   // add item list (product as catalogType == 'Set')
   Future<ResponseModel?> addItemList(
-      {required InsertItemInputModel doc}) async {
+      {required InsertItemInputCatalogTypeSetModel doc}) async {
     ResponseModel? result;
     try {
       await insertSaleDetailListMethod(doc: doc);
@@ -2202,7 +2204,7 @@ class SaleProvider extends ChangeNotifier {
 
   // insert sale detail list (product as catalogType == 'Set')
   Future<dynamic> insertSaleDetailListMethod(
-      {required InsertItemInputModel doc}) {
+      {required InsertItemInputCatalogTypeSetModel doc}) {
     return meteor.call('rest.insertSaleDetailList', args: [
       {'doc': doc.toJson(), 'depId': _depId}
     ]);

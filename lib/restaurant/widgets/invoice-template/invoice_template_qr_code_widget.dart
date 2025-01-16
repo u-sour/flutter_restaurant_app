@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart';
+import '../../../utils/constants.dart';
 import '../../models/invoice-template/qr-code/qr_code_list_schema_model.dart';
 import '../../models/invoice-template/qr-code/qr_code_schema_model.dart';
 import 'invoice_template_cached_img_widget.dart';
 
 class InvoiceTemplateQrCodeWidget extends StatelessWidget {
+  final PaperSize paperSize;
   final String ipAddress;
   final QrCodeSchemaModel qrCodeSchema;
   const InvoiceTemplateQrCodeWidget({
     super.key,
+    required this.paperSize,
     required this.ipAddress,
     required this.qrCodeSchema,
   });
@@ -37,7 +41,11 @@ class InvoiceTemplateQrCodeWidget extends StatelessWidget {
                         qrCodes[i].bankName,
                         style: theme.textTheme.bodySmall!.copyWith(
                           color: baseColor,
-                          fontSize: qrCodeSchema.bankNameStyle.fontSize,
+                          fontSize: paperSize == PaperSize.mm80 &&
+                                  qrCodeSchema.bankNameStyle.fontSize != null
+                              ? qrCodeSchema.bankNameStyle.fontSize! +
+                                  AppStyleDefaultProperties.iefs
+                              : qrCodeSchema.bankNameStyle.fontSize,
                           fontWeight:
                               qrCodeSchema.bankNameStyle.fontWeight != null &&
                                       qrCodeSchema.bankNameStyle.fontWeight ==
@@ -66,7 +74,11 @@ class InvoiceTemplateQrCodeWidget extends StatelessWidget {
                         qrCodes[i].accountName,
                         style: theme.textTheme.bodySmall!.copyWith(
                           color: baseColor,
-                          fontSize: qrCodeSchema.accountNameStyle.fontSize,
+                          fontSize: paperSize == PaperSize.mm80 &&
+                                  qrCodeSchema.accountNameStyle.fontSize != null
+                              ? qrCodeSchema.accountNameStyle.fontSize! +
+                                  AppStyleDefaultProperties.iefs
+                              : qrCodeSchema.bankNameStyle.fontSize,
                           fontWeight: qrCodeSchema
                                           .accountNameStyle.fontWeight !=
                                       null &&
@@ -82,7 +94,11 @@ class InvoiceTemplateQrCodeWidget extends StatelessWidget {
                       qrCodes[i].accountNumber,
                       style: theme.textTheme.bodySmall!.copyWith(
                         color: baseColor,
-                        fontSize: qrCodeSchema.accountNumberStyle.fontSize,
+                        fontSize: paperSize == PaperSize.mm80 &&
+                                qrCodeSchema.accountNumberStyle.fontSize != null
+                            ? qrCodeSchema.accountNumberStyle.fontSize! +
+                                AppStyleDefaultProperties.iefs
+                            : qrCodeSchema.accountNumberStyle.fontSize,
                         fontWeight: qrCodeSchema
                                         .accountNumberStyle.fontWeight !=
                                     null &&

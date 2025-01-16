@@ -104,6 +104,18 @@ class SaleReportProvider extends ChangeNotifier {
     return result;
   }
 
+  String getInvoiceRefText(
+      {required SaleDataDetailReportModel saleDataDetail,
+      required BuildContext context}) {
+    String result = saleDataDetail.refDoc?['refNo'] ?? '';
+    if (SaleService.isModuleActive(
+            modules: ['order-number'], overpower: false, context: context) &&
+        saleDataDetail.refDoc != null) {
+      result += '-${saleDataDetail.refDoc?['orderNum']}';
+    }
+    return result;
+  }
+
   Future<ResponseModel?> submit({required Map<String, dynamic> formDoc}) async {
     ResponseModel? result;
     try {

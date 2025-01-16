@@ -4,7 +4,7 @@ import '../router/route_utils.dart';
 
 class AppInfo {
   AppInfo._();
-  static const String version = '1.0.0';
+  static const String version = '1.0.0+1';
 }
 
 class AppNavigation {
