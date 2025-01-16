@@ -45,11 +45,17 @@ class _SaleCategoryWidgetState extends State<SaleCategoryWidget> {
     _readSaleCategoriesProvider.setSelectedCategory(
         category: category, branchId: branchId, depId: depId);
 
-    // filter product group and products by selected category
+    // filter products by group
     _readSaleProductsProvider.productGroupFilter(categoryId: category.id);
+
+    // filter products by selected category
     final String? invoiceId = _readSaleProvider.currentSale?.id;
     _readSaleProductsProvider.filter(
-        categoryId: category.id, invoiceId: invoiceId);
+        categoryId: _readSaleCategoriesProvider.selectedCategoryId.isEmpty ||
+                _readSaleCategoriesProvider.selectedCategoryId != category.id
+            ? category.id
+            : '',
+        invoiceId: invoiceId);
   }
 
   @override

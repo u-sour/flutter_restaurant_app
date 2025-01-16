@@ -141,6 +141,14 @@ class SaleReportContentTableWidget extends StatelessWidget {
             dynamicText: readSaleReportProvider.getInvoiceText(
                 saleDataDetail: rows[vicinity.row - 1], context: context)),
       );
+    } else if (fields[vicinity.column] == SaleReportDTRowType.refInvoice) {
+      cell = TableViewCell(
+        child: ReportTemplateContentTableCellWidget(
+          dynamicText: readSaleReportProvider.getInvoiceRefText(
+              saleDataDetail: rows[vicinity.row - 1], context: context),
+          alignment: Alignment.center,
+        ),
+      );
     } else if (fields[vicinity.column] == SaleReportDTRowType.date) {
       cell = TableViewCell(
         child: ReportTemplateContentTableCellWidget(

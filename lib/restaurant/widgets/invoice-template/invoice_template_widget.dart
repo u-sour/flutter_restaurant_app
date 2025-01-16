@@ -128,6 +128,7 @@ class InvoiceTemplateWidget extends StatelessWidget {
                 signatureSchema: invoicePaper.signatureSchema),
             // QrCode
             InvoiceTemplateQrCodeWidget(
+              paperSize: paperSize,
               ipAddress: ipAddress,
               qrCodeSchema: invoicePaper.qrCodeSchema,
             ),
