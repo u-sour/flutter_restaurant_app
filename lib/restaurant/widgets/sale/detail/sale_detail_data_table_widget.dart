@@ -446,14 +446,9 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                               await readProvider.removeItem(
                                                   id: row.id);
                                           if (result != null) {
-                                            late SnackBar snackBar;
-                                            snackBar = Alert.awesomeSnackBar(
-                                                message: result.message,
+                                            Alert.show(
+                                                description: result.description,
                                                 type: result.type);
-                                            if (!context.mounted) return;
-                                            ScaffoldMessenger.of(context)
-                                              ..hideCurrentSnackBar()
-                                              ..showSnackBar(snackBar);
                                           }
                                           if (context.mounted) {
                                             context.pop();

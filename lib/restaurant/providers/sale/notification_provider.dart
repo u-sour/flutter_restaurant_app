@@ -3,11 +3,11 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../screens/app_screen.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../models/notification/new_notification_model.dart';
 import '../../models/notification/notification_data_model.dart';
 import '../../models/notification/notification_model.dart';
@@ -210,7 +210,7 @@ class NotificationProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -226,7 +226,7 @@ class NotificationProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -246,7 +246,7 @@ class NotificationProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;

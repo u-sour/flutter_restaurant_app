@@ -156,14 +156,10 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                                             .fromJson(product
                                                                 .toJson()));
                                             if (result != null) {
-                                              late SnackBar snackBar;
-                                              snackBar = Alert.awesomeSnackBar(
-                                                  message: result.message,
+                                              Alert.show(
+                                                  description:
+                                                      result.description,
                                                   type: result.type);
-                                              if (!context.mounted) return;
-                                              ScaffoldMessenger.of(context)
-                                                ..hideCurrentSnackBar()
-                                                ..showSnackBar(snackBar);
                                             }
                                           },
                                         ),

@@ -544,7 +544,7 @@
       "selectAll": "Select All"
     },
     "formBuilder": {
-      "title": "FORM BUILDER",
+      "title": "FORM",
       "children": {
         "default": { "title": "Default" },
         "extra": { "title": "Extra" },

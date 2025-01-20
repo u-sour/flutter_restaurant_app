@@ -2,10 +2,10 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../screens/app_screen.dart';
 import '../../models/option/option_model.dart';
 import '../../models/reports/profit-and-loss-by-item/sale_detail_profit_and_loss_by_item_report_model.dart';
@@ -82,12 +82,12 @@ class SaleDetailProfitAndLossByItemReportProvider extends ChangeNotifier {
         _sdProfitAndLossByItemReportResult =
             SaleDetailProfitAndLossByItemReportModel.fromJson(data);
         result = const ResponseModel(
-            message: 'ok', type: AWESOMESNACKBARTYPE.success);
+            description: 'ok', type: ToastificationType.success);
       }
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     notifyListeners();
