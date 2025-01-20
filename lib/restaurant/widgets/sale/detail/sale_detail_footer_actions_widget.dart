@@ -116,14 +116,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                     final result = await readSaleProvider
                                         .addGuest(form: form);
                                     if (result != null) {
-                                      late SnackBar snackBar;
-                                      snackBar = Alert.awesomeSnackBar(
-                                          message: result.message,
+                                      Alert.show(
+                                          description: result.description,
                                           type: result.type);
-                                      if (!context.mounted) return;
-                                      ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(snackBar);
                                     }
                                     if (context.mounted) {
                                       context.pop();
@@ -198,14 +193,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                 final result = await readSaleProvider
                                     .cancelSale(context: context, copy: true);
                                 if (result != null) {
-                                  late SnackBar snackBar;
-                                  snackBar = Alert.awesomeSnackBar(
-                                      message: result.message,
+                                  Alert.show(
+                                      description: result.description,
                                       type: result.type);
-                                  if (!context.mounted) return;
-                                  ScaffoldMessenger.of(context)
-                                    ..hideCurrentSnackBar()
-                                    ..showSnackBar(snackBar);
                                 }
                               },
                               // style: TextButton.styleFrom(
@@ -243,13 +233,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                               ResponseModel? result = await readSaleProvider
                                   .printInvoiceToKitchen(context: context);
                               if (result != null) {
-                                late SnackBar snackBar;
-                                snackBar = Alert.awesomeSnackBar(
-                                    message: result.message, type: result.type);
-                                if (!context.mounted) return;
-                                ScaffoldMessenger.of(context)
-                                  ..hideCurrentSnackBar()
-                                  ..showSnackBar(snackBar);
+                                Alert.show(
+                                    description: result.description,
+                                    type: result.type);
                               }
                             },
                             style: FilledButton.styleFrom(
@@ -279,14 +265,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                   final result = await readSaleProvider
                                       .printToKitchen(context: context);
                                   if (result != null) {
-                                    late SnackBar snackBar;
-                                    snackBar = Alert.awesomeSnackBar(
-                                        message: result.message,
+                                    Alert.show(
+                                        description: result.description,
                                         type: result.type);
-                                    if (!context.mounted) return;
-                                    ScaffoldMessenger.of(context)
-                                      ..hideCurrentSnackBar()
-                                      ..showSnackBar(snackBar);
                                   }
                                 },
                                 style: btnStyleNormalShape,
@@ -321,13 +302,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                           final result = await readSaleProvider.printBill(
                               context: context);
                           if (result != null) {
-                            late SnackBar snackBar;
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
+                            Alert.show(
+                                description: result.description,
+                                type: result.type);
                           }
                         },
                         style: btnStyleNormalShape,
@@ -358,13 +335,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                           final result =
                               await readSaleProvider.preview(context: context);
                           if (result != null) {
-                            late SnackBar snackBar;
-                            snackBar = Alert.awesomeSnackBar(
-                                message: result.message, type: result.type);
-                            if (!context.mounted) return;
-                            ScaffoldMessenger.of(context)
-                              ..hideCurrentSnackBar()
-                              ..showSnackBar(snackBar);
+                            Alert.show(
+                                description: result.description,
+                                type: result.type);
                           }
                         },
                         style: btnStyleNormalShape,
@@ -397,13 +370,9 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                               await readSaleProvider.payment(context: context);
                         }
                         if (result != null) {
-                          late SnackBar snackBar;
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                          if (!context.mounted) return;
-                          ScaffoldMessenger.of(context)
-                            ..hideCurrentSnackBar()
-                            ..showSnackBar(snackBar);
+                          Alert.show(
+                              description: result.description,
+                              type: result.type);
                         }
                       },
                       style: btnStyleNormalShape,

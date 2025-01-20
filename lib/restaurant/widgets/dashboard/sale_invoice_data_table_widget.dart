@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
+import 'package:toastification/toastification.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/responsive/responsive_layout.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
@@ -156,7 +156,7 @@ class SaleInvoiceDataTableBuildDataGridWidget extends StatelessWidget {
                           fromDashboard: true);
                       // reload sale invoice on dashboard if payment success
                       if (result != null &&
-                          result.type == AWESOMESNACKBARTYPE.success &&
+                          result.type == ToastificationType.success &&
                           result.data.isNotEmpty) {
                         await readDashboardProvider.filter(
                             tab: readDashboardProvider.selectedTab,

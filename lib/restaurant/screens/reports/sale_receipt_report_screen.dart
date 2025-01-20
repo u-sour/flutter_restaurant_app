@@ -2,10 +2,10 @@ import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../router/route_utils.dart';
 import '../../../utils/alert/alert.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../widgets/loading_widget.dart';
 import '../../models/option/option_model.dart';
 import '../../providers/report-template/report_template_provider.dart';
@@ -70,14 +70,9 @@ class _SaleReceiptReportScreenState extends State<SaleReceiptReportScreen> {
               readReportTemplateProvider.expansionTileController.collapse();
               if (result != null) {
                 // show alert
-                if (result.type == AWESOMESNACKBARTYPE.failure) {
-                  late SnackBar snackBar;
-                  snackBar = Alert.awesomeSnackBar(
-                      message: result.message, type: result.type);
-                  if (!context.mounted) return;
-                  ScaffoldMessenger.of(context)
-                    ..hideCurrentSnackBar()
-                    ..showSnackBar(snackBar);
+                if (result.type == ToastificationType.error) {
+                  Alert.show(
+                      description: result.description, type: result.type);
                 }
               }
             }

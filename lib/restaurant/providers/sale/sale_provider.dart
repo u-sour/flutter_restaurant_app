@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/select-option/select_option_model.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
@@ -15,7 +16,6 @@ import '../../../storages/connection_storage.dart';
 import '../../../screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/alert.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../utils/convert_date_time.dart';
 import '../../../widgets/confirm_dialog_widget.dart';
 import '../../models/exchange/exchange_model.dart';
@@ -265,12 +265,12 @@ class SaleProvider extends ChangeNotifier {
       form['branchId'] = _branchId;
       await insertGuestMethod(doc: InsertGuestModel.fromJson(form));
       result = const ResponseModel(
-          message: 'screens.guest.alert.success.message',
-          type: AWESOMESNACKBARTYPE.success);
+          description: 'screens.guest.alert.success.message',
+          type: ToastificationType.success);
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -312,7 +312,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
         _isLoading = false;
       }
     }
@@ -510,7 +510,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
         _isLoading = false;
       }
     }
@@ -528,7 +528,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
         _isLoading = false;
       }
     }
@@ -546,7 +546,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
         _isLoading = false;
       }
     }
@@ -843,7 +843,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
         _isLoading = false;
       }
     }
@@ -893,14 +893,9 @@ class SaleProvider extends ChangeNotifier {
       }
     } else {
       const ResponseModel result = ResponseModel(
-          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
-          type: AWESOMESNACKBARTYPE.info);
-      final SnackBar snackBar =
-          Alert.awesomeSnackBar(message: result.message, type: result.type);
-      if (!context.mounted) return;
-      ScaffoldMessenger.of(context)
-        ..hideCurrentSnackBar()
-        ..showSnackBar(snackBar);
+          description: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: ToastificationType.info);
+      Alert.show(description: result.description, type: result.type);
     }
   }
 
@@ -1080,7 +1075,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1094,7 +1089,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1117,7 +1112,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1137,7 +1132,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1152,7 +1147,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1168,7 +1163,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -1186,20 +1181,20 @@ class SaleProvider extends ChangeNotifier {
               SaleService.isModuleActive(
                   modules: ['chef-monitor'], context: context)) {
             result = const ResponseModel(
-                message: 'screens.sale.detail.alert.success.printToKitchen',
-                type: AWESOMESNACKBARTYPE.success);
+                description: 'screens.sale.detail.alert.success.printToKitchen',
+                type: ToastificationType.success);
           }
         }
       } catch (e) {
         if (e is MeteorError) {
           result = ResponseModel(
-              message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+              description: e.message!, type: ToastificationType.error);
         }
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.saleDetailEmpty',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.saleDetailEmpty',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1278,8 +1273,8 @@ class SaleProvider extends ChangeNotifier {
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.noSelectedItemsToPrint',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.noSelectedItemsToPrint',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1303,13 +1298,13 @@ class SaleProvider extends ChangeNotifier {
       } catch (e) {
         if (e is MeteorError) {
           result = ResponseModel(
-              message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+              description: e.message!, type: ToastificationType.error);
         }
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.saleDetailEmpty',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.saleDetailEmpty',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1334,8 +1329,8 @@ class SaleProvider extends ChangeNotifier {
                         await mergeSaleMethod(saleId: saleId);
                     if (data.isNotEmpty) {
                       result = ResponseModel(
-                          message: '$_prefixSaleDetailAlert.success.merge',
-                          type: AWESOMESNACKBARTYPE.success,
+                          description: '$_prefixSaleDetailAlert.success.merge',
+                          type: ToastificationType.success,
                           data: data);
                       if (context.mounted) {
                         // close modal
@@ -1353,18 +1348,18 @@ class SaleProvider extends ChangeNotifier {
         } catch (e) {
           if (e is MeteorError) {
             result = ResponseModel(
-                message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+                description: e.message!, type: ToastificationType.error);
           }
         }
       } else {
         result = ResponseModel(
-            message: '$_prefixSaleDetailAlert.info.noSelectedItemsMerge',
-            type: AWESOMESNACKBARTYPE.info);
+            description: '$_prefixSaleDetailAlert.info.noSelectedItemsMerge',
+            type: ToastificationType.info);
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.noItemsMerge',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.noItemsMerge',
+          type: ToastificationType.info);
     }
 
     return result;
@@ -1393,8 +1388,8 @@ class SaleProvider extends ChangeNotifier {
                         _selectedSaleDetailsForOperation);
                 if (data.isNotEmpty) {
                   result = ResponseModel(
-                      message: '$_prefixSaleDetailAlert.success.transfer',
-                      type: AWESOMESNACKBARTYPE.success);
+                      description: '$_prefixSaleDetailAlert.success.transfer',
+                      type: ToastificationType.success);
                   if (context.mounted) {
                     // close modal
                     context.pop();
@@ -1410,8 +1405,8 @@ class SaleProvider extends ChangeNotifier {
           context: context);
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.noSelectedItemsTransfer',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.noSelectedItemsTransfer',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1440,8 +1435,8 @@ class SaleProvider extends ChangeNotifier {
                           _selectedSaleDetailsForOperation);
                   if (newInvoiceId.isNotEmpty) {
                     result = ResponseModel(
-                        message: '$_prefixSaleDetailAlert.success.split',
-                        type: AWESOMESNACKBARTYPE.success);
+                        description: '$_prefixSaleDetailAlert.success.split',
+                        type: ToastificationType.success);
                     if (context.mounted) {
                       // close modal
                       context.pop();
@@ -1454,7 +1449,8 @@ class SaleProvider extends ChangeNotifier {
                 } catch (e) {
                   if (e is MeteorError) {
                     result = ResponseModel(
-                        message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+                        description: e.message!,
+                        type: ToastificationType.error);
                   }
                 }
               }
@@ -1463,8 +1459,8 @@ class SaleProvider extends ChangeNotifier {
           context: context);
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.noSelectedItemsSplit',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.noSelectedItemsSplit',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1489,8 +1485,9 @@ class SaleProvider extends ChangeNotifier {
                     await updateSaleCustomerCountMethod(numOfGuest: numOfGuest);
                 if (data.isNotEmpty) {
                   result = ResponseModel(
-                      message: '$_prefixSaleDetailAlert.success.customerCount',
-                      type: AWESOMESNACKBARTYPE.success,
+                      description:
+                          '$_prefixSaleDetailAlert.success.customerCount',
+                      type: ToastificationType.success,
                       data: data);
                   if (context.mounted) {
                     // close modal
@@ -1504,7 +1501,7 @@ class SaleProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
 
@@ -1548,9 +1545,9 @@ class SaleProvider extends ChangeNotifier {
                           await cancelAndCopySaleMethod(saleId: currentSaleId);
                       if (context.mounted) {
                         result = ResponseModel(
-                            message:
+                            description:
                                 '$_prefixSaleDetailAlert.success.cancelAndCopy',
-                            type: AWESOMESNACKBARTYPE.success);
+                            type: ToastificationType.success);
                         // go to sale
                         await handleEnterSale(
                             context: context,
@@ -1573,9 +1570,9 @@ class SaleProvider extends ChangeNotifier {
 
                     if (context.mounted) {
                       result = ResponseModel(
-                          message:
+                          description:
                               '$_prefixSaleDetailAlert.success.cancelAndCopy',
-                          type: AWESOMESNACKBARTYPE.success);
+                          type: ToastificationType.success);
                       // go to sale
                       await handleEnterSale(
                           context: context,
@@ -1596,13 +1593,13 @@ class SaleProvider extends ChangeNotifier {
       } catch (e) {
         if (e is MeteorError) {
           result = ResponseModel(
-              message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+              description: e.message!, type: ToastificationType.error);
         }
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.printBeforeCancel',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.printBeforeCancel',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1696,8 +1693,8 @@ class SaleProvider extends ChangeNotifier {
                             } catch (e) {
                               if (e is MeteorError) {
                                 result = ResponseModel(
-                                    message: e.message!,
-                                    type: AWESOMESNACKBARTYPE.failure);
+                                    description: e.message!,
+                                    type: ToastificationType.error);
                               }
                             }
                           },
@@ -1710,8 +1707,8 @@ class SaleProvider extends ChangeNotifier {
         }
       } else {
         result = ResponseModel(
-            message: '$_prefixSaleDetailAlert.info.noNewItem',
-            type: AWESOMESNACKBARTYPE.info);
+            description: '$_prefixSaleDetailAlert.info.noNewItem',
+            type: ToastificationType.info);
       }
     }
     return result;
@@ -1748,7 +1745,7 @@ class SaleProvider extends ChangeNotifier {
               } catch (e) {
                 if (e is MeteorError) {
                   result = ResponseModel(
-                      message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+                      description: e.message!, type: ToastificationType.error);
                 }
               }
             },
@@ -1756,8 +1753,8 @@ class SaleProvider extends ChangeNotifier {
           context: context);
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.saleEmpty',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.saleEmpty',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1824,8 +1821,8 @@ class SaleProvider extends ChangeNotifier {
       }
     } else {
       result = ResponseModel(
-          message: '$_prefixSaleDetailAlert.info.saleEmpty',
-          type: AWESOMESNACKBARTYPE.info);
+          description: '$_prefixSaleDetailAlert.info.saleEmpty',
+          type: ToastificationType.info);
     }
     return result;
   }
@@ -1866,8 +1863,8 @@ class SaleProvider extends ChangeNotifier {
             await insertSaleReceiptMethod(methodName: methodName, doc: form);
         if (context.mounted) {
           result = ResponseModel(
-              message: 'screens.sale.detail.alert.success.payment',
-              type: AWESOMESNACKBARTYPE.success,
+              description: 'screens.sale.detail.alert.success.payment',
+              type: ToastificationType.success,
               data: receiptId);
           // Close modal
           context.pop();
@@ -1897,7 +1894,7 @@ class SaleProvider extends ChangeNotifier {
       } catch (e) {
         if (e is MeteorError) {
           result = ResponseModel(
-              message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+              description: e.message!, type: ToastificationType.error);
         }
       }
     }

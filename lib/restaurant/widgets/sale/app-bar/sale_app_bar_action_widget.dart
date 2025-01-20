@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/select-option/select_option_model.dart';
+import '../../../../models/servers/response_model.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
@@ -106,51 +107,29 @@ class SaleAppBarActionWidget extends StatelessWidget {
                   (o) => MenuItemButton(
                     leadingIcon: Icon(o.icon),
                     onPressed: () async {
-                      SnackBar? snackBar;
+                      ResponseModel? result;
                       if (o.value == SaleDetailOperationType.merge.name) {
-                        final result =
+                        result =
                             await readSaleProvider.mergeSale(context: context);
-                        if (result != null) {
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                        }
                       } else if (o.value ==
                           SaleDetailOperationType.transfer.name) {
-                        final result = await readSaleProvider
-                            .transferSaleDetailItems(context: context);
-                        if (result != null) {
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                        }
+                        result = await readSaleProvider.transferSaleDetailItems(
+                            context: context);
                       } else if (o.value ==
                           SaleDetailOperationType.split.name) {
-                        final result = await readSaleProvider
-                            .splitSaleDetailItems(context: context);
-                        if (result != null) {
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                        }
+                        result = await readSaleProvider.splitSaleDetailItems(
+                            context: context);
                       } else if (o.value ==
                           SaleDetailOperationType.customerCount.name) {
-                        final result = await readSaleProvider
-                            .updateSaleCustomerCount(context: context);
-                        if (result != null) {
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                        }
+                        result = await readSaleProvider.updateSaleCustomerCount(
+                            context: context);
                       } else {
-                        final result =
+                        result =
                             await readSaleProvider.cancelSale(context: context);
-                        if (result != null) {
-                          snackBar = Alert.awesomeSnackBar(
-                              message: result.message, type: result.type);
-                        }
                       }
-                      if (!context.mounted) return;
-                      if (snackBar != null) {
-                        ScaffoldMessenger.of(context)
-                          ..hideCurrentSnackBar()
-                          ..showSnackBar(snackBar);
+                      if (result != null) {
+                        Alert.show(
+                            description: result.description, type: result.type);
                       }
                     },
                     child: Selector<SaleProvider, SaleModel?>(
@@ -224,13 +203,8 @@ class SaleAppBarActionWidget extends StatelessWidget {
                   final result =
                       await context.read<SaleProvider>().addNewSale();
                   if (result != null) {
-                    late SnackBar snackBar;
-                    snackBar = Alert.awesomeSnackBar(
-                        message: result.message, type: result.type);
-                    if (!context.mounted) return;
-                    ScaffoldMessenger.of(context)
-                      ..hideCurrentSnackBar()
-                      ..showSnackBar(snackBar);
+                    Alert.show(
+                        description: result.description, type: result.type);
                   }
                 },
                 style: FilledButton.styleFrom(padding: EdgeInsets.zero),

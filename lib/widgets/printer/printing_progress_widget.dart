@@ -26,18 +26,13 @@ class _PrintingProgressWidgetState extends State<PrintingProgressWidget> {
   }
 
   _asyncMethods() async {
-    late SnackBar snackBar;
     late ResponseModel result;
     for (int i = 0; i < widget.copies; i++) {
       result = await readPrinterProvider.btPrinterPrinting();
     }
     if (!mounted) return;
     context.pop();
-    snackBar =
-        Alert.awesomeSnackBar(message: result.message, type: result.type);
-    ScaffoldMessenger.of(context)
-      ..hideCurrentSnackBar()
-      ..showSnackBar(snackBar);
+    Alert.show(description: result.description, type: result.type);
   }
 
   @override

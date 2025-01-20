@@ -45,13 +45,8 @@ class NotificationCenterWidget extends StatelessWidget {
                             notificationTypes: notificationTypes,
                             branchId: branchId);
                     if (result != null) {
-                      late SnackBar snackBar;
-                      snackBar = Alert.awesomeSnackBar(
-                          message: result.message, type: result.type);
-                      if (!context.mounted) return;
-                      ScaffoldMessenger.of(context)
-                        ..hideCurrentSnackBar()
-                        ..showSnackBar(snackBar);
+                      Alert.show(
+                          description: result.description, type: result.type);
                     }
                   },
                 ),

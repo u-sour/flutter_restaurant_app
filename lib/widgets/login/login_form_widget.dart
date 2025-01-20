@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../models/auth/login_model.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/login_form_provider.dart';
 import '../../utils/alert/alert.dart';
 import '../../utils/constants.dart';
 import '../../utils/responsive/responsive_layout.dart';
-import '../../utils/alert/awesome_snack_bar_utils.dart';
 
 class LoginFormWidget extends StatelessWidget {
   final double? formWidth;
@@ -170,25 +170,17 @@ class LoginFormWidget extends StatelessWidget {
                                 : () async {
                                     if (formKey.currentState!
                                         .saveAndValidate()) {
-                                      late SnackBar snackBar;
                                       final formDoc = LoginModel.fromJson(
                                           formKey.currentState!.value);
                                       final result = await context
                                           .read<AuthProvider>()
                                           .login(formDoc: formDoc);
-                                      if (result.status == 201) {
-                                        snackBar = Alert.awesomeSnackBar(
-                                            message: result.message,
-                                            type: AWESOMESNACKBARTYPE.success);
-                                      } else {
-                                        snackBar = Alert.awesomeSnackBar(
-                                            message: result.message,
-                                            type: AWESOMESNACKBARTYPE.failure);
-                                      }
-                                      if (!context.mounted) return;
-                                      ScaffoldMessenger.of(context)
-                                        ..hideCurrentSnackBar()
-                                        ..showSnackBar(snackBar);
+                                      Alert.show(
+                                        type: result.status == 201
+                                            ? ToastificationType.success
+                                            : ToastificationType.error,
+                                        description: result.description,
+                                      );
                                     }
                                   },
                             child: Text(

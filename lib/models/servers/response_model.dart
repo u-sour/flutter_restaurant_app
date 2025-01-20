@@ -1,16 +1,16 @@
-import '../../utils/alert/awesome_snack_bar_utils.dart';
+import 'package:toastification/toastification.dart';
 
 class ResponseModel {
   final int? status;
   final String? title;
-  final String message;
-  final AWESOMESNACKBARTYPE type;
+  final String description;
+  final ToastificationType type;
   final dynamic data;
 
   const ResponseModel({
     this.status,
     this.title,
-    required this.message,
+    required this.description,
     required this.type,
     this.data,
   });
