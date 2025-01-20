@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
+import 'package:toastification/toastification.dart';
 import '../models/servers/response_model.dart';
 import '../storages/printer_storage.dart';
-import '../utils/alert/awesome_snack_bar_utils.dart';
 
 class PrinterProvider extends ChangeNotifier {
   late ReceiptController controller;
@@ -19,8 +19,8 @@ class PrinterProvider extends ChangeNotifier {
     final BluetoothDevice btPrinter = await printerStorage.getBTPrinter();
     ResponseModel result = ResponseModel(
         status: 201,
-        message: '$_alertPrefix.success.message',
-        type: AWESOMESNACKBARTYPE.success);
+        description: '$_alertPrefix.success.message',
+        type: ToastificationType.success);
 
     //check bluetooth printer address exist or not
     if (btPrinter.address.isNotEmpty) {
@@ -37,14 +37,14 @@ class PrinterProvider extends ChangeNotifier {
       if (!printed) {
         result = ResponseModel(
             status: 404,
-            message: '$_alertPrefix.off.message',
-            type: AWESOMESNACKBARTYPE.failure);
+            description: '$_alertPrefix.off.message',
+            type: ToastificationType.error);
       }
     } else {
       result = ResponseModel(
           status: 404,
-          message: '$_alertPrefix.notFound.message',
-          type: AWESOMESNACKBARTYPE.failure);
+          description: '$_alertPrefix.notFound.message',
+          type: ToastificationType.error);
     }
 
     return result;

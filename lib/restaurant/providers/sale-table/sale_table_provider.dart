@@ -3,11 +3,11 @@ import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../models/sale-table/floor_model.dart';
 import '../../models/sale-table/table_model.dart';
 import '../../models/sale/sale/sale_model.dart';
@@ -212,12 +212,12 @@ class SaleTableProvider with ChangeNotifier {
         }
       } else {
         result = const ResponseModel(
-            message: 'permissionDenied', type: AWESOMESNACKBARTYPE.info);
+            description: 'permissionDenied', type: ToastificationType.info);
       }
     } else {
       result = const ResponseModel(
-          message: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
-          type: AWESOMESNACKBARTYPE.info);
+          description: 'screens.sale.detail.alert.dataNotEnoughToEnterSale',
+          type: ToastificationType.info);
     }
     return result;
   }

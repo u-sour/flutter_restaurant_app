@@ -1,11 +1,11 @@
 import 'dart:async';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:flutter/foundation.dart';
+import 'package:toastification/toastification.dart';
 import '../models/auth/login_model.dart';
 import '../models/servers/response_model.dart';
 import '../screens/app_screen.dart';
 import '../storages/auth_storage.dart';
-import '../utils/alert/awesome_snack_bar_utils.dart';
 
 class AuthProvider extends ChangeNotifier {
   final String _successMsg =
@@ -22,7 +22,9 @@ class AuthProvider extends ChangeNotifier {
   Future<ResponseModel> login({required LoginModel formDoc}) async {
     final AuthStorage authStorage = AuthStorage();
     ResponseModel result = ResponseModel(
-        status: 201, message: _successMsg, type: AWESOMESNACKBARTYPE.success);
+        status: 201,
+        description: _successMsg,
+        type: ToastificationType.success);
     _loading = true;
     notifyListeners();
     try {
@@ -47,8 +49,8 @@ class AuthProvider extends ChangeNotifier {
       if (e is MeteorError) {
         result = ResponseModel(
             status: e.error,
-            message: e.message!,
-            type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!,
+            type: ToastificationType.error);
         _loading = false;
       }
     }

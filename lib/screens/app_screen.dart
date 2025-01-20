@@ -7,6 +7,7 @@ import 'package:form_builder_validators/localization/l10n.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:toastification/toastification.dart';
 import '../providers/printer_provider.dart';
 import '../providers/setting_provider.dart';
 import '../restaurant/providers/dashboard/dashboard_provider.dart';
@@ -171,19 +172,21 @@ class _AppScreenState extends State<AppScreen> {
         builder: (context) {
           final GoRouter goRouter = context.read<AppRouter>().router;
           return Consumer<ThemeProvider>(builder: (context, state, child) {
-            return MaterialApp.router(
-              supportedLocales: context.supportedLocales,
-              locale: context.locale,
-              localizationsDelegates: [
-                ...context.localizationDelegates,
-                FormBuilderLocalizations.delegate,
-              ],
-              title: "Flutter Template",
-              debugShowCheckedModeBanner: false,
-              theme: AppTheme.lightTheme,
-              darkTheme: AppTheme.darkTheme,
-              themeMode: state.themeMode,
-              routerConfig: goRouter,
+            return ToastificationWrapper(
+              child: MaterialApp.router(
+                supportedLocales: context.supportedLocales,
+                locale: context.locale,
+                localizationsDelegates: [
+                  ...context.localizationDelegates,
+                  FormBuilderLocalizations.delegate,
+                ],
+                title: "Flutter Template",
+                debugShowCheckedModeBanner: false,
+                theme: AppTheme.lightTheme,
+                darkTheme: AppTheme.darkTheme,
+                themeMode: state.themeMode,
+                routerConfig: goRouter,
+              ),
             );
           });
         },

@@ -4,13 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../../models/servers/response_model.dart';
 import '../../../providers/app_provider.dart';
 import '../../../router/route_utils.dart';
 import '../../../screens/app_screen.dart';
 import '../../../services/global_service.dart';
 import '../../../utils/alert/alert.dart';
-import '../../../utils/alert/awesome_snack_bar_utils.dart';
 import '../../../widgets/confirm_dialog_widget.dart';
 import '../../models/sale/invoice/sale_invoice_data_model.dart';
 import '../../models/sale/invoice/sale_invoice_model.dart';
@@ -183,12 +183,12 @@ class DashboardProvider extends ChangeNotifier {
     try {
       await removeSaleMethod(id: id);
       result = const ResponseModel(
-          message: 'screens.dashboard.alert.success.removeSale',
-          type: AWESOMESNACKBARTYPE.success);
+          description: 'screens.dashboard.alert.success.removeSale',
+          type: ToastificationType.success);
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -265,14 +265,10 @@ class DashboardProvider extends ChangeNotifier {
                             final ResponseModel? result =
                                 await updateSaleReceipt(doc: doc);
                             if (result != null &&
-                                result.type == AWESOMESNACKBARTYPE.success) {
-                              late SnackBar snackBar;
-                              snackBar = Alert.awesomeSnackBar(
-                                  message: result.message, type: result.type);
-                              if (!context.mounted) return;
-                              ScaffoldMessenger.of(context)
-                                ..hideCurrentSnackBar()
-                                ..showSnackBar(snackBar);
+                                result.type == ToastificationType.success) {
+                              Alert.show(
+                                  description: result.description,
+                                  type: result.type);
                               // reload sale invoice on dashboard if update success
                               await filter(
                                   tab: _selectedTab, filterText: _filterText);
@@ -292,7 +288,7 @@ class DashboardProvider extends ChangeNotifier {
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -318,12 +314,12 @@ class DashboardProvider extends ChangeNotifier {
     try {
       await updateSaleReceiptMethod(doc: doc);
       result = const ResponseModel(
-          message: 'screens.dashboard.alert.success.updateSaleReceipt',
-          type: AWESOMESNACKBARTYPE.success);
+          description: 'screens.dashboard.alert.success.updateSaleReceipt',
+          type: ToastificationType.success);
     } catch (e) {
       if (e is MeteorError) {
         result = ResponseModel(
-            message: e.message!, type: AWESOMESNACKBARTYPE.failure);
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;

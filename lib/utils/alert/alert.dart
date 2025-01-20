@@ -1,29 +1,26 @@
-import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'awesome_snack_bar_utils.dart';
+import 'package:flutter_template/utils/alert/toastification_utils.dart';
+import 'package:toastification/toastification.dart';
 
 class Alert {
-  static SnackBar awesomeSnackBar({
+  static show({
+    required ToastificationType type,
+    ToastificationStyle style = ToastificationStyle.fillColored,
     String? title,
-    String? message,
-    required AWESOMESNACKBARTYPE type,
+    String? description,
+    Alignment alignment = Alignment.topCenter,
+    Duration autoCloseDuration = const Duration(seconds: 2),
   }) =>
-      SnackBar(
-        /// need to set following properties for best effect of awesome_snackbar_content
-        elevation: 0,
-        padding: const EdgeInsets.only(top: 48.0),
-        behavior: SnackBarBehavior.floating,
-        backgroundColor: Colors.transparent,
-        content: Builder(builder: (context) {
-          return AwesomeSnackbarContent(
-            color: type.defaultColor,
-            title: context.tr(title ?? type.defaultTitle),
-            message: context.tr(message ?? type.defaultMessage),
-
-            /// change contentType to ContentType.success, ContentType.warning or ContentType.help for variants
-            contentType: type.defaultContentType,
-          );
-        }),
+      toastification.show(
+        autoCloseDuration: autoCloseDuration,
+        alignment: alignment,
+        type: type,
+        style: style,
+        title: Text(title ?? type.defaultTitle,
+                style: const TextStyle(fontWeight: FontWeight.bold))
+            .tr(),
+        description: Text(description ?? type.defaultDescription).tr(),
+        primaryColor: type.defaultColor,
       );
 }
