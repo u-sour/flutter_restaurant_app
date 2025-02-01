@@ -1218,6 +1218,8 @@ class SaleProvider extends ChangeNotifier {
           modules: ['order-number'], overpower: false, context: context)) {
         orderNum = currentSale!.orderNum;
       }
+      AppProvider readAppProvider = context.read<AppProvider>();
+      String branchId = readAppProvider.selectedBranch!.id;
       if (printedItemsToKitchen.isNotEmpty) {
         const String prefixPrintedItemsToKitchen =
             'screens.sale.detail.dialog.confirm.printedItemsToKitchen';
@@ -1246,6 +1248,7 @@ class SaleProvider extends ChangeNotifier {
                   context.pushNamed(SCREENS.invoiceToKitchen.toName,
                       queryParameters: {
                         'invoiceId': currentSale!.id,
+                        'branchId': branchId,
                         'orderNum': orderNum,
                         'floorName': _tableLocation.floor,
                         'tableName': _tableLocation.table,
@@ -1262,6 +1265,7 @@ class SaleProvider extends ChangeNotifier {
         if (context.mounted) {
           context.pushNamed(SCREENS.invoiceToKitchen.toName, queryParameters: {
             'invoiceId': currentSale!.id,
+            'branchId': branchId,
             'orderNum': orderNum,
             'floorName': _tableLocation.floor,
             'tableName': _tableLocation.table,
@@ -1287,9 +1291,12 @@ class SaleProvider extends ChangeNotifier {
           await updateOnPrintMethod(saleId: _currentSale!.id);
           // go to invoice
           if (context.mounted) {
+            AppProvider readAppProvider = context.read<AppProvider>();
+            String branchId = readAppProvider.selectedBranch!.id;
             context.pushNamed(SCREENS.invoice.toName, queryParameters: {
               'tableId': _tableId,
               'invoiceId': _currentSale!.id,
+              'branchId': branchId,
               'showEditInvoiceBtn': 'true',
               'autoCloseAfterPrinted': 'true'
             });

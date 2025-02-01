@@ -144,17 +144,19 @@ class DashboardProvider extends ChangeNotifier {
   Future<void> printInvoice(
       {required SaleInvoiceDataModel saleInvoice,
       required BuildContext context}) async {
+    AppProvider readAppProvider = context.read<AppProvider>();
+    String branchId = readAppProvider.selectedBranch!.id;
     //  status : Partial & Close
     if (_selectedTab == 2 || _selectedTab == 3) {
       // go to invoice
       context.pushNamed(SCREENS.invoice.toName, queryParameters: {
         'invoiceId': saleInvoice.id,
+        'branchId': branchId,
         'isTotal': 'true',
         'autoCloseAfterPrinted': 'true'
       });
     } else {
       //  status : Canceled
-      AppProvider readAppProvider = context.read<AppProvider>();
       String confirmSalePassword = readAppProvider.saleSetting.sale.password!;
       final GlobalKey<FormBuilderState> fbConfirmKey =
           GlobalKey<FormBuilderState>();
@@ -170,6 +172,7 @@ class DashboardProvider extends ChangeNotifier {
                   // go to invoice
                   context.pushNamed(SCREENS.invoice.toName, queryParameters: {
                     'invoiceId': saleInvoice.id,
+                    'branchId': branchId,
                     'autoCloseAfterPrinted': 'true'
                   });
                 }

@@ -8,9 +8,11 @@ class Alert {
     required ToastificationType type,
     ToastificationStyle style = ToastificationStyle.fillColored,
     String? title,
+    Map<String, String>? titleNamedArgs,
     String? description,
+    Map<String, String>? descriptionNamedArgs,
     Alignment alignment = Alignment.topCenter,
-    Duration autoCloseDuration = const Duration(seconds: 2),
+    Duration autoCloseDuration = const Duration(seconds: 3),
   }) =>
       toastification.show(
         autoCloseDuration: autoCloseDuration,
@@ -19,8 +21,9 @@ class Alert {
         style: style,
         title: Text(title ?? type.defaultTitle,
                 style: const TextStyle(fontWeight: FontWeight.bold))
-            .tr(),
-        description: Text(description ?? type.defaultDescription).tr(),
+            .tr(namedArgs: titleNamedArgs),
+        description: Text(description ?? type.defaultDescription)
+            .tr(namedArgs: descriptionNamedArgs),
         primaryColor: type.defaultColor,
       );
 }

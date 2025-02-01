@@ -74,6 +74,7 @@ dependencies:
   flutter_local_notifications: ^17.2.3
   timezone: ^0.9.4
   two_dimensional_scrollables: ^0.3.3
+  socket_io_client: ^3.0.2
 dev_dependencies:
   flutter_test:
     sdk: flutter
