@@ -648,6 +648,19 @@
         }
       }
     },
+    "multiPrinters": {
+      "alert": {
+        "success": {
+          "message": "Printing is completed."
+        },
+        "noConnect": {
+          "message": "Printer {printerName} can't connect."
+        },
+        "notFound": {
+          "message": "Printer {printerName} not found."
+        }
+      }
+    },
     "error": {
       "title": "ERROR"
     },

@@ -17,6 +17,10 @@ SaleInvoiceContentModel _$SaleInvoiceContentModelFromJson(
           .toList(),
       exchangeDoc:
           ExchangeModel.fromJson(json['exchangeDoc'] as Map<String, dynamic>),
+      allowedCurrencies: (json['allowedCurrencies'] as List<dynamic>)
+          .map((e) => e as String)
+          .toList(),
+      baseCurrency: json['baseCurrency'] as String,
       receiptDoc: json['receiptDoc'] == null
           ? null
           : SaleReceiptForPrintModel.fromJson(
@@ -35,6 +39,9 @@ SaleInvoiceContentModel _$SaleInvoiceContentModelFromJson(
           : ConvertToMultiExchangeModel.fromJson(
               json['returnAmountExchange'] as Map<String, dynamic>),
       returnAmountType: json['returnAmountType'] as String?,
+      templateDoc: InvoiceTemplateModel.fromJson(
+          json['templateDoc'] as Map<String, dynamic>),
+      templateMargin: json['templateMargin'] as String,
     );
 
 Map<String, dynamic> _$SaleInvoiceContentModelToJson(
@@ -43,6 +50,8 @@ Map<String, dynamic> _$SaleInvoiceContentModelToJson(
       'saleDoc': instance.saleDoc.toJson(),
       'orderList': instance.orderList.map((e) => e.toJson()).toList(),
       'exchangeDoc': instance.exchangeDoc.toJson(),
+      'allowedCurrencies': instance.allowedCurrencies,
+      'baseCurrency': instance.baseCurrency,
       'receiptDoc': instance.receiptDoc?.toJson(),
       'subTotal': instance.subTotal,
       'totalAmountExchange': instance.totalAmountExchange.toJson(),
@@ -51,4 +60,6 @@ Map<String, dynamic> _$SaleInvoiceContentModelToJson(
       'receiveAmountExchange': instance.receiveAmountExchange?.toJson(),
       'returnAmountExchange': instance.returnAmountExchange?.toJson(),
       'returnAmountType': instance.returnAmountType,
+      'templateDoc': instance.templateDoc.toJson(),
+      'templateMargin': instance.templateMargin,
     };

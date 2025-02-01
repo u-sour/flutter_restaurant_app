@@ -1,8 +1,12 @@
+import 'dart:async';
+import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:socket_io_client/socket_io_client.dart' as IO;
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
+import 'package:toastification/toastification.dart';
 import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
 import '../../router/route_utils.dart';
@@ -10,12 +14,14 @@ import '../../services/global_service.dart';
 import '../../storages/printer_storage.dart';
 import '../../utils/alert/alert.dart';
 import '../../widgets/printer/printing_progress_widget.dart';
+import '../models/department/department_model.dart';
 import '../models/invoice-template/invoice_template_model.dart';
 import '../models/sale/invoice/print/sale_invoice_content_model.dart';
 import '../models/sale/setting/sale_setting_model.dart';
 import '../providers/invoice-template/invoice_template_provider.dart';
 import '../providers/invoice/invoice_provider.dart';
 import '../providers/sale/sale_provider.dart';
+import '../services/sale_service.dart';
 import '../widgets/invoice-template/invoice_template_widget.dart';
 import '../widgets/invoice/app-bar/invoice_app_bar_widget.dart';
 import '../../widgets/loading_widget.dart';
@@ -23,6 +29,7 @@ import '../../widgets/loading_widget.dart';
 class InvoiceScreen extends StatefulWidget {
   final String? tableId;
   final String invoiceId;
+  final String branchId;
   final String? receiptId;
   final bool fromReceiptForm;
   final bool fromDashboard;
@@ -35,6 +42,7 @@ class InvoiceScreen extends StatefulWidget {
     super.key,
     this.tableId,
     required this.invoiceId,
+    required this.branchId,
     this.receiptId,
     required this.fromReceiptForm,
     required this.fromDashboard,
@@ -50,6 +58,7 @@ class InvoiceScreen extends StatefulWidget {
 }
 
 class _InvoiceScreenState extends State<InvoiceScreen> {
+  late AppProvider readAppProvider;
   late SaleProvider readSaleProvider;
   late InvoiceProvider readInvoiceProvider;
   late PrinterProvider readPrinterProvider;
@@ -58,21 +67,21 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   late Future<SaleInvoiceContentModel> saleInvoiceContent;
   final String prefixPrinterBtn = 'screens.printer.btn';
   late PaperSize paperSize;
+  IO.Socket? socket;
 
   @override
   void initState() {
     super.initState();
+    readAppProvider = context.read<AppProvider>();
     readSaleProvider = context.read<SaleProvider>();
     readInvoiceProvider = context.read<InvoiceProvider>();
     readPrinterProvider = context.read<PrinterProvider>();
     readInvoiceTemplateProvider = context.read<InvoiceTemplateProvider>();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      readInvoiceProvider.initData(context: context);
-    });
     invoiceTemplate =
         readInvoiceTemplateProvider.getInvoiceTemplate(context: context);
     saleInvoiceContent = readInvoiceProvider.fetchInvoiceContentData(
         invoiceId: widget.invoiceId,
+        branchId: widget.branchId,
         receiptId: widget.receiptId,
         receiptPrint: widget.receiptPrint,
         isTotal: widget.isTotal,
@@ -91,6 +100,114 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
         break;
       default:
         paperSize = PaperSize.mm58;
+    }
+  }
+
+  void multiPrinters({required int copyCount}) async {
+    // alert prefix for multi printers
+    const String prefixMultiPrinters = 'screens.multiPrinters.alert';
+
+    // get printers by department
+    final DepartmentModel? department = readAppProvider.selectedDepartment;
+    if (department != null) {
+      List<dynamic> printers = await readInvoiceProvider.fetchPrinterGroupByIP(
+          printerIds: widget.fromReceiptForm
+              ? department.printerForPayment!
+              : department.printerForBill!);
+      // get print info
+      Map<String, dynamic> printInfo = (await saleInvoiceContent).toJson();
+      printInfo['saleDoc']['date'] = printInfo['saleDoc']['date'].toString();
+      printInfo['exchangeDoc']['exDate'] =
+          printInfo['exchangeDoc']['exDate'].toString();
+      printInfo['receiptDoc']['date'] =
+          printInfo['receiptDoc']['date'].toString();
+
+      for (dynamic printer in printers) {
+        if (await socketConnection(printer: printer)) {
+          await socket?.emitWithAckAsync('do-print', {
+            'type': 'Invoice',
+            'printers': printer['devices'],
+            'copyCount': copyCount,
+            'printInfo': {
+              'data': jsonEncode(printInfo),
+            },
+          }, ack: (result) {
+            clearConnection();
+            if (result['status'] == 'Error') {
+              Alert.show(
+                  type: ToastificationType.error,
+                  description: '$prefixMultiPrinters.notFound.message',
+                  descriptionNamedArgs: {
+                    'printerName': printer['devices'][0]['name']
+                  });
+            } else {
+              Alert.show(
+                type: ToastificationType.success,
+                description: '$prefixMultiPrinters.success.message',
+              );
+            }
+            closePrintDialog();
+          });
+        } else {
+          clearConnection();
+          Alert.show(
+              type: ToastificationType.error,
+              description: '$prefixMultiPrinters.noConnect.message',
+              descriptionNamedArgs: {
+                'printerName': printer['devices'][0]['name']
+              });
+        }
+      }
+    }
+  }
+
+  Future<bool> socketConnection({required printer}) async {
+    clearConnection();
+    socket = IO.io(
+        "http://${printer['ipAddress']}:3222",
+        IO.OptionBuilder()
+            .setTransports(['websocket'])
+            .disableReconnection()
+            .build());
+
+    Completer<bool> completer = Completer();
+
+    socket?.on('connect', (data) {
+      completer.complete(true);
+    });
+
+    socket?.on('connect_error', (data) {
+      completer.complete(false);
+    });
+
+    return completer.future;
+  }
+
+  void clearConnection() {
+    socket?.clearListeners();
+    socket?.close();
+    socket = null;
+  }
+
+  void closePrintDialog() {
+    if (widget.autoCloseAfterPrinted) {
+      if (widget.fromReceiptForm &&
+          !widget.fromDashboard &&
+          (readSaleProvider.isSkipTable != null &&
+              readSaleProvider.isSkipTable == true) &&
+          widget.tableId != null) {
+        context.goNamed(SCREENS.sale.toName,
+            queryParameters: {'table': widget.tableId, 'fastSale': 'false'});
+      } else if (widget.fromReceiptForm &&
+          !widget.fromDashboard &&
+          (readSaleProvider.isSkipTable != null &&
+              readSaleProvider.isSkipTable == false)) {
+        context.goNamed(SCREENS.saleTable.toName);
+      } else if (widget.fromReceiptForm && widget.fromDashboard) {
+        context.goNamed(SCREENS.dashboard.toName);
+      } else {
+        context.pop();
+      }
     }
   }
 
@@ -198,38 +315,27 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
                           int copyForPayment = readAppProvider
                                   .saleSetting.invoice.copyForPayment ??
                               1;
-                          await GlobalService.openDialog(
-                            contentWidget: PrintingProgressWidget(
-                                copies: widget.fromReceiptForm
+                          // Multi Printers
+                          if (SaleService.isModuleActive(
+                              modules: ['multi-printers'],
+                              overpower: false,
+                              context: context)) {
+                            multiPrinters(
+                                copyCount: widget.fromReceiptForm
                                     ? copyForPayment
-                                    : copyForBill),
-                            context: context,
-                          ).then((_) {
-                            if (context.mounted &&
-                                widget.autoCloseAfterPrinted) {
-                              if (widget.fromReceiptForm &&
-                                  !widget.fromDashboard &&
-                                  (readSaleProvider.isSkipTable != null &&
-                                      readSaleProvider.isSkipTable == true) &&
-                                  widget.tableId != null) {
-                                context.goNamed(SCREENS.sale.toName,
-                                    queryParameters: {
-                                      'table': widget.tableId,
-                                      'fastSale': 'false'
-                                    });
-                              } else if (widget.fromReceiptForm &&
-                                  !widget.fromDashboard &&
-                                  (readSaleProvider.isSkipTable != null &&
-                                      readSaleProvider.isSkipTable == false)) {
-                                context.goNamed(SCREENS.saleTable.toName);
-                              } else if (widget.fromReceiptForm &&
-                                  widget.fromDashboard) {
-                                context.goNamed(SCREENS.dashboard.toName);
-                              } else {
-                                context.pop();
-                              }
-                            }
-                          });
+                                    : copyForBill);
+                          } else {
+                            // Bluetooth Printer
+                            await GlobalService.openDialog(
+                              contentWidget: PrintingProgressWidget(
+                                  copies: widget.fromReceiptForm
+                                      ? copyForPayment
+                                      : copyForBill),
+                              context: context,
+                            ).then((_) {
+                              closePrintDialog();
+                            });
+                          }
                         },
                         child: Text('$prefixPrinterBtn.print'.tr(),
                             style: theme.textTheme.bodySmall!
