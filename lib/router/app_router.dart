@@ -207,6 +207,7 @@ class AppRouter {
           builder: (context, state) {
             Map<String, dynamic> queryRouter = state.uri.queryParameters;
             final String invoiceId = queryRouter['invoiceId'];
+            final String branchId = queryRouter['branchId'];
             final String orderNum = queryRouter['orderNum'];
             final String floorName = queryRouter['floorName'];
             final String tableName = queryRouter['tableName'];
@@ -218,6 +219,7 @@ class AppRouter {
                     queryRouter['autoCloseAfterPrinted']! == 'true';
             return InvoiceToKitchenScreen(
               invoiceId: invoiceId,
+              branchId: branchId,
               orderNum: orderNum,
               floorName: floorName,
               tableName: tableName,
@@ -232,6 +234,7 @@ class AppRouter {
           Map<String, dynamic> queryRouter = state.uri.queryParameters;
           final String? tableId = queryRouter['tableId'];
           final String invoiceId = queryRouter['invoiceId'];
+          final String branchId = queryRouter['branchId'];
           final String? receiptId = queryRouter['receiptId'];
           // Note: for condition navigation app bar on invoice screen
           final bool fromReceiptForm = queryRouter['fromReceiptForm'] != null &&
@@ -253,6 +256,7 @@ class AppRouter {
           return InvoiceScreen(
             tableId: tableId,
             invoiceId: invoiceId,
+            branchId: branchId,
             receiptId: receiptId,
             fromReceiptForm: fromReceiptForm,
             fromDashboard: fromDashboard,

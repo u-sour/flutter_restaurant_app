@@ -641,6 +641,19 @@
         }
       }
     },
+    "multiPrinters": {
+      "alert": {
+        "success": {
+          "message": "ការបោះពុម្ពត្រូវបានបញ្ចប់។"
+        },
+        "noConnect": {
+          "message": "ម៉ាស៊ីនបោះពុម្ព {printerName} មិនអាចភ្ជាប់បានទេ។"
+        },
+        "notFound": {
+          "message": "រកមិនឃើញម៉ាស៊ីនបោះពុម្ព {printerName} ទេ។"
+        }
+      }
+    },
     "404": {
       "title": "៤០៤ មិនបានរកឃើញ"
     },
