@@ -15,7 +15,7 @@ SaleDetailForPrintModel _$SaleDetailForPrintModelFromJson(
   return SaleDetailForPrintModel(
     id: json['_id'] as String,
     itemName: json['itemName'] as String,
-    showCategory: json['showCategory'] as bool,
+    showCategory: json['showCategory'] as bool?,
     categoryName: json['categoryName'] as String,
     qty: json['qty'] as num,
     price: json['price'] as num,
