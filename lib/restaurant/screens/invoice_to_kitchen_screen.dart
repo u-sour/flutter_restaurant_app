@@ -93,6 +93,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
       final String? ipAddress = station.ipAddress;
       if (printers == null || ipAddress == null) return;
       if (await socketConnection(ipAddress: ipAddress)) {
+        if (!mounted) return;
         await socket?.emitWithAckAsync('do-print', {
           'type': 'Kitchen',
           'printers': printers,
