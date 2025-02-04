@@ -1885,6 +1885,7 @@ class SaleProvider extends ChangeNotifier {
             context.goNamed(SCREENS.invoice.toName, queryParameters: {
               'tableId': saleReceipt.orderDoc.tableId,
               'invoiceId': saleReceipt.orderDoc.id,
+              'branchId': saleReceipt.orderDoc.branchId,
               'receiptId': receiptId,
               'fromReceiptForm': '$fromReceiptForm',
               'fromDashboard': '$fromDashboard',
