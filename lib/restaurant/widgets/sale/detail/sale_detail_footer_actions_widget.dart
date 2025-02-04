@@ -361,10 +361,12 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                     child: TextButton(
                       onPressed: () async {
                         ResponseModel? result;
-                        if (UserService.userInRole(
-                            roles: ['request-payment'])) {
-                          result = await readSaleProvider.requestPayment(
-                              context: context);
+                        if (UserService.userInRole(roles: ['tablet-orders'])) {
+                          if (UserService.userInRole(
+                              roles: ['request-payment'])) {
+                            result = await readSaleProvider.requestPayment(
+                                context: context);
+                          }
                         } else {
                           result =
                               await readSaleProvider.payment(context: context);

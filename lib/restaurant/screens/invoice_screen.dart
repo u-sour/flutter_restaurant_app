@@ -119,8 +119,10 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
       printInfo['saleDoc']['date'] = printInfo['saleDoc']['date'].toString();
       printInfo['exchangeDoc']['exDate'] =
           printInfo['exchangeDoc']['exDate'].toString();
-      printInfo['receiptDoc']['date'] =
-          printInfo['receiptDoc']['date'].toString();
+      if (printInfo['receiptDoc'] != null) {
+        printInfo['receiptDoc']['date'] =
+            printInfo['receiptDoc']['date'].toString();
+      }
 
       for (dynamic printer in printers) {
         if (await socketConnection(printer: printer)) {
@@ -190,7 +192,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   }
 
   void closePrintDialog() {
-    if (widget.autoCloseAfterPrinted) {
+    if (context.mounted && widget.autoCloseAfterPrinted) {
       if (widget.fromReceiptForm &&
           !widget.fromDashboard &&
           (readSaleProvider.isSkipTable != null &&
