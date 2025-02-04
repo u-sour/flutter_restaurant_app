@@ -8,7 +8,7 @@ class SaleDetailForPrintModel {
   @JsonKey(name: '_id', disallowNullValue: true)
   final String id;
   final String itemName;
-  final bool showCategory;
+  final bool? showCategory;
   final String categoryName;
   num qty;
   num price;
@@ -22,7 +22,7 @@ class SaleDetailForPrintModel {
   SaleDetailForPrintModel({
     required this.id,
     required this.itemName,
-    required this.showCategory,
+    this.showCategory,
     required this.categoryName,
     required this.qty,
     required this.price,
