@@ -32,7 +32,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Bluetooth permission is required for accessories connecting.</string>
+	<string>App would like to access your Bluetooth to connect and share information with accessories and other Apple devices</string>
+	<key>NSBluetoothPeripheralUsageDescription</key>
+	<string>This app use Bluetooth to connect and share information with accessories and other Apple devices.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Camera permission is required for barcode scanning.</string>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
@@ -42,8 +44,7 @@
 		<string>bluetooth-central</string>
 	</array>
 	<key>UILaunchStoryboardName</key>
-	<string></string>
-	<!-- <string>LaunchScreen</string> -->
+	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
 	<string>Main</string>
 	<key>UISupportedInterfaceOrientations</key>

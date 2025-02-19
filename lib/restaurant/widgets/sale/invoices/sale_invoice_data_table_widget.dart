@@ -1,14 +1,12 @@
-import 'package:data_table_2/data_table_2.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_template/restaurant/models/sale/detail/sale_detail_model.dart';
 import 'package:provider/provider.dart';
 import '../../../../services/global_service.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
 import '../../../models/data-table/data_table_column_model.dart';
+import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../providers/sale/sale_provider.dart';
-import '../../../../widgets/empty_data_widget.dart';
 import '../../format_currency_widget.dart';
 import '../detail/combo-items/sale_detail_combo_items_widget.dart';
 import '../detail/extra-items/sale_detail_extra_items_widget.dart';
@@ -23,7 +21,6 @@ class SaleInvoiceDataTableWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final readProvider = context.read<SaleProvider>();
     final theme = Theme.of(context);
-    final double rowHeight = ResponsiveLayout.isMobile(context) ? 160.0 : 115.0;
     final double priceFontSize =
         ResponsiveLayout.isMobile(context) ? 12.0 : 14.0;
     final double baseCurrencyFontSize =
@@ -32,41 +29,32 @@ class SaleInvoiceDataTableWidget extends StatelessWidget {
       DataTableColumnModel(
           label: "$prefixDataTableHeader.item",
           value: "item",
-          alignment: Alignment.centerLeft),
+          headingRowAlignment: MainAxisAlignment.start),
       DataTableColumnModel(
           label: "$prefixDataTableHeader.qty", value: "qty", width: 36.0),
       DataTableColumnModel(
-        label: "$prefixDataTableHeader.amount",
-        value: "amount",
-        alignment: Alignment.centerRight,
-      ),
+          label: "$prefixDataTableHeader.amount",
+          value: "amount",
+          headingRowAlignment: MainAxisAlignment.end),
     ];
-    return DataTable2(
-      columnSpacing: 12,
-      horizontalMargin: 12,
-      minWidth: minWidth,
+    return DataTable(
       headingTextStyle:
           theme.textTheme.bodySmall?.copyWith(fontWeight: FontWeight.bold),
-      empty: const EmptyDataWidget(),
       columns: [
         for (DataTableColumnModel column in columns)
-          DataColumn2(
-            fixedWidth: column.width,
-            label: Align(
-              alignment: column.alignment,
-              child: Text(
-                column.label,
-                overflow: TextOverflow.ellipsis,
-              ).tr(),
-            ),
+          DataColumn(
+            headingRowAlignment: column.headingRowAlignment,
+            label: Text(
+              column.label,
+              overflow: TextOverflow.ellipsis,
+            ).tr(),
           ),
       ],
       rows: List<DataRow>.generate(saleDetails.length, (index) {
         SaleDetailModel row = saleDetails[index];
-        return DataRow2(
+        return DataRow(
             color: WidgetStateProperty.all(
                 row.draft == true ? null : theme.focusColor),
-            specificRowHeight: rowHeight,
             cells: [
               DataCell(Column(
                 mainAxisAlignment: MainAxisAlignment.center,

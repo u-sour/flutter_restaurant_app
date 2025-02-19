@@ -43,6 +43,8 @@ class _SaleScreenState extends State<SaleScreen> {
       fastSale: widget.fastSale,
       context: context,
     );
+    _readSaleProvider.saleDetailScrollController = ScrollController();
+    _readSaleProvider.saleDetailDTScrollLister();
     _readSaleCategoriesProvider.initData(context: context);
     _readSaleProductsProvider.initData(context: context);
   }
@@ -52,6 +54,7 @@ class _SaleScreenState extends State<SaleScreen> {
     super.dispose();
     _readSaleProvider.removeEmptySaleInvoiceMethod();
     _readSaleProvider.unSubscribe();
+    _readSaleProvider.saleDetailScrollController.dispose();
   }
 
   @override
@@ -63,6 +66,9 @@ class _SaleScreenState extends State<SaleScreen> {
     if (ResponsiveLayout.isMobile(context)) {
       maxHeight = MediaQuery.sizeOf(context).height * 0.7;
     }
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _readSaleProvider.setShowDataTableStickyHeader(value: false);
+    });
 
     Scaffold mobileScaffold = Scaffold(
       appBar: const SaleAppBarWidget(),

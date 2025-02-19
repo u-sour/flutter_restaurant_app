@@ -4,6 +4,7 @@ import 'package:big_dart/big_dart.dart';
 import 'package:dart_meteor/dart_meteor.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -36,7 +37,6 @@ import '../../models/sale/table-location/table_location_model.dart';
 import '../../services/sale_service.dart';
 import '../../services/user_service.dart';
 import '../../utils/constants.dart';
-// import '../../utils/debounce.dart';
 import '../../utils/round_number.dart';
 import '../../utils/sale/sale_utils.dart';
 import '../../widgets/sale/detail/confirm-dialog-content/cancel_sale_cdc_widget.dart';
@@ -80,6 +80,27 @@ class SaleProvider extends ChangeNotifier {
   SaleModel? get currentSale => _currentSale;
 
   // sale details
+  late ScrollController saleDetailScrollController;
+  late bool _showDataTableStickyHeader;
+  bool get showDataTableStickyHeader => _showDataTableStickyHeader;
+  void saleDetailDTScrollLister() {
+    //scroll listener
+    saleDetailScrollController.addListener(() {
+      double showOffset = 60.0;
+      // sale detail data table sticky header will show on scroll offset 60.0
+      if (saleDetailScrollController.offset > showOffset) {
+        setShowDataTableStickyHeader(value: true);
+      } else {
+        setShowDataTableStickyHeader(value: false);
+      }
+    });
+  }
+
+  void setShowDataTableStickyHeader({required bool value}) {
+    _showDataTableStickyHeader = value;
+    notifyListeners();
+  }
+
   final String _prefixSaleDetailAlert = 'screens.sale.detail.alert';
   late List<SaleDetailModel> _previousSaleDetails;
   List<SaleDetailModel> get previousSaleDetails => _previousSaleDetails;
@@ -120,6 +141,7 @@ class SaleProvider extends ChangeNotifier {
     _previousSaleDetails = [];
     _saleDetails = [];
     _selectedSaleDetails = [];
+    _showDataTableStickyHeader = false;
     _selectedSaleDetailsForOperation = [];
     _lastItemAdded = null;
     _printableItems = [];
@@ -177,6 +199,18 @@ class SaleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> scrollToBottom() async {
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      if (saleDetailScrollController.hasClients) {
+        saleDetailScrollController.animateTo(
+          saleDetailScrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 100),
+          curve: Curves.easeOut,
+        );
+      }
+    });
+  }
+
   void subscribeSales({String? invoiceId, required BuildContext context}) {
     // final debounce = Debounce(delay: const Duration(milliseconds: 800));
     Map<String, dynamic> selector = {
@@ -203,8 +237,6 @@ class SaleProvider extends ChangeNotifier {
         _isLoading = true;
         notifyListeners();
         _saleListener = meteor.collection('rest_sales').listen((event) async {
-          //  call method only 1 time when sale data updated
-          // debounce.run(() async {
           _sales = await fetchSales(
               branchId: _branchId,
               tableId: _tableId,
@@ -232,7 +264,6 @@ class SaleProvider extends ChangeNotifier {
           }
           _isLoading = false;
           notifyListeners();
-          // });
         });
       },
     );
@@ -357,6 +388,7 @@ class SaleProvider extends ChangeNotifier {
       _isSaleDetailLoading = true;
       // set current sale detail by _activeSaleInvoiceId
       _saleDetails = await fetchSaleDetails();
+      await scrollToBottom();
       _isSaleDetailLoading = false;
     }
     notifyListeners();

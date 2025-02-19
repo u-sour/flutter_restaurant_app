@@ -62,7 +62,6 @@ dependencies:
   cached_network_image: ^3.4.1
   flutter_svg: ^2.0.10+1
   dynamic_height_grid_view: ^0.0.4
-  data_table_2: ^2.5.15
   syncfusion_flutter_datagrid: ^26.2.14
   scrollable_positioned_list: ^0.3.8
   visibility_detector: ^0.4.0+2
