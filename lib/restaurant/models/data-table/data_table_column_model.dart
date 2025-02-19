@@ -4,12 +4,12 @@ class DataTableColumnModel {
   final String label;
   final dynamic value;
   final double? width;
-  final Alignment alignment;
+  final MainAxisAlignment headingRowAlignment;
 
   const DataTableColumnModel({
     required this.label,
     required this.value,
     this.width,
-    this.alignment = Alignment.center,
+    this.headingRowAlignment = MainAxisAlignment.center,
   });
 }
