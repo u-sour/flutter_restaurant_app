@@ -19,7 +19,7 @@ class LoginFormWidget extends StatelessWidget {
   final String _fromTitle = 'screens.login.children.formTitle';
   final String _prefixFromLabel = 'screens.login.children.form';
   static final int _year = DateTime.now().year;
-  final String _copyRight = 'screens.login.children.copyRight';
+  final String _copyRightBy = 'appInfo.copyrightBy';
 
   @override
   Widget build(BuildContext context) {
@@ -197,10 +197,11 @@ class LoginFormWidget extends StatelessWidget {
               ),
               const SizedBox(height: AppStyleDefaultProperties.h),
               Text(
-                '${context.tr(_copyRight, namedArgs: {
-                      'year': '$_year'
-                    })} (v${AppInfo.version})',
-                style: const TextStyle(color: Colors.white),
+                context.tr(_copyRightBy, namedArgs: {
+                  'company': 'appInfo.value.company'.tr(),
+                  'year': '$_year',
+                  'version': 'appInfo.value.latestVersion'.tr()
+                }),
               ),
               // RichText(
               //   text: TextSpan(

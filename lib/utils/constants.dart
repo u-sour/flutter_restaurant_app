@@ -4,7 +4,32 @@ import '../router/route_utils.dart';
 
 class AppInfo {
   AppInfo._();
-  static const String version = '1.0.0+4';
+  static const List<SelectOptionModel> information = [
+    SelectOptionModel(
+        icon: AppDefaultIcons.company,
+        label: 'appInfo.label.company',
+        value: 'appInfo.value.company'),
+    SelectOptionModel(
+        icon: AppDefaultIcons.companyTelephone,
+        label: 'appInfo.label.companyTelephone',
+        value: 'appInfo.value.companyTelephone'),
+    SelectOptionModel(
+        icon: AppDefaultIcons.developers,
+        label: 'appInfo.label.developedBy',
+        value: 'appInfo.value.developers'),
+    SelectOptionModel(
+        icon: AppDefaultIcons.publisher,
+        label: 'appInfo.label.publishedBy',
+        value: 'appInfo.value.publisher'),
+    SelectOptionModel(
+        icon: AppDefaultIcons.developmentVersion,
+        label: 'appInfo.label.developmentVersion',
+        value: 'appInfo.value.developmentVersion'),
+    SelectOptionModel(
+        icon: AppDefaultIcons.productionVersion,
+        label: 'appInfo.label.latestVersion',
+        value: 'appInfo.value.latestVersion'),
+  ];
 }
 
 class AppNavigation {
@@ -16,6 +41,7 @@ class AppNavigation {
     SCREENS.reports,
     SCREENS.profile,
     SCREENS.settings,
+    SCREENS.information,
     SCREENS.logout
   ];
 
@@ -24,6 +50,7 @@ class AppNavigation {
     SCREENS.reports,
     SCREENS.profile,
     SCREENS.settings,
+    SCREENS.information,
   ];
 }
 
@@ -147,7 +174,7 @@ class AppDefaultIcons {
   static const IconData splashScreen = Icons.scale_sharp;
   static const IconData onBoarding = Icons.web;
   static const IconData dashboard = Icons.dashboard;
-  static const IconData fromBuilder = Icons.input;
+  static const IconData fromBuilder = Icons.text_fields;
   static const IconData fromBuilderDefault = Icons.article;
   static const IconData fromBuilderExtra = Icons.post_add;
   static const IconData fromBuilderValidation = Icons.rule;
@@ -164,13 +191,20 @@ class AppDefaultIcons {
   static const IconData noInternet = Icons.language;
   static const IconData ipAddress = Icons.settings_ethernet;
   static const IconData qrCodeScanner = Icons.qr_code_scanner;
-  static const IconData info = Icons.info;
   // Printer
   static const IconData btPrinter = Icons.bluetooth;
   static const IconData print = Icons.print;
   static const IconData disconnect = Icons.print_disabled;
   static const IconData printerPaperSize = Icons.description;
   static const IconData printerFontSize = Icons.format_size;
+  // Information
+  static const IconData info = Icons.info;
+  static const IconData developers = Icons.code;
+  static const IconData publisher = Icons.publish;
+  static const IconData company = Icons.business;
+  static const IconData companyTelephone = Icons.call;
+  static const IconData developmentVersion = Icons.build_circle;
+  static const IconData productionVersion = Icons.verified;
   // Themes
   static const IconData autoTheme = Icons.brightness_auto;
   static const IconData lightTheme = Icons.light_mode;

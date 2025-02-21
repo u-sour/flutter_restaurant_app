@@ -24,6 +24,7 @@ enum SCREENS {
   myProfile,
   settings,
   printer,
+  information,
   logout,
   error
 }
@@ -67,6 +68,8 @@ extension AppScreenExtension on SCREENS {
         return "/printer";
       case SCREENS.login:
         return "/login";
+      case SCREENS.information:
+        return "/information";
       case SCREENS.logout:
         return "/logout";
       case SCREENS.splash:
@@ -120,6 +123,8 @@ extension AppScreenExtension on SCREENS {
         return "printer";
       case SCREENS.login:
         return "login";
+      case SCREENS.information:
+        return "information";
       case SCREENS.splash:
         return "splash";
       case SCREENS.error:
@@ -165,6 +170,8 @@ extension AppScreenExtension on SCREENS {
         return "screens.printer.title";
       case SCREENS.login:
         return "screens.login.title";
+      case SCREENS.information:
+        return "screens.information.title";
       case SCREENS.logout:
         return "screens.logout.title";
       case SCREENS.splash:
@@ -213,6 +220,8 @@ extension AppScreenExtension on SCREENS {
         return AppDefaultIcons.settings;
       case SCREENS.login:
         return AppDefaultIcons.login;
+      case SCREENS.information:
+        return AppDefaultIcons.info;
       case SCREENS.logout:
         return AppDefaultIcons.logout;
       case SCREENS.splash:
