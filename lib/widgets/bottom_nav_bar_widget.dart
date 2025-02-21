@@ -45,7 +45,7 @@ class _BottomNavBarWidgetState extends State<BottomNavBarWidget> {
                   theme.bottomNavigationBarTheme.selectedItemColor ??
                       Colors.transparent,
               gap: 8.0,
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(8.0),
               selectedIndex: state.routeIndexState,
               onTabChange: (int index) {
                 // Go To Screen

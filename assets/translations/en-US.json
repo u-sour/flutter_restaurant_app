@@ -1,6 +1,22 @@
 {
   "appInfo": {
-    "version": "Version: {version}"
+    "label": {
+      "company": "Company",
+      "companyTelephone": "Company Telephone",
+      "developedBy": "Developed By",
+      "publishedBy": "Published By",
+      "developmentVersion": "Development Version",
+      "latestVersion": "Latest Version"
+    },
+    "value": {
+      "company": "Rabbit Technology",
+      "companyTelephone": "+855 70550880",
+      "developers": "Heng You Sour",
+      "publisher": "Roeurb Navy",
+      "developmentVersion": "1.0.0+5",
+      "latestVersion": "1.0.1"
+    },
+    "copyrightBy": "\u00a9 All Rights Reserved by {company} - {year} (v{version})"
   },
   "screens": {
     "connection": {
@@ -660,6 +676,9 @@
           "message": "Printer {printerName} not found."
         }
       }
+    },
+    "information": {
+      "title": "INFORMATION"
     },
     "error": {
       "title": "ERROR"
