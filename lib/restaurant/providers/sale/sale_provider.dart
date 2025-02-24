@@ -159,7 +159,9 @@ class SaleProvider extends ChangeNotifier {
     // set current guest
     setCurrentGuest(
         guest: SelectOptionModel(
-            label: generalGuest.name, value: generalGuest.id));
+            label: generalGuest.name,
+            value: generalGuest.id,
+            extra: generalGuest.telephone));
     if (context.mounted) {
       // check current user enable 'tablet-orders' role & module
       _isTabletOrder = SaleService.isModuleActive(
@@ -373,7 +375,8 @@ class SaleProvider extends ChangeNotifier {
       // set current guest
       GuestModel guest = await fetchOneGuest(id: _currentSale!.guestId);
       setCurrentGuest(
-          guest: SelectOptionModel(label: guest.name, value: guest.id));
+          guest: SelectOptionModel(
+              label: guest.name, value: guest.id, extra: guest.telephone));
 
       // set sale action app bar title
       if (_currentSale != null) {
@@ -1030,7 +1033,9 @@ class SaleProvider extends ChangeNotifier {
       // convert Json to List<SelectOptionModel>
       for (int i = 0; i < result.length; i++) {
         toListModel.add(SelectOptionModel(
-          label: result[i]['name'],
+          label: result[i]['telephone'] != null
+              ? '${result[i]['name']} (${result[i]['telephone']})'
+              : result[i]['name'],
           value: result[i]['_id'],
         ));
       }
@@ -1129,7 +1134,8 @@ class SaleProvider extends ChangeNotifier {
 
   // set current guest state
   void setCurrentGuest({required SelectOptionModel guest}) {
-    _currentGuest = SelectOptionModel(label: guest.label, value: guest.value);
+    _currentGuest = SelectOptionModel(
+        label: guest.label, value: guest.value, extra: guest.extra);
   }
 
   // update sale detail item

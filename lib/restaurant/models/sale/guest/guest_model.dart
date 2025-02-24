@@ -8,6 +8,7 @@ class GuestModel {
   final String id;
   final String name;
   final String branchId;
+  final String? telephone;
   @JsonKey(
       fromJson: DateModelConverter.convertDateTimeForModel,
       toJson: DateModelConverter.convertDateTimeForModel)
@@ -17,6 +18,7 @@ class GuestModel {
     required this.id,
     required this.name,
     required this.branchId,
+    this.telephone,
     required this.createdAt,
   });
 

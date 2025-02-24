@@ -15,6 +15,7 @@ GuestModel _$GuestModelFromJson(Map<String, dynamic> json) {
     id: json['_id'] as String,
     name: json['name'] as String,
     branchId: json['branchId'] as String,
+    telephone: json['telephone'] as String?,
     createdAt: DateModelConverter.convertDateTimeForModel(
         json['createdAt'] as DateTime),
   );
@@ -25,6 +26,7 @@ Map<String, dynamic> _$GuestModelToJson(GuestModel instance) =>
       '_id': instance.id,
       'name': instance.name,
       'branchId': instance.branchId,
+      'telephone': instance.telephone,
       'createdAt':
           DateModelConverter.convertDateTimeForModel(instance.createdAt),
     };

@@ -160,6 +160,7 @@ class SaleProductItemWidget extends StatelessWidget {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              const SizedBox(height: AppStyleDefaultProperties.h * 2)
             ],
           ),
         ),
