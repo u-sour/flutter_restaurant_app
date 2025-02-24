@@ -6,8 +6,11 @@ import 'package:flutter/services.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:form_builder_extra_fields/form_builder_extra_fields.dart';
 import 'package:form_builder_validators/form_builder_validators.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 import '../../../../models/select-option/select_option_model.dart';
+import '../../../../services/global_service.dart';
+import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/convert_date_time.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
@@ -16,6 +19,7 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/receipt/sale_receipt_allow_currency_amount_model.dart';
 import '../../../models/sale/receipt/sale_receipt_model.dart';
 import '../../../providers/sale/sale_provider.dart';
+import '../../../screens/insert_guest_screen.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/sale/sale_utils.dart';
 import '../../dialog_widget.dart';
@@ -49,9 +53,12 @@ class EditSaleDetailFooterActionWidget extends StatelessWidget {
       title: footerType.toTitle,
       titleIcon: titleIcon,
       content: SizedBox(
-        width: footerType.name == 'payment' || footerType.name == 'preview'
+        width: footerType.name == SaleDetailFooterType.payment.name ||
+                footerType.name == SaleDetailFooterType.preview.name
             ? double.maxFinite
-            : double.minPositive,
+            : footerType.name == SaleDetailFooterType.changeGuest.name
+                ? double.infinity
+                : double.minPositive,
         child: FormBuilder(
           key: fbKey,
           child: EditSaleDetailFooter(
@@ -90,6 +97,8 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
   TextEditingController disAmountController = TextEditingController();
   Future<List<SelectOptionModel>>? tables;
   Future<List<SelectOptionModel>>? guests;
+  static final GlobalKey<FormBuilderState> _fbInsertGuestKey =
+      GlobalKey<FormBuilderState>();
   // sale receipt
   final String prefixSaleReceipt =
       'screens.sale.detail.footerActions.form.saleReceipt';
@@ -561,54 +570,103 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                           }
                         }),
                   if (widget.footerType.name == 'changeGuest')
-                    FutureBuilder<List<SelectOptionModel>>(
-                        future: guests,
-                        builder: (context, snapshot) {
-                          if (snapshot.hasError) {
-                            final error = snapshot.error;
-                            return Text('$error');
-                          } else if (snapshot.hasData) {
-                            return FormBuilderSearchableDropdown<
-                                SelectOptionModel>(
-                              name: 'changeGuest',
-                              initialValue: widget.value,
-                              autovalidateMode:
-                                  AutovalidateMode.onUserInteraction,
-                              popupProps: PopupProps.dialog(
-                                showSelectedItems: true,
-                                showSearchBox: true,
-                                searchFieldProps: TextFieldProps(
-                                  decoration: InputDecoration(
-                                      prefixIcon: const Icon(
-                                          RestaurantDefaultIcons.search),
-                                      hintText: 'screens.sale.search'.tr(),
-                                      isDense: true),
-                                ),
-                                loadingBuilder: (context, searchEntry) =>
-                                    const LoadingWidget(),
-                                emptyBuilder: (context, searchEntry) =>
-                                    const Center(child: EmptyDataWidget()),
-                              ),
-                              compareFn:
-                                  (SelectOptionModel i, SelectOptionModel s) =>
-                                      i.value == s.value,
-                              valueTransformer: (SelectOptionModel? item) {
-                                if (item != null) {
-                                  return item.value;
+                    Row(
+                      children: [
+                        Expanded(
+                          child: FutureBuilder<List<SelectOptionModel>>(
+                              future: guests,
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  final error = snapshot.error;
+                                  return Text('$error');
+                                } else if (snapshot.hasData) {
+                                  return FormBuilderSearchableDropdown<
+                                      SelectOptionModel>(
+                                    name: 'changeGuest',
+                                    initialValue: widget.value,
+                                    autovalidateMode:
+                                        AutovalidateMode.onUserInteraction,
+                                    popupProps: PopupProps.dialog(
+                                      showSelectedItems: true,
+                                      showSearchBox: true,
+                                      searchFieldProps: TextFieldProps(
+                                        decoration: InputDecoration(
+                                            prefixIcon: const Icon(
+                                                RestaurantDefaultIcons.search),
+                                            hintText:
+                                                'screens.sale.search'.tr(),
+                                            isDense: true),
+                                      ),
+                                      loadingBuilder: (context, searchEntry) =>
+                                          const LoadingWidget(),
+                                      emptyBuilder: (context, searchEntry) =>
+                                          const Center(
+                                              child: EmptyDataWidget()),
+                                    ),
+                                    compareFn: (SelectOptionModel i,
+                                            SelectOptionModel s) =>
+                                        i.value == s.value,
+                                    valueTransformer:
+                                        (SelectOptionModel? item) {
+                                      if (item != null) {
+                                        return item.value;
+                                      }
+                                    },
+                                    itemAsString: ((SelectOptionModel? item) {
+                                      return item != null && item.extra != null
+                                          ? '${item.label} (${item.extra})'
+                                          : item!.label;
+                                    }),
+                                    items: snapshot.data!,
+                                    validator: FormBuilderValidators.compose([
+                                      FormBuilderValidators.required(),
+                                    ]),
+                                  );
+                                } else {
+                                  return const LoadingWidget();
                                 }
-                              },
-                              itemAsString: ((SelectOptionModel? item) {
-                                return item!.label;
                               }),
-                              items: snapshot.data!,
-                              validator: FormBuilderValidators.compose([
-                                FormBuilderValidators.required(),
-                              ]),
-                            );
-                          } else {
-                            return const LoadingWidget();
-                          }
-                        }),
+                        ),
+                        const SizedBox(width: AppStyleDefaultProperties.h),
+                        SizedBox(
+                          height: 52.0,
+                          width: 52.0,
+                          child: FilledButton(
+                            onPressed: () => GlobalService.openDialog(
+                                contentWidget: DialogWidget(
+                                  titleIcon:
+                                      RestaurantDefaultIcons.changeCustomer,
+                                  title: 'screens.guest.title',
+                                  content: InsertGuestScreen(
+                                      fbKey: _fbInsertGuestKey),
+                                  onInsertPressed: () async {
+                                    if (_fbInsertGuestKey.currentState!
+                                        .saveAndValidate()) {
+                                      Map<String, dynamic> form = Map.of(
+                                          _fbInsertGuestKey
+                                              .currentState!.value);
+                                      final result = await readProvider
+                                          .addGuest(form: form);
+                                      if (result != null) {
+                                        Alert.show(
+                                            description: result.description,
+                                            type: result.type);
+                                      }
+                                      if (context.mounted) {
+                                        context.pop();
+                                      }
+                                    }
+                                  },
+                                ),
+                                context: context),
+                            style:
+                                TextButton.styleFrom(padding: EdgeInsets.zero),
+                            child:
+                                const Icon(RestaurantDefaultIcons.addCustomer),
+                          ),
+                        )
+                      ],
+                    ),
                   if (widget.footerType.name == 'discountRate')
                     FormBuilderTextField(
                       name: 'discountRate',

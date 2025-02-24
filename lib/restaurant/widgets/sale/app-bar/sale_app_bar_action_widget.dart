@@ -173,23 +173,29 @@ class SaleAppBarActionWidget extends StatelessWidget {
                       size: btnSize,
                     ),
                   )
-                : Column(
-                    children: [
-                      if (data.appBarTitle?.title != null)
-                        Text(
-                          data.appBarTitle!.title,
-                          style: ResponsiveLayout.isMobile(context)
-                              ? theme.textTheme.bodySmall
-                                  ?.copyWith(fontWeight: FontWeight.bold)
-                              : theme.textTheme.bodyMedium
-                                  ?.copyWith(fontWeight: FontWeight.bold),
-                        ),
-                      if (data.appBarTitle?.date != null)
-                        Text(
-                          data.appBarTitle!.date!,
-                          style: theme.textTheme.bodySmall,
-                        ),
-                    ],
+                : Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: AppStyleDefaultProperties.p),
+                    child: Column(
+                      children: [
+                        if (data.appBarTitle?.title != null)
+                          FittedBox(
+                            child: Text(
+                              data.appBarTitle!.title,
+                              style: ResponsiveLayout.isMobile(context)
+                                  ? theme.textTheme.bodySmall
+                                      ?.copyWith(fontWeight: FontWeight.bold)
+                                  : theme.textTheme.bodyMedium
+                                      ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
+                          ),
+                        if (data.appBarTitle?.date != null)
+                          Text(
+                            data.appBarTitle!.date!,
+                            style: theme.textTheme.bodySmall,
+                          ),
+                      ],
+                    ),
                   ),
           )),
           // Add new sale (Invoice)

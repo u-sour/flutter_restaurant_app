@@ -58,6 +58,7 @@ class RestaurantDefaultIcons {
   // sale - detail footer actions
   static const IconData changeTable = Icons.move_up;
   static const IconData changeCustomer = Icons.person;
+  static const IconData addCustomer = Icons.person_add_alt_1;
   static const IconData cancelCopy = Icons.content_copy;
   static const IconData chef = Icons.food_bank;
   static const IconData printChefItems = Icons.pin_invoke;

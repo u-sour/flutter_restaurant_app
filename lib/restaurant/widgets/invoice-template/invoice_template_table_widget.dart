@@ -112,6 +112,7 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                       Text(row[tables[i].field],
                                           style: theme.textTheme.bodySmall!
                                               .copyWith(
+                                            color: baseColor,
                                             fontSize: paperSize ==
                                                         PaperSize.mm80 &&
                                                     tableSchema

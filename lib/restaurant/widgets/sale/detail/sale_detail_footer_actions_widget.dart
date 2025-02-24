@@ -15,21 +15,17 @@ import '../../../models/sale/detail/sale_detail_model.dart';
 import '../../../models/sale/sale/sale_model.dart';
 import '../../../providers/sale/products/sale_products_provider.dart';
 import '../../../providers/sale/sale_provider.dart';
-import '../../../screens/insert_guest_screen.dart';
 import '../../../services/sale_service.dart';
 import '../../../services/user_service.dart';
 import '../../../utils/constants.dart';
 import '../../../utils/format_currency.dart';
 import '../../../utils/sale/sale_utils.dart';
-import '../../dialog_widget.dart';
 import '../../format_currency_widget.dart';
 import 'edit_sale_detail_footer_action_widget.dart';
 
 class SaleDetailFooterActionsWidget extends StatelessWidget {
   const SaleDetailFooterActionsWidget({super.key});
   static final GlobalKey<FormBuilderState> _fbEditFooterKey =
-      GlobalKey<FormBuilderState>();
-  static final GlobalKey<FormBuilderState> _fbInsertGuestKey =
       GlobalKey<FormBuilderState>();
   @override
   Widget build(BuildContext context) {
@@ -54,17 +50,19 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
             Selector<SaleProvider, SaleModel?>(
               selector: (context, state) => state.currentSale,
               builder: (context, currentSale, child) => currentSale != null
-                  ? OverflowBar(
-                      alignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        // Change Table
-                        // Note: បង្ហាញពេល module skip-table មិន active
-                        if (!SaleService.isModuleActive(
-                            modules: allowModules
-                                .where((m) => m == 'skip-table')
-                                .toList(),
-                            context: context))
-                          TextButton.icon(
+                  ? Padding(
+                      padding:
+                          const EdgeInsets.all(AppStyleDefaultProperties.p / 2),
+                      child: Row(
+                        children: [
+                          // Change Table
+                          // Note: បង្ហាញពេល module skip-table មិន active
+                          if (!SaleService.isModuleActive(
+                              modules: allowModules
+                                  .where((m) => m == 'skip-table')
+                                  .toList(),
+                              context: context))
+                            TextButton(
                               onPressed: () => GlobalService.openDialog(
                                   contentWidget:
                                       EditSaleDetailFooterActionWidget(
@@ -92,103 +90,102 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                     },
                                   ),
                                   context: context),
-                              // style:
-                              //     TextButton.styleFrom(padding: EdgeInsets.zero),
-                              icon: const Icon(
-                                  RestaurantDefaultIcons.changeTable),
-                              label: const Text(
-                                      "$prefixSaleDetailFooterActions.changeTable")
-                                  .tr()),
-                        // Change Guest
-                        InkWell(
-                          onDoubleTap: () => GlobalService.openDialog(
-                              contentWidget: DialogWidget(
-                                titleIcon:
-                                    RestaurantDefaultIcons.changeCustomer,
-                                title: 'screens.guest.title',
-                                content:
-                                    InsertGuestScreen(fbKey: _fbInsertGuestKey),
-                                onInsertPressed: () async {
-                                  if (_fbInsertGuestKey.currentState!
-                                      .saveAndValidate()) {
-                                    Map<String, dynamic> form = Map.of(
-                                        _fbInsertGuestKey.currentState!.value);
-                                    final result = await readSaleProvider
-                                        .addGuest(form: form);
-                                    if (result != null) {
-                                      Alert.show(
-                                          description: result.description,
-                                          type: result.type);
-                                    }
-                                    if (context.mounted) {
-                                      context.pop();
-                                    }
-                                  }
-                                },
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                      RestaurantDefaultIcons.changeTable),
+                                  if (ResponsiveLayout.isTablet(context))
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left:
+                                              AppStyleDefaultProperties.p / 2),
+                                      child: const Text(
+                                              "$prefixSaleDetailFooterActions.changeTable")
+                                          .tr(),
+                                    ),
+                                ],
                               ),
-                              context: context),
-                          child: TextButton.icon(
-                              onPressed: () => GlobalService.openDialog(
-                                  contentWidget:
-                                      EditSaleDetailFooterActionWidget(
-                                    fbKey: _fbEditFooterKey,
-                                    footerType:
-                                        SaleDetailFooterType.changeGuest,
-                                    value: readSaleProvider.currentGuest,
-                                    onInsertPressed: () async {
-                                      if (_fbEditFooterKey.currentState!
-                                          .saveAndValidate()) {
-                                        final String guestId = _fbEditFooterKey
-                                            .currentState!.value['changeGuest'];
-                                        // check if new guest then update
-                                        if (guestId !=
-                                            readSaleProvider
-                                                .currentGuest.value) {
-                                          await readSaleProvider
-                                              .updateSaleGuest(
-                                                  guestId: guestId);
-                                          // fetch products again
-                                          await readSaleProductsProvider.filter(
-                                            search:
-                                                readSaleProductsProvider.search,
-                                            categoryId: readSaleProductsProvider
-                                                .categoryId,
-                                            productGroupId:
-                                                readSaleProductsProvider
-                                                    .productGroupId,
-                                            showExtraFood:
-                                                readSaleProductsProvider
-                                                    .showExtraFood,
-                                            invoiceId: readSaleProvider
-                                                .currentSale!.id,
-                                          );
+                            ),
+                          // Change Guest
+                          Expanded(
+                            child: TextButton.icon(
+                                onPressed: () => GlobalService.openDialog(
+                                    contentWidget:
+                                        EditSaleDetailFooterActionWidget(
+                                      fbKey: _fbEditFooterKey,
+                                      footerType:
+                                          SaleDetailFooterType.changeGuest,
+                                      value: readSaleProvider.currentGuest,
+                                      onInsertPressed: () async {
+                                        if (_fbEditFooterKey.currentState!
+                                            .saveAndValidate()) {
+                                          final String guestId =
+                                              _fbEditFooterKey.currentState!
+                                                  .value['changeGuest'];
+                                          // check if new guest then update
+                                          if (guestId !=
+                                              readSaleProvider
+                                                  .currentGuest.value) {
+                                            await readSaleProvider
+                                                .updateSaleGuest(
+                                                    guestId: guestId);
+                                            // fetch products again
+                                            await readSaleProductsProvider
+                                                .filter(
+                                              search: readSaleProductsProvider
+                                                  .search,
+                                              categoryId:
+                                                  readSaleProductsProvider
+                                                      .categoryId,
+                                              productGroupId:
+                                                  readSaleProductsProvider
+                                                      .productGroupId,
+                                              showExtraFood:
+                                                  readSaleProductsProvider
+                                                      .showExtraFood,
+                                              invoiceId: readSaleProvider
+                                                  .currentSale!.id,
+                                            );
+                                          }
+                                          if (context.mounted) {
+                                            context.pop();
+                                          }
                                         }
-                                        if (context.mounted) {
-                                          context.pop();
-                                        }
-                                      }
-                                    },
-                                  ),
-                                  context: context),
-                              // style:
-                              //     TextButton.styleFrom(padding: EdgeInsets.zero),
-                              icon: const Icon(
-                                  RestaurantDefaultIcons.changeCustomer),
-                              label: Selector<SaleProvider, SelectOptionModel>(
-                                  selector: (context, state) =>
-                                      state.currentGuest,
-                                  builder: (context, guest, child) =>
-                                      Text(guest.label))),
-                        ),
-                        // Cancel & copy
-                        // Note: បង្ហាញពេល module != tablet-orders || user role != tablet-orders
-                        if (!SaleService.isModuleActive(
-                                modules: allowModules
-                                    .where((m) => m == 'tablet-orders')
-                                    .toList(),
-                                context: context) ||
-                            !UserService.userInRole(roles: ['tablet-orders']))
-                          TextButton.icon(
+                                      },
+                                    ),
+                                    context: context),
+                                icon: const Icon(
+                                    RestaurantDefaultIcons.changeCustomer),
+                                label: Selector<SaleProvider,
+                                        SelectOptionModel>(
+                                    selector: (context, state) =>
+                                        state.currentGuest,
+                                    builder: (context, guest, child) => Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Text(
+                                              guest.label,
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                            if (guest.extra != null)
+                                              Text(
+                                                '${guest.extra}',
+                                                overflow: TextOverflow.ellipsis,
+                                              ),
+                                          ],
+                                        ))),
+                          ),
+                          // Cancel & copy
+                          // Note: បង្ហាញពេល module != tablet-orders || user role != tablet-orders
+                          if (!SaleService.isModuleActive(
+                                  modules: allowModules
+                                      .where((m) => m == 'tablet-orders')
+                                      .toList(),
+                                  context: context) ||
+                              !UserService.userInRole(roles: ['tablet-orders']))
+                            TextButton(
                               onPressed: () async {
                                 final result = await readSaleProvider
                                     .cancelSale(context: context, copy: true);
@@ -198,15 +195,24 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                                       type: result.type);
                                 }
                               },
-                              // style: TextButton.styleFrom(
-                              //     padding: const EdgeInsets.all(
-                              //         AppStyleDefaultProperties.p)),
-                              icon:
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
                                   const Icon(RestaurantDefaultIcons.cancelCopy),
-                              label: const Text(
-                                      "$prefixSaleDetailFooterActions.cancelCopy")
-                                  .tr()),
-                      ],
+                                  if (ResponsiveLayout.isTablet(context))
+                                    Padding(
+                                      padding: const EdgeInsets.only(
+                                          left:
+                                              AppStyleDefaultProperties.p / 2),
+                                      child: const Text(
+                                              "$prefixSaleDetailFooterActions.cancelCopy")
+                                          .tr(),
+                                    ),
+                                ],
+                              ),
+                            )
+                        ],
+                      ),
                     )
                   : const SizedBox.shrink(),
             ),
@@ -214,183 +220,206 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
             Expanded(
               child: Row(
                 children: [
-                  // Print to Kitchen (Sent selected item to Chef Monitor)
-                  // Note: បង្ហាញពេល module != tablet-orders || user role != tablet-orders
-                  if (!SaleService.isModuleActive(
-                          modules: allowModules
-                              .where((m) => m == 'tablet-orders')
-                              .toList(),
-                          context: context) ||
-                      !UserService.userInRole(roles: ['tablet-orders'])) ...[
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // Print invoice to kitchen
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        // Print to Kitchen (Sent selected item to Chef Monitor)
+                        // Note: បង្ហាញពេល module != tablet-orders || user role != tablet-orders
+                        if (!SaleService.isModuleActive(
+                                modules: allowModules
+                                    .where((m) => m == 'tablet-orders')
+                                    .toList(),
+                                context: context) ||
+                            !UserService.userInRole(
+                                roles: ['tablet-orders'])) ...[
                           Expanded(
-                              child: FilledButton(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.stretch,
+                              children: [
+                                // Print invoice to kitchen
+                                Expanded(
+                                    child: FilledButton(
+                                  onPressed: () async {
+                                    ResponseModel? result =
+                                        await readSaleProvider
+                                            .printInvoiceToKitchen(
+                                                context: context);
+                                    if (result != null) {
+                                      Alert.show(
+                                          description: result.description,
+                                          type: result.type);
+                                    }
+                                  },
+                                  style: FilledButton.styleFrom(
+                                      padding: EdgeInsets.zero,
+                                      shape: const LinearBorder()),
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      const Icon(RestaurantDefaultIcons
+                                          .printChefItems),
+                                      if (!ResponsiveLayout.isMobile(context))
+                                        const Text(
+                                                "$prefixSaleDetailFooterActions.printToChef")
+                                            .tr(),
+                                    ],
+                                  ),
+                                )),
+                                // Note: បង្ហាញពេល module == chef-monitor
+                                if (SaleService.isModuleActive(
+                                    modules: allowModules
+                                        .where((m) => m == 'chef-monitor')
+                                        .toList(),
+                                    context: context))
+                                  Expanded(
+                                    child: TextButton(
+                                      onPressed: () async {
+                                        final result = await readSaleProvider
+                                            .printToKitchen(context: context);
+                                        if (result != null) {
+                                          Alert.show(
+                                              description: result.description,
+                                              type: result.type);
+                                        }
+                                      },
+                                      style: btnStyleNormalShape,
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          const Icon(
+                                              RestaurantDefaultIcons.chef),
+                                          if (!ResponsiveLayout.isMobile(
+                                              context))
+                                            const Text(
+                                                    "$prefixSaleDetailFooterActions.chef")
+                                                .tr(),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                          VerticalDivider(width: 0.0, color: dividerColor),
+                        ],
+                        // Preview
+                        // Note: បង្ហាញពេល module == tablet-orders && user role == tablet-orders
+                        if (SaleService.isModuleActive(
+                                modules: allowModules
+                                    .where((m) => m == 'tablet-orders')
+                                    .toList(),
+                                context: context) &&
+                            UserService.userInRole(
+                                roles: ['tablet-orders'])) ...[
+                          Expanded(
+                            child: TextButton(
+                              onPressed: () async {
+                                final result = await readSaleProvider.preview(
+                                    context: context);
+                                if (result != null) {
+                                  Alert.show(
+                                      description: result.description,
+                                      type: result.type);
+                                }
+                              },
+                              style: btnStyleNormalShape,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  const Icon(RestaurantDefaultIcons.preview),
+                                  if (!ResponsiveLayout.isMobile(context))
+                                    const Text(
+                                      "$prefixSaleDetailFooterActions.preview",
+                                      overflow: TextOverflow.ellipsis,
+                                    ).tr(),
+                                ],
+                              ),
+                            ),
+                          ),
+                          VerticalDivider(width: 0.0, color: dividerColor),
+                        ],
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                      child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Print Bill
+                      // Note: បង្ហាញពេល  module != tablet-orders || user role != tablet-orders
+                      if (!SaleService.isModuleActive(
+                              modules: allowModules
+                                  .where((m) => m == 'tablet-orders')
+                                  .toList(),
+                              context: context) ||
+                          !UserService.userInRole(
+                              roles: ['tablet-orders'])) ...[
+                        Expanded(
+                          child: TextButton(
                             onPressed: () async {
-                              ResponseModel? result = await readSaleProvider
-                                  .printInvoiceToKitchen(context: context);
+                              final result = await readSaleProvider.printBill(
+                                  context: context);
                               if (result != null) {
                                 Alert.show(
                                     description: result.description,
                                     type: result.type);
                               }
                             },
-                            style: FilledButton.styleFrom(
-                                padding: EdgeInsets.zero,
-                                shape: const LinearBorder()),
+                            style: btnStyleNormalShape,
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
-                                const Icon(
-                                    RestaurantDefaultIcons.printChefItems),
+                                const Icon(RestaurantDefaultIcons.print),
                                 if (!ResponsiveLayout.isMobile(context))
                                   const Text(
-                                          "$prefixSaleDetailFooterActions.printToChef")
+                                          "$prefixSaleDetailFooterActions.print")
                                       .tr(),
                               ],
                             ),
-                          )),
-                          // Note: បង្ហាញពេល module == chef-monitor
-                          if (SaleService.isModuleActive(
-                              modules: allowModules
-                                  .where((m) => m == 'chef-monitor')
-                                  .toList(),
-                              context: context))
-                            Expanded(
-                              child: TextButton(
-                                onPressed: () async {
-                                  final result = await readSaleProvider
-                                      .printToKitchen(context: context);
-                                  if (result != null) {
-                                    Alert.show(
-                                        description: result.description,
-                                        type: result.type);
-                                  }
-                                },
-                                style: btnStyleNormalShape,
-                                child: Column(
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: [
-                                    const Icon(RestaurantDefaultIcons.chef),
-                                    if (!ResponsiveLayout.isMobile(context))
-                                      const Text(
-                                              "$prefixSaleDetailFooterActions.chef")
-                                          .tr(),
-                                  ],
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                    VerticalDivider(width: 0.0, color: dividerColor),
-                  ],
-                  // Print Bill
-                  // Note: បង្ហាញពេល  module != tablet-orders || user role != tablet-orders
-                  if (!SaleService.isModuleActive(
-                          modules: allowModules
-                              .where((m) => m == 'tablet-orders')
-                              .toList(),
-                          context: context) ||
-                      !UserService.userInRole(roles: ['tablet-orders'])) ...[
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () async {
-                          final result = await readSaleProvider.printBill(
-                              context: context);
-                          if (result != null) {
-                            Alert.show(
-                                description: result.description,
-                                type: result.type);
-                          }
-                        },
-                        style: btnStyleNormalShape,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(RestaurantDefaultIcons.print),
-                            if (!ResponsiveLayout.isMobile(context))
-                              const Text("$prefixSaleDetailFooterActions.print")
-                                  .tr(),
-                          ],
+                          ),
+                        ),
+                        VerticalDivider(width: 0.0, color: dividerColor),
+                      ],
+                      // Payment
+                      Expanded(
+                        child: TextButton(
+                          onPressed: () async {
+                            ResponseModel? result;
+                            if (UserService.userInRole(
+                                roles: ['tablet-orders'])) {
+                              if (UserService.userInRole(
+                                  roles: ['request-payment'])) {
+                                result = await readSaleProvider.requestPayment(
+                                    context: context);
+                              }
+                            } else {
+                              result = await readSaleProvider.payment(
+                                  context: context);
+                            }
+                            if (result != null) {
+                              Alert.show(
+                                  description: result.description,
+                                  type: result.type);
+                            }
+                          },
+                          style: btnStyleNormalShape,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Icon(RestaurantDefaultIcons.payment),
+                              if (!ResponsiveLayout.isMobile(context))
+                                const Text(
+                                  "$prefixSaleDetailFooterActions.payment",
+                                  overflow: TextOverflow.ellipsis,
+                                ).tr(),
+                            ],
+                          ),
                         ),
                       ),
-                    ),
-                    VerticalDivider(width: 0.0, color: dividerColor),
-                  ],
-                  // Preview
-                  // Note: បង្ហាញពេល module == tablet-orders && user role == tablet-orders
-                  if (SaleService.isModuleActive(
-                          modules: allowModules
-                              .where((m) => m == 'tablet-orders')
-                              .toList(),
-                          context: context) &&
-                      UserService.userInRole(roles: ['tablet-orders'])) ...[
-                    Expanded(
-                      child: TextButton(
-                        onPressed: () async {
-                          final result =
-                              await readSaleProvider.preview(context: context);
-                          if (result != null) {
-                            Alert.show(
-                                description: result.description,
-                                type: result.type);
-                          }
-                        },
-                        style: btnStyleNormalShape,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            const Icon(RestaurantDefaultIcons.preview),
-                            if (!ResponsiveLayout.isMobile(context))
-                              const Text(
-                                "$prefixSaleDetailFooterActions.preview",
-                                overflow: TextOverflow.ellipsis,
-                              ).tr(),
-                          ],
-                        ),
-                      ),
-                    ),
-                    VerticalDivider(width: 0.0, color: dividerColor),
-                  ],
-                  // Payment
-                  Expanded(
-                    child: TextButton(
-                      onPressed: () async {
-                        ResponseModel? result;
-                        if (UserService.userInRole(roles: ['tablet-orders'])) {
-                          if (UserService.userInRole(
-                              roles: ['request-payment'])) {
-                            result = await readSaleProvider.requestPayment(
-                                context: context);
-                          }
-                        } else {
-                          result =
-                              await readSaleProvider.payment(context: context);
-                        }
-                        if (result != null) {
-                          Alert.show(
-                              description: result.description,
-                              type: result.type);
-                        }
-                      },
-                      style: btnStyleNormalShape,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(RestaurantDefaultIcons.payment),
-                          if (!ResponsiveLayout.isMobile(context))
-                            const Text(
-                              "$prefixSaleDetailFooterActions.payment",
-                              overflow: TextOverflow.ellipsis,
-                            ).tr(),
-                        ],
-                      ),
-                    ),
-                  ),
+                    ],
+                  )),
                   VerticalDivider(width: 0.0, color: dividerColor),
                   Expanded(
                       flex: ResponsiveLayout.isMobile(context) ? 4 : 2,
