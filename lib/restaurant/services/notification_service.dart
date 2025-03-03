@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -8,6 +9,22 @@ class NotificationService {
 
   static Future<void> onDidReceiveNotification(
       NotificationResponse notificationResponse) async {}
+
+  static Future<void> checkNotificationPermission() async {
+    if (Platform.isAndroid) {
+      final bool? granted = await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin>()
+          ?.areNotificationsEnabled();
+      if (granted == false) {
+        // request notification permission
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+                AndroidFlutterLocalNotificationsPlugin>()
+            ?.requestNotificationsPermission();
+      }
+    }
+  }
 
   // Init the notification plugin
   static Future<void> init() async {
@@ -30,10 +47,12 @@ class NotificationService {
       onDidReceiveBackgroundNotificationResponse: onDidReceiveNotification,
     );
     // Request notification permission for android
-    await flutterLocalNotificationsPlugin
-        .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin>()
-        ?.requestNotificationsPermission();
+    // if (Platform.isAndroid) {
+    //   await flutterLocalNotificationsPlugin
+    //       .resolvePlatformSpecificImplementation<
+    //           AndroidFlutterLocalNotificationsPlugin>()
+    //       ?.requestNotificationsPermission();
+    // }
   }
 
   // Show an instant notification

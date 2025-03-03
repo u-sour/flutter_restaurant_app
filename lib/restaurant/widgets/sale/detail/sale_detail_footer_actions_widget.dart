@@ -380,7 +380,7 @@ class SaleDetailFooterActionsWidget extends StatelessWidget {
                             ),
                           ),
                         ),
-                        VerticalDivider(width: 0.0, color: dividerColor),
+                        Divider(height: 0.0, color: dividerColor),
                       ],
                       // Payment
                       Expanded(

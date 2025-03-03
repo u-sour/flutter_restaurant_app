@@ -1020,8 +1020,21 @@ class SaleProvider extends ChangeNotifier {
 
   // fetch Guests
   // Note : Used for Change Guest and Edit Sale Receipt
-  Future<List<SelectOptionModel>> fetchGuests({String? branchId}) async {
+  Future<List<SelectOptionModel>> fetchGuests(
+      {String? branchId, String search = ''}) async {
     Map<String, dynamic> selector = {'branchId': branchId ?? _branchId};
+    //  Filter search
+    String searchFormat = RegExp.escape(search);
+    if (searchFormat.isNotEmpty) {
+      selector['\$or'] = [
+        {
+          'name': {'\$regex': searchFormat, '\$options': '\$i'}
+        },
+        {
+          'telephone': {'\$regex': searchFormat, '\$options': '\$i'}
+        },
+      ];
+    }
     Map<String, dynamic> options = {
       'sort': {'name': -1}
     };

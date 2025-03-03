@@ -16,8 +16,8 @@ SaleInvoiceToKitchenContentModel _$SaleInvoiceToKitchenContentModelFromJson(
       orderList: (json['orderList'] as List<dynamic>)
           .map((e) => SaleDetailModel.fromJson(e as Map<String, dynamic>))
           .toList(),
-      orderListByStation: (json['orderListByStation'] as List<dynamic>)
-          .map((e) =>
+      orderListByStation: (json['orderListByStation'] as List<dynamic>?)
+          ?.map((e) =>
               OrderListByStationModel.fromJson(e as Map<String, dynamic>))
           .toList(),
     );
@@ -31,5 +31,5 @@ Map<String, dynamic> _$SaleInvoiceToKitchenContentModelToJson(
       'tableName': instance.tableName,
       'orderList': instance.orderList.map((e) => e.toJson()).toList(),
       'orderListByStation':
-          instance.orderListByStation.map((e) => e.toJson()).toList(),
+          instance.orderListByStation?.map((e) => e.toJson()).toList(),
     };
