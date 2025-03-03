@@ -10,7 +10,7 @@ class SaleInvoiceToKitchenContentModel {
   final String tableId;
   final String tableName;
   final List<SaleDetailModel> orderList;
-  final List<OrderListByStationModel> orderListByStation;
+  final List<OrderListByStationModel>? orderListByStation;
 
   const SaleInvoiceToKitchenContentModel({
     required this.templateMargin,
@@ -18,7 +18,7 @@ class SaleInvoiceToKitchenContentModel {
     required this.tableId,
     required this.tableName,
     required this.orderList,
-    required this.orderListByStation,
+    this.orderListByStation,
   });
 
   factory SaleInvoiceToKitchenContentModel.fromJson(

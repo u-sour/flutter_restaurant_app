@@ -23,6 +23,7 @@ import '../restaurant/providers/sale/categories/sale_categories_provider.dart';
 import '../restaurant/providers/sale/notification_provider.dart';
 import '../restaurant/providers/sale/products/sale_products_provider.dart';
 import '../restaurant/providers/sale/sale_provider.dart';
+import '../restaurant/services/notification_service.dart';
 import '../router/app_router.dart';
 import '../providers/app_provider.dart';
 import '../providers/auth_provider.dart';
@@ -113,6 +114,7 @@ class _AppScreenState extends State<AppScreen> {
     }
     await appProvider.onAppStart();
     await themeProvider.initState();
+    await NotificationService.checkNotificationPermission();
   }
 
   @override

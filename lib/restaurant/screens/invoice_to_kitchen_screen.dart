@@ -87,52 +87,55 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
     // get print info
     SaleInvoiceToKitchenContentModel printInfo =
         (await saleInvoiceToKitchenContent);
-
-    for (OrderListByStationModel station in printInfo.orderListByStation) {
-      final List<PrinterDeviceModel>? printers = station.devices;
-      final String? ipAddress = station.ipAddress;
-      if (printers == null || ipAddress == null) return;
-      if (await socketConnection(ipAddress: ipAddress)) {
-        if (!mounted) return;
-        await socket?.emitWithAckAsync('do-print', {
-          'type': 'Kitchen',
-          'printers': printers,
-          'copyCount': copyCount,
-          'printInfo': {
-            'data': {
-              'orderNum': widget.orderNum,
-              'tableName': widget.tableName,
-              'templateMargin': printInfo.templateMargin,
-              'orderList': station.details
+    if (printInfo.orderListByStation != null) {
+      for (OrderListByStationModel station in printInfo.orderListByStation!) {
+        final List<PrinterDeviceModel>? printers = station.devices;
+        final String? ipAddress = station.ipAddress;
+        if (printers == null || ipAddress == null) return;
+        if (await socketConnection(ipAddress: ipAddress)) {
+          if (!mounted) return;
+          await socket?.emitWithAckAsync('do-print', {
+            'type': 'Kitchen',
+            'printers': printers,
+            'copyCount': copyCount,
+            'printInfo': {
+              'data': {
+                'orderNum': widget.orderNum,
+                'tableName': widget.tableName,
+                'templateMargin': printInfo.templateMargin,
+                'orderList': station.details
+              },
+              'isSkipTable': SaleService.isModuleActive(
+                  modules: ['skip-table'], overpower: false, context: context),
+              'isShowOrderNum': SaleService.isModuleActive(
+                  modules: ['order-number'],
+                  overpower: false,
+                  context: context),
             },
-            'isSkipTable': SaleService.isModuleActive(
-                modules: ['skip-table'], overpower: false, context: context),
-            'isShowOrderNum': SaleService.isModuleActive(
-                modules: ['order-number'], overpower: false, context: context),
-          },
-        }, ack: (result) {
+          }, ack: (result) {
+            clearConnection();
+            if (result['status'] == 'Error') {
+              Alert.show(
+                  type: ToastificationType.error,
+                  description: '$prefixMultiPrinters.notFound.message',
+                  descriptionNamedArgs: {
+                    'printerName': station.devices![0].name
+                  });
+            } else {
+              Alert.show(
+                type: ToastificationType.success,
+                description: '$prefixMultiPrinters.success.message',
+              );
+            }
+            closePrintDialog();
+          });
+        } else {
           clearConnection();
-          if (result['status'] == 'Error') {
-            Alert.show(
-                type: ToastificationType.error,
-                description: '$prefixMultiPrinters.notFound.message',
-                descriptionNamedArgs: {
-                  'printerName': station.devices![0].name
-                });
-          } else {
-            Alert.show(
-              type: ToastificationType.success,
-              description: '$prefixMultiPrinters.success.message',
-            );
-          }
-          closePrintDialog();
-        });
-      } else {
-        clearConnection();
-        Alert.show(
-            type: ToastificationType.error,
-            description: '$prefixMultiPrinters.noConnect.message',
-            descriptionNamedArgs: {'printerName': station.devices![0].name});
+          Alert.show(
+              type: ToastificationType.error,
+              description: '$prefixMultiPrinters.noConnect.message',
+              descriptionNamedArgs: {'printerName': station.devices![0].name});
+        }
       }
     }
   }

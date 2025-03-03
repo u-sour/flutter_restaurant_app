@@ -96,7 +96,6 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
   TextEditingController disRateController = TextEditingController();
   TextEditingController disAmountController = TextEditingController();
   Future<List<SelectOptionModel>>? tables;
-  Future<List<SelectOptionModel>>? guests;
   static final GlobalKey<FormBuilderState> _fbInsertGuestKey =
       GlobalKey<FormBuilderState>();
   // sale receipt
@@ -125,10 +124,6 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
 
     if (widget.footerType.name == 'changeTable') {
       tables = readProvider.fetchTables();
-    }
-
-    if (widget.footerType.name == 'changeGuest') {
-      guests = readProvider.fetchGuests();
     }
 
     if (widget.footerType.name == 'payment') {
@@ -573,59 +568,47 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                     Row(
                       children: [
                         Expanded(
-                          child: FutureBuilder<List<SelectOptionModel>>(
-                              future: guests,
-                              builder: (context, snapshot) {
-                                if (snapshot.hasError) {
-                                  final error = snapshot.error;
-                                  return Text('$error');
-                                } else if (snapshot.hasData) {
-                                  return FormBuilderSearchableDropdown<
-                                      SelectOptionModel>(
-                                    name: 'changeGuest',
-                                    initialValue: widget.value,
-                                    autovalidateMode:
-                                        AutovalidateMode.onUserInteraction,
-                                    popupProps: PopupProps.dialog(
-                                      showSelectedItems: true,
-                                      showSearchBox: true,
-                                      searchFieldProps: TextFieldProps(
-                                        decoration: InputDecoration(
-                                            prefixIcon: const Icon(
-                                                RestaurantDefaultIcons.search),
-                                            hintText:
-                                                'screens.sale.search'.tr(),
-                                            isDense: true),
-                                      ),
-                                      loadingBuilder: (context, searchEntry) =>
-                                          const LoadingWidget(),
-                                      emptyBuilder: (context, searchEntry) =>
-                                          const Center(
-                                              child: EmptyDataWidget()),
-                                    ),
-                                    compareFn: (SelectOptionModel i,
-                                            SelectOptionModel s) =>
-                                        i.value == s.value,
-                                    valueTransformer:
-                                        (SelectOptionModel? item) {
-                                      if (item != null) {
-                                        return item.value;
-                                      }
-                                    },
-                                    itemAsString: ((SelectOptionModel? item) {
-                                      return item != null && item.extra != null
-                                          ? '${item.label} (${item.extra})'
-                                          : item!.label;
-                                    }),
-                                    items: snapshot.data!,
-                                    validator: FormBuilderValidators.compose([
-                                      FormBuilderValidators.required(),
-                                    ]),
-                                  );
-                                } else {
-                                  return const LoadingWidget();
-                                }
-                              }),
+                          child:
+                              FormBuilderSearchableDropdown<SelectOptionModel>(
+                            name: 'changeGuest',
+                            initialValue: widget.value,
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            popupProps: PopupProps.dialog(
+                              showSelectedItems: true,
+                              showSearchBox: true,
+                              isFilterOnline: true,
+                              searchFieldProps: TextFieldProps(
+                                decoration: InputDecoration(
+                                    prefixIcon: const Icon(
+                                        RestaurantDefaultIcons.search),
+                                    hintText: 'screens.sale.search'.tr(),
+                                    isDense: true),
+                              ),
+                              loadingBuilder: (context, searchEntry) =>
+                                  const LoadingWidget(),
+                              emptyBuilder: (context, searchEntry) =>
+                                  const Center(child: EmptyDataWidget()),
+                            ),
+                            compareFn:
+                                (SelectOptionModel i, SelectOptionModel s) =>
+                                    i.value == s.value,
+                            valueTransformer: (SelectOptionModel? item) {
+                              if (item != null) {
+                                return item.value;
+                              }
+                            },
+                            asyncItems: (String? filter) =>
+                                readProvider.fetchGuests(search: filter!),
+                            itemAsString: ((SelectOptionModel? item) {
+                              return item != null && item.extra != null
+                                  ? '${item.label} (${item.extra})'
+                                  : item!.label;
+                            }),
+                            validator: FormBuilderValidators.compose([
+                              FormBuilderValidators.required(),
+                            ]),
+                          ),
                         ),
                         const SizedBox(width: AppStyleDefaultProperties.h),
                         SizedBox(
