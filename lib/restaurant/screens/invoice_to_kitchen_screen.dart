@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'package:toastification/toastification.dart';
 import '../../providers/app_provider.dart';
 import '../../providers/printer_provider.dart';
@@ -51,7 +51,7 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
   late InvoiceProvider readInvoiceProvider;
   late Future<SaleInvoiceToKitchenContentModel> saleInvoiceToKitchenContent;
   late PaperSize paperSize;
-  IO.Socket? socket;
+  socket_io.Socket? socket;
   @override
   void initState() {
     super.initState();
@@ -142,9 +142,9 @@ class _InvoiceToKitchenScreenState extends State<InvoiceToKitchenScreen> {
 
   Future<bool> socketConnection({required String ipAddress}) async {
     clearConnection();
-    socket = IO.io(
+    socket = socket_io.io(
         "http://$ipAddress:3222",
-        IO.OptionBuilder()
+        socket_io.OptionBuilder()
             .setTransports(['websocket'])
             .disableReconnection()
             .build());

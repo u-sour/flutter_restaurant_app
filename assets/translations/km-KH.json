@@ -13,8 +13,8 @@
       "companyTelephone": "+855 70550880",
       "developers": "ហេង យូស៊ួរ",
       "publisher": "រឿប ណាវី",
-      "developmentVersion": "1.0.0+5",
-      "latestVersion": "1.0.1"
+      "developmentVersion": "1.0.0+7",
+      "latestVersion": "1.0.3"
     },
     "copyrightBy": "\u00a9 រក្សា​សិទ្ធិ​គ្រប់​យ៉ាង​ដោយ {company} - {year} (v{version})"
   },
@@ -150,6 +150,10 @@
         "categories": "ផ្នែក"
       },
       "search": "ស្វែងរក ...",
+      "variants": {
+        "title": "ជម្រើស",
+        "options": "ជម្រើស:"
+      },
       "notification": {
         "title": "ការជូនដំណឹង",
         "tabs": {
@@ -366,6 +370,8 @@
             "reportTitle": "របាយការណ៍លក់",
             "form": {
               "reportPeriod": "រយៈពេល",
+              "startDate": "កាលបរិច្ឆេទចាប់ផ្តើម",
+              "endDate": "កាលបរិច្ឆេទបញ្ចប់",
               "departments": "នាយកដ្ឋាន",
               "customers": "អតិថិជន",
               "employees": "បុគ្គលិក",
@@ -429,6 +435,8 @@
             "reportTitle": "របាយការណ៍លក់លម្អិត",
             "form": {
               "reportPeriod": "រយៈពេល",
+              "startDate": "កាលបរិច្ឆេទចាប់ផ្តើម",
+              "endDate": "កាលបរិច្ឆេទបញ្ចប់",
               "employees": "បុគ្គលិក",
               "categories": "ផ្នែក",
               "groups": "ក្រុម",
@@ -472,6 +480,8 @@
             "reportTitle": "របាយការណ៍ចំនេញខាតតាមមុខទំនិញ",
             "form": {
               "reportPeriod": "រយៈពេល",
+              "startDate": "កាលបរិច្ឆេទចាប់ផ្តើម",
+              "endDate": "កាលបរិច្ឆេទបញ្ចប់",
               "categories": "ផ្នែក",
               "products": "ទំនិញ",
               "departments": "នាយកដ្ឋាន",
@@ -507,6 +517,8 @@
             "reportTitle": "របាយការណ៍ទទួលប្រាក់",
             "form": {
               "reportPeriod": "រយៈពេល",
+              "startDate": "កាលបរិច្ឆេទចាប់ផ្តើម",
+              "endDate": "កាលបរិច្ឆេទបញ្ចប់",
               "customers": "អតិថិជន",
               "employees": "បុគ្គលិក",
               "departments": "នាយកដ្ឋាន",

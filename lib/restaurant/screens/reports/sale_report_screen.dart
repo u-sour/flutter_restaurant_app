@@ -1,4 +1,3 @@
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -57,10 +56,12 @@ class _SaleReportScreenState extends State<SaleReportScreen> {
             Map<String, dynamic> formDoc =
                 Map.of(_fbSaleReportKey.currentState!.value);
             // prepare data
-            DateTimeRange date = formDoc['reportPeriod'];
-            DateTime startOfDay = date.start.startOfDay;
-            DateTime endOfDay = date.end.endOfDay;
+            DateTime startOfDay = formDoc['startDate'];
+            DateTime endOfDay = formDoc['endDate'];
             formDoc['reportPeriod'] = [startOfDay, endOfDay];
+            // remove startDate and endDate
+            formDoc.removeWhere(
+                (key, value) => key == 'startDate' || key == 'endDate');
             formDoc['branchId'] = readSaleReportProvider.branchId;
             // isSummary == true then remove status and groupBy
             if (formDoc['isSummary']) {

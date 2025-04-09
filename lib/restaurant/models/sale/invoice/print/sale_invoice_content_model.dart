@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 import '../../../exchange/exchange_model.dart';
 import '../../../invoice-template/invoice_template_model.dart';
-import 'sale_detail_for_print_model.dart';
+import '../../detail/sale_detail_model.dart';
 import 'sale_invoice_for_print_model.dart';
 import 'convert_to_multi_exchange_model.dart';
 import 'sale_receipt_for_print_model.dart';
@@ -10,7 +10,7 @@ part 'sale_invoice_content_model.g.dart';
 @JsonSerializable(explicitToJson: true)
 class SaleInvoiceContentModel {
   final SaleInvoiceForPrintModel saleDoc;
-  final List<SaleDetailForPrintModel> orderList;
+  final List<SaleDetailModel> orderList;
   final ExchangeModel exchangeDoc;
   final List<String> allowedCurrencies;
   final String baseCurrency;

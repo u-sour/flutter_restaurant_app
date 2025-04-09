@@ -1,3 +1,4 @@
+import 'package:dart_date/dart_date.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -100,34 +101,53 @@ class _SaleReceiptReportFormWidgetState
               final List<SelectOptionModel> paymentByOptions =
                   snapshot.data?[3] ?? [];
               return DynamicHeightGridView(
-                itemCount: 7,
+                itemCount: 8,
                 crossAxisCount: ResponsiveLayout.isMobile(context) ? 1 : 2,
                 shrinkWrap: true,
                 builder: (context, index) {
                   late Widget widget;
                   switch (index) {
                     case 0:
-                      widget = FormBuilderDateRangePicker(
-                        name: 'reportPeriod',
-                        initialValue: DateTimeRange(
-                            start: DateTime.now(), end: DateTime.now()),
+                      widget = FormBuilderDateTimePicker(
+                        name: 'startDate',
+                        initialValue: DateTime.now().startOfDay,
                         firstDate: DateTime(1970),
                         lastDate: DateTime(2100),
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
-                            labelText:
-                                '$prefixSaleReceiptReportForm.reportPeriod',
+                            labelText: '$prefixSaleReceiptReportForm.startDate',
                             require: true,
                             theme: theme),
                         onChanged: (value) {
                           if (value != null) {
                             context
                                 .read<ReportTemplateProvider>()
-                                .setReportPeriod(reportPeriodDateRange: value);
+                                .setReportPeriodByDateTimePicker(
+                                    startDate: value);
                           }
                         },
                       );
                       break;
                     case 1:
+                      widget = FormBuilderDateTimePicker(
+                        name: 'endDate',
+                        initialValue: DateTime.now().endOfDay,
+                        firstDate: DateTime(1970),
+                        lastDate: DateTime(2100),
+                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
+                            labelText: '$prefixSaleReceiptReportForm.endDate',
+                            require: true,
+                            theme: theme),
+                        onChanged: (value) {
+                          if (value != null) {
+                            context
+                                .read<ReportTemplateProvider>()
+                                .setReportPeriodByDateTimePicker(
+                                    endDate: value);
+                          }
+                        },
+                      );
+                      break;
+                    case 2:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbCustomerKey,
                         name: 'guestId',
@@ -145,7 +165,7 @@ class _SaleReceiptReportFormWidgetState
                         },
                       );
                       break;
-                    case 2:
+                    case 3:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbEmployeeKey,
                         name: 'employeeId',
@@ -163,7 +183,7 @@ class _SaleReceiptReportFormWidgetState
                         },
                       );
                       break;
-                    case 3:
+                    case 4:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
@@ -187,7 +207,7 @@ class _SaleReceiptReportFormWidgetState
                         },
                       );
                       break;
-                    case 4:
+                    case 5:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbPaymentByKey,
                         name: 'paymentBy',
@@ -205,7 +225,7 @@ class _SaleReceiptReportFormWidgetState
                         },
                       );
                       break;
-                    case 5:
+                    case 6:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbStatusKey,
                         name: 'status',

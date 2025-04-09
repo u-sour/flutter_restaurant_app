@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import 'package:socket_io_client/socket_io_client.dart' as socket_io;
 import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -67,7 +67,7 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
   late Future<SaleInvoiceContentModel> saleInvoiceContent;
   final String prefixPrinterBtn = 'screens.printer.btn';
   late PaperSize paperSize;
-  IO.Socket? socket;
+  socket_io.Socket? socket;
 
   @override
   void initState() {
@@ -165,9 +165,9 @@ class _InvoiceScreenState extends State<InvoiceScreen> {
 
   Future<bool> socketConnection({required printer}) async {
     clearConnection();
-    socket = IO.io(
+    socket = socket_io.io(
         "http://${printer['ipAddress']}:3222",
-        IO.OptionBuilder()
+        socket_io.OptionBuilder()
             .setTransports(['websocket'])
             .disableReconnection()
             .build());

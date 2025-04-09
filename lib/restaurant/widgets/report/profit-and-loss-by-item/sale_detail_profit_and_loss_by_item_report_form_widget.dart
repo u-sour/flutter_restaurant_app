@@ -1,3 +1,4 @@
+import 'package:dart_date/dart_date.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
@@ -91,34 +92,55 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
               final List<SelectOptionModel> employeeOptions =
                   snapshot.data?[2] ?? [];
               return DynamicHeightGridView(
-                itemCount: 5,
+                itemCount: 6,
                 crossAxisCount: ResponsiveLayout.isMobile(context) ? 1 : 2,
                 shrinkWrap: true,
                 builder: (context, index) {
                   late Widget widget;
                   switch (index) {
                     case 0:
-                      widget = FormBuilderDateRangePicker(
-                        name: 'reportPeriod',
-                        initialValue: DateTimeRange(
-                            start: DateTime.now(), end: DateTime.now()),
+                      widget = FormBuilderDateTimePicker(
+                        name: 'startDate',
+                        initialValue: DateTime.now().startOfDay,
                         firstDate: DateTime(1970),
                         lastDate: DateTime(2100),
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
                             labelText:
-                                '$prefixSaleDetailProfitAndLossByItemReportForm.reportPeriod',
+                                '$prefixSaleDetailProfitAndLossByItemReportForm.startDate',
                             require: true,
                             theme: theme),
                         onChanged: (value) {
                           if (value != null) {
                             context
                                 .read<ReportTemplateProvider>()
-                                .setReportPeriod(reportPeriodDateRange: value);
+                                .setReportPeriodByDateTimePicker(
+                                    startDate: value);
                           }
                         },
                       );
                       break;
                     case 1:
+                      widget = FormBuilderDateTimePicker(
+                        name: 'endDate',
+                        initialValue: DateTime.now().endOfDay,
+                        firstDate: DateTime(1970),
+                        lastDate: DateTime(2100),
+                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
+                            labelText:
+                                '$prefixSaleDetailProfitAndLossByItemReportForm.endDate',
+                            require: true,
+                            theme: theme),
+                        onChanged: (value) {
+                          if (value != null) {
+                            context
+                                .read<ReportTemplateProvider>()
+                                .setReportPeriodByDateTimePicker(
+                                    endDate: value);
+                          }
+                        },
+                      );
+                      break;
+                    case 2:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
@@ -144,7 +166,7 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
                         },
                       );
                       break;
-                    case 2:
+                    case 3:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbCategoryKey,
                         name: 'categoryIds',
@@ -165,7 +187,7 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
                         },
                       );
                       break;
-                    case 3:
+                    case 4:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbEmployeeKey,
                         name: 'employeeId',
@@ -189,7 +211,7 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
                     default:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbProductKey,
-                        name: 'productIds',
+                        name: 'productSelectors',
                         hintText: '$prefixFormBuilderInputDecoration.selectAll',
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
                             labelText:

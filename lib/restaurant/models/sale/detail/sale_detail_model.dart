@@ -1,5 +1,4 @@
 import 'package:json_annotation/json_annotation.dart';
-import '../../../../utils/model_converter/date_model_converter.dart';
 import 'sale_detail_combo_item_model.dart';
 import 'sale_detail_extra_item_model.dart';
 part 'sale_detail_model.g.dart';
@@ -28,11 +27,11 @@ class SaleDetailModel {
   final bool? child;
   @JsonKey(disallowNullValue: true)
   final bool? draft;
-  @JsonKey(
-      fromJson: DateModelConverter.convertDateTimeForModel,
-      toJson: DateModelConverter.convertDateTimeForModel)
-  final DateTime createdAt;
   final String branchId;
+  @JsonKey(includeIfNull: false)
+  final String? variantId;
+  @JsonKey(includeIfNull: false)
+  final String? variantName;
   @JsonKey(defaultValue: [])
   final List<SaleDetailExtraItemModel> extraItemDoc;
   @JsonKey(defaultValue: [])
@@ -59,8 +58,9 @@ class SaleDetailModel {
     this.checkPrintKitchen,
     this.child,
     this.draft,
-    required this.createdAt,
     required this.branchId,
+    this.variantId,
+    this.variantName,
     required this.extraItemDoc,
     required this.comboDoc,
   });
