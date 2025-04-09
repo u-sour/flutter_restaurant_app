@@ -27,7 +27,7 @@ class InvoiceTemplateCachedImgWidget extends StatelessWidget {
       imageUrl: imgUrl,
       maxHeightDiskCache: height.toInt(),
       errorWidget: (context, url, error) {
-        return Text('$error');
+        return const SizedBox.shrink();
       },
       imageBuilder: (context, imageProvider) {
         return Container(

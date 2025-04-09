@@ -1,3 +1,4 @@
+import 'package:dart_date/dart_date.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -101,34 +102,53 @@ class _SaleDetailReportFormWidgetState
                 ];
               }
               return DynamicHeightGridView(
-                itemCount: 8,
+                itemCount: 9,
                 crossAxisCount: ResponsiveLayout.isMobile(context) ? 1 : 2,
                 shrinkWrap: true,
                 builder: (context, index) {
                   late Widget widget;
                   switch (index) {
                     case 0:
-                      widget = FormBuilderDateRangePicker(
-                        name: 'reportPeriod',
-                        initialValue: DateTimeRange(
-                            start: DateTime.now(), end: DateTime.now()),
+                      widget = FormBuilderDateTimePicker(
+                        name: 'startDate',
+                        initialValue: DateTime.now().startOfDay,
                         firstDate: DateTime(1970),
                         lastDate: DateTime(2100),
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
-                            labelText:
-                                '$prefixSaleDetailReportForm.reportPeriod',
+                            labelText: '$prefixSaleDetailReportForm.startDate',
                             require: true,
                             theme: theme),
                         onChanged: (value) {
                           if (value != null) {
                             context
                                 .read<ReportTemplateProvider>()
-                                .setReportPeriod(reportPeriodDateRange: value);
+                                .setReportPeriodByDateTimePicker(
+                                    startDate: value);
                           }
                         },
                       );
                       break;
                     case 1:
+                      widget = FormBuilderDateTimePicker(
+                        name: 'endDate',
+                        initialValue: DateTime.now().endOfDay,
+                        firstDate: DateTime(1970),
+                        lastDate: DateTime(2100),
+                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
+                            labelText: '$prefixSaleDetailReportForm.endDate',
+                            require: true,
+                            theme: theme),
+                        onChanged: (value) {
+                          if (value != null) {
+                            context
+                                .read<ReportTemplateProvider>()
+                                .setReportPeriodByDateTimePicker(
+                                    endDate: value);
+                          }
+                        },
+                      );
+                      break;
+                    case 2:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbEmployeeKey,
                         name: 'employeeId',
@@ -147,7 +167,7 @@ class _SaleDetailReportFormWidgetState
                       );
 
                       break;
-                    case 2:
+                    case 3:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbCategoryKey,
                         name: 'categoryIds',
@@ -165,7 +185,7 @@ class _SaleDetailReportFormWidgetState
                         },
                       );
                       break;
-                    case 3:
+                    case 4:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbGroupKey,
                         name: 'groupIds',
@@ -183,7 +203,7 @@ class _SaleDetailReportFormWidgetState
                         },
                       );
                       break;
-                    case 4:
+                    case 5:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbProductKey,
                         name: 'productIds',
@@ -204,7 +224,7 @@ class _SaleDetailReportFormWidgetState
                         },
                       );
                       break;
-                    case 5:
+                    case 6:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
@@ -228,7 +248,7 @@ class _SaleDetailReportFormWidgetState
                         },
                       );
                       break;
-                    case 6:
+                    case 7:
                       widget = FormBuilderSearchableDropdown<SelectOptionModel>(
                           name: 'groupBy',
                           onChanged: (value) {
