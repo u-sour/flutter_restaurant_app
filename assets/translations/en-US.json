@@ -13,8 +13,8 @@
       "companyTelephone": "+855 70550880",
       "developers": "Heng You Sour",
       "publisher": "Roeurb Navy",
-      "developmentVersion": "1.0.0+6",
-      "latestVersion": "1.0.2"
+      "developmentVersion": "1.0.0+7",
+      "latestVersion": "1.0.3"
     },
     "copyrightBy": "\u00a9 All Rights Reserved by {company} - {year} (v{version})"
   },
@@ -369,6 +369,8 @@
             "reportTitle": "SALE REPORT",
             "form": {
               "reportPeriod": "Report period",
+              "startDate": "Start date",
+              "endDate": "End date",
               "departments": "Departments",
               "customers": "Customers",
               "employees": "Employees",
@@ -432,6 +434,8 @@
             "reportTitle": "SALE DETAIL REPORT",
             "form": {
               "reportPeriod": "Report period",
+              "startDate": "Start date",
+              "endDate": "End date",
               "employees": "Employees",
               "categories": "Categories",
               "groups": "Groups",
@@ -475,6 +479,8 @@
             "reportTitle": "PROFIT AND LOSS BY ITEM REPORT",
             "form": {
               "reportPeriod": "Report period",
+              "startDate": "Start date",
+              "endDate": "End date",
               "categories": "Categories",
               "products": "Products",
               "departments": "Departments",
@@ -510,6 +516,8 @@
             "reportTitle": "SALE RECEIPT REPORT",
             "form": {
               "reportPeriod": "Report period",
+              "startDate": "Start date",
+              "endDate": "End date",
               "customers": "Customers",
               "employees": "Employees",
               "departments": "Departments",

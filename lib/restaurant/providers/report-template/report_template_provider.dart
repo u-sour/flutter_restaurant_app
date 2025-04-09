@@ -20,6 +20,8 @@ class ReportTemplateProvider extends ChangeNotifier {
         value: 'print')
   ];
   List<OptionModel> get defaultRTActions => _defaultRTActions;
+  late DateTime _startDate;
+  late DateTime _endDate;
   String _reportPeriod = '';
   String get reportPeriod => _reportPeriod;
   late final List<String> _reportSignature = [
@@ -44,12 +46,23 @@ class ReportTemplateProvider extends ChangeNotifier {
       OptionModel(
           label: '$_prefixRTLayouts.children.signature.title', value: false),
     ];
+    _startDate = DateTime.now().startOfDay;
+    _endDate = DateTime.now().endOfDay;
     _reportPeriod =
-        '${formatDateReportPeriod(dateTime: DateTime.now().startOfDay)} - ${formatDateReportPeriod(dateTime: DateTime.now().endOfDay)}';
+        '${formatDateReportPeriod(dateTime: _startDate)} - ${formatDateReportPeriod(dateTime: _endDate)}';
   }
 
   void toggleShowLayout({required int index, required bool? value}) {
     _defaultRTLayouts[index].value = value;
+    notifyListeners();
+  }
+
+  void setReportPeriodByDateTimePicker(
+      {DateTime? startDate, DateTime? endDate}) {
+    _startDate = startDate ?? _startDate;
+    _endDate = endDate ?? _endDate;
+    _reportPeriod =
+        '${formatDateReportPeriod(dateTime: _startDate)} - ${formatDateReportPeriod(dateTime: _endDate)}';
     notifyListeners();
   }
 

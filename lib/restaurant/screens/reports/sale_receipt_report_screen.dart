@@ -1,4 +1,3 @@
-import 'package:dart_date/dart_date.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'package:provider/provider.dart';
@@ -56,10 +55,12 @@ class _SaleReceiptReportScreenState extends State<SaleReceiptReportScreen> {
               Map<String, dynamic> formDoc =
                   Map.of(_fbSaleReceiptReportKey.currentState!.value);
               // prepare data
-              DateTimeRange date = formDoc['reportPeriod'];
-              DateTime startOfDay = date.start.startOfDay;
-              DateTime endOfDay = date.end.endOfDay;
+              DateTime startOfDay = formDoc['startDate'];
+              DateTime endOfDay = formDoc['endDate'];
               formDoc['reportPeriod'] = [startOfDay, endOfDay];
+              // remove startDate and endDate
+              formDoc.removeWhere(
+                  (key, value) => key == 'startDate' || key == 'endDate');
               formDoc['branchId'] = readSaleReceiptReportProvider.branchId;
               // submit
               readReportTemplateProvider.setIsFiltering(isFiltering: true);

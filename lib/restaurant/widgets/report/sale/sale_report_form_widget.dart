@@ -1,3 +1,4 @@
+import 'package:dart_date/dart_date.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
@@ -88,33 +89,53 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
               final List<SelectOptionModel> employeeOptions =
                   snapshot.data?[2] ?? [];
               return DynamicHeightGridView(
-                itemCount: 7,
+                itemCount: 8,
                 crossAxisCount: ResponsiveLayout.isMobile(context) ? 1 : 2,
                 shrinkWrap: true,
                 builder: (context, index) {
                   late Widget widget;
                   switch (index) {
                     case 0:
-                      widget = FormBuilderDateRangePicker(
-                        name: 'reportPeriod',
-                        initialValue: DateTimeRange(
-                            start: DateTime.now(), end: DateTime.now()),
+                      widget = FormBuilderDateTimePicker(
+                        name: 'startDate',
+                        initialValue: DateTime.now().startOfDay,
                         firstDate: DateTime(1970),
                         lastDate: DateTime(2100),
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
-                            labelText: '$prefixSaleReportForm.reportPeriod',
+                            labelText: '$prefixSaleReportForm.startDate',
                             require: true,
                             theme: theme),
                         onChanged: (value) {
                           if (value != null) {
                             context
                                 .read<ReportTemplateProvider>()
-                                .setReportPeriod(reportPeriodDateRange: value);
+                                .setReportPeriodByDateTimePicker(
+                                    startDate: value);
                           }
                         },
                       );
                       break;
                     case 1:
+                      widget = FormBuilderDateTimePicker(
+                        name: 'endDate',
+                        initialValue: DateTime.now().endOfDay,
+                        firstDate: DateTime(1970),
+                        lastDate: DateTime(2100),
+                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
+                            labelText: '$prefixSaleReportForm.endDate',
+                            require: true,
+                            theme: theme),
+                        onChanged: (value) {
+                          if (value != null) {
+                            context
+                                .read<ReportTemplateProvider>()
+                                .setReportPeriodByDateTimePicker(
+                                    endDate: value);
+                          }
+                        },
+                      );
+                      break;
+                    case 2:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbDepartmentKey,
                         name: 'depId',
@@ -137,7 +158,7 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                         },
                       );
                       break;
-                    case 2:
+                    case 3:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbCustomerKey,
                         name: 'guestId',
@@ -155,7 +176,7 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                         },
                       );
                       break;
-                    case 3:
+                    case 4:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbEmployeeKey,
                         name: 'employeeId',
@@ -173,7 +194,7 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                         },
                       );
                       break;
-                    case 4:
+                    case 5:
                       widget = Selector<SaleReportProvider, bool>(
                           selector: (context, state) => state.isSummary,
                           builder: (context, isSummary, child) => Visibility(
@@ -206,7 +227,7 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                                 ),
                               ));
                       break;
-                    case 5:
+                    case 6:
                       widget = Selector<SaleReportProvider, bool>(
                           selector: (context, state) => state.isSummary,
                           builder: (context, isSummary, child) => Visibility(
