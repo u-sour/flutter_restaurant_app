@@ -195,37 +195,16 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                       );
                       break;
                     case 5:
-                      widget = Selector<SaleReportProvider, bool>(
-                          selector: (context, state) => state.isSummary,
-                          builder: (context, isSummary, child) => Visibility(
-                                visible: !isSummary,
-                                maintainState: true,
-                                child: FormBuilderSearchableDropdownMultiSelect(
-                                  fbKey: fbStatusKey,
-                                  name: 'status',
-                                  initialValue: [
-                                    ReportService.statusOptions[1],
-                                    ReportService.statusOptions[2]
-                                  ],
-                                  hintText:
-                                      '$prefixFormBuilderInputDecoration.selectAll',
-                                  decoration:
-                                      CustomFormBuilderInputStyle.fbInputStyle(
-                                          labelText:
-                                              '$prefixSaleReportForm.status.title',
-                                          theme: theme),
-                                  searchFieldPropsDecoration:
-                                      CustomFormBuilderInputStyle
-                                          .fbSearchInputStyle(),
-                                  items: ReportService.statusOptions,
-                                  selectedItem: (value) {
-                                    readSaleReportProvider.setFilter(
-                                        index: 4,
-                                        newFilter:
-                                            value.map((o) => o.label).toList());
-                                  },
-                                ),
-                              ));
+                      widget = FormBuilderSwitch(
+                        name: 'isSummary',
+                        initialValue: false,
+                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
+                            labelText: '$prefixSaleReportForm.summary',
+                            theme: theme),
+                        title: const Text(''),
+                        onChanged: (value) =>
+                            readSaleReportProvider.setIsSummary(value: value!),
+                      );
                       break;
                     case 6:
                       widget = Selector<SaleReportProvider, bool>(
@@ -282,16 +261,37 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                               ));
                       break;
                     default:
-                      widget = FormBuilderSwitch(
-                        name: 'isSummary',
-                        initialValue: false,
-                        decoration: CustomFormBuilderInputStyle.fbInputStyle(
-                            labelText: '$prefixSaleReportForm.summary',
-                            theme: theme),
-                        title: const Text(''),
-                        onChanged: (value) =>
-                            readSaleReportProvider.setIsSummary(value: value!),
-                      );
+                      widget = Selector<SaleReportProvider, bool>(
+                          selector: (context, state) => state.isSummary,
+                          builder: (context, isSummary, child) => Visibility(
+                                visible: !isSummary,
+                                maintainState: true,
+                                child: FormBuilderSearchableDropdownMultiSelect(
+                                  fbKey: fbStatusKey,
+                                  name: 'status',
+                                  initialValue: [
+                                    ReportService.statusOptions[1],
+                                    ReportService.statusOptions[2]
+                                  ],
+                                  hintText:
+                                      '$prefixFormBuilderInputDecoration.selectAll',
+                                  decoration:
+                                      CustomFormBuilderInputStyle.fbInputStyle(
+                                          labelText:
+                                              '$prefixSaleReportForm.status.title',
+                                          theme: theme),
+                                  searchFieldPropsDecoration:
+                                      CustomFormBuilderInputStyle
+                                          .fbSearchInputStyle(),
+                                  items: ReportService.statusOptions,
+                                  selectedItem: (value) {
+                                    readSaleReportProvider.setFilter(
+                                        index: 4,
+                                        newFilter:
+                                            value.map((o) => o.label).toList());
+                                  },
+                                ),
+                              ));
                   }
                   return widget;
                 },
