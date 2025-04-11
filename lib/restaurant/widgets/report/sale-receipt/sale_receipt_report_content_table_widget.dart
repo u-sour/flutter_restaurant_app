@@ -4,6 +4,7 @@ import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/convert_date_time.dart';
 import '../../../models/reports/sale-receipt/sale_receipt_data_report_model.dart';
+import '../../../providers/report-template/report_template_provider.dart';
 import '../../../providers/reports/sale_receipt_report_provider.dart';
 import '../../../utils/report/sale_receipt_report_utils.dart';
 import '../../report_template/report_template_content_table_cell_currency_widget.dart';
@@ -39,6 +40,8 @@ class SaleReceiptReportContentTableWidget extends StatelessWidget {
 
   TableViewCell _buildCell(BuildContext context, TableVicinity vicinity,
       List<SaleReceiptDataReportModel> rows) {
+    ReportTemplateProvider readReportTemplateProvider =
+        context.read<ReportTemplateProvider>();
     SaleReceiptReportProvider readSaleReceiptReportProvider =
         context.read<SaleReceiptReportProvider>();
     late TableViewCell cell;
@@ -79,8 +82,8 @@ class SaleReceiptReportContentTableWidget extends StatelessWidget {
     } else if (fields[vicinity.column] == SaleReceiptReportDTRowType.date) {
       cell = TableViewCell(
         child: ReportTemplateContentTableCellWidget(
-            dynamicText: ConvertDateTime.formatTimeStampToString(
-                rows[vicinity.row - 1].date, true)),
+            dynamicText: readReportTemplateProvider.formatDateReportPeriod(
+                dateTime: rows[vicinity.row - 1].date)),
       );
     } else if (fields[vicinity.column] ==
             SaleReceiptReportDTRowType.openAmount ||

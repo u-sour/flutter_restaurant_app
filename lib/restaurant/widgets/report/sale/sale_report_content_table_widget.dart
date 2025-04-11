@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 import '../../../../utils/constants.dart';
-import '../../../../utils/convert_date_time.dart';
 import '../../../models/reports/sale/sale_data_detail_report_model.dart';
 import '../../../models/reports/sale/sale_data_report_model.dart';
+import '../../../providers/report-template/report_template_provider.dart';
 import '../../../providers/reports/sale_report_provider.dart';
 import '../../../utils/report/sale_report_utils.dart';
 import '../../report_template/report_template_content_table_cell_currency_widget.dart';
@@ -61,6 +61,8 @@ class SaleReportContentTableWidget extends StatelessWidget {
 
   TableViewCell _buildCell(BuildContext context, TableVicinity vicinity,
       List<SaleDataDetailReportModel> rows) {
+    ReportTemplateProvider readReportTemplateProvider =
+        context.read<ReportTemplateProvider>();
     SaleReportProvider readSaleReportProvider =
         context.read<SaleReportProvider>();
     final theme = Theme.of(context);
@@ -152,8 +154,8 @@ class SaleReportContentTableWidget extends StatelessWidget {
     } else if (fields[vicinity.column] == SaleReportDTRowType.date) {
       cell = TableViewCell(
         child: ReportTemplateContentTableCellWidget(
-            dynamicText: ConvertDateTime.formatTimeStampToString(
-                rows[vicinity.row - 1].date, true)),
+            dynamicText: readReportTemplateProvider.formatDateReportPeriod(
+                dateTime: rows[vicinity.row - 1].date)),
       );
     } else if (fields[vicinity.column] == SaleReportDTRowType.discountRate) {
       cell = TableViewCell(
