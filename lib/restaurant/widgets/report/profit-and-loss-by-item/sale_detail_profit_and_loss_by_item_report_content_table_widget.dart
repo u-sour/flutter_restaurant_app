@@ -1,9 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:two_dimensional_scrollables/two_dimensional_scrollables.dart';
 import '../../../../utils/convert_date_time.dart';
 import '../../../models/reports/profit-and-loss-by-item/sd_profit_and_loss_by_item_data_detail_report_model.dart';
 import '../../../models/reports/profit-and-loss-by-item/sd_profit_and_loss_by_item_data_report_model.dart';
+import '../../../providers/report-template/report_template_provider.dart';
 import '../../../utils/report/sale_detail_profit_and_loss_by_item_report_utils.dart';
 import '../../report_template/report_template_content_table_cell_currency_widget.dart';
 import '../../report_template/report_template_content_table_cell_widget.dart';
@@ -103,6 +105,8 @@ class SaleDetailProfitAndLossByItemReportContentTableWidget
 
   TableViewCell _buildCell(BuildContext context, TableVicinity vicinity,
       List<SDProfitAndLossByItemDataDetailReportModel> rows) {
+    ReportTemplateProvider readReportTemplateProvider =
+        context.read<ReportTemplateProvider>();
     late TableViewCell cell;
 
     if (vicinity.row == 0) {
@@ -155,8 +159,8 @@ class SaleDetailProfitAndLossByItemReportContentTableWidget
           cell = TableViewCell(
             child: ReportTemplateContentTableCellWidget(
                 dynamicText: rows[vicinity.row - 1].itemTranDate != null
-                    ? ConvertDateTime.formatTimeStampToString(
-                        rows[vicinity.row - 1].itemTranDate!, true)
+                    ? readReportTemplateProvider.formatDateReportPeriod(
+                        dateTime: rows[vicinity.row - 1].itemTranDate!)
                     : ''),
           );
           break;
