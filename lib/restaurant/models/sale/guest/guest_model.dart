@@ -10,16 +10,16 @@ class GuestModel {
   final String branchId;
   final String? telephone;
   @JsonKey(
-      fromJson: DateModelConverter.convertDateTimeForModel,
-      toJson: DateModelConverter.convertDateTimeForModel)
-  final DateTime createdAt;
+      fromJson: DateModelConverter.convertDateTimeOptionalForModel,
+      toJson: DateModelConverter.convertDateTimeOptionalForModel)
+  final DateTime? createdAt;
 
   const GuestModel({
     required this.id,
     required this.name,
     required this.branchId,
     this.telephone,
-    required this.createdAt,
+    this.createdAt,
   });
 
   factory GuestModel.fromJson(Map<String, dynamic> json) =>
