@@ -39,6 +39,8 @@ class SaleProductGroupWidget extends StatelessWidget {
                                               .productGroupId
                                       ? pg.id
                                       : '',
+                                  showExtraFood:
+                                      readSaleProductsProvider.showExtraFood,
                                   categoryId:
                                       readSaleProductsProvider.categoryId,
                                   search: readSaleProductsProvider.search);
