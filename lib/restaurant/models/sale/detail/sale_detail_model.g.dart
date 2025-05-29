@@ -32,9 +32,9 @@ SaleDetailModel _$SaleDetailModelFromJson(Map<String, dynamic> json) {
     checkPrintKitchen: json['checkPrintKitchen'] as bool?,
     child: json['child'] as bool?,
     draft: json['draft'] as bool?,
-    createdAt: DateModelConverter.convertDateTimeForModel(
-        json['createdAt'] as DateTime),
     branchId: json['branchId'] as String,
+    variantId: json['variantId'] as String?,
+    variantName: json['variantName'] as String?,
     extraItemDoc: (json['extraItemDoc'] as List<dynamic>?)
             ?.map((e) =>
                 SaleDetailExtraItemModel.fromJson(e as Map<String, dynamic>))
@@ -70,9 +70,9 @@ Map<String, dynamic> _$SaleDetailModelToJson(SaleDetailModel instance) =>
       'checkPrintKitchen': instance.checkPrintKitchen,
       'child': instance.child,
       if (instance.draft case final value?) 'draft': value,
-      'createdAt':
-          DateModelConverter.convertDateTimeForModel(instance.createdAt),
       'branchId': instance.branchId,
+      if (instance.variantId case final value?) 'variantId': value,
+      if (instance.variantName case final value?) 'variantName': value,
       'extraItemDoc': instance.extraItemDoc.map((e) => e.toJson()).toList(),
       'comboDoc': instance.comboDoc.map((e) => e.toJson()).toList(),
     };

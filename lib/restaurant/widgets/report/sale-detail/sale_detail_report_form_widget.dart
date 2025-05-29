@@ -206,7 +206,7 @@ class _SaleDetailReportFormWidgetState
                     case 5:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbProductKey,
-                        name: 'productIds',
+                        name: 'productSelectors',
                         hintText: '$prefixFormBuilderInputDecoration.selectAll',
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
                             labelText: '$prefixSaleDetailReportForm.products',

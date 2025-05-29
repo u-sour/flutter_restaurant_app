@@ -44,6 +44,7 @@ class RestaurantDefaultIcons {
   static const IconData addInvoice = Icons.add;
   static const IconData noImage = Icons.photo;
   static const IconData selectedItem = Icons.check_circle;
+  static const IconData variant = Icons.brunch_dining;
   // sale - category
   static const IconData categories = Icons.menu_book;
   static const IconData extraFoods = Icons.soup_kitchen;

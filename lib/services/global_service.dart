@@ -13,7 +13,7 @@ class GlobalService {
             children: [
               const Spacer(),
               Expanded(
-                flex: 4,
+                flex: 12,
                 child: contentWidget,
               ),
               const Spacer(),

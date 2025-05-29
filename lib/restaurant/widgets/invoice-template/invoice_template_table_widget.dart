@@ -3,13 +3,13 @@ import 'package:flutter_bluetooth_printer/flutter_bluetooth_printer_library.dart
 import '../../../utils/constants.dart';
 import '../../models/invoice-template/table/table_list_schema_model.dart';
 import '../../models/invoice-template/table/table_schema_model.dart';
-import '../../models/sale/invoice/print/sale_detail_for_print_model.dart';
+import '../../models/sale/detail/sale_detail_model.dart';
 import '../invoice/invoice_format_currency_widget.dart';
 
 class InvoiceTemplateTableWidget extends StatelessWidget {
   final PaperSize paperSize;
   final TableSchemaModel tableSchema;
-  final List<SaleDetailForPrintModel> saleDetails;
+  final List<SaleDetailModel> saleDetails;
   const InvoiceTemplateTableWidget({
     super.key,
     required this.paperSize,
@@ -133,10 +133,41 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                                     ? FontWeight.bold
                                                     : null,
                                           )),
+                                      // Variants
+                                      if (row['variantName'] != null)
+                                        Text(
+                                          ' - ${row['variantName']}',
+                                          style: theme.textTheme.bodySmall!
+                                              .copyWith(
+                                            color: baseColor,
+                                            fontSize: paperSize ==
+                                                        PaperSize.mm80 &&
+                                                    tables[0].subItemStyle !=
+                                                        null
+                                                ? tables[0]
+                                                        .subItemStyle!
+                                                        .fontSize! +
+                                                    AppStyleDefaultProperties
+                                                        .iefs
+                                                : tables[0]
+                                                    .subItemStyle
+                                                    ?.fontSize,
+                                            fontWeight:
+                                                tables[i].tdStyle.fontWeight !=
+                                                            null &&
+                                                        tables[i]
+                                                                .tdStyle
+                                                                .fontWeight ==
+                                                            'bold'
+                                                    ? FontWeight.bold
+                                                    : null,
+                                          ),
+                                          softWrap: true,
+                                        ),
                                       // Catalog
-                                      if (row['comboItems'].isNotEmpty)
+                                      if (row['comboDoc'].isNotEmpty)
                                         for (int i = 0;
-                                            i < row['comboItems'].length;
+                                            i < row['comboDoc'].length;
                                             i++)
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -150,7 +181,7 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                                   0.0,
                                             ),
                                             child: Text(
-                                              '-${row['comboItems'][i]['itemName']} x${row['comboItems'][i]['qty']}',
+                                              ' - ${row['comboDoc'][i]['itemName']} x${row['comboDoc'][i]['qty']}',
                                               style: theme.textTheme.bodySmall!
                                                   .copyWith(
                                                 color: baseColor,
@@ -182,9 +213,9 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                             ),
                                           ),
                                       // Extra Items
-                                      if (row['extraItems'].isNotEmpty)
+                                      if (row['extraItemDoc'].isNotEmpty)
                                         for (int i = 0;
-                                            i < row['extraItems'].length;
+                                            i < row['extraItemDoc'].length;
                                             i++)
                                           Padding(
                                             padding: EdgeInsets.only(
@@ -198,7 +229,7 @@ class InvoiceTemplateTableWidget extends StatelessWidget {
                                                   0.0,
                                             ),
                                             child: Text(
-                                              '-${row['extraItems'][i]['itemName']} | ${row['extraItems'][i]['price']}',
+                                              ' + ${row['extraItemDoc'][i]['itemName']} | ${row['extraItemDoc'][i]['price']}',
                                               style: theme.textTheme.bodySmall!
                                                   .copyWith(
                                                 color: baseColor,

@@ -189,6 +189,16 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                     : theme.textTheme.bodyMedium!
                                         .copyWith(fontWeight: FontWeight.bold),
                               ),
+                              // Variant Item
+                              if (row.variantId != null &&
+                                  row.variantName != null) ...[
+                                Text(
+                                  ' - ${row.variantName}',
+                                  style: theme.textTheme.bodyMedium,
+                                ),
+                                const Divider(
+                                    height: AppStyleDefaultProperties.h / 4)
+                              ],
                               // Extra items
                               if (row.extraItemDoc.isNotEmpty)
                                 for (int i = 0;
@@ -197,7 +207,7 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                   RichText(
                                       text: TextSpan(
                                           text:
-                                              ' ${row.extraItemDoc[i].itemName} | ',
+                                              ' + ${row.extraItemDoc[i].itemName} | ',
                                           style: theme.textTheme.bodySmall,
                                           children: [
                                         WidgetSpan(
@@ -500,41 +510,59 @@ class SaleDetailDataTableWidget extends StatelessWidget {
                                               roles: ['tablet-orders']) &&
                                           row.draft != true
                                   ? null
-                                  : () => GlobalService.openDialog(
-                                        context: context,
-                                        contentWidget: ConfirmDialogWidget(
-                                          content: Wrap(
-                                            children: [
-                                              Text(row.itemName,
+                                  : () async {
+                                      // Remove Sale Detail Extra Item
+                                      if (row.extraItemDoc.isNotEmpty) {
+                                        final String extraItemId =
+                                            row.extraItemDoc.last.id;
+                                        ResponseModel? result =
+                                            await readProvider.removeExtraItem(
+                                                extraItemid: extraItemId);
+                                        if (result != null) {
+                                          Alert.show(
+                                              description: result.description,
+                                              type: result.type);
+                                        }
+                                      } else {
+                                        // Remove Sale Detail Item
+                                        GlobalService.openDialog(
+                                          context: context,
+                                          contentWidget: ConfirmDialogWidget(
+                                            content: Wrap(
+                                              children: [
+                                                Text(row.itemName,
+                                                    style: theme
+                                                        .textTheme.bodyMedium!
+                                                        .copyWith(
+                                                            fontWeight:
+                                                                FontWeight
+                                                                    .bold)),
+                                                Text(
+                                                  'dialog.confirm.remove.description'
+                                                      .tr(),
                                                   style: theme
-                                                      .textTheme.bodyMedium!
-                                                      .copyWith(
-                                                          fontWeight:
-                                                              FontWeight.bold)),
-                                              Text(
-                                                'dialog.confirm.remove.description'
-                                                    .tr(),
-                                                style:
-                                                    theme.textTheme.bodyMedium,
-                                              ),
-                                            ],
+                                                      .textTheme.bodyMedium,
+                                                ),
+                                              ],
+                                            ),
+                                            onAgreePressed: () async {
+                                              ResponseModel? result =
+                                                  await readProvider.removeItem(
+                                                      id: row.id);
+                                              if (result != null) {
+                                                Alert.show(
+                                                    description:
+                                                        result.description,
+                                                    type: result.type);
+                                              }
+                                              if (context.mounted) {
+                                                context.pop();
+                                              }
+                                            },
                                           ),
-                                          onAgreePressed: () async {
-                                            ResponseModel? result =
-                                                await readProvider.removeItem(
-                                                    id: row.id);
-                                            if (result != null) {
-                                              Alert.show(
-                                                  description:
-                                                      result.description,
-                                                  type: result.type);
-                                            }
-                                            if (context.mounted) {
-                                              context.pop();
-                                            }
-                                          },
-                                        ),
-                                      ),
+                                        );
+                                      }
+                                    },
                               style: IconButton.styleFrom(
                                   padding: EdgeInsets.zero),
                               icon: Icon(RestaurantDefaultIcons.remove,

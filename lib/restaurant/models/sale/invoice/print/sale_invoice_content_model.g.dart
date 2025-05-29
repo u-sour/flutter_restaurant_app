@@ -12,8 +12,7 @@ SaleInvoiceContentModel _$SaleInvoiceContentModelFromJson(
       saleDoc: SaleInvoiceForPrintModel.fromJson(
           json['saleDoc'] as Map<String, dynamic>),
       orderList: (json['orderList'] as List<dynamic>)
-          .map((e) =>
-              SaleDetailForPrintModel.fromJson(e as Map<String, dynamic>))
+          .map((e) => SaleDetailModel.fromJson(e as Map<String, dynamic>))
           .toList(),
       exchangeDoc:
           ExchangeModel.fromJson(json['exchangeDoc'] as Map<String, dynamic>),

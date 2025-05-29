@@ -9,14 +9,9 @@ class SaleProductModel {
   final String id;
   final String name;
   final String? code;
-  final String categoryIds;
   final String? category;
   final String? groupId;
   final String? group;
-  final String status;
-  final num cost;
-  final num markupPer;
-  final num markupVal;
   final num price;
   final String type;
   final String? photo;
@@ -33,20 +28,16 @@ class SaleProductModel {
       fromJson: DateModelConverter.convertDateTimeForModel,
       toJson: DateModelConverter.convertDateTimeForModel)
   final DateTime createdAt;
-  final num? discountAmount;
+  final num? discountPrice;
+  final num variantCount;
 
   const SaleProductModel({
     required this.id,
     required this.name,
     this.code,
-    required this.categoryIds,
     required this.category,
     this.groupId,
     this.group,
-    required this.status,
-    required this.cost,
-    required this.markupPer,
-    required this.markupVal,
     required this.price,
     required this.type,
     this.photo,
@@ -60,7 +51,8 @@ class SaleProductModel {
     required this.discount,
     required this.branchId,
     required this.createdAt,
-    this.discountAmount,
+    this.discountPrice,
+    required this.variantCount,
   });
   factory SaleProductModel.fromJson(Map<String, dynamic> json) =>
       _$SaleProductModelFromJson(json);

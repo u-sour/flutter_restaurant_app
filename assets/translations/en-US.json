@@ -13,8 +13,8 @@
       "companyTelephone": "+855 70550880",
       "developers": "Heng You Sour",
       "publisher": "Roeurb Navy",
-      "developmentVersion": "1.0.0+8",
-      "latestVersion": "1.0.4"
+      "developmentVersion": "1.0.0+9",
+      "latestVersion": "1.0.5"
     },
     "copyrightBy": "\u00a9 All Rights Reserved by {company} - {year} (v{version})"
   },
@@ -153,6 +153,10 @@
         "categories": "Categories"
       },
       "search": "Search ...",
+      "variants": {
+        "title": "Variants",
+        "options": "Options:"
+      },
       "notification": {
         "title": "Notification",
         "tabs": {

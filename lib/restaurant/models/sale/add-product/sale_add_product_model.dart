@@ -11,7 +11,6 @@ class SaleAddProductModel {
   final String id;
   final String name;
   final String category;
-  final String status;
   final num? cost;
   final num price;
   final String? type;
@@ -32,7 +31,6 @@ class SaleAddProductModel {
     required this.id,
     required this.name,
     required this.category,
-    required this.status,
     this.cost,
     required this.price,
     this.type,

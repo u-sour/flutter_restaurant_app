@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:visibility_detector/visibility_detector.dart';
 import '../../../../models/servers/response_model.dart';
+import '../../../../services/global_service.dart';
 import '../../../../utils/alert/alert.dart';
 import '../../../../utils/constants.dart';
 import '../../../../utils/responsive/responsive_layout.dart';
@@ -16,7 +17,9 @@ import '../../../utils/constants.dart';
 import '../../../utils/debounce.dart';
 import '../../../../widgets/empty_data_widget.dart';
 import '../../../../widgets/loading_widget.dart';
+import '../../dialog_widget.dart';
 import '../product-group/sale_product_group_widget.dart';
+import '../product-variant/product_variant_widget.dart';
 import 'sale_product_item_widget.dart';
 
 class SaleProductWidget extends StatefulWidget {
@@ -152,17 +155,53 @@ class _SaleProductWidgetState extends State<SaleProductWidget> {
                                               _readSaleProvider.ipAddress,
                                           imgHeight: imageHeight,
                                           onTap: () async {
-                                            ResponseModel? result =
-                                                await _readSaleProvider
-                                                    .handleItemClick(
-                                                        item: SaleAddProductModel
-                                                            .fromJson(product
-                                                                .toJson()));
-                                            if (result != null) {
-                                              Alert.show(
-                                                  description:
-                                                      result.description,
-                                                  type: result.type);
+                                            if (product.variantCount > 0) {
+                                              GlobalService.openDialog(
+                                                  contentWidget: DialogWidget(
+                                                    titleIcon:
+                                                        RestaurantDefaultIcons
+                                                            .variant,
+                                                    title:
+                                                        'screens.sale.variants.title',
+                                                    content:
+                                                        ProductVariantWidget(
+                                                      product: product,
+                                                      branchId:
+                                                          _readSaleProductsProvider
+                                                              .branchId,
+                                                      depId:
+                                                          _readSaleProductsProvider
+                                                              .depId,
+                                                    ),
+                                                    onInsertPressed: () async {
+                                                      final result =
+                                                          await _readSaleProvider
+                                                              .addProductVariant(
+                                                                  productId:
+                                                                      product
+                                                                          .id);
+                                                      if (result != null) {
+                                                        Alert.show(
+                                                            description: result
+                                                                .description,
+                                                            type: result.type);
+                                                      }
+                                                    },
+                                                  ),
+                                                  context: context);
+                                            } else {
+                                              ResponseModel? result =
+                                                  await _readSaleProvider
+                                                      .handleItemClick(
+                                                          item: SaleAddProductModel
+                                                              .fromJson(product
+                                                                  .toJson()));
+                                              if (result != null) {
+                                                Alert.show(
+                                                    description:
+                                                        result.description,
+                                                    type: result.type);
+                                              }
                                             }
                                           },
                                         ),

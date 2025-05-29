@@ -22,22 +22,25 @@ class DialogWidget extends StatelessWidget {
   final void Function()? onInsertAndPrintPressed;
   final String updateLabel;
   final void Function()? onUpdatePressed;
-  const DialogWidget(
-      {super.key,
-      this.type = DialogType.insert,
-      required this.titleIcon,
-      required this.title,
-      required this.content,
-      this.enableActions = true,
-      this.enableInsertAndPrintAction = false,
-      this.cancelLabel = 'dialog.actions.cancel',
-      this.onCancelPressed,
-      this.insertLabel = 'dialog.actions.insert',
-      this.onInsertPressed,
-      this.insertAndPrintLabel = 'dialog.actions.insertAndPrint',
-      this.onInsertAndPrintPressed,
-      this.updateLabel = "dialog.actions.update",
-      this.onUpdatePressed});
+  final bool autoClose;
+  const DialogWidget({
+    super.key,
+    this.type = DialogType.insert,
+    required this.titleIcon,
+    required this.title,
+    required this.content,
+    this.enableActions = true,
+    this.enableInsertAndPrintAction = false,
+    this.cancelLabel = 'dialog.actions.cancel',
+    this.onCancelPressed,
+    this.insertLabel = 'dialog.actions.insert',
+    this.onInsertPressed,
+    this.insertAndPrintLabel = 'dialog.actions.insertAndPrint',
+    this.onInsertAndPrintPressed,
+    this.updateLabel = "dialog.actions.update",
+    this.onUpdatePressed,
+    this.autoClose = true,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -92,9 +95,14 @@ class DialogWidget extends StatelessWidget {
                   ],
                   Expanded(
                     child: FilledButton(
-                      onPressed: type.name == 'insert'
-                          ? onInsertPressed
-                          : onUpdatePressed,
+                      onPressed: () {
+                        type.name == 'insert'
+                            ? onInsertPressed!()
+                            : onUpdatePressed!();
+                        if (autoClose) {
+                          context.pop();
+                        }
+                      },
                       style: theme.filledButtonTheme.style!.copyWith(
                           backgroundColor:
                               WidgetStateProperty.all(AppThemeColors.success)),

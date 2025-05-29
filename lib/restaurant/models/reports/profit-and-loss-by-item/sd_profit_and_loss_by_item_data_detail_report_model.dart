@@ -7,8 +7,10 @@ part 'sd_profit_and_loss_by_item_data_detail_report_model.g.dart';
 class SDProfitAndLossByItemDataDetailReportModel {
   // Noted: for looping into table
   final String? depName;
-  final List<String> categoryNames;
+  final String categoryNames;
   final String itemName;
+  final String? variantId;
+  final String? variantName;
   // Noted: for looping into table
   @JsonKey(
       fromJson: DateModelConverter.convertDateTimeOptionalForModel,
@@ -30,6 +32,8 @@ class SDProfitAndLossByItemDataDetailReportModel {
     this.depName,
     required this.categoryNames,
     required this.itemName,
+    this.variantId,
+    this.variantName,
     this.itemTranDate,
     required this.items,
     required this.totalQty,

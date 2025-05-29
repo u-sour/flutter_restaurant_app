@@ -85,9 +85,9 @@ class _SetupIpAddressFormWidgetState extends State<SetupIpAddressFormWidget> {
                           FormBuilderValidators.required(),
                           (value) {
                             String? ipAddress = value;
-                            if (ipAddress == currentIp) {
-                              return "Please change to your new IP address.";
-                            }
+                            // if (ipAddress == currentIp) {
+                            //   return "Please change to your new IP address.";
+                            // }
 
                             final splitted = ipAddress!.split(':');
                             String ip = splitted[0];

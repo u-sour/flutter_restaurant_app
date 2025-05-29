@@ -224,15 +224,23 @@ class SaleDetailProfitAndLossByItemReportContentTableWidget
       }
     } else if (fields[vicinity.column] ==
         SaleDetailProfitAndLossByItemReportDTRowType.categoryName) {
-      String categoryNames = '';
-      for (var i = 0; i < rows[vicinity.row - 1].categoryNames.length; i++) {
-        categoryNames += i != rows[vicinity.row - 1].categoryNames.length - 1
-            ? '${rows[vicinity.row - 1].categoryNames[i]} , '
-            : rows[vicinity.row - 1].categoryNames[i];
-      }
+      String categoryNames = rows[vicinity.row - 1].categoryNames;
+      // String categoryNames = '';
+      // for (var i = 0; i < rows[vicinity.row - 1].categoryNames.length; i++) {
+      //   categoryNames += i != rows[vicinity.row - 1].categoryNames.length - 1
+      //       ? '${rows[vicinity.row - 1].categoryNames[i]} , '
+      //       : rows[vicinity.row - 1].categoryNames[i];
+      // }
       cell = TableViewCell(
           child:
               ReportTemplateContentTableCellWidget(dynamicText: categoryNames));
+    } else if (fields[vicinity.column] ==
+            SaleDetailProfitAndLossByItemReportDTRowType.itemName &&
+        rows[vicinity.row - 1].variantName!.isNotEmpty) {
+      cell = TableViewCell(
+          child: ReportTemplateContentTableCellWidget(
+              dynamicText:
+                  '${rows[vicinity.row - 1].itemName} (${rows[vicinity.row - 1].variantName})'));
     } else if (fields[vicinity.column] ==
         SaleDetailProfitAndLossByItemReportDTRowType.date) {
       cell = TableViewCell(
