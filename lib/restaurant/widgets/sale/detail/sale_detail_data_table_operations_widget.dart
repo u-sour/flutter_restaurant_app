@@ -95,12 +95,33 @@ class SaleDetailDataTableOperationsWidget extends StatelessWidget {
                           style: theme.textTheme.bodyMedium
                               ?.copyWith(fontWeight: FontWeight.bold),
                         ),
+                        // Variants
+                        if (row.variantName != null)
+                          Text(' - ${row.variantName}'),
+                        // Catalog Combo Items
+                        if (row.catalogType != null &&
+                            row.comboDoc.isNotEmpty &&
+                            row.catalogType == "Combo")
+                          for (int i = 0; i < row.comboDoc.length; i++)
+                            RichText(
+                                text: TextSpan(
+                                    text: ' - ${row.comboDoc[i].itemName} x ',
+                                    style: theme.textTheme.bodySmall,
+                                    children: [
+                                  TextSpan(
+                                      text: '${row.comboDoc[i].qty}',
+                                      style: theme.textTheme.bodySmall!
+                                          .copyWith(
+                                              color: AppThemeColors.failure,
+                                              fontWeight: FontWeight.bold))
+                                ])),
                         // Extra Items
                         if (row.extraItemDoc.isNotEmpty)
                           for (int i = 0; i < row.extraItemDoc.length; i++)
                             RichText(
                                 text: TextSpan(
-                                    text: ' ${row.extraItemDoc[i].itemName} | ',
+                                    text:
+                                        ' + ${row.extraItemDoc[i].itemName} | ',
                                     style: theme.textTheme.bodySmall,
                                     children: [
                                   WidgetSpan(
@@ -111,33 +132,6 @@ class SaleDetailDataTableOperationsWidget extends StatelessWidget {
                                           priceFontSize: 12.0,
                                           currencySymbolFontSize: 14.0,
                                           color: AppThemeColors.primary))
-                                ])),
-                        // InkWell(
-                        //   onTap: () => GlobalService.openDialog(
-                        //       contentWidget: SaleDetailExtraItemsWidget(
-                        //         extraItems: row.extraItemDoc,
-                        //       ),
-                        //       context: context),
-                        //   child: Text(
-                        //       '${'screens.sale.category.extraFoods'.tr()} (${row.extraItemDoc.length})',
-                        //       style: theme.textTheme.bodyMedium),
-                        // ),
-                        // Catalog Combo Items
-                        if (row.catalogType != null &&
-                            row.comboDoc.isNotEmpty &&
-                            row.catalogType == "Combo")
-                          for (int i = 0; i < row.comboDoc.length; i++)
-                            RichText(
-                                text: TextSpan(
-                                    text: ' ${row.comboDoc[i].itemName} x ',
-                                    style: theme.textTheme.bodySmall,
-                                    children: [
-                                  TextSpan(
-                                      text: '${row.comboDoc[i].qty}',
-                                      style: theme.textTheme.bodySmall!
-                                          .copyWith(
-                                              color: AppThemeColors.failure,
-                                              fontWeight: FontWeight.bold))
                                 ])),
                         // Price
                         Align(

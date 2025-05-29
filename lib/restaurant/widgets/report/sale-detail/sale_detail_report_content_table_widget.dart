@@ -126,6 +126,12 @@ class SaleDetailReportContentTableWidget extends StatelessWidget {
           alignment: Alignment.center,
         ),
       );
+    } else if (fields[vicinity.column] == SaleDetailReportDTRowType.itemName &&
+        rows[vicinity.row - 1].variantName != null) {
+      cell = TableViewCell(
+          child: ReportTemplateContentTableCellWidget(
+              dynamicText:
+                  '${rows[vicinity.row - 1].itemName} (${rows[vicinity.row - 1].variantName})'));
     } else if (fields[vicinity.column] == SaleDetailReportDTRowType.invoice) {
       cell = TableViewCell(
         child: ReportTemplateContentTableCellWidget(

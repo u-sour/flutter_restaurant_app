@@ -88,11 +88,21 @@ class InvoiceToKitchenTableWidget extends StatelessWidget {
                                     fontWeight: FontWeight.bold),
                             textAlign: textAlign(fields[i].value),
                           ),
+                          // Variants
+                          if (row['variantName'] != null)
+                            Text(
+                              ' - ${row['variantName']}',
+                              style: theme.textTheme.bodyLarge!.copyWith(
+                                color: baseColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                              softWrap: true,
+                            ),
                           // Catalog
                           if (row['comboDoc'].isNotEmpty)
                             for (int i = 0; i < row['comboDoc'].length; i++)
                               Text(
-                                '-${row['comboDoc'][i]['itemName']} x${row['comboDoc'][i]['qty']}',
+                                ' - ${row['comboDoc'][i]['itemName']} x${row['comboDoc'][i]['qty']}',
                                 style: theme.textTheme.bodyLarge!.copyWith(
                                   color: baseColor,
                                   fontWeight: FontWeight.bold,

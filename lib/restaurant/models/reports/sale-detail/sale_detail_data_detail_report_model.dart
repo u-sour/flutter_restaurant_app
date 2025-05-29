@@ -17,6 +17,7 @@ class SaleDetailDataDetailReportModel {
   final String floorName;
   final String departmentName;
   final String itemName;
+  final String? variantName;
   final String itemType;
   final num qty;
   final num price;
@@ -35,6 +36,7 @@ class SaleDetailDataDetailReportModel {
     required this.floorName,
     required this.departmentName,
     required this.itemName,
+    this.variantName,
     required this.itemType,
     required this.qty,
     required this.price,

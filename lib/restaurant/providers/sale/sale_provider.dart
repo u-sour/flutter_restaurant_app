@@ -30,6 +30,9 @@ import '../../models/sale/insert-item-input/insert_item_input_catalog_type_set_m
 import '../../models/sale/insert-item-input/insert_item_input_model.dart';
 import '../../models/sale/invoice/sale_invoice_action_model.dart';
 import '../../models/sale/invoice/sale_invoice_status_date_model.dart';
+import '../../models/sale/product/variant/insert_product_variant_doc_model.dart';
+import '../../models/sale/product/variant/insert_product_variant_model.dart';
+import '../../models/sale/product/variant/product_variant_model.dart';
 import '../../models/sale/receipt/sale_receipt_allow_currency_amount_model.dart';
 import '../../models/sale/receipt/sale_receipt_model.dart';
 import '../../models/sale/sale/sale_model.dart';
@@ -126,6 +129,10 @@ class SaleProvider extends ChangeNotifier {
   // last item added
   SaleAddProductModel? _lastItemAdded;
   SaleAddProductModel? get lastItemAdded => _lastItemAdded;
+
+  // product variants
+  late ProductVariantModel _productVariant;
+  ProductVariantModel get productVariant => _productVariant;
 
   Future<void> initData(
       {String? invoiceId,
@@ -705,6 +712,98 @@ class SaleProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  void fetchSaleProductVariant({
+    required String productId,
+    required String branchId,
+    String? invoiceId,
+    required String depId,
+  }) async {
+    _isLoading = true;
+    _productVariant =
+        const ProductVariantModel(optionName: '', variantList: []);
+    final Map<String, dynamic> result =
+        await meteor.call('rest.findVariantForSale', args: [
+      {
+        'productId': productId,
+        'branchId': branchId,
+        'invoiceId': invoiceId,
+        'depId': depId
+      }
+    ]);
+
+    if (result.isNotEmpty) {
+      _productVariant = ProductVariantModel.fromJson(result);
+    }
+    _isLoading = false;
+    notifyListeners();
+  }
+
+  Future<ResponseModel?> addProductVariant({required String productId}) async {
+    ResponseModel? result;
+    try {
+      // if there no current sale, add new sale then add item
+      if (_sales.isEmpty && _activeSaleInvoiceId.isEmpty) {
+        final SaleInvoiceActionModel doc = SaleInvoiceActionModel(
+            date: DateTime.now(),
+            type: 'Invoice',
+            status: 'Open',
+            statusDate: SaleInvoiceStatusDateModel(open: DateTime.now()),
+            discountRate: 0,
+            discountValue: 0,
+            total: 0,
+            totalReceived: 0,
+            tableId: _tableId,
+            depId: _depId,
+            employeeId: _employeeId,
+            guestId: _currentGuest.value,
+            numOfGuest: 0,
+            billed: 0,
+            branchId: _branchId);
+        // insert sale
+        final String invoiceId = await insertSaleMethod(doc: doc);
+        if (invoiceId.isEmpty) {
+          throw Exception('Invoice is not found');
+        }
+        // set active invoice
+        _activeSaleInvoiceId = invoiceId;
+      }
+      final InsertProductVariantDocModel doc = InsertProductVariantDocModel(
+          itemId: productId,
+          qty: 0,
+          price: 0,
+          discount: 0,
+          amount: 0,
+          status: 'New',
+          checkPrint: false,
+          invoiceId: _activeSaleInvoiceId,
+          branchId: _branchId);
+      final List<InsertProductVariantModel> variants = [];
+      if (productVariant.variantList.isNotEmpty) {
+        for (int i = 0; i < productVariant.variantList.length; i++) {
+          final variantList = productVariant.variantList[i].items;
+          for (var j = 0; j < variantList.length; j++) {
+            final variantItem = productVariant.variantList[i].items[j];
+            if (variantItem.qty > 0) {
+              variants.add(InsertProductVariantModel(
+                  id: variantItem.variantId,
+                  qty: variantItem.qty,
+                  price: variantItem.price,
+                  discount: variantItem.discount));
+            }
+          }
+        }
+      }
+      await insertSaleDetailVariants(doc: doc, variants: variants);
+    } catch (e) {
+      if (e is MeteorError) {
+        result = ResponseModel(
+            description: e.message!, type: ToastificationType.error);
+      }
+    }
+    notifyListeners();
+    return result;
+  }
+
   // Handle update sale detail item from operation (transfer or split)
   void handleItemUpdateFromOperation({
     required String onChangedValue,
@@ -880,6 +979,20 @@ class SaleProvider extends ChangeNotifier {
         result = ResponseModel(
             description: e.message!, type: ToastificationType.error);
         _isLoading = false;
+      }
+    }
+    return result;
+  }
+
+  // Remove extra item
+  Future<ResponseModel?> removeExtraItem({required String extraItemid}) async {
+    ResponseModel? result;
+    try {
+      await removeSaleExtraItem(extraItemId: extraItemid);
+    } catch (e) {
+      if (e is MeteorError) {
+        result = ResponseModel(
+            description: e.message!, type: ToastificationType.error);
       }
     }
     return result;
@@ -2241,6 +2354,17 @@ class SaleProvider extends ChangeNotifier {
     ]);
   }
 
+  Future<dynamic> insertSaleDetailVariants(
+      {required InsertProductVariantDocModel doc,
+      required List<InsertProductVariantModel> variants}) {
+    return meteor.call('rest.insertSaleDetailVariants', args: [
+      {
+        'doc': doc.toJson(),
+        'variants': variants.map((v) => v.toJson()).toList()
+      }
+    ]);
+  }
+
   Future<dynamic> insertSaleDetailMethod({required InsertItemInputModel doc}) {
     return meteor.call('rest.insertSaleDetail', args: [
       {'doc': doc.toJson()}
@@ -2488,6 +2612,11 @@ class SaleProvider extends ChangeNotifier {
       {required String methodName, required Map<String, dynamic> doc}) {
     Map<String, dynamic> selector = {'doc': doc};
     return meteor.call(methodName, args: [selector]);
+  }
+
+  Future<dynamic> removeSaleExtraItem({required String extraItemId}) {
+    Map<String, dynamic> selector = {'_id': extraItemId};
+    return meteor.call('rest.removeSaleExtraItem', args: [selector]);
   }
 
   void unSubscribe() {

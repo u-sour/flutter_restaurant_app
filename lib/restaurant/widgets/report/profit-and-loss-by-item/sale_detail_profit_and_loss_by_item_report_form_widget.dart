@@ -211,7 +211,7 @@ class _SaleDetailProfitAndLossByItemReportFormWidgetState
                     default:
                       widget = FormBuilderSearchableDropdownMultiSelect(
                         fbKey: fbProductKey,
-                        name: 'productIds',
+                        name: 'productSelectors',
                         hintText: '$prefixFormBuilderInputDecoration.selectAll',
                         decoration: CustomFormBuilderInputStyle.fbInputStyle(
                             labelText:

@@ -11,10 +11,10 @@ SDProfitAndLossByItemDataDetailReportModel
             Map<String, dynamic> json) =>
         SDProfitAndLossByItemDataDetailReportModel(
           depName: json['depName'] as String?,
-          categoryNames: (json['categoryNames'] as List<dynamic>)
-              .map((e) => e as String)
-              .toList(),
+          categoryNames: json['categoryNames'] as String,
           itemName: json['itemName'] as String,
+          variantId: json['variantId'] as String?,
+          variantName: json['variantName'] as String?,
           itemTranDate: DateModelConverter.convertDateTimeOptionalForModel(
               json['itemTranDate'] as DateTime?),
           items: (json['items'] as List<dynamic>)
@@ -39,6 +39,8 @@ Map<String, dynamic> _$SDProfitAndLossByItemDataDetailReportModelToJson(
       if (instance.depName case final value?) 'depName': value,
       'categoryNames': instance.categoryNames,
       'itemName': instance.itemName,
+      if (instance.variantId case final value?) 'variantId': value,
+      if (instance.variantName case final value?) 'variantName': value,
       if (DateModelConverter.convertDateTimeOptionalForModel(
               instance.itemTranDate)
           case final value?)

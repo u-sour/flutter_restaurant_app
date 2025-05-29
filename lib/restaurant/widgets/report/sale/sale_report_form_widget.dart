@@ -205,7 +205,6 @@ class _SaleReportFormWidgetState extends State<SaleReportFormWidget> {
                         onChanged: (value) =>
                             readSaleReportProvider.setIsSummary(value: value!),
                       );
-
                       break;
                     case 6:
                       widget = Selector<SaleReportProvider, bool>(

@@ -7,6 +7,7 @@ import '../../../models/sale/product-group/sale_product_group_model.dart';
 import '../../../models/sale/product/sale_one_product_model.dart';
 import '../../../models/sale/product/sale_product_model.dart';
 import '../../../models/sale/product/sale_product_result_model.dart';
+import '../../../models/sale/product/variant/product_variant_model.dart';
 
 class SaleProductsProvider extends ChangeNotifier {
   late GlobalKey<FormBuilderState> fbSearchKey;
@@ -133,17 +134,7 @@ class SaleProductsProvider extends ChangeNotifier {
     //  Filter search
     String searchFormat = RegExp.escape(search);
     if (searchFormat.isNotEmpty) {
-      params['search'] = [
-        {
-          'code': {'\$regex': searchFormat, '\$options': '\$i'}
-        },
-        {
-          'name': {'\$regex': searchFormat, '\$options': '\$i'}
-        },
-        {
-          'barcode': {'\$regex': searchFormat, '\$options': '\$i'}
-        },
-      ];
+      params['search'] = searchFormat;
     }
 
     Map<String, dynamic> result =
@@ -157,6 +148,29 @@ class SaleProductsProvider extends ChangeNotifier {
       }
     ]);
     return SaleProductResultModel.fromJson(result);
+  }
+
+  Future<ProductVariantModel> fetchSaleProductVariant({
+    required String productId,
+    required String branchId,
+    String? invoiceId,
+    required String depId,
+  }) async {
+    final Map<String, dynamic> result =
+        await meteor.call('rest.findVariantForSale', args: [
+      {
+        'productId': productId,
+        'branchId': branchId,
+        'invoiceId': invoiceId,
+        'depId': depId
+      }
+    ]);
+
+    late ProductVariantModel toModel;
+    if (result.isNotEmpty) {
+      toModel = ProductVariantModel.fromJson(result);
+    }
+    return toModel;
   }
 
   Future<List<SaleProductGroupModel>> fetchSaleProductGroup(

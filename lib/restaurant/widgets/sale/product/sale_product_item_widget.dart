@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:easy_localization/easy_localization.dart' as el;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:rotated_corner_decoration/rotated_corner_decoration.dart';
@@ -142,7 +143,7 @@ class SaleProductItemWidget extends StatelessWidget {
               const EdgeInsets.symmetric(vertical: AppStyleDefaultProperties.h),
           child: Column(
             children: [
-              if (product.code != null)
+              if (product.code != null && product.code!.isNotEmpty)
                 Text(
                   product.code!,
                   style: theme.textTheme.bodyMedium!.copyWith(
@@ -222,6 +223,7 @@ class SaleProductItemPriceWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    const prefixVariantTitle = 'screens.sale.variants.title';
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -231,19 +233,28 @@ class SaleProductItemPriceWidget extends StatelessWidget {
               color: AppThemeColors.primary.withOpacity(priceBgColorOpacity),
               borderRadius: BorderRadius.circular(10.0),
             ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FormatCurrencyWidget(
-                  value: product.price,
-                  color: product.discountAmount != null
-                      ? theme.colorScheme.onPrimary.withOpacity(.35)
-                      : null,
-                ),
-                if (product.discountAmount != null)
-                  FormatCurrencyWidget(value: product.discountAmount!),
-              ],
-            )),
+            child: product.variantCount > 0
+                ? Text(
+                    '${product.variantCount} ${prefixVariantTitle.tr()}',
+                    style: theme.textTheme.bodyLarge!.copyWith(
+                        color: theme.colorScheme.onPrimary,
+                        fontWeight: FontWeight.bold),
+                  )
+                : Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      FormatCurrencyWidget(
+                        value: product.price,
+                        color: product.discountPrice != null &&
+                                product.discountPrice! > 0
+                            ? theme.colorScheme.onPrimary.withOpacity(.35)
+                            : null,
+                      ),
+                      if (product.discountPrice != null &&
+                          product.discountPrice! > 0)
+                        FormatCurrencyWidget(value: product.discountPrice!),
+                    ],
+                  )),
       ],
     );
   }
