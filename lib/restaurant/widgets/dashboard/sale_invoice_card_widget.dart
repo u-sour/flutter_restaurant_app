@@ -16,7 +16,6 @@ class SaleInvoiceCardWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     SaleProvider readSaleProvider = context.read<SaleProvider>();
     Orientation orientation = MediaQuery.orientationOf(context);
     late int crossAxisCount;
@@ -65,17 +64,10 @@ class SaleInvoiceCardWidget extends StatelessWidget {
                         onBtnPressed: saleInvoiceData.status == 'Open' &&
                                 UserService.userInRole(roles: ['cashier'])
                             ? () async {
-                                final result = await readSaleProvider.payment(
+                                await readSaleProvider.payment(
                                     context: context,
                                     invoiceId: saleInvoiceData.id,
                                     fromDashboard: true);
-                                // reload sale invoice on dashboard if payment success
-                                if (result != null && result.data.isNotEmpty) {
-                                  await readDashboardProvider.filter(
-                                      tab: readDashboardProvider.selectedTab,
-                                      filterText:
-                                          readDashboardProvider.filterText);
-                                }
                               }
                             : null,
                       );

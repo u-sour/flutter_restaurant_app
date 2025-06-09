@@ -22,7 +22,7 @@ class CancelSaleCdcWidget extends StatelessWidget {
   final _prefixFromLabel = 'screens.sale.detail.dialog.confirm.cancelSale.form';
   @override
   Widget build(BuildContext context) {
-    return enablePassword
+    return enablePassword && confirmSalePassword.isNotEmpty
         ? FormBuilder(
             key: fbKey,
             child: Column(
