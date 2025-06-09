@@ -1691,7 +1691,8 @@ class SaleProvider extends ChangeNotifier {
     // Note: used for enable password text field on cancel sale alert dialog
     bool enablePassword =
         readAppProvider.saleSetting.sale.requirePasswordForCopyInvoice ?? false;
-    String confirmSalePassword = readAppProvider.saleSetting.sale.password!;
+    String confirmSalePassword =
+        readAppProvider.saleSetting.sale.password ?? '';
     final GlobalKey<FormBuilderState> fbCancelSaleKey =
         GlobalKey<FormBuilderState>();
     ResponseModel? result;
@@ -1940,6 +1941,7 @@ class SaleProvider extends ChangeNotifier {
   }) async {
     // Note: invoiceId exist if route come from dashboard
     ResponseModel? result;
+    DashboardProvider readDashboardProvider = context.read<DashboardProvider>();
     if (_currentSale != null && _saleDetails.isNotEmpty || fromDashboard) {
       final GlobalKey<FormBuilderState> fbPaymentKey =
           GlobalKey<FormBuilderState>();
@@ -1977,6 +1979,10 @@ class SaleProvider extends ChangeNotifier {
                     makeRepaid: makeRepaid,
                     fromDashboard: fromDashboard,
                     context: context);
+                // reload sale invoice on dashboard if payment success
+                await readDashboardProvider.filter(
+                    tab: readDashboardProvider.selectedTab,
+                    filterText: readDashboardProvider.filterText);
               },
               onInsertAndPrintPressed: () async {
                 result = await handleInsertPayment(
@@ -1986,6 +1992,10 @@ class SaleProvider extends ChangeNotifier {
                     fromDashboard: fromDashboard,
                     isPrint: true,
                     context: context);
+                // reload sale invoice on dashboard if payment success
+                await readDashboardProvider.filter(
+                    tab: readDashboardProvider.selectedTab,
+                    filterText: readDashboardProvider.filterText);
               },
             ),
             context: context);
@@ -2032,14 +2042,14 @@ class SaleProvider extends ChangeNotifier {
             : 'rest.insertSaleReceiptInit';
         final String receiptId =
             await insertSaleReceiptMethod(methodName: methodName, doc: form);
+        result = ResponseModel(
+            description: 'screens.sale.detail.alert.success.payment',
+            type: ToastificationType.success,
+            data: receiptId);
         if (context.mounted) {
-          result = ResponseModel(
-              description: 'screens.sale.detail.alert.success.payment',
-              type: ToastificationType.success,
-              data: receiptId);
           // Close modal
-          context.pop();
-          if (receiptId.isEmpty) {
+          // context.pop();
+          if (receiptId.isNotEmpty) {
             // Back to dashboard
             context.goNamed(SCREENS.dashboard.toName);
           }
