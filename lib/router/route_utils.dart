@@ -80,8 +80,6 @@ extension AppScreenExtension on SCREENS {
         return "/start";
       case SCREENS.connection:
         return "/connection";
-      default:
-        return "/";
     }
   }
 

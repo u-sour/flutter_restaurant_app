@@ -105,7 +105,7 @@ class FormBuilderDefaultScreen extends StatelessWidget {
                           .toList(growable: false),
                     ),
                     const SizedBox(height: AppStyleDefaultProperties.h),
-                    FormBuilderChoiceChip(
+                    FormBuilderChoiceChips(
                       name: 'choice_chip',
                       decoration:
                           const InputDecoration(labelText: 'Choice Chip'),
@@ -118,7 +118,7 @@ class FormBuilderDefaultScreen extends StatelessWidget {
                           .toList(growable: false),
                     ),
                     const SizedBox(height: AppStyleDefaultProperties.h),
-                    FormBuilderFilterChip(
+                    FormBuilderFilterChips(
                       name: 'filter_chip',
                       decoration:
                           const InputDecoration(labelText: 'Filter Chip'),

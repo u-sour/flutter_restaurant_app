@@ -315,7 +315,7 @@ class SaleDetailProfitAndLossByItemReportContentTableWidget
 
     // Table background color sub header detail (Department)
     if (index != 0 && rows[index - 1].rowType == 'detail') {
-      bgColor = theme.highlightColor.withOpacity(.2);
+      bgColor = theme.highlightColor.withAlpha((0.2 * 255).round());
     }
 
     final TableSpanDecoration decoration = TableSpanDecoration(

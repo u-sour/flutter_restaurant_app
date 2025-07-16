@@ -40,7 +40,8 @@ class SaleProductItemWidget extends StatelessWidget {
                 color: theme.colorScheme.onPrimary,
                 fontWeight: FontWeight.bold)),
         badgeCornerRadius: const Radius.circular(AppStyleDefaultProperties.r),
-        color: AppThemeColors.primary.withOpacity(discountBgColorOpacity),
+        color: AppThemeColors.primary
+            .withAlpha((discountBgColorOpacity * 255).round()),
         badgeSize: const Size(64, 64),
         badgePosition: BadgePosition.bottomStart,
         textDirection: TextDirection.rtl,
@@ -200,9 +201,10 @@ class SaleProductItemSelectedWidget extends StatelessWidget {
                   alignment: Alignment.bottomLeft,
                   child: Icon(
                     RestaurantDefaultIcons.selectedItem,
-                    color: AppThemeColors.primary.withOpacity(isLastSelectedItem
-                        ? lastSelectedItemOpacity
-                        : selectedItemOpacity),
+                    color: AppThemeColors.primary.withValues(
+                        alpha: isLastSelectedItem
+                            ? lastSelectedItemOpacity
+                            : selectedItemOpacity),
                   ),
                 )
               : const SizedBox.shrink();
@@ -230,7 +232,8 @@ class SaleProductItemPriceWidget extends StatelessWidget {
         Container(
             padding: const EdgeInsets.all(AppStyleDefaultProperties.p / 2.4),
             decoration: BoxDecoration(
-              color: AppThemeColors.primary.withOpacity(priceBgColorOpacity),
+              color: AppThemeColors.primary
+                  .withAlpha((priceBgColorOpacity * 255).round()),
               borderRadius: BorderRadius.circular(10.0),
             ),
             child: product.variantCount > 0
@@ -247,7 +250,8 @@ class SaleProductItemPriceWidget extends StatelessWidget {
                         value: product.price,
                         color: product.discountPrice != null &&
                                 product.discountPrice! > 0
-                            ? theme.colorScheme.onPrimary.withOpacity(.35)
+                            ? theme.colorScheme.onPrimary
+                                .withAlpha((0.35 * 255).round())
                             : null,
                       ),
                       if (product.discountPrice != null &&
