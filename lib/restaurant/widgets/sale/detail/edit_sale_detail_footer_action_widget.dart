@@ -577,7 +577,6 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                             popupProps: PopupProps.dialog(
                               showSelectedItems: true,
                               showSearchBox: true,
-                              isFilterOnline: true,
                               searchFieldProps: TextFieldProps(
                                 decoration: InputDecoration(
                                     prefixIcon: const Icon(
@@ -598,8 +597,8 @@ class _EditSaleDetailDataTableRowState extends State<EditSaleDetailFooter> {
                                 return item.value;
                               }
                             },
-                            asyncItems: (String? filter) =>
-                                readProvider.fetchGuests(search: filter!),
+                            asyncItems: (String filter, LoadProps? _) =>
+                                readProvider.fetchGuests(search: filter),
                             itemAsString: ((SelectOptionModel? item) {
                               return item != null && item.extra != null
                                   ? '${item.label} (${item.extra})'

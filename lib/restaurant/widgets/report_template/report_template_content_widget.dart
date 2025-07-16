@@ -21,7 +21,8 @@ class ReportTemplateContentWidget extends StatelessWidget {
             if (isFiltering) ...[
               Positioned.fill(
                 child: Container(
-                    color: theme.colorScheme.onPrimary.withOpacity(.8),
+                    color: theme.colorScheme.onPrimary
+                        .withAlpha((0.8 * 255).round()),
                     child: const LoadingWidget()),
               ),
             ]

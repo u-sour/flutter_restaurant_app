@@ -54,7 +54,7 @@ class SaleInvoiceDTSource extends DataGridSource {
             }
             cell = Container(
               alignment: Alignment.center,
-              color: color.withOpacity(.1),
+              color: color.withAlpha((0.1 * 255).round()),
               child: Text(sale.toJson()[column.name],
                   style: theme.textTheme.bodySmall!.copyWith(
                     color: color,

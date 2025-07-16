@@ -33,7 +33,9 @@ class SaleAppBarNavigationWidget extends StatelessWidget {
     }
     // remove categories on desktop mode
     if (ResponsiveLayout.isDesktop(context) ||
-        ResponsiveLayout.isTablet(context)) navigation.removeLast();
+        ResponsiveLayout.isTablet(context)) {
+      navigation.removeLast();
+    }
 
     return ResponsiveLayout.isMobile(context)
         ? !SaleService.isModuleActive(modules: ['skip-table'], context: context)

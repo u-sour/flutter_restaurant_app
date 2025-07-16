@@ -209,13 +209,13 @@ class SaleReportContentTableWidget extends StatelessWidget {
 
     // Table background color sub header (Group)
     if (index != 0 && rows[index - 1].groupLabel != null) {
-      bgColor = theme.highlightColor.withOpacity(.2);
+      bgColor = theme.highlightColor.withAlpha((0.2 * 255).round());
     }
     // Check and set table row background color by status partial or cancel
     else if (index != 0 && rows[index - 1].status == 'Partial') {
-      bgColor = AppThemeColors.warning.withOpacity(.2);
+      bgColor = AppThemeColors.warning.withAlpha((0.2 * 255).round());
     } else if (index != 0 && rows[index - 1].isCancel) {
-      bgColor = AppThemeColors.failure.withOpacity(.2);
+      bgColor = AppThemeColors.failure.withAlpha((0.2 * 255).round());
     }
 
     final TableSpanDecoration decoration = TableSpanDecoration(

@@ -22,22 +22,24 @@ class FormBuilderSearchableDropdownMultiSelect extends StatefulWidget {
   final ValueChanged<SelectOptionModel>? removedItem;
   final String submitButtonText;
 
-  const FormBuilderSearchableDropdownMultiSelect(
-      {super.key,
-      required this.fbKey,
-      this.hintText = 'screens.formBuilderInputDecoration.selectOne',
-      this.initialValue = const [],
-      this.autovalidateMode = AutovalidateMode.disabled,
-      this.validator,
-      required this.name,
-      required this.decoration,
-      this.items,
-      this.onFind,
-      this.itemBuilder,
-      required this.searchFieldPropsDecoration,
-      this.selectedItem,
-      this.removedItem,
-      this.submitButtonText = "SUBMIT"});
+  const FormBuilderSearchableDropdownMultiSelect({
+    super.key,
+    required this.fbKey,
+    this.hintText = 'screens.formBuilderInputDecoration.selectOne',
+    this.initialValue = const [],
+    this.autovalidateMode = AutovalidateMode.disabled,
+    this.validator,
+    required this.name,
+    required this.decoration,
+    this.items,
+    this.onFind,
+    this.itemBuilder,
+    required this.searchFieldPropsDecoration,
+    this.selectedItem,
+    this.removedItem,
+    this.submitButtonText = 'SUBMIT',
+  });
+
   @override
   State<FormBuilderSearchableDropdownMultiSelect> createState() =>
       _FormBuilderSearchableDropdownMultiSelectState();
@@ -53,98 +55,97 @@ class _FormBuilderSearchableDropdownMultiSelectState
     super.initState();
     if (widget.initialValue.isNotEmpty) {
       _selectedItems = widget.initialValue;
-      // convert as list string
       _initialValue = _selectedItems.map((e) => e.value.toString()).toList();
     }
   }
 
-  // set field value on change
-  void setFieldValue({required FormFieldState<dynamic> field}) {
-    // return selectedItem value
-    if (widget.selectedItem != null) widget.selectedItem!(_selectedItems);
-    //set selected items to form builder state
-    // convert as list string
-    List<String> value = _selectedItems.map((e) => e.value.toString()).toList();
-    field.didChange(value);
+  // push selections back into FormBuilder
+  void _setFieldValue(FormFieldState<dynamic> field) {
+    widget.selectedItem?.call(_selectedItems);
+    field.didChange(_selectedItems.map((e) => e.value.toString()).toList());
   }
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return FormBuilderField(
+    return FormBuilderField<List<String>>(
       name: widget.name,
       initialValue: _initialValue,
       validator: widget.validator,
-      builder: (FormFieldState<dynamic> field) {
+      builder: (field) {
         return DropdownSearch<SelectOptionModel>.multiSelection(
           key: widget.fbKey,
           selectedItems: _selectedItems,
-          autoValidateMode: widget.autovalidateMode,
-          validator: widget.validator,
-          items: widget.items ?? [],
-          asyncItems: widget.onFind,
-          compareFn: (i, s) => i.value == s.value,
-          dropdownDecoratorProps: DropDownDecoratorProps(
-            dropdownSearchDecoration: widget.decoration,
+
+          // NEW API (v6): one flexible items callback
+          items: (String? filter, _) async {
+            // Remote fetch has priority
+            if (widget.onFind != null) {
+              return await widget.onFind!(filter ?? '');
+            }
+
+            // Fallback to local list, optionally filter by label
+            final local = widget.items ?? [];
+            if (filter == null || filter.isEmpty) return local;
+            return local
+                .where(
+                    (e) => e.label.toLowerCase().contains(filter.toLowerCase()))
+                .toList();
+          },
+
+          compareFn: (a, b) => a.value == b.value,
+
+          decoratorProps: DropDownDecoratorProps(
+            decoration:
+                widget.decoration.copyWith(hintText: widget.hintText.tr()),
           ),
-          itemAsString: ((SelectOptionModel? item) {
-            return item!.label;
-          }),
-          onChanged: (List<SelectOptionModel> selectedItems) {
-            setState(() {
-              _selectedItems = selectedItems;
-            });
-            setFieldValue(field: field);
+
+          itemAsString: (item) => item.label,
+          onChanged: (List<SelectOptionModel> newItems) {
+            setState(() => _selectedItems = newItems);
+            _setFieldValue(field);
           },
-          dropdownBuilder: (context, selectedItems) {
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.zero,
-              child: selectedItems.isEmpty
-                  ? Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 14.0),
-                      child: Text(widget.hintText.tr(),
-                          style: TextStyle(color: theme.hintColor)),
-                    )
-                  : Row(
-                      children: selectedItems
-                          .map((item) => Padding(
-                                padding: const EdgeInsets.only(right: 10.0),
-                                child: InputChip(
-                                  padding: EdgeInsets.zero,
-                                  label: Text(item.label),
-                                  onDeleted: () {
-                                    widget.fbKey.currentState?.removeItem(item);
-                                  },
-                                ),
-                              ))
-                          .toList()),
-            );
-          },
+          dropdownBuilder: (context, selectedItems) => SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child:
+                //  selectedItems.isEmpty
+                //     ? Padding(
+                //         padding: const EdgeInsets.symmetric(vertical: 14),
+                //         child: Text(
+                //           widget.hintText.tr(),
+                //           style: TextStyle(color: theme.hintColor),
+                //         ),
+                //       )
+                //     :
+                Row(
+              children: selectedItems
+                  .map(
+                    (e) => Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: InputChip(
+                        label: Text(e.label),
+                        onDeleted: () =>
+                            widget.fbKey.currentState?.removeItem(e),
+                      ),
+                    ),
+                  )
+                  .toList(),
+            ),
+          ),
           popupProps: PopupPropsMultiSelection.dialog(
-            isFilterOnline: true,
-            showSelectedItems: true,
             showSearchBox: true,
             searchFieldProps:
                 TextFieldProps(decoration: widget.searchFieldPropsDecoration),
-            loadingBuilder: (context, searchEntry) => const LoadingWidget(),
-            emptyBuilder: (context, searchEntry) =>
-                const Center(child: EmptyDataWidget()),
+            loadingBuilder: (_, __) => const LoadingWidget(),
+            emptyBuilder: (_, __) => const Center(child: EmptyDataWidget()),
             disabledItemFn: (item) =>
-                item.extra.runtimeType == bool ? item.extra ?? false : false,
-            onItemAdded: (selectedItems, addedItem) {
-              widget.fbKey.currentState!.changeSelectedItems(selectedItems);
+                item.extra is bool ? (item.extra as bool) : false,
+            onItemAdded: (sel, _) =>
+                widget.fbKey.currentState?.changeSelectedItems(sel),
+            onItemRemoved: (sel, removed) {
+              widget.fbKey.currentState?.changeSelectedItems(sel);
+              widget.removedItem?.call(removed);
             },
-            onItemRemoved: (selectedItems, removedItem) {
-              widget.fbKey.currentState!.changeSelectedItems(selectedItems);
-              // return removedItem value
-              if (widget.removedItem != null) {
-                widget.removedItem!(removedItem);
-              }
-            },
-            validationWidgetBuilder: (ctx, selectedItems) {
-              return const SizedBox.shrink();
-            },
+            validationBuilder: (_, __) => const SizedBox.shrink(),
           ),
         );
       },

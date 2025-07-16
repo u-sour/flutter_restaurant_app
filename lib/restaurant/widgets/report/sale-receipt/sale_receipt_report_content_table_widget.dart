@@ -133,9 +133,9 @@ class SaleReceiptReportContentTableWidget extends StatelessWidget {
 
     // check and set row background color partial and repaid
     if (index != 0 && rows[index - 1].remainingAmount > 0) {
-      bgColor = AppThemeColors.warning.withOpacity(.2);
+      bgColor = AppThemeColors.warning.withAlpha((0.2 * 255).round());
     } else if (index != 0 && !rows[index - 1].isInitial) {
-      bgColor = AppThemeColors.success.withOpacity(.2);
+      bgColor = AppThemeColors.success.withAlpha((0.2 * 255).round());
     }
 
     final TableSpanDecoration decoration = TableSpanDecoration(
